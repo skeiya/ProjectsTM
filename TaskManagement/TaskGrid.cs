@@ -13,21 +13,21 @@ namespace TaskManagement
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
         private List<WorkItem> _workItems;
 
-        public TaskGrid(AppData appData, Graphics g, Font font)
+        public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
             _grid = new CommonGrid(g, font);
 
             UpdateRowColMap(appData);
 
             _grid.RowCount = appData.Callender.Days.Count + 1;
-            var height = g.VisibleClipBounds.Height / _grid.RowCount;
+            var height = (float)(pageBounds.Height) / _grid.RowCount;
             for (int r = 0; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
             }
 
             _grid.ColCount = appData.Members.Count + 1;
-            var width = g.VisibleClipBounds.Width / _grid.ColCount;
+            var width = (float)(pageBounds.Width) / _grid.ColCount;
             for (int c = 0; c < _grid.ColCount; c++)
             {
                 _grid.SetColWidth(c, width);

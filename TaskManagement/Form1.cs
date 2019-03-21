@@ -12,30 +12,28 @@ namespace TaskManagement
         {
             InitializeComponent();
             _appData = new AppData();
+
+            foreach (System.Drawing.Printing.PaperSize s in printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
+            {
+                if (s.PaperName.Equals("A3"))
+                {
+                    printDocument.DefaultPageSettings.PaperSize = s;
+                }
+            }
             printDocument.PrintPage += PrintDocument_PrintPage;
             this.taskDrawAria.Paint += TaskDrawAria_Paint;
         }
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            var grid = new TaskGrid(_appData, e.Graphics, this.Font);
+            var grid = new TaskGrid(_appData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
             grid.Draw();
             taskDrawAria.Invalidate();
         }
 
-        float GetRowHeight(Graphics g)
-        {
-            return g.VisibleClipBounds.Height / (_appData.Callender.Days.Count + 1);
-        }
-
-        float GetColWidth(Graphics g)
-        {
-            return g.VisibleClipBounds.Width / (_appData.Members.Count + 1);
-        }
-
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            var grid = new TaskGrid(_appData, e.Graphics, this.Font);
+            var grid = new TaskGrid(_appData, e.Graphics, e.PageBounds, this.Font);
             grid.Draw();
         }
 
