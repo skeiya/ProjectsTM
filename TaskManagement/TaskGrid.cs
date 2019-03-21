@@ -14,7 +14,7 @@ namespace TaskManagement
 
         public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
-            _grid = new CommonGrid(g, new Font(font.FontFamily, (float)4));
+            _grid = new CommonGrid(g, new Font(font.FontFamily, 4));
 
             UpdateRowColMap(appData);
 
@@ -29,28 +29,32 @@ namespace TaskManagement
 
         private void SetColWidth(Graphics g, Rectangle pageBounds)
         {
-            var year = g.MeasureString("0000/", _grid.Font, 100, StringFormat.GenericTypographic).Width;
-            var month = g.MeasureString("00/", _grid.Font, 100, StringFormat.GenericTypographic).Width;
-            var day = g.MeasureString("00", _grid.Font, 100, StringFormat.GenericTypographic).Width;
+            var year = _grid.MeasureString("0000/").Width;
+            var month = _grid.MeasureString("00/").Width;
+            var day = _grid.MeasureString("00").Width;
+            _grid.SetColWidth(0, year);
+            _grid.SetColWidth(1, month);
+            _grid.SetColWidth(2, day);
             var member = ((float)(pageBounds.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount);
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 _grid.SetColWidth(c, member);
             }
-            _grid.SetColWidth(0, year);
-            _grid.SetColWidth(1, month);
-            _grid.SetColWidth(2, day);
+
         }
 
         private void SetRowHeight(Rectangle pageBounds)
         {
-            var member = _grid.Graphics.MeasureString("AAA", _grid.Font, 100, StringFormat.GenericTypographic).Height;
-            var height = ((float)(pageBounds.Height) - member) / (_grid.RowCount - Members.RowCount);
+            var company = _grid.MeasureString("K").Height;
+            var name = _grid.MeasureString("下村HF").Height * 1.5f;
+            _grid.SetRowHeight(0, company);
+            _grid.SetRowHeight(1, name);
+            var height = ((float)pageBounds.Height - name) / (_grid.RowCount - Members.RowCount);
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
             }
-            _grid.SetRowHeight(0, member);
+
         }
 
         private void UpdateRowColMap(AppData appData)
@@ -63,7 +67,7 @@ namespace TaskManagement
                 c++;
             }
 
-            int r = 1;
+            int r = Members.RowCount;
             foreach (var d in appData.Callender.Days)
             {
                 _dayToRow.Add(d, r);
@@ -93,28 +97,28 @@ namespace TaskManagement
         {
             int y = 0;
             int m = 0;
-            for (int r = 1; r < _grid.RowCount; r++)
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
                 y = year;
                 var rect = _grid.GetCellBounds(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.Graphics.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+                _grid.DrawString(year.ToString() + "/", rect);
             }
-            for (int r = 1; r < _grid.RowCount; r++)
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
                 m = month;
                 var rect = _grid.GetCellBounds(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.Graphics.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+                _grid.DrawString(month.ToString() + "/", rect);
             }
-            for (int r = 1; r < _grid.RowCount; r++)
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var rect = _grid.GetCellBounds(r, 2);
-                _grid.Graphics.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+                _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
             }
         }
 
@@ -123,7 +127,12 @@ namespace TaskManagement
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(0, c);
-                _grid.Graphics.DrawString(_colToMember[c].ToString(), _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+                _grid.DrawString(_colToMember[c].Company, rect);
+            }
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                var rect = _grid.GetCellBounds(1, c);
+                _grid.DrawString(_colToMember[c].Name, rect);
             }
         }
 
@@ -132,7 +141,7 @@ namespace TaskManagement
             foreach (var wi in _workItems)
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
-                _grid.Graphics.DrawString(wi.ToString(), _grid.Font, Brushes.Black, bounds, StringFormat.GenericTypographic);
+                _grid.DrawString(wi.ToString(), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
         }

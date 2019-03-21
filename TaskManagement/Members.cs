@@ -25,6 +25,6 @@ namespace TaskManagement
             return _members.GetEnumerator();
         }
 
-        public static int RowCount => 1;
+        public static int RowCount => 2;
     }
 }

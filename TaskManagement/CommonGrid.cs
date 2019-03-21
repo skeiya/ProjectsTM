@@ -58,5 +58,15 @@ namespace TaskManagement
         {
             _colToWidth[c] = width;
         }
+
+        internal SizeF MeasureString(string s)
+        {
+            return Graphics.MeasureString(s, Font, 100, StringFormat.GenericTypographic);
+        }
+
+        internal void DrawString(string s, RectangleF rect)
+        {
+            Graphics.DrawString(s, Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+        }
     }
 }
