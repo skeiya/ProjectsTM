@@ -2,7 +2,7 @@
 {
     public class Member
     {
-        public Member(string firstName, string lastName, string company)
+        public Member(string lastName, string firstName, string company)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -15,7 +15,7 @@
 
         public override string ToString()
         {
-            return LastName.Substring(0) + FirstName.Substring(0) + "(" + Company + ")";
+            return LastName.Substring(0, 1) + FirstName.Substring(0, 1) + "(" + Company + ")";
         }
     }
 }
