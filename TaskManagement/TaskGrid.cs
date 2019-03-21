@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace TaskManagement
@@ -15,7 +14,7 @@ namespace TaskManagement
 
         public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
-            _grid = new CommonGrid(g, new Font(font.FontFamily, (float)6.0));
+            _grid = new CommonGrid(g, new Font(font.FontFamily, (float)4));
 
             UpdateRowColMap(appData);
 
@@ -33,9 +32,9 @@ namespace TaskManagement
             {
                 _grid.SetColWidth(c, width);
             }
-            _grid.SetColWidth(0, g.MeasureString("0000/", _grid.Font).Width);
-            _grid.SetColWidth(1, g.MeasureString("00/", _grid.Font).Width);
-            _grid.SetColWidth(2, g.MeasureString("00", _grid.Font).Width);
+            _grid.SetColWidth(0, g.MeasureString("0000/", _grid.Font, 100, StringFormat.GenericTypographic).Width);
+            _grid.SetColWidth(1, g.MeasureString("00/", _grid.Font,100, StringFormat.GenericTypographic).Width);
+            _grid.SetColWidth(2, g.MeasureString("00", _grid.Font, 100, StringFormat.GenericTypographic).Width);
 
             _workItems = appData.WorkItems;
         }
@@ -87,7 +86,7 @@ namespace TaskManagement
                 y = year;
                 var rect = _grid.GetCellBounds(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.Graphics.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, rect);
+                _grid.Graphics.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
             }
             for (int r = 1; r < _grid.RowCount; r++)
             {
@@ -96,12 +95,12 @@ namespace TaskManagement
                 m = month;
                 var rect = _grid.GetCellBounds(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.Graphics.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, rect);
+                _grid.Graphics.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
             }
             for (int r = 1; r < _grid.RowCount; r++)
             {
                 var rect = _grid.GetCellBounds(r, 2);
-                _grid.Graphics.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, rect);
+                _grid.Graphics.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
             }
         }
 
@@ -110,7 +109,7 @@ namespace TaskManagement
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(0, c);
-                _grid.Graphics.DrawString(_colToMember[c].ToString(), _grid.Font, Brushes.Black, rect);
+                _grid.Graphics.DrawString(_colToMember[c].ToString(), _grid.Font, Brushes.Black, rect, StringFormat.GenericTypographic);
             }
         }
 
@@ -119,7 +118,7 @@ namespace TaskManagement
             foreach (var wi in _workItems)
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
-                _grid.Graphics.DrawString(wi.ToString(), _grid.Font, Brushes.Black, bounds);
+                _grid.Graphics.DrawString(wi.ToString(), _grid.Font, Brushes.Black, bounds, StringFormat.GenericTypographic);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
         }

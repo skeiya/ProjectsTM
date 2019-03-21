@@ -20,6 +20,7 @@ namespace TaskManagement
                     printDocument.DefaultPageSettings.PaperSize = s;
                 }
             }
+            printDocument.DefaultPageSettings.Landscape = true;
             printDocument.PrintPage += PrintDocument_PrintPage;
             this.taskDrawAria.Paint += TaskDrawAria_Paint;
         }

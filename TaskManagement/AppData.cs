@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TaskManagement
@@ -26,6 +27,12 @@ namespace TaskManagement
             Members.Add(hoge);
             var avd = new Member("avd", "rg", "AB");
             Members.Add(avd);
+
+            var rand = new Random(123);
+            foreach(var i in Enumerable.Range(1, 95))
+            {
+                Members.Add(new Member(rand.Next().ToString(), (rand.Next()).ToString(), i.ToString()));
+            }
 
             foreach (var m in Enumerable.Range(3, 10))
             {
