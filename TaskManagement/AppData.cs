@@ -8,7 +8,6 @@ namespace TaskManagement
 {
     class AppData
     {
-        static Callender Callender = new Callender();
-
+        public static Callender Callender = new Callender();
     }
 }

@@ -20,5 +20,7 @@ namespace TaskManagement
             _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 10 });
             _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 11 });
         }
+
+        public List<CallenderDay> Days => _callenderDays;
     }
 }
