@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace TaskManagement
 {
-    public class Members : IEnumerable
+    public class Members : IEnumerable<Member>
     {
         private List<Member> _members = new List<Member>();
 
         public int Count => _members.Count;
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Member> GetEnumerator()
         {
             return _members.GetEnumerator();
         }
@@ -18,6 +18,11 @@ namespace TaskManagement
         internal void Add(Member member)
         {
             _members.Add(member);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _members.GetEnumerator();
         }
     }
 }

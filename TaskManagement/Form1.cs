@@ -18,39 +18,9 @@ namespace TaskManagement
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            var g = e.Graphics;
-            FullDraw(g);
+            var grid = new VirtualGrid(_appData, e.Graphics, this.Font);
+            grid.Draw();
             taskDrawAria.Invalidate();
-        }
-
-        private void FullDraw(Graphics g)
-        {
-            DrawCallenderDays(g);
-            DrawTeamMembers(g);
-        }
-
-        private void DrawTeamMembers(Graphics g)
-        {
-            float x = g.RenderingOrigin.X;
-            float y = g.RenderingOrigin.Y;
-            float offset = GetColWidth(g);
-            foreach (var member in _appData.Members)
-            {
-                x += offset;
-                g.DrawString(member.ToString(), this.Font, Brushes.Blue, x, y);
-            }
-        }
-
-        private void DrawCallenderDays(Graphics g)
-        {
-            float x = g.RenderingOrigin.X;
-            float y = g.RenderingOrigin.Y;
-            float offset = GetRowHeight(g);
-            foreach (var day in _appData.Callender.Days)
-            {
-                y += offset;
-                g.DrawString(day.ToString(), this.Font, Brushes.Green, x, y);
-            }
         }
 
         float GetRowHeight(Graphics g)
@@ -63,14 +33,10 @@ namespace TaskManagement
             return g.VisibleClipBounds.Width / (_appData.Members.Count + 1);
         }
 
-        //SizeF GetCallenderCellSize(Graphics g)
-        //{
-        //    return g.MeasureString(_appData.Callender.Days[0].ToString(), this.Font);
-        //}
-
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            FullDraw(e.Graphics);
+            var grid = new VirtualGrid(_appData, e.Graphics, this.Font);
+            grid.Draw();
         }
 
         private void buttonPrintPreview_Click(object sender, EventArgs e)

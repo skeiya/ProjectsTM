@@ -19,9 +19,12 @@ namespace TaskManagement
             Projects.Add("Z123");
             Projects.Add("Y345");
 
-            Members.Add(new Member("下村", "圭矢", "K"));
-            Members.Add(new Member("hoge", "foo", "AB"));
-            Members.Add(new Member("avd", "rg", "AB"));
+            var shimo = new Member("下村", "圭矢", "K");
+            Members.Add(shimo);
+            var hoge = new Member("hoge", "foo", "AB");
+            Members.Add(hoge);
+            var avd = new Member("avd", "rg", "AB");
+            Members.Add(avd);
 
             for (int m = 3; m < 8; m++)
             {
@@ -31,8 +34,8 @@ namespace TaskManagement
                 }
             }
 
-            WorkItems.Add(new WorkItem(Projects.Get("Z123"), "基礎料金", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 5, 1), Callender)));
-            WorkItems.Add(new WorkItem(Projects.Get("Y345"), "インストーラ", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 4, 6), Callender)));
+            WorkItems.Add(new WorkItem(Projects.Get("Z123"), "基礎料金", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 5, 1), Callender), shimo));
+            WorkItems.Add(new WorkItem(Projects.Get("Y345"), "インストーラ", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 4, 6), Callender), hoge));
         }
     }
 }
