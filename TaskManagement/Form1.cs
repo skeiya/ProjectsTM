@@ -22,14 +22,40 @@ namespace TaskManagement
 
         private void FullDraw(Graphics g)
         {
+            DrawCallenderDays(g);
+            DrawTeamMembers(g);
+        }
+
+        private void DrawTeamMembers(Graphics g)
+        {
+            float x = g.RenderingOrigin.X;
+            float y = g.RenderingOrigin.Y;
+            foreach (var member in AppData.Team.Members)
+            {
+                x += GetColWidth(g);
+                g.DrawString(member.ToString(), this.Font, Brushes.Blue, x, y);
+            }
+        }
+
+        private void DrawCallenderDays(Graphics g)
+        {
             float x = g.RenderingOrigin.X;
             float y = g.RenderingOrigin.Y;
             foreach (var day in AppData.Callender.Days)
             {
-                var size = g.MeasureString(day.ToString(), this.Font);
+                y += GetRowHeight(g);
                 g.DrawString(day.ToString(), this.Font, Brushes.Green, x, y);
-                y += size.Height;
             }
+        }
+
+        float GetRowHeight(Graphics g)
+        {
+            return g.VisibleClipBounds.Height / (AppData.Callender.Days.Count + 1);
+        }
+
+        float GetColWidth(Graphics g)
+        {
+            return g.VisibleClipBounds.Width / (AppData.Team.Members.Count + 1);
         }
 
         //SizeF GetCallenderCellSize(Graphics g)
