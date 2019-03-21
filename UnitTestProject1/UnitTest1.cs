@@ -34,7 +34,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestWorkItemFormat()
         {
-            var wi = new WorkItem("Z123", "仕様検討", new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22), new DummyPeriodCalculator()));
+            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22), new DummyPeriodCalculator()));
             Assert.AreEqual<string>("仕様検討 Z123 3d", wi.ToString());
         }
     }

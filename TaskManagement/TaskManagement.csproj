@@ -59,6 +59,8 @@
     <Compile Include="Member.cs" />
     <Compile Include="Period.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Projects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="WorkItem.cs" />

@@ -2,11 +2,11 @@
 {
     public class WorkItem
     {
-        private string Project;
+        private Project Project;
         private string Name;
         private Period Period;
 
-        public WorkItem(string project, string name, Period period)
+        public WorkItem(Project project, string name, Period period)
         {
             this.Project = project;
             this.Name = name;
@@ -15,7 +15,7 @@
 
         public override string ToString()
         {
-            return Name + " " + Project + " " + Period.ToString() + "d";
+            return Name + " " + Project.ToString() + " " + Period.ToString() + "d";
         }
     }
 }
