@@ -2,25 +2,34 @@
 
 namespace TaskManagement
 {
-    internal class Callender
+    internal class Callender : IPeriodCalculator
     {
         private List<CallenderDay> _callenderDays = new List<CallenderDay>();
 
         public Callender()
         {
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 1 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 2 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 3 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 4 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 5 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 6 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 7 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 8 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 9 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 10 });
-            _callenderDays.Add(new CallenderDay() { Year = 2019, Month = 3, Day = 11 });
+            for(int m = 3; m < 8; m++)
+            {
+                for (int d = 1; d < 31; d++)
+                {
+                    _callenderDays.Add(new CallenderDay(2019, m, d));
+                }
+            }
         }
 
         public List<CallenderDay> Days => _callenderDays;
+
+        public int GetTerm(CallenderDay from, CallenderDay to)
+        { 
+            int term = 0;
+            bool found = false;
+            foreach (var d in _callenderDays)
+            {
+                if (d.Equals(from)) found = true;
+                if (found) term++;
+                if (d.Equals(to)) break;
+            }
+            return term;
+        }
     }
 }

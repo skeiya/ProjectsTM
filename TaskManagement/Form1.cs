@@ -30,9 +30,10 @@ namespace TaskManagement
         {
             float x = g.RenderingOrigin.X;
             float y = g.RenderingOrigin.Y;
+            float offset = GetColWidth(g);
             foreach (var member in AppData.Team.Members)
             {
-                x += GetColWidth(g);
+                x += offset;
                 g.DrawString(member.ToString(), this.Font, Brushes.Blue, x, y);
             }
         }
@@ -41,9 +42,10 @@ namespace TaskManagement
         {
             float x = g.RenderingOrigin.X;
             float y = g.RenderingOrigin.Y;
+            float offset = GetRowHeight(g);
             foreach (var day in AppData.Callender.Days)
             {
-                y += GetRowHeight(g);
+                y += offset;
                 g.DrawString(day.ToString(), this.Font, Brushes.Green, x, y);
             }
         }
