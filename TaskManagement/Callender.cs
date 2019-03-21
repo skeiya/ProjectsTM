@@ -1,21 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskManagement
 {
     internal class Callender : IPeriodCalculator
     {
         private List<CallenderDay> _callenderDays = new List<CallenderDay>();
-
-        public Callender()
-        {
-            for(int m = 3; m < 8; m++)
-            {
-                for (int d = 1; d < 31; d++)
-                {
-                    _callenderDays.Add(new CallenderDay(2019, m, d));
-                }
-            }
-        }
 
         public List<CallenderDay> Days => _callenderDays;
 
@@ -30,6 +20,16 @@ namespace TaskManagement
                 if (d.Equals(to)) break;
             }
             return term;
+        }
+
+        internal void Add(CallenderDay callenderDay)
+        {
+            _callenderDays.Add(callenderDay);
+        }
+
+        internal CallenderDay Get(int year, int month, int day)
+        {
+            return _callenderDays.Find((d) => (d.Year == year) && (d.Month == month) && (d.Day == day));
         }
     }
 }
