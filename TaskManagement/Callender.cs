@@ -31,5 +31,7 @@ namespace TaskManagement
         {
             return _callenderDays.Find((d) => (d.Year == year) && (d.Month == month) && (d.Day == day));
         }
+
+        static public int ColCount => 3;
     }
 }

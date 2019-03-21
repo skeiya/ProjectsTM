@@ -24,5 +24,7 @@ namespace TaskManagement
         {
             return _members.GetEnumerator();
         }
+
+        public static int RowCount => 1;
     }
 }

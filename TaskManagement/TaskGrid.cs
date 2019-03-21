@@ -15,30 +15,34 @@ namespace TaskManagement
 
         public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
-            _grid = new CommonGrid(g, font);
+            _grid = new CommonGrid(g, new Font(font.FontFamily, (float)6.0));
 
             UpdateRowColMap(appData);
 
-            _grid.RowCount = appData.Callender.Days.Count + 1;
+            _grid.RowCount = appData.Callender.Days.Count + Members.RowCount;
             var height = (float)(pageBounds.Height) / _grid.RowCount;
-            for (int r = 0; r < _grid.RowCount; r++)
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
             }
+            _grid.SetRowHeight(0, height * 2); // TODO: 適当に広げている
 
-            _grid.ColCount = appData.Members.Count + 1;
+            _grid.ColCount = appData.Members.Count + Callender.ColCount;
             var width = (float)(pageBounds.Width) / _grid.ColCount;
-            for (int c = 0; c < _grid.ColCount; c++)
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 _grid.SetColWidth(c, width);
             }
+            _grid.SetColWidth(0, g.MeasureString("0000/", _grid.Font).Width);
+            _grid.SetColWidth(1, g.MeasureString("00/", _grid.Font).Width);
+            _grid.SetColWidth(2, g.MeasureString("00", _grid.Font).Width);
 
             _workItems = appData.WorkItems;
         }
 
         private void UpdateRowColMap(AppData appData)
         {
-            int c = 1;
+            int c = Callender.ColCount;
             foreach (var m in appData.Members)
             {
                 _colToMember.Add(c, m);
@@ -74,16 +78,36 @@ namespace TaskManagement
 
         private void DrawCallenderDays()
         {
+            int y = 0;
+            int m = 0;
             for (int r = 1; r < _grid.RowCount; r++)
             {
+                var year = _rowToDay[r].Year;
+                if (y == year) continue;
+                y = year;
                 var rect = _grid.GetCellBounds(r, 0);
-                _grid.Graphics.DrawString(_rowToDay[r].ToString(), _grid.Font, Brushes.Black, rect);
+                rect.Height = rect.Height * 2;//TODO: 適当に広げている
+                _grid.Graphics.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, rect);
+            }
+            for (int r = 1; r < _grid.RowCount; r++)
+            {
+                var month = _rowToDay[r].Month;
+                if (m == month) continue;
+                m = month;
+                var rect = _grid.GetCellBounds(r, 1);
+                rect.Height = rect.Height * 2;//TODO: 適当に広げている
+                _grid.Graphics.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, rect);
+            }
+            for (int r = 1; r < _grid.RowCount; r++)
+            {
+                var rect = _grid.GetCellBounds(r, 2);
+                _grid.Graphics.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, rect);
             }
         }
 
         private void DrawTeamMembers()
         {
-            for (int c = 1; c < _grid.ColCount; c++)
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(0, c);
                 _grid.Graphics.DrawString(_colToMember[c].ToString(), _grid.Font, Brushes.Black, rect);

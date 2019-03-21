@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TaskManagement
 {
@@ -26,11 +27,18 @@ namespace TaskManagement
             var avd = new Member("avd", "rg", "AB");
             Members.Add(avd);
 
-            for (int m = 3; m < 8; m++)
+            foreach (var m in Enumerable.Range(3, 10))
             {
                 for (int d = 1; d < 31; d++)
                 {
                     Callender.Add(new CallenderDay(2019, m, d));
+                }
+            }
+            foreach (var m in Enumerable.Range(1, 2))
+            {
+                for (int d = 1; d < 31; d++)
+                {
+                    Callender.Add(new CallenderDay(2020, m, d));
                 }
             }
 
