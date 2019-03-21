@@ -19,24 +19,38 @@ namespace TaskManagement
             UpdateRowColMap(appData);
 
             _grid.RowCount = appData.Callender.Days.Count + Members.RowCount;
-            var height = (float)(pageBounds.Height) / _grid.RowCount;
+            SetRowHeight(pageBounds);
+
+            _grid.ColCount = appData.Members.Count + Callender.ColCount;
+            SetColWidth(g, pageBounds);
+
+            _workItems = appData.WorkItems;
+        }
+
+        private void SetColWidth(Graphics g, Rectangle pageBounds)
+        {
+            var year = g.MeasureString("0000/", _grid.Font, 100, StringFormat.GenericTypographic).Width;
+            var month = g.MeasureString("00/", _grid.Font, 100, StringFormat.GenericTypographic).Width;
+            var day = g.MeasureString("00", _grid.Font, 100, StringFormat.GenericTypographic).Width;
+            var member = ((float)(pageBounds.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount);
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                _grid.SetColWidth(c, member);
+            }
+            _grid.SetColWidth(0, year);
+            _grid.SetColWidth(1, month);
+            _grid.SetColWidth(2, day);
+        }
+
+        private void SetRowHeight(Rectangle pageBounds)
+        {
+            var member = _grid.Graphics.MeasureString("AAA", _grid.Font, 100, StringFormat.GenericTypographic).Height;
+            var height = ((float)(pageBounds.Height) - member) / (_grid.RowCount - Members.RowCount);
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
             }
-            _grid.SetRowHeight(0, height * 2); // TODO: 適当に広げている
-
-            _grid.ColCount = appData.Members.Count + Callender.ColCount;
-            var width = (float)(pageBounds.Width) / _grid.ColCount;
-            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
-            {
-                _grid.SetColWidth(c, width);
-            }
-            _grid.SetColWidth(0, g.MeasureString("0000/", _grid.Font, 100, StringFormat.GenericTypographic).Width);
-            _grid.SetColWidth(1, g.MeasureString("00/", _grid.Font,100, StringFormat.GenericTypographic).Width);
-            _grid.SetColWidth(2, g.MeasureString("00", _grid.Font, 100, StringFormat.GenericTypographic).Width);
-
-            _workItems = appData.WorkItems;
+            _grid.SetRowHeight(0, member);
         }
 
         private void UpdateRowColMap(AppData appData)
