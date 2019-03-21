@@ -18,7 +18,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            var grid = new VirtualGrid(_appData, e.Graphics, this.Font);
+            var grid = new TaskGrid(_appData, e.Graphics, this.Font);
             grid.Draw();
             taskDrawAria.Invalidate();
         }
@@ -35,7 +35,7 @@ namespace TaskManagement
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            var grid = new VirtualGrid(_appData, e.Graphics, this.Font);
+            var grid = new TaskGrid(_appData, e.Graphics, this.Font);
             grid.Draw();
         }
 
