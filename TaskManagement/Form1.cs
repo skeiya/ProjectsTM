@@ -12,10 +12,13 @@ namespace TaskManagement
 {
     public partial class Form1 : Form
     {
+        private AppData _appData;
+
         public Form1()
         {
             InitializeComponent();
             printDocument1.PrintPage += PrintDocument1_PrintPage;
+            _appData = new AppData();
         }
 
         private void PrintDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
