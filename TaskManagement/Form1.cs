@@ -32,6 +32,11 @@ namespace TaskManagement
             }
         }
 
+        //SizeF GetCallenderCellSize(Graphics g)
+        //{
+        //    return g.MeasureString(AppData.Callender.Days[0].ToString(), this.Font);
+        //}
+
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             FullDraw(e.Graphics);
