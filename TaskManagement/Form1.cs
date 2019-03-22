@@ -23,12 +23,20 @@ namespace TaskManagement
             printDocument.DefaultPageSettings.Landscape = true;
             printDocument.PrintPage += PrintDocument_PrintPage;
             this.taskDrawAria.Paint += TaskDrawAria_Paint;
+            this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
         }
 
+        private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
+        {
+            var wi = _grid.PickFromPoint(e.Location);
+            if (wi != null) label1.Text = wi.ToString();
+        }
+
+        TaskGrid _grid;
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            var grid = new TaskGrid(_appData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
-            grid.Draw();
+            _grid = new TaskGrid(_appData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
+            _grid.Draw();
             taskDrawAria.Invalidate();
         }
 

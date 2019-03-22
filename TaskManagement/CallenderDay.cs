@@ -29,6 +29,13 @@
             return true;
         }
 
+        internal bool LesserThan(CallenderDay to)
+        {
+            if (Year != to.Year) return Year < to.Year;
+            if (Month != to.Month) return Month < to.Month;
+            return Day <= to.Day;
+        }
+
         public override int GetHashCode()
         {
             return Year.GetHashCode() + Month.GetHashCode() + Day.GetHashCode();

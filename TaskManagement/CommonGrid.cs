@@ -39,12 +39,12 @@ namespace TaskManagement
             return result;
         }
 
-        private float RowHeight(int row)
+        public float RowHeight(int row)
         {
             return _rowToHeight[row];
         }
 
-        private float ColWidth(int col)
+        public float ColWidth(int col)
         {
             return _colToWidth[col];
         }

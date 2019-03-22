@@ -18,5 +18,10 @@
         {
             return _periodCalculator.GetTerm(From, To).ToString();
         }
+
+        internal bool Contains(CallenderDay day)
+        {
+            return From.LesserThan(day) && day.LesserThan(To);
+        }
     }
 }

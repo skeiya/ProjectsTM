@@ -76,6 +76,53 @@ namespace TaskManagement
             }
         }
 
+        internal WorkItem PickFromPoint(PointF point)
+        {
+            var member = GetMemberFromX(point.X);
+            var day = GetDayFromY(point.Y);
+            foreach (var wi in _workItems)
+            {
+                if (!wi.AssignedMember.Equals(member)) continue;
+                if (!wi.Period.Contains(day)) continue;
+                return wi;
+            }
+            return null;
+        }
+
+        private Member GetMemberFromX(float x)
+        {
+            float left = 0;
+            for (int c = 0; c < _grid.ColCount; c++)
+            {
+                var w = _grid.ColWidth(c);
+                if (left <= x && x < left + w)
+                {
+                    Member m;
+                    if (_colToMember.TryGetValue(c, out m)) return m;
+                    return null;
+                }
+                left += w;
+            }
+            return null;
+        }
+
+        private CallenderDay GetDayFromY(float y)
+        {
+            float top = 0;
+            for (int r = 0; r < _grid.RowCount; r++)
+            {
+                var h = _grid.RowHeight(r);
+                if (top <= y && y < top + h)
+                {
+                    CallenderDay d;
+                    if (_rowToDay.TryGetValue(r, out d)) return d;
+                    return null;
+                }
+                top += h;
+            }
+            return null;
+        }
+
         internal RectangleF GetBounds(Period period, Member assignedMember)
         {
             var col = _memberToCol[assignedMember];
