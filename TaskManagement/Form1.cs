@@ -15,7 +15,7 @@ namespace TaskManagement
 
             foreach (System.Drawing.Printing.PaperSize s in printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
             {
-                if (s.PaperName.Equals("A3"))
+                if (s.Kind == System.Drawing.Printing.PaperKind.A3)
                 {
                     printDocument.DefaultPageSettings.PaperSize = s;
                 }
