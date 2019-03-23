@@ -49,12 +49,14 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />
+    <Compile Include="ColorCondition.cs" />
     <Compile Include="ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ColorConditionEditorForm.Designer.cs">
       <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorConditions.cs" />
     <Compile Include="ColorManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace TaskManagement
@@ -10,12 +11,13 @@ namespace TaskManagement
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
         public Projects Projects = new Projects();
+        public ColorConditions ColorConditions = new ColorConditions();
 
         public AppData()
         {
             SetupDummyData();
         }
-
+        
         private void SetupDummyData()
         {
             Projects.Add("Z123");
@@ -70,6 +72,9 @@ namespace TaskManagement
                     }
                 }
             }
+
+            ColorConditions.Add(new ColorCondition("下圭", Color.Green));
+            ColorConditions.Add(new ColorCondition("Z123", Color.Red));
         }
     }
 }

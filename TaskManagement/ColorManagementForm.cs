@@ -12,9 +12,19 @@ namespace TaskManagement
 {
     public partial class ColorManagementForm : Form
     {
-        public ColorManagementForm()
+        private readonly ColorConditions colorConditions;
+
+        public ColorManagementForm(ColorConditions colorConditions)
         {
             InitializeComponent();
+            this.colorConditions = colorConditions;
+
+            foreach (var cond in colorConditions)
+            {
+                var i = new ListViewItem(cond.Regex);
+                i.BackColor = cond.Color;
+                this.listView1.Items.Add(i);
+            }
         }
 
         private void bottonAdd_Click(object sender, EventArgs e)
