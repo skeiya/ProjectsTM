@@ -34,8 +34,13 @@ namespace TaskManagement
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
             if (_draggingWorkItem == null) return;
-            _draggingWorkItem.AssignedMember = _grid.GetMemberFromX(e.Location.X);
+
+            var member = _grid.GetMemberFromX(e.Location.X);
+            if (member == null) return;
             var curDay = _grid.GetDayFromY(e.Location.Y);
+            if (curDay == null) return;
+
+            _draggingWorkItem.AssignedMember = member;
             var offset = _appData.Callender.GetOffset(_draggedDay, curDay);
             label1.Text = offset.ToString();
             _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
