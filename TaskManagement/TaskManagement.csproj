@@ -49,6 +49,12 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />
+    <Compile Include="ColorManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorManagementForm.Designer.cs">
+      <DependentUpon>ColorManagementForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommonGrid.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
