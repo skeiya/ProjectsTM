@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return Name + " " + Project.ToString() + " " + Period.ToString() + "d";
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.Name + "][" + Period.ToString() + "d]";
         }
     }
 }

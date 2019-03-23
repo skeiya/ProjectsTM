@@ -42,7 +42,6 @@ namespace TaskManagement
 
             _draggingWorkItem.AssignedMember = member;
             var offset = _appData.Callender.GetOffset(_draggedDay, curDay);
-            label1.Text = offset.ToString();
             _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
         }
 
@@ -58,6 +57,7 @@ namespace TaskManagement
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
+            label1.Text = wi.ToString();
         }
 
         TaskGrid _grid;
