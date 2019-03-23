@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -24,12 +23,36 @@ namespace TaskManagement
             printDocument.PrintPage += PrintDocument_PrintPage;
             this.taskDrawAria.Paint += TaskDrawAria_Paint;
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
+            this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
+            this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
+        }
+
+        WorkItem _draggingWorkItem = null;
+        CallenderDay _draggedDay = null;
+        Period _draggedPeriod = null;
+
+        private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_draggingWorkItem == null) return;
+            _draggingWorkItem.AssignedMember = _grid.GetMemberFromX(e.Location.X);
+            var curDay = _grid.GetDayFromY(e.Location.Y);
+            var offset = _appData.Callender.GetOffset(_draggedDay, curDay);
+            _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
+        }
+
+        private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
+        {
+            _draggingWorkItem = null;
         }
 
         private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
         {
             var wi = _grid.PickFromPoint(e.Location);
-            if (wi != null) label1.Text = wi.ToString();
+            if (wi == null) return;
+            label1.Text = wi.ToString();
+            _draggingWorkItem = wi;
+            _draggedPeriod = wi.Period.Clone();
+            _draggedDay = _grid.GetDayFromY(e.Location.Y);
         }
 
         TaskGrid _grid;

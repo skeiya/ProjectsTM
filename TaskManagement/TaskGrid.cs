@@ -41,7 +41,7 @@ namespace TaskManagement
                 _grid.SetColWidth(c, member);
             }
 
-        }
+        }   
 
         private void SetRowHeight(Rectangle pageBounds)
         {
@@ -89,7 +89,7 @@ namespace TaskManagement
             return null;
         }
 
-        private Member GetMemberFromX(float x)
+        public Member GetMemberFromX(float x)
         {
             float left = 0;
             for (int c = 0; c < _grid.ColCount; c++)
@@ -106,7 +106,7 @@ namespace TaskManagement
             return null;
         }
 
-        private CallenderDay GetDayFromY(float y)
+        public CallenderDay GetDayFromY(float y)
         {
             float top = 0;
             for (int r = 0; r < _grid.RowCount; r++)

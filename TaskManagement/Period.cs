@@ -23,5 +23,15 @@
         {
             return From.LesserThan(day) && day.LesserThan(To);
         }
+
+        internal Period ApplyOffset(int offset)
+        {
+            return new Period(_periodCalculator.ApplyOffset(From, offset), _periodCalculator.ApplyOffset(To, offset), _periodCalculator);
+        }
+
+        internal Period Clone()
+        {
+            return new Period(From, To, _periodCalculator);
+        }
     }
 }

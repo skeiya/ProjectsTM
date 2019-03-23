@@ -4,7 +4,7 @@
     {
         private Project Project;
         private string Name;
-        public Period Period { get; }
+        public Period Period { get; set; }
         public Member AssignedMember { get; internal set; }
 
         public WorkItem(Project project, string name, Period period, Member assignedMember)
