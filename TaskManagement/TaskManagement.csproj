@@ -49,6 +49,12 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />
+    <Compile Include="ColorConditionEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorConditionEditorForm.Designer.cs">
+      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,12 @@
     <Compile Include="TaskGrid.cs" />
     <Compile Include="WorkItem.cs" />
     <Compile Include="WorkItems.cs" />
+    <EmbeddedResource Include="ColorConditionEditorForm.resx">
+      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorManagementForm.resx">
+      <DependentUpon>ColorManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

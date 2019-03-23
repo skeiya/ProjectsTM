@@ -16,5 +16,14 @@ namespace TaskManagement
         {
             InitializeComponent();
         }
+
+        private void bottonAdd_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ColorConditionEditorForm())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+
+            }
+        }
     }
 }
