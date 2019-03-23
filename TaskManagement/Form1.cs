@@ -79,5 +79,10 @@ namespace TaskManagement
             printPreviewDialog1.Document = printDocument;
             if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _appData.WorkItems.SetFilter(textBox1.Text);
+        }
     }
 }

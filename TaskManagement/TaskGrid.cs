@@ -10,7 +10,7 @@ namespace TaskManagement
         private Dictionary<Member, int> _memberToCol = new Dictionary<Member, int>();
         private Dictionary<CallenderDay, int> _dayToRow = new Dictionary<CallenderDay, int>();
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
-        private List<WorkItem> _workItems;
+        private WorkItems _workItems;
 
         public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
@@ -80,7 +80,7 @@ namespace TaskManagement
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
-            foreach (var wi in _workItems)
+            foreach (var wi in _workItems.GetWorkItems())
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
                 if (!wi.Period.Contains(day)) continue;
@@ -185,7 +185,7 @@ namespace TaskManagement
 
         private void DrawWorkItems()
         {
-            foreach (var wi in _workItems)
+            foreach (var wi in _workItems.GetWorkItems())
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
                 _grid.DrawString(wi.ToString(), bounds);

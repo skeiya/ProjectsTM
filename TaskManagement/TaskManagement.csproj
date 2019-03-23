@@ -66,6 +66,7 @@
     <Compile Include="Members.cs" />
     <Compile Include="TaskGrid.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItems.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
