@@ -28,10 +28,12 @@ namespace TaskManagement
             var avd = new Member("avd", "rg", "AB");
             Members.Add(avd);
 
-            var rand = new Random(123);
-            foreach(var i in Enumerable.Range(1, 95))
             {
-                Members.Add(new Member(rand.Next().ToString(), (rand.Next()).ToString(), i.ToString()));
+                var rand = new Random(123);
+                foreach (var i in Enumerable.Range(1, 95))
+                {
+                    Members.Add(new Member(rand.Next().ToString(), (rand.Next()).ToString(), i.ToString()));
+                }
             }
 
             foreach (var m in Enumerable.Range(3, 10))
@@ -51,6 +53,23 @@ namespace TaskManagement
 
             WorkItems.Add(new WorkItem(Projects.Get("Z123"), "基礎料金", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 5, 1), Callender), shimo));
             WorkItems.Add(new WorkItem(Projects.Get("Y345"), "インストーラ", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 4, 6), Callender), hoge));
+            {
+                var rand = new Random(345);
+                foreach (var m in Members)
+                {
+                    var from = Callender.Days.First();
+                    while (true)
+                    {
+                        var to = Callender.ApplyOffset(from, 5);
+                        if (to == null) break;
+                        var period = new Period(from, to, Callender);
+                        var wi = new WorkItem(Projects.Get("Z123"), rand.Next().ToString(), period, m);
+                        WorkItems.Add(wi);
+                        from = Callender.ApplyOffset(to, 1);
+                        if (from == null) break;
+                    }
+                }
+            }
         }
     }
 }

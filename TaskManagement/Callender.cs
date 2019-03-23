@@ -70,7 +70,6 @@ namespace TaskManagement
                     if (found) offset++;
                 }
             }
-            Debug.Assert(false);
             return null;
         }
 
