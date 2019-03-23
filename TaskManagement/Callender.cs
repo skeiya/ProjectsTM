@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TaskManagement
 {
@@ -34,27 +35,40 @@ namespace TaskManagement
 
         public int GetOffset(CallenderDay from, CallenderDay to)
         {
-            bool found = false;
-            int offset = 0;
-            foreach (var c in _callenderDays)
+            int fromIndex = 0;
+            int toIndex = 0;
+            int index = 0;
+            foreach(var c in _callenderDays)
             {
-                if (c.Equals(from)) found = true;
-                if (c.Equals(to)) return offset;
-                if (found) offset++;
+                if (c.Equals(from)) fromIndex = index;
+                if (c.Equals(to)) toIndex = index;
+                index++;
             }
-            Debug.Assert(false);
-            return 0;
+            return toIndex - fromIndex;
         }
 
         public CallenderDay ApplyOffset(CallenderDay from, int offset)
         {
             if (offset == 0) return from;
-            bool found = false;
-            foreach (var c in _callenderDays)
+            if (offset > 0)
             {
-                if (c.Equals(from)) found = true;
-                if (offset == 0) return c;
-                if (found) offset--;
+                bool found = false;
+                foreach (var c in _callenderDays)
+                {
+                    if (c.Equals(from)) found = true;
+                    if (offset == 0) return c;
+                    if (found) offset--;
+                }
+            }
+            if (offset < 0)
+            {
+                bool found = false;
+                foreach (var c in _callenderDays.AsEnumerable().Reverse())
+                {
+                    if (c.Equals(from)) found = true;
+                    if (offset == 0) return c;
+                    if (found) offset++;
+                }
             }
             Debug.Assert(false);
             return null;
