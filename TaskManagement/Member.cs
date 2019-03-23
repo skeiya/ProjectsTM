@@ -13,5 +13,10 @@
         public string LastName { get; }
         public string Company { get; }
         public string Name => LastName.Substring(0, 1) + FirstName.Substring(0, 1);
+
+        public override string ToString()
+        {
+            return Name + "(" + Company + ")";
+        }
     }
 }
