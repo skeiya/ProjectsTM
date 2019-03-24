@@ -12,14 +12,20 @@ namespace TaskManagement
 {
     public partial class ColorManagementForm : Form
     {
-        private readonly ColorConditions colorConditions;
+        private readonly ColorConditions _colorConditions;
 
         public ColorManagementForm(ColorConditions colorConditions)
         {
             InitializeComponent();
-            this.colorConditions = colorConditions;
+            this._colorConditions = colorConditions;
 
-            foreach (var cond in colorConditions)
+            UpdateList();
+        }
+
+        private void UpdateList()
+        {
+            this.listView1.Items.Clear();
+            foreach (var cond in _colorConditions)
             {
                 var i = new ListViewItem(cond.Regex);
                 i.BackColor = cond.Color;
@@ -32,8 +38,9 @@ namespace TaskManagement
             using (var dlg = new ColorConditionEditorForm())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-
+                _colorConditions.Add(dlg.ColorCondition);
             }
+            UpdateList();
         }
     }
 }
