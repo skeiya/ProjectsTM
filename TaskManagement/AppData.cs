@@ -62,7 +62,7 @@ namespace TaskManagement
                     var from = Callender.Days.First();
                     while (true)
                     {
-                        var to = Callender.ApplyOffset(from, 5);
+                        var to = Callender.ApplyOffset(from, 15);
                         if (to == null) break;
                         var period = new Period(from, to, Callender);
                         var wi = new WorkItem(Projects.Get("Z123"), rand.Next().ToString(), period, m);

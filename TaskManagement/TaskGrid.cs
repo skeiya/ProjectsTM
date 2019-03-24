@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace TaskManagement
 {
@@ -11,6 +12,7 @@ namespace TaskManagement
         private Dictionary<CallenderDay, int> _dayToRow = new Dictionary<CallenderDay, int>();
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
         private WorkItems _workItems;
+        private ColorConditions _colorConditions;
 
         public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
         {
@@ -25,6 +27,7 @@ namespace TaskManagement
             SetColWidth(g, pageBounds);
 
             _workItems = appData.WorkItems;
+            _colorConditions = appData.ColorConditions;
         }
 
         private void SetColWidth(Graphics g, Rectangle pageBounds)
@@ -188,6 +191,8 @@ namespace TaskManagement
             foreach (var wi in _workItems.GetWorkItems())
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
+                var color = _colorConditions.GetMatchColor(wi.ToString());
+                if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
                 _grid.DrawString(wi.ToString(), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
