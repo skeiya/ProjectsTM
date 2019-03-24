@@ -38,6 +38,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonColorSetting = new System.Windows.Forms.Button();
+            this.buttonImportCSV = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.SuspendLayout();
             // 
@@ -123,11 +124,23 @@
             this.buttonColorSetting.UseVisualStyleBackColor = true;
             this.buttonColorSetting.Click += new System.EventHandler(this.buttonColorSetting_Click);
             // 
+            // buttonImportCSV
+            // 
+            this.buttonImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonImportCSV.Location = new System.Drawing.Point(177, 377);
+            this.buttonImportCSV.Name = "buttonImportCSV";
+            this.buttonImportCSV.Size = new System.Drawing.Size(100, 23);
+            this.buttonImportCSV.TabIndex = 7;
+            this.buttonImportCSV.Text = "CSVインポート...";
+            this.buttonImportCSV.UseVisualStyleBackColor = true;
+            this.buttonImportCSV.Click += new System.EventHandler(this.ButtonImportCSV_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 410);
+            this.Controls.Add(this.buttonImportCSV);
             this.Controls.Add(this.buttonColorSetting);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
@@ -154,6 +167,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonColorSetting;
+        private System.Windows.Forms.Button buttonImportCSV;
     }
 }
 

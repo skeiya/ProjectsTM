@@ -182,7 +182,7 @@ namespace TaskManagement
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(1, c);
-                _grid.DrawString(_colToMember[c].Name, rect);
+                _grid.DrawString(_colToMember[c].DisplayName, rect);
             }
         }
 

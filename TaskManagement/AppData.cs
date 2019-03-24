@@ -13,15 +13,15 @@ namespace TaskManagement
         public Projects Projects = new Projects();
         public ColorConditions ColorConditions = new ColorConditions();
 
-        public AppData()
+        public AppData(bool isDummy)
         {
-            SetupDummyData();
+            if (isDummy) SetupDummyData();
         }
-        
+
         private void SetupDummyData()
         {
-            Projects.Add("Z123");
-            Projects.Add("Y345");
+            Projects.Add(new Project("Z123"));
+            Projects.Add(new Project("Y345"));
 
             var shimo = new Member("下村", "圭矢", "K");
             Members.Add(shimo);
