@@ -37,16 +37,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 13);
+            this.textBox1.Location = new System.Drawing.Point(6, 6);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(386, 31);
+            this.textBox1.Size = new System.Drawing.Size(180, 19);
             this.textBox1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(446, 12);
+            this.button1.Location = new System.Drawing.Point(206, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(138, 32);
+            this.button1.Size = new System.Drawing.Size(64, 19);
             this.button1.TabIndex = 1;
             this.button1.Text = "色変更...";
             this.button1.UseVisualStyleBackColor = true;
@@ -54,9 +56,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(676, 13);
+            this.button2.Location = new System.Drawing.Point(312, 6);
+            this.button2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(92, 32);
+            this.button2.Size = new System.Drawing.Size(42, 19);
             this.button2.TabIndex = 1;
             this.button2.Text = "OK";
             this.button2.UseVisualStyleBackColor = true;
@@ -64,9 +67,10 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(787, 12);
+            this.button3.Location = new System.Drawing.Point(363, 6);
+            this.button3.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(133, 32);
+            this.button3.Size = new System.Drawing.Size(61, 19);
             this.button3.TabIndex = 1;
             this.button3.Text = "キャンセル";
             this.button3.UseVisualStyleBackColor = true;
@@ -74,13 +78,14 @@
             // 
             // ColorConditionEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(932, 62);
+            this.ClientSize = new System.Drawing.Size(430, 31);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "ColorConditionEditorForm";
             this.Text = "ColorConditionEditorForm";
             this.ResumeLayout(false);

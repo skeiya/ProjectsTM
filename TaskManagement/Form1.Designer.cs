@@ -60,18 +60,20 @@
             this.taskDrawAria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskDrawAria.Location = new System.Drawing.Point(12, 12);
+            this.taskDrawAria.Location = new System.Drawing.Point(6, 6);
+            this.taskDrawAria.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1630, 723);
+            this.taskDrawAria.Size = new System.Drawing.Size(726, 362);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             // 
             // buttonPrintPreview
             // 
             this.buttonPrintPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonPrintPreview.Location = new System.Drawing.Point(1416, 745);
+            this.buttonPrintPreview.Location = new System.Drawing.Point(628, 372);
+            this.buttonPrintPreview.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonPrintPreview.Name = "buttonPrintPreview";
-            this.buttonPrintPreview.Size = new System.Drawing.Size(226, 63);
+            this.buttonPrintPreview.Size = new System.Drawing.Size(104, 32);
             this.buttonPrintPreview.TabIndex = 2;
             this.buttonPrintPreview.Text = "印刷プレビュー";
             this.buttonPrintPreview.UseVisualStyleBackColor = true;
@@ -81,26 +83,29 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 759);
+            this.label1.Location = new System.Drawing.Point(6, 380);
+            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 24);
+            this.label1.Size = new System.Drawing.Size(35, 12);
             this.label1.TabIndex = 3;
             this.label1.Text = "label1";
             // 
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(877, 759);
+            this.textBox1.Location = new System.Drawing.Point(433, 380);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(292, 31);
+            this.textBox1.Size = new System.Drawing.Size(137, 19);
             this.textBox1.TabIndex = 4;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1198, 750);
+            this.button1.Location = new System.Drawing.Point(581, 375);
+            this.button1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(89, 48);
+            this.button1.Size = new System.Drawing.Size(41, 29);
             this.button1.TabIndex = 5;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -109,9 +114,10 @@
             // buttonColorSetting
             // 
             this.buttonColorSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonColorSetting.Location = new System.Drawing.Point(572, 752);
+            this.buttonColorSetting.Location = new System.Drawing.Point(292, 376);
+            this.buttonColorSetting.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonColorSetting.Name = "buttonColorSetting";
-            this.buttonColorSetting.Size = new System.Drawing.Size(148, 38);
+            this.buttonColorSetting.Size = new System.Drawing.Size(68, 23);
             this.buttonColorSetting.TabIndex = 6;
             this.buttonColorSetting.Text = "色設定...";
             this.buttonColorSetting.UseVisualStyleBackColor = true;
@@ -119,16 +125,16 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1662, 819);
+            this.ClientSize = new System.Drawing.Size(742, 410);
             this.Controls.Add(this.buttonColorSetting);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonPrintPreview);
             this.Controls.Add(this.taskDrawAria);
-            this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).EndInit();

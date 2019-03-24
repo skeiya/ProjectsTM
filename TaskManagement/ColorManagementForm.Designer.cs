@@ -36,9 +36,10 @@
             // 
             // bottonAdd
             // 
-            this.bottonAdd.Location = new System.Drawing.Point(663, 49);
+            this.bottonAdd.Location = new System.Drawing.Point(306, 24);
+            this.bottonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.bottonAdd.Name = "bottonAdd";
-            this.bottonAdd.Size = new System.Drawing.Size(120, 37);
+            this.bottonAdd.Size = new System.Drawing.Size(55, 23);
             this.bottonAdd.TabIndex = 1;
             this.bottonAdd.Text = "追加...";
             this.bottonAdd.UseVisualStyleBackColor = true;
@@ -52,9 +53,10 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.listView1.Location = new System.Drawing.Point(13, 13);
+            this.listView1.Location = new System.Drawing.Point(6, 6);
+            this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(639, 425);
+            this.listView1.Size = new System.Drawing.Size(297, 214);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -70,11 +72,12 @@
             // 
             // ColorManagementForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(369, 225);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.bottonAdd);
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "ColorManagementForm";
             this.Text = "ColorManagementForm";
             this.ResumeLayout(false);

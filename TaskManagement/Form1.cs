@@ -87,7 +87,7 @@ namespace TaskManagement
 
         private void buttonColorSetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorManagementForm(_appData.ColorConditions))
+            using (var dlg = new ColorManagementForm(_appData.ColorConditions, this))
             {
                 dlg.ShowDialog();
             }
