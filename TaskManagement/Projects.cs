@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TaskManagement
 {
     class Projects
     {
-        private List<Project> _projects = new List<Project>();
+        private Dictionary<string, Project> _map = new Dictionary<string, Project>();
 
-        internal void Add(string name)
+        internal void Add(Project pro)
         {
-            _projects.Add(new Project(name));
+            if (!_map.TryGetValue(pro.ToString(), out Project project))
+            {
+                _map.Add(pro.ToString(), pro);
+            }
         }
 
         internal Project Get(string name)
         {
-            return _projects.Find((p) => { return p.ToString().Equals(name); });
+            if (!_map.TryGetValue(name, out Project project)) return null;
+            return project;
         }
     }
 }

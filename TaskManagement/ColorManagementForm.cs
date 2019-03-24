@@ -13,12 +13,13 @@ namespace TaskManagement
     public partial class ColorManagementForm : Form
     {
         private readonly ColorConditions _colorConditions;
+        private readonly Form1 _parent;
 
-        public ColorManagementForm(ColorConditions colorConditions)
+        public ColorManagementForm(ColorConditions colorConditions, Form1 parent)
         {
             InitializeComponent();
             this._colorConditions = colorConditions;
-
+            this._parent = parent;
             UpdateList();
         }
 
@@ -35,7 +36,7 @@ namespace TaskManagement
 
         private void bottonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorConditionEditorForm())
+            using (var dlg = new ColorConditionEditorForm(_parent))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _colorConditions.Add(dlg.ColorCondition);

@@ -12,17 +12,28 @@ namespace TaskManagement
 {
     public partial class ColorConditionEditorForm : Form
     {
-        public ColorConditionEditorForm()
+        private readonly Form1 _parent;
+
+        public ColorConditionEditorForm(Form1 parent)
         {
             InitializeComponent();
+            this._parent = parent;
         }
 
         public ColorCondition ColorCondition { get; internal set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (colorDialog1.ShowDialog() != DialogResult.OK) return;
-            SetColor(colorDialog1.Color);
+            try
+            {
+                _parent.Visible = false;
+                if (colorDialog1.ShowDialog() != DialogResult.OK) return;
+                SetColor(colorDialog1.Color);
+            }
+            finally
+            {
+                _parent.Visible = true;
+            }
         }
 
         private void SetColor(Color color)
