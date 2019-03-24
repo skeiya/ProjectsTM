@@ -84,5 +84,13 @@ namespace TaskManagement
         {
             _appData.WorkItems.SetFilter(textBox1.Text);
         }
+
+        private void buttonColorSetting_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ColorManagementForm(_appData.ColorConditions))
+            {
+                dlg.ShowDialog();
+            }
+        }
     }
 }

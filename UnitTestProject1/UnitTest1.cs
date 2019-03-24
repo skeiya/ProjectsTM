@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaskManagement;
 
@@ -36,6 +37,14 @@ namespace UnitTestProject1
         {
             var wi = new WorkItem(new Project("Z123"), "仕様検討", new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22), new DummyPeriodCalculator()), new Member("A", "B", "C"));
             Assert.AreEqual<string>("[仕様検討][Z123][AB(C)][3d]", wi.ToString());
+        }
+
+        [TestMethod]
+        public void TestRegex()
+        {
+            var pattern = "Z123";
+            var target = "[基礎料金][Z123][下圭(K)][27d]";
+            Assert.IsTrue(Regex.IsMatch(target, pattern));
         }
     }
 }
