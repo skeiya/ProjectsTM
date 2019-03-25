@@ -20,10 +20,25 @@ namespace TaskManagement
             _filter = filter;
         }
 
-        public List<WorkItem> GetWorkItems()
+        public List<WorkItem> GetWorkItems(Members members, List<CallenderDay> days)
         {
-            if (string.IsNullOrEmpty(_filter)) return _items;
-            return _items.Where((i) => i.ToString().Equals(_filter)).ToList();
+            var filteredList = new List<WorkItem>();
+            if (!string.IsNullOrEmpty(_filter))
+            {
+                filteredList = _items.Where((i) => i.ToString().Equals(_filter)).ToList();
+            }
+            {
+                filteredList = _items;
+            }
+            if (members != null)
+            {
+                filteredList = filteredList.Where((i) => members.Contains(i.AssignedMember)).ToList();
+            }
+            if(days != null)
+            {
+                filteredList = filteredList.Where((i) => days.Contains(i.Period.From) && days.Contains(i.Period.To)).ToList();
+            }
+            return filteredList;
         }
     }
 }

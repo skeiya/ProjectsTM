@@ -54,7 +54,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
         {
-            var wi = _grid.PickFromPoint(e.Location);
+            var wi = _grid.PickFromPoint(e.Location, _appData);
             if (wi == null) return;
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
@@ -66,14 +66,14 @@ namespace TaskManagement
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_appData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
-            _grid.Draw();
+            _grid.Draw(_appData);
             taskDrawAria.Invalidate();
         }
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             var grid = new TaskGrid(_appData, e.Graphics, e.PageBounds, this.Font);
-            grid.Draw();
+            grid.Draw(_appData);
         }
 
         private void buttonPrintPreview_Click(object sender, EventArgs e)
@@ -191,6 +191,16 @@ namespace TaskManagement
                 if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) return new Project(w);
             }
             return new Project("tmp");
+        }
+
+        private void buttonFilter_Click(object sender, EventArgs e)
+        {
+            using( var dlg = new FilterForm(_appData.Members, _appData.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _appData.Callender.SetFilter(dlg.Period);
+                _appData.Members.SetFilter(dlg.FilterMembers);
+            }
         }
     }
 }

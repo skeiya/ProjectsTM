@@ -9,6 +9,14 @@
             Day = day;
         }
 
+        public CallenderDay(string text)
+        {
+            var words = text.Split('/');
+            Year = int.Parse(words[0]);
+            Month = int.Parse(words[1]);
+            Day = int.Parse(words[2]);
+        }
+
         public int Year { get; }
         public int Month { get; }
         public int Day { get; }

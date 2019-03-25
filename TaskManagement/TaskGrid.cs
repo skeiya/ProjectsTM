@@ -20,7 +20,7 @@ namespace TaskManagement
 
             UpdateRowColMap(appData);
 
-            _grid.RowCount = appData.Callender.Days.Count + Members.RowCount;
+            _grid.RowCount = appData.Callender.FilteredDays.Count + Members.RowCount;
             SetRowHeight(pageBounds);
 
             _grid.ColCount = appData.Members.Count + Callender.ColCount;
@@ -71,7 +71,7 @@ namespace TaskManagement
             }
 
             int r = Members.RowCount;
-            foreach (var d in appData.Callender.Days)
+            foreach (var d in appData.Callender.FilteredDays)
             {
                 _dayToRow.Add(d, r);
                 _rowToDay.Add(r, d);
@@ -79,11 +79,11 @@ namespace TaskManagement
             }
         }
 
-        internal WorkItem PickFromPoint(PointF point)
+        internal WorkItem PickFromPoint(PointF point, AppData appData)
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
-            foreach (var wi in _workItems.GetWorkItems())
+            foreach (var wi in _workItems.GetWorkItems(appData.Members, appData.Callender.FilteredDays))
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
                 if (!wi.Period.Contains(day)) continue;
@@ -136,11 +136,11 @@ namespace TaskManagement
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
-        internal void Draw()
+        internal void Draw(AppData appData)
         {
             DrawCallenderDays();
             DrawTeamMembers();
-            DrawWorkItems();
+            DrawWorkItems(appData);
         }
 
         private void DrawCallenderDays()
@@ -186,9 +186,9 @@ namespace TaskManagement
             }
         }
 
-        private void DrawWorkItems()
+        private void DrawWorkItems(AppData appData)
         {
-            foreach (var wi in _workItems.GetWorkItems())
+            foreach (var wi in _workItems.GetWorkItems(appData.Members, appData.Callender.FilteredDays))
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString());
