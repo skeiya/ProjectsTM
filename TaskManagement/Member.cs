@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskManagement
 {
-    public class Member
+    public class Member : IComparable<Member>
     {
         public Member(string lastName, string firstName, string company)
         {
@@ -51,6 +52,13 @@ namespace TaskManagement
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Company);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DisplayName);
             return hashCode;
+        }
+
+        public int CompareTo(Member other)
+        {
+            var cmp = this.Company.CompareTo(other.Company);
+            if (cmp != 0) return cmp;
+            return this.DisplayName.CompareTo(other.DisplayName);
         }
     }
 }

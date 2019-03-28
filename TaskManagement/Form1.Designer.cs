@@ -40,6 +40,7 @@
             this.buttonColorSetting = new System.Windows.Forms.Button();
             this.buttonImportCSV = new System.Windows.Forms.Button();
             this.buttonFilter = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,10 +129,10 @@
             // buttonImportCSV
             // 
             this.buttonImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportCSV.Location = new System.Drawing.Point(384, 754);
+            this.buttonImportCSV.Location = new System.Drawing.Point(384, 744);
             this.buttonImportCSV.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.buttonImportCSV.Name = "buttonImportCSV";
-            this.buttonImportCSV.Size = new System.Drawing.Size(217, 46);
+            this.buttonImportCSV.Size = new System.Drawing.Size(134, 64);
             this.buttonImportCSV.TabIndex = 7;
             this.buttonImportCSV.Text = "CSVインポート...";
             this.buttonImportCSV.UseVisualStyleBackColor = true;
@@ -148,11 +149,22 @@
             this.buttonFilter.UseVisualStyleBackColor = true;
             this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
             // 
+            // buttonExport
+            // 
+            this.buttonExport.Location = new System.Drawing.Point(528, 744);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(75, 64);
+            this.buttonExport.TabIndex = 9;
+            this.buttonExport.Text = "RS";
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1608, 820);
+            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonFilter);
             this.Controls.Add(this.buttonImportCSV);
             this.Controls.Add(this.buttonColorSetting);
@@ -183,6 +195,7 @@
         private System.Windows.Forms.Button buttonColorSetting;
         private System.Windows.Forms.Button buttonImportCSV;
         private System.Windows.Forms.Button buttonFilter;
+        private System.Windows.Forms.Button buttonExport;
     }
 }
 

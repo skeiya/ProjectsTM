@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -195,12 +196,116 @@ namespace TaskManagement
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {
-            using( var dlg = new FilterForm(_appData.Members, _appData.Callender))
+            using (var dlg = new FilterForm(_appData.Members, _appData.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _appData.Callender.SetFilter(dlg.Period);
                 _appData.Members.SetFilter(dlg.FilterMembers);
             }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            var members = GetMembers();
+            var projects = GetProjects();
+            var months = GetMonths();
+            var rowCount = members.Count * projects.Count;
+            var colCount = months.Count + 3;
+            var csv = new string[rowCount, colCount];
+
+            var r = 0;
+            foreach (var m in members)
+            {
+                foreach (var p in GetProjects())
+                {
+                    csv[r, 0] = m.Company;
+                    csv[r, 1] = m.LastName + " " + m.FirstName;
+                    csv[r, 2] = p.ToString();
+                    r++;
+                }
+            }
+            var c = 0;
+            foreach (var month in GetMonths())
+            {
+                r = 0;
+                foreach (var member in members)
+                {
+                    foreach (var project in GetProjects())
+                    {
+                        csv[r, 3 + c] = GetRatio(month.Item1, month.Item2, member, project);
+                        r++;
+                    }
+                }
+                c++;
+            }
+
+            var result = string.Empty;
+            for (int row = 0; row < rowCount; row++)
+            {
+                for (int col = 0; col < colCount; col++)
+                {
+                    result += csv[row, col] + ",";
+                }
+                result += Environment.NewLine;
+            }
+
+            using(var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                File.WriteAllText(dlg.FileName, result);
+            }
+        }
+
+        private string GetRatio(int year, int month, Member member, Project project)
+        {
+            return string.Format("{0:0.0}",(float)GetTargetDays(year, month, member, project) / (float)GetTotalDays(year, month));
+        }
+
+        private int GetTotalDays(int year, int month)
+        {
+            return _appData.Callender.GetDaysOfMonth(year, month);
+        }
+
+        private int GetTargetDays(int year, int month, Member member, Project project)
+        {
+            return _appData.WorkItems.GetWorkItemDays(year, month, member, project);
+        }
+
+        private List<Tuple<int, int>> GetMonths()
+        {
+            var result = new List<Tuple<int, int>>();
+
+            var month = 0;
+            foreach (var d in _appData.Callender.Days)
+            {
+                if (month != d.Month)
+                {
+                    result.Add(new Tuple<int, int>(d.Year, d.Month));
+                    month = d.Month;
+                }
+            }
+            return result;
+        }
+
+        private List<Project> GetProjects()
+        {
+            var result = new List<Project>();
+            foreach (var p in _appData.Projects)
+            {
+                result.Add(p.Value);
+            }
+            return result;
+        }
+
+        private List<Member> GetMembers()
+        {
+            var result = new List<Member>();
+            foreach (var m in _appData.Members)
+            {
+                result.Add(m);
+            }
+            result.Sort(); // 会社優先でソート
+            return result;
         }
     }
 }

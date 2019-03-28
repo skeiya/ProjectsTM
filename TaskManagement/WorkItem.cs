@@ -2,10 +2,10 @@
 {
     public class WorkItem
     {
-        private Project Project;
+        public Project Project { get; private set; }
         private string Name;
         public Period Period { get; set; }
-        public Member AssignedMember { get; internal set; }
+        public Member AssignedMember { get; set; }
 
         public WorkItem(Project project, string name, Period period, Member assignedMember)
         {

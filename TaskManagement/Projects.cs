@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace TaskManagement
 {
-    class Projects
+    class Projects : IEnumerable<KeyValuePair<string, Project>>
     {
         private Dictionary<string, Project> _map = new Dictionary<string, Project>();
+
+        public IEnumerator<KeyValuePair<string, Project>> GetEnumerator()
+        {
+            return _map.GetEnumerator();
+        }
 
         internal void Add(Project pro)
         {
@@ -18,6 +24,11 @@ namespace TaskManagement
         {
             if (!_map.TryGetValue(name, out Project project)) return null;
             return project;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _map.GetEnumerator();
         }
     }
 }

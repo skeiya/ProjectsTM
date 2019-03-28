@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,6 +40,21 @@ namespace TaskManagement
                 filteredList = filteredList.Where((i) => days.Contains(i.Period.From) && days.Contains(i.Period.To)).ToList();
             }
             return filteredList;
+        }
+
+        internal int GetWorkItemDays(int year, int month, Member member, Project project)
+        {
+            int result = 0;
+            foreach(var wi in _items.Where((w)=>w.AssignedMember.Equals(member) && w.Project.Equals(project)))
+            {
+                foreach(var d in wi.Period.Days)
+                {
+                    if (d.Year != year) continue;
+                    if (d.Month != month) continue;
+                    result++;
+                }
+            }
+            return result;
         }
     }
 }

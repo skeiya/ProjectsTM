@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TaskManagement
@@ -94,6 +95,31 @@ namespace TaskManagement
         internal void SetFilter(Period period)
         {
             _period = period;
+        }
+
+        internal int GetDaysOfMonth(int year, int month)
+        {
+            var count = 0;
+            foreach(var d in Days)
+            {
+                if (d.Year != year) continue;
+                if (d.Month != month) continue;
+                count++;
+            }
+            return count;
+        }
+
+        public List<CallenderDay> GetDays(CallenderDay from, CallenderDay to)
+        {
+            var result = new List<CallenderDay>();
+            var found = false;
+            foreach(var d in Days)
+            {
+                if (d.Equals(from)) found = true;
+                if (found) result.Add(d);
+                if (d.Equals(to)) break;
+            }
+            return result;
         }
     }
 }

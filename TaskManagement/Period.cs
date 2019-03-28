@@ -1,4 +1,6 @@
-﻿namespace TaskManagement
+﻿using System.Collections.Generic;
+
+namespace TaskManagement
 {
     public class Period
     {
@@ -13,6 +15,7 @@
 
         public CallenderDay From { set; get; }
         public CallenderDay To { set; get; }
+        public List<CallenderDay> Days => _periodCalculator.GetDays(From, To);
 
         public override string ToString()
         {
