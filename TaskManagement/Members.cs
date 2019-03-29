@@ -19,6 +19,7 @@ namespace TaskManagement
 
         internal void Add(Member member)
         {
+            if (_members.Contains(member)) return;
             _members.Add(member);
         }
 
