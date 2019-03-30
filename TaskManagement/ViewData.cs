@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace TaskManagement
 {
@@ -11,15 +10,9 @@ namespace TaskManagement
 
         public ColorConditions ColorConditions = new ColorConditions();
 
-        public ViewData(AppData original)
+        public ViewData()
         {
-            if (original == null)
-            {
-                original = new AppData(true);
-                ColorConditions.Add(new ColorCondition("下圭", Color.Green));
-                ColorConditions.Add(new ColorCondition("Z123", Color.Red));
-            }
-            Original = original;
+            Original = new AppData();
         }
 
         internal void SetFilter(Filter filter)

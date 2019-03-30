@@ -7,7 +7,7 @@ namespace TaskManagement
 {
     public partial class Form1 : Form
     {
-        private ViewData _viewData = new ViewData(null);
+        private ViewData _viewData = new ViewData();
         private FilterForm _filterForm;
 
         public Form1()
