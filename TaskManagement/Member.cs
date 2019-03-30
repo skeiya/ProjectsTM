@@ -12,9 +12,9 @@ namespace TaskManagement
             Company = company;
         }
 
-        public string FirstName { get; }
-        public string LastName { get; }
-        public string Company { get; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string Company { get; private set; }
         public string DisplayName
         {
             get
@@ -27,6 +27,18 @@ namespace TaskManagement
                 if (!string.IsNullOrEmpty(LastName)) return LastName.Substring(0, 1);
                 return FirstName.Substring(0, 1);
             }
+        }
+
+        internal string ToSerializeString()
+        {
+            return FirstName + "/" + LastName + "/" + Company;
+        }
+
+        internal Member Parse(string text)
+        {
+            var words = text.Split('/');
+            if (words.Length == 3) return null;
+            return new Member(words[1], words[0], words[2]);
         }
 
         public override string ToString()

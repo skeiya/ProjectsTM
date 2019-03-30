@@ -165,7 +165,17 @@ namespace TaskManagement
                 var days = _viewData.Original.Callender.Days;
                 if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
                 if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
+                days.Sort();
                 if (!_viewData.Original.Members.Contain(wi.AssignedMember)) _viewData.Original.Members.Add(wi.AssignedMember);
+            }
+        }
+
+        private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                AppDataSerializer.Serialize(dlg.FileName, _viewData.Original);
             }
         }
     }

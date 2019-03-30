@@ -1,6 +1,8 @@
-﻿namespace TaskManagement
+﻿using System;
+
+namespace TaskManagement
 {
-    public class CallenderDay
+    public class CallenderDay : IComparable<CallenderDay>
     {
         public CallenderDay(int year, int month, int day)
         {
@@ -52,6 +54,13 @@
         public override int GetHashCode()
         {
             return Year.GetHashCode() + Month.GetHashCode() + Day.GetHashCode();
+        }
+
+        public int CompareTo(CallenderDay other)
+        {
+            if (Equals(other)) return 0;
+            if (LesserThan(other)) return -1;
+            return 1;
         }
     }
 }

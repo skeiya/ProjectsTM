@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData.cs" />
+    <Compile Include="AppDataSerializer.cs" />
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />
     <Compile Include="ColorCondition.cs" />

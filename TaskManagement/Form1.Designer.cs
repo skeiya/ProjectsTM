@@ -49,6 +49,7 @@ namespace TaskManagement
             this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +99,8 @@ namespace TaskManagement
             this.開くToolStripMenuItem,
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS,
-            this.ToolStripMenuItemPrint});
+            this.ToolStripMenuItemPrint,
+            this.ToolStripMenuItemSave});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
             this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
@@ -142,7 +144,7 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -193,6 +195,13 @@ namespace TaskManagement
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // ToolStripMenuItemSave
+            // 
+            this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemSave.Text = "保存";
+            this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
@@ -233,6 +242,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColorSetting;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddWorkItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSave;
     }
 }
 
