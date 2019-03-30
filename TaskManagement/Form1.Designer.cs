@@ -59,7 +59,7 @@
             // buttonPrintPreview
             // 
             this.buttonPrintPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonPrintPreview.Location = new System.Drawing.Point(1361, 744);
+            this.buttonPrintPreview.Location = new System.Drawing.Point(927, 619);
             this.buttonPrintPreview.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.buttonPrintPreview.Name = "buttonPrintPreview";
             this.buttonPrintPreview.Size = new System.Drawing.Size(225, 64);
@@ -72,7 +72,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 760);
+            this.label1.Location = new System.Drawing.Point(13, 628);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 24);
@@ -83,18 +83,18 @@
             // 
             this.buttonColorSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonColorSetting.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
-            this.buttonColorSetting.Location = new System.Drawing.Point(633, 752);
+            this.buttonColorSetting.Location = new System.Drawing.Point(776, 619);
             this.buttonColorSetting.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.buttonColorSetting.Name = "buttonColorSetting";
-            this.buttonColorSetting.Size = new System.Drawing.Size(46, 46);
+            this.buttonColorSetting.Size = new System.Drawing.Size(64, 64);
             this.buttonColorSetting.TabIndex = 6;
             this.buttonColorSetting.UseVisualStyleBackColor = true;
             this.buttonColorSetting.Click += new System.EventHandler(this.buttonColorSetting_Click);
             // 
             // buttonImportCSV
             // 
-            this.buttonImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportCSV.Location = new System.Drawing.Point(384, 744);
+            this.buttonImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonImportCSV.Location = new System.Drawing.Point(563, 619);
             this.buttonImportCSV.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.buttonImportCSV.Name = "buttonImportCSV";
             this.buttonImportCSV.Size = new System.Drawing.Size(134, 64);
@@ -105,9 +105,10 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(528, 744);
+            this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExport.Location = new System.Drawing.Point(707, 619);
             this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(75, 64);
+            this.buttonExport.Size = new System.Drawing.Size(64, 64);
             this.buttonExport.TabIndex = 9;
             this.buttonExport.Text = "RS";
             this.buttonExport.UseVisualStyleBackColor = true;
@@ -115,11 +116,11 @@
             // 
             // buttonFilter
             // 
-            this.buttonFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
-            this.buttonFilter.Location = new System.Drawing.Point(694, 751);
+            this.buttonFilter.Location = new System.Drawing.Point(845, 619);
             this.buttonFilter.Name = "buttonFilter";
-            this.buttonFilter.Size = new System.Drawing.Size(46, 46);
+            this.buttonFilter.Size = new System.Drawing.Size(64, 64);
             this.buttonFilter.TabIndex = 8;
             this.buttonFilter.UseVisualStyleBackColor = true;
             this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
@@ -132,7 +133,7 @@
             this.taskDrawAria.Location = new System.Drawing.Point(13, 12);
             this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1573, 724);
+            this.taskDrawAria.Size = new System.Drawing.Size(1139, 592);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             // 
@@ -140,7 +141,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1608, 820);
+            this.ClientSize = new System.Drawing.Size(1163, 688);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonFilter);
             this.Controls.Add(this.buttonImportCSV);
