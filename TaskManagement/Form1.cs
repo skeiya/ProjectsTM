@@ -160,7 +160,12 @@ namespace TaskManagement
             using (var dlg = new EditWorkItem(_viewData.Original))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Original.WorkItems.Add(dlg.WorkItem);
+                var wi = dlg.WorkItem;
+                _viewData.Original.WorkItems.Add(wi);
+                var days = _viewData.Original.Callender.Days;
+                if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
+                if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
+                if (!_viewData.Original.Members.Contain(wi.AssignedMember)) _viewData.Original.Members.Add(wi.AssignedMember);
             }
         }
     }

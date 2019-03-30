@@ -44,6 +44,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.buttonProjectEdit = new System.Windows.Forms.Button();
             this.buttonEditMembers = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBoxCompany = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -67,7 +69,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 207);
+            this.label3.Location = new System.Drawing.Point(17, 283);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 24);
             this.label3.TabIndex = 2;
@@ -85,7 +87,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 329);
+            this.label5.Location = new System.Drawing.Point(21, 405);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 24);
             this.label5.TabIndex = 4;
@@ -100,7 +102,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(318, 395);
+            this.button1.Location = new System.Drawing.Point(318, 471);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 43);
             this.button1.TabIndex = 6;
@@ -110,7 +112,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(414, 395);
+            this.button2.Location = new System.Drawing.Point(414, 471);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(138, 43);
             this.button2.TabIndex = 6;
@@ -120,7 +122,7 @@
             // 
             // textBoxTags
             // 
-            this.textBoxTags.Location = new System.Drawing.Point(223, 326);
+            this.textBoxTags.Location = new System.Drawing.Point(223, 402);
             this.textBoxTags.Name = "textBoxTags";
             this.textBoxTags.Size = new System.Drawing.Size(329, 31);
             this.textBoxTags.TabIndex = 7;
@@ -143,14 +145,14 @@
             // 
             // textBoxFrom
             // 
-            this.textBoxFrom.Location = new System.Drawing.Point(223, 204);
+            this.textBoxFrom.Location = new System.Drawing.Point(223, 280);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(329, 31);
             this.textBoxFrom.TabIndex = 7;
             // 
             // textBoxTo
             // 
-            this.textBoxTo.Location = new System.Drawing.Point(223, 267);
+            this.textBoxTo.Location = new System.Drawing.Point(223, 343);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(329, 31);
             this.textBoxTo.TabIndex = 7;
@@ -158,7 +160,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(356, 241);
+            this.label6.Location = new System.Drawing.Point(356, 317);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(47, 24);
             this.label6.TabIndex = 10;
@@ -183,17 +185,34 @@
             this.buttonEditMembers.UseVisualStyleBackColor = true;
             this.buttonEditMembers.Click += new System.EventHandler(this.Button4_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 209);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 24);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "所属";
+            // 
+            // textBoxCompany
+            // 
+            this.textBoxCompany.Location = new System.Drawing.Point(223, 206);
+            this.textBoxCompany.Name = "textBoxCompany";
+            this.textBoxCompany.Size = new System.Drawing.Size(329, 31);
+            this.textBoxCompany.TabIndex = 7;
+            // 
             // EditWorkItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 450);
+            this.ClientSize = new System.Drawing.Size(571, 526);
             this.Controls.Add(this.buttonEditMembers);
             this.Controls.Add(this.buttonProjectEdit);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.comboBoxAssignedMemer);
             this.Controls.Add(this.comboBoxProject);
             this.Controls.Add(this.textBoxTo);
+            this.Controls.Add(this.textBoxCompany);
             this.Controls.Add(this.textBoxFrom);
             this.Controls.Add(this.textBoxTags);
             this.Controls.Add(this.button2);
@@ -202,6 +221,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "EditWorkItem";
@@ -229,5 +249,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonProjectEdit;
         private System.Windows.Forms.Button buttonEditMembers;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBoxCompany;
     }
 }

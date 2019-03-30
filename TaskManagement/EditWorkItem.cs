@@ -54,7 +54,10 @@ namespace TaskManagement
 
         private Member GetAssignedMember()
         {
-            return comboBoxAssignedMemer.SelectedItem as Member;
+            var words = comboBoxAssignedMemer.Text.Split(' ');
+            if (words.Count() == 0) return null;
+            if (words.Count() == 1) return new Member(words[0], string.Empty, textBoxCompany.Text);
+            return new Member(words[0], words[1], textBoxCompany.Text);
         }
 
         private Period GetPeriod()
@@ -78,7 +81,8 @@ namespace TaskManagement
 
         private Project GetProject()
         {
-            return comboBoxProject.SelectedItem as Project;
+            //return comboBoxProject.SelectedItem as Project;
+            return new Project(comboBoxProject.Text);
         }
 
         private void Button2_Click(object sender, EventArgs e)
