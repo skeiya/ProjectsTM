@@ -92,18 +92,24 @@ namespace TaskManagement
 
         private static Period ParsePeriod(string from, string to, Callender callender)
         {
-            var f = GetDay(from, callender);
-            var t = GetDay(to, callender);
+            var f = CallenderDay.Parse(from);
+            var t = CallenderDay.Parse(to);
             return new Period(f, t, callender);
         }
 
-        private static CallenderDay GetDay(string dayString, Callender callender)
+        internal static Callender ReadWorkingDays(string fileName)
         {
-            var words = dayString.Split('/');
-            var year = int.Parse(words[0]);
-            var month = int.Parse(words[1]);
-            var day = int.Parse(words[2]);
-            return callender.Get(year, month, day);
+            var result = new Callender();
+            using (var r = new StreamReader(fileName))
+            {
+                while (true)
+                {
+                    var line = r.ReadLine();
+                    if (string.IsNullOrEmpty(line)) break;
+                    result.Add(CallenderDay.Parse(line));
+                }
+            }
+            return result;
         }
     }
 }

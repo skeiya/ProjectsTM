@@ -93,10 +93,41 @@ namespace TaskManagement
 
         private void ButtonImportCSV_Click(object sender, EventArgs e)
         {
+            var workItemImportable = !_viewData.Original.Callender.IsEmpty() && _viewData.Original.Members.IsEmpty();
+            using(var dlg = new CsvImportSelectForm(workItemImportable))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                switch (dlg.ImportType)
+                {
+                    case CsvImportType.WorkingDays:
+                        ImportWorkingDays();
+                        break;
+                    case CsvImportType.Members:
+                        break;
+                    case CsvImportType.WorkItems:
+                        ImportWorkItems();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void ImportWorkItems()
+        {
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData = LoadFile(dlg.FileName);
+            }
+        }
+
+        private void ImportWorkingDays()
+        {
+            using (var dlg = new OpenFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Original.Callender = CsvReader.ReadWorkingDays(dlg.FileName);
             }
         }
 

@@ -39,5 +39,10 @@ namespace TaskManagement
             }
             return false;
         }
+
+        internal bool IsEmpty()
+        {
+            return _members == null || _members.Count == 0;
+        }
     }
 }

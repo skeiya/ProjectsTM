@@ -47,5 +47,13 @@ namespace UnitTestProject1
             var target = "[基礎料金][Z123][下圭(K)][27d]";
             Assert.IsTrue(Regex.IsMatch(target, pattern));
         }
+
+        [TestMethod]
+        public void CallenderDayParse()
+        {
+            var text = "2019/3/10";
+            var c = CallenderDay.Parse(text);
+            Assert.AreEqual(new CallenderDay(2019, 3, 10), c);
+        }
     }
 }

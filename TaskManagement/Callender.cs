@@ -87,7 +87,7 @@ namespace TaskManagement
                 if (_period == null) return Days;
                 var result = new List<CallenderDay>();
                 bool isFound = false;
-                foreach(var d in Days)
+                foreach (var d in Days)
                 {
                     if (d.Equals(_period.From)) isFound = true;
                     if (isFound) result.Add(d);
@@ -105,7 +105,7 @@ namespace TaskManagement
         internal int GetDaysOfMonth(int year, int month)
         {
             var count = 0;
-            foreach(var d in Days)
+            foreach (var d in Days)
             {
                 if (d.Year != year) continue;
                 if (d.Month != month) continue;
@@ -118,13 +118,18 @@ namespace TaskManagement
         {
             var result = new List<CallenderDay>();
             var found = false;
-            foreach(var d in Days)
+            foreach (var d in Days)
             {
                 if (d.Equals(from)) found = true;
                 if (found) result.Add(d);
                 if (d.Equals(to)) break;
             }
             return result;
+        }
+
+        internal bool IsEmpty()
+        {
+            return Days == null || Days.Count == 0;
         }
     }
 }
