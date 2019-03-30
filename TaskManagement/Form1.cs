@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -65,6 +63,8 @@ namespace TaskManagement
         }
 
         TaskGrid _grid;
+        private SearchWorkitemForm _searchForm;
+
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, new Font(this.Font.FontFamily, _fontSize));
@@ -206,6 +206,16 @@ namespace TaskManagement
         {
             if (_fontSize <= 1) return;
             _fontSize--;
+        }
+
+        private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
+        {
+
+            if (_searchForm == null || _searchForm.IsDisposed)
+            {
+                _searchForm = new SearchWorkitemForm(_viewData);
+            }
+            if (!_searchForm.Visible) _searchForm.Show(this);
         }
     }
 }

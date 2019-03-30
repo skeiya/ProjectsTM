@@ -51,6 +51,7 @@ namespace TaskManagement
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargerFont = new System.Windows.Forms.ToolStripMenuItem();
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -144,7 +145,8 @@ namespace TaskManagement
             // 編集ToolStripMenuItem
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemAddWorkItem});
+            this.ToolStripMenuItemAddWorkItem,
+            this.ToolStripMenuItemSearch});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
             this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
@@ -152,7 +154,7 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -186,7 +188,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(328, 38);
             this.ToolStripMenuItemFilter.Text = "フィルター";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
@@ -194,7 +196,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(328, 38);
             this.ToolStripMenuItemColor.Text = "色";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -213,6 +215,13 @@ namespace TaskManagement
             this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
             this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
             this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
+            // 
+            // ToolStripMenuItemSearch
+            // 
+            this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSearch.Text = "検索";
+            this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
             // Form1
             // 
@@ -256,6 +265,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColor;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargerFont;
         private System.Windows.Forms.ToolStripMenuItem フォント小ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSearch;
     }
 }
 
