@@ -48,6 +48,7 @@ namespace TaskManagement
             this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -69,10 +70,10 @@ namespace TaskManagement
             // taskDrawAria
             // 
             this.taskDrawAria.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.taskDrawAria.Location = new System.Drawing.Point(0, 40);
+            this.taskDrawAria.Location = new System.Drawing.Point(0, 42);
             this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1163, 648);
+            this.taskDrawAria.Size = new System.Drawing.Size(1163, 646);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             // 
@@ -87,7 +88,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,7 +100,7 @@ namespace TaskManagement
             this.ToolStripMenuItemExportRS,
             this.ToolStripMenuItemPrint});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 36);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
             // 開くToolStripMenuItem
@@ -132,8 +133,10 @@ namespace TaskManagement
             // 
             // 編集ToolStripMenuItem
             // 
+            this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemAddWorkItem});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
-            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
             // 
             // フィルターToolStripMenuItem
@@ -142,13 +145,13 @@ namespace TaskManagement
             this.ToolStripMenuItemFilterSetting});
             this.フィルターToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
             this.フィルターToolStripMenuItem.Name = "フィルターToolStripMenuItem";
-            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(142, 36);
+            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(142, 38);
             this.フィルターToolStripMenuItem.Text = "フィルター";
             // 
             // ToolStripMenuItemFilterSetting
             // 
             this.ToolStripMenuItemFilterSetting.Name = "ToolStripMenuItemFilterSetting";
-            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemFilterSetting.Text = "設定";
             this.ToolStripMenuItemFilterSetting.Click += new System.EventHandler(this.ToolStripMenuItemFilterSetting_Click);
             // 
@@ -158,20 +161,20 @@ namespace TaskManagement
             this.ToolStripMenuItemColorSetting});
             this.カラーToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.カラーToolStripMenuItem.Name = "カラーToolStripMenuItem";
-            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(109, 36);
+            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(109, 38);
             this.カラーToolStripMenuItem.Text = "カラー";
             // 
             // ToolStripMenuItemColorSetting
             // 
             this.ToolStripMenuItemColorSetting.Name = "ToolStripMenuItemColorSetting";
-            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemColorSetting.Text = "設定";
             this.ToolStripMenuItemColorSetting.Click += new System.EventHandler(this.ToolStripMenuItemColorSetting_Click);
             // 
             // 管理ToolStripMenuItem
             // 
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
-            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
             // statusStrip1
@@ -182,6 +185,13 @@ namespace TaskManagement
             this.statusStrip1.Size = new System.Drawing.Size(1163, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // ToolStripMenuItemAddWorkItem
+            // 
+            this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
+            this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
             // Form1
             // 
@@ -222,6 +232,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemPrint;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColorSetting;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddWorkItem;
     }
 }
 

@@ -154,5 +154,14 @@ namespace TaskManagement
             }
             if (!_filterForm.Visible) _filterForm.Show(this);
         }
+
+        private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EditWorkItem(_viewData.Original))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Original.WorkItems.Add(dlg.WorkItem);
+            }
+        }
     }
 }

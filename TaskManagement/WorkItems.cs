@@ -63,5 +63,10 @@ namespace TaskManagement
             }
             return result;
         }
+
+        internal void Add(object workItem)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
