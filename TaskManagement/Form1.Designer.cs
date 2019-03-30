@@ -1,4 +1,6 @@
-﻿namespace TaskManagement
+﻿using System;
+
+namespace TaskManagement
 {
     partial class Form1
     {
@@ -32,14 +34,22 @@
             this.printDocument = new System.Drawing.Printing.PrintDocument();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.buttonPrintPreview = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonImportCSV = new System.Windows.Forms.Button();
-            this.buttonExport = new System.Windows.Forms.Button();
-            this.buttonFilter = new System.Windows.Forms.Button();
-            this.buttonColorSetting = new System.Windows.Forms.Button();
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.開くToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
+            this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.フィルターToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemFilterSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.カラーToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // printDialog1
@@ -56,103 +66,139 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // buttonPrintPreview
-            // 
-            this.buttonPrintPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonPrintPreview.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
-            this.buttonPrintPreview.Location = new System.Drawing.Point(1088, 612);
-            this.buttonPrintPreview.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.buttonPrintPreview.Name = "buttonPrintPreview";
-            this.buttonPrintPreview.Size = new System.Drawing.Size(64, 64);
-            this.buttonPrintPreview.TabIndex = 2;
-            this.buttonPrintPreview.UseVisualStyleBackColor = true;
-            this.buttonPrintPreview.Click += new System.EventHandler(this.buttonPrintPreview_Click);
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 628);
+            this.label1.Location = new System.Drawing.Point(754, 635);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 24);
             this.label1.TabIndex = 3;
             this.label1.Text = "label1";
             // 
-            // buttonImportCSV
-            // 
-            this.buttonImportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImportCSV.Location = new System.Drawing.Point(807, 611);
-            this.buttonImportCSV.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.buttonImportCSV.Name = "buttonImportCSV";
-            this.buttonImportCSV.Size = new System.Drawing.Size(64, 64);
-            this.buttonImportCSV.TabIndex = 7;
-            this.buttonImportCSV.Text = "CSV";
-            this.buttonImportCSV.UseVisualStyleBackColor = true;
-            this.buttonImportCSV.Click += new System.EventHandler(this.ButtonImportCSV_Click);
-            // 
-            // buttonExport
-            // 
-            this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExport.Location = new System.Drawing.Point(881, 612);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(64, 64);
-            this.buttonExport.TabIndex = 9;
-            this.buttonExport.Text = "RS";
-            this.buttonExport.UseVisualStyleBackColor = true;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
-            // 
-            // buttonFilter
-            // 
-            this.buttonFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
-            this.buttonFilter.Location = new System.Drawing.Point(1019, 611);
-            this.buttonFilter.Name = "buttonFilter";
-            this.buttonFilter.Size = new System.Drawing.Size(64, 64);
-            this.buttonFilter.TabIndex = 8;
-            this.buttonFilter.UseVisualStyleBackColor = true;
-            this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
-            // 
-            // buttonColorSetting
-            // 
-            this.buttonColorSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonColorSetting.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
-            this.buttonColorSetting.Location = new System.Drawing.Point(950, 612);
-            this.buttonColorSetting.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.buttonColorSetting.Name = "buttonColorSetting";
-            this.buttonColorSetting.Size = new System.Drawing.Size(64, 64);
-            this.buttonColorSetting.TabIndex = 6;
-            this.buttonColorSetting.UseVisualStyleBackColor = true;
-            this.buttonColorSetting.Click += new System.EventHandler(this.buttonColorSetting_Click);
-            // 
             // taskDrawAria
             // 
             this.taskDrawAria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskDrawAria.Location = new System.Drawing.Point(13, 12);
+            this.taskDrawAria.Location = new System.Drawing.Point(13, 45);
             this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1139, 592);
+            this.taskDrawAria.Size = new System.Drawing.Size(1139, 560);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemFile,
+            this.編集ToolStripMenuItem,
+            this.フィルターToolStripMenuItem,
+            this.カラーToolStripMenuItem,
+            this.管理ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // ToolStripMenuItemFile
+            // 
+            this.ToolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.開くToolStripMenuItem,
+            this.ToolStripMenuItemImportOldFile,
+            this.ToolStripMenuItemExportRS,
+            this.ToolStripMenuItemPrint});
+            this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 36);
+            this.ToolStripMenuItemFile.Text = "ファイル";
+            // 
+            // 開くToolStripMenuItem
+            // 
+            this.開くToolStripMenuItem.Name = "開くToolStripMenuItem";
+            this.開くToolStripMenuItem.Size = new System.Drawing.Size(333, 38);
+            this.開くToolStripMenuItem.Text = "開く";
+            // 
+            // ToolStripMenuItemImportOldFile
+            // 
+            this.ToolStripMenuItemImportOldFile.Name = "ToolStripMenuItemImportOldFile";
+            this.ToolStripMenuItemImportOldFile.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemImportOldFile.Text = "旧ファイルをインポート";
+            this.ToolStripMenuItemImportOldFile.Click += new System.EventHandler(this.ToolStripMenuItemImportOldFile_Click);
+            // 
+            // ToolStripMenuItemExportRS
+            // 
+            this.ToolStripMenuItemExportRS.Name = "ToolStripMenuItemExportRS";
+            this.ToolStripMenuItemExportRS.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemExportRS.Text = "RSファイルをエクスポート";
+            this.ToolStripMenuItemExportRS.Click += new System.EventHandler(this.ToolStripMenuItemExportRS_Click);
+            // 
+            // ToolStripMenuItemPrint
+            // 
+            this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemPrint.Text = "印刷";
+            this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
+            // 
+            // 編集ToolStripMenuItem
+            // 
+            this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.編集ToolStripMenuItem.Text = "編集";
+            // 
+            // フィルターToolStripMenuItem
+            // 
+            this.フィルターToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemFilterSetting});
+            this.フィルターToolStripMenuItem.Name = "フィルターToolStripMenuItem";
+            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(110, 36);
+            this.フィルターToolStripMenuItem.Text = "フィルター";
+            // 
+            // ToolStripMenuItemFilterSetting
+            // 
+            this.ToolStripMenuItemFilterSetting.Name = "ToolStripMenuItemFilterSetting";
+            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemFilterSetting.Text = "設定";
+            this.ToolStripMenuItemFilterSetting.Click += new System.EventHandler(this.ToolStripMenuItemFilterSetting_Click);
+            // 
+            // カラーToolStripMenuItem
+            // 
+            this.カラーToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemColorSetting});
+            this.カラーToolStripMenuItem.Name = "カラーToolStripMenuItem";
+            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(77, 36);
+            this.カラーToolStripMenuItem.Text = "カラー";
+            // 
+            // ToolStripMenuItemColorSetting
+            // 
+            this.ToolStripMenuItemColorSetting.Name = "ToolStripMenuItemColorSetting";
+            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemColorSetting.Text = "設定";
+            this.ToolStripMenuItemColorSetting.Click += new System.EventHandler(this.ToolStripMenuItemColorSetting_Click);
+            // 
+            // 管理ToolStripMenuItem
+            // 
+            this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.管理ToolStripMenuItem.Text = "管理";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1163, 688);
-            this.Controls.Add(this.buttonExport);
-            this.Controls.Add(this.buttonFilter);
-            this.Controls.Add(this.buttonImportCSV);
-            this.Controls.Add(this.buttonColorSetting);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.buttonPrintPreview);
             this.Controls.Add(this.taskDrawAria);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,12 +210,19 @@
         private System.Windows.Forms.PrintDialog printDialog1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.PictureBox taskDrawAria;
-        private System.Windows.Forms.Button buttonPrintPreview;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button buttonColorSetting;
-        private System.Windows.Forms.Button buttonImportCSV;
-        private System.Windows.Forms.Button buttonFilter;
-        private System.Windows.Forms.Button buttonExport;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFile;
+        private System.Windows.Forms.ToolStripMenuItem 開くToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemImportOldFile;
+        private System.Windows.Forms.ToolStripMenuItem 編集ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem フィルターToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFilterSetting;
+        private System.Windows.Forms.ToolStripMenuItem カラーToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 管理ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemPrint;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColorSetting;
     }
 }
 
