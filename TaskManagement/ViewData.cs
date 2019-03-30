@@ -36,8 +36,15 @@ namespace TaskManagement
 
         internal Members GetFilteredMembers()
         {
-            if (_filter != null && _filter.Members != null) return _filter.Members;
-            return Original.Members;
+            if (_filter == null) return Original.Members;
+            if (_filter.FilteringMembers == null) return Original.Members;
+            var result = new Members();
+            foreach (var m in Original.Members)
+            {
+                if (_filter.FilteringMembers.Contain(m)) continue;
+                result.Add(m);
+            }
+            return result;
         }
 
         internal WorkItems GetFilteredWorkItems()

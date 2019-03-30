@@ -7,13 +7,12 @@ namespace TaskManagement
     public class Members : IEnumerable<Member>
     {
         private List<Member> _members = new List<Member>();
-        private List<Member> _filterMembers;
 
         public int Count => _members.Count;
 
         public IEnumerator<Member> GetEnumerator()
         {
-            if (_filterMembers != null) return _filterMembers.GetEnumerator();
+            //if (_filterMembers != null) return _filterMembers.GetEnumerator();
             return _members.GetEnumerator();
         }
 
@@ -25,15 +24,20 @@ namespace TaskManagement
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            if (_filterMembers != null) return _filterMembers.GetEnumerator();
+            //if (_filterMembers != null) return _filterMembers.GetEnumerator();
             return _members.GetEnumerator();
         }
 
         public static int RowCount => 2;
 
-        internal void SetFilter(List<Member> filterMembers)
+
+        internal bool Contain(Member m)
         {
-            _filterMembers = filterMembers;
+            foreach(var f in _members)
+            {
+                if (f.Equals(m)) return true;
+            }
+            return false;
         }
     }
 }

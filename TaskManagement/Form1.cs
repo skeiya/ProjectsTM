@@ -9,6 +9,7 @@ namespace TaskManagement
     public partial class Form1 : Form
     {
         private ViewData _viewData = new ViewData(null);
+        private FilterForm _filterForm;
 
         public Form1()
         {
@@ -195,11 +196,11 @@ namespace TaskManagement
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Original.Callender))
+            if (_filterForm == null || _filterForm.IsDisposed)
             {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.SetFilter(dlg.Filter);
+                _filterForm = new FilterForm(_viewData);
             }
+            if (!_filterForm.Visible) _filterForm.Show(this);
         }
 
         private void buttonExport_Click(object sender, EventArgs e)
