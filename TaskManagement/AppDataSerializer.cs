@@ -30,7 +30,7 @@ namespace TaskManagement
             }
         }
 
-        internal static AppData Deserialize(string fileName)
+        internal static AppData Deserialize(string fileName, out string error)
         {
             var result = new AppData();
             using (var reader = new StreamReader(fileName))
@@ -38,7 +38,11 @@ namespace TaskManagement
                 while (true)
                 {
                     var line = reader.ReadLine();
-                    if (string.IsNullOrEmpty(line)) return result;
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        error = string.Empty;
+                        return result;
+                    }
 
                     var m = Regex.Match(line, DAY_TAG + "(.*)");
                     if (m.Success)
@@ -55,7 +59,19 @@ namespace TaskManagement
                     m = Regex.Match(line, WORKITEM_TAG + "(.*)");
                     if (m.Success)
                     {
-                        result.WorkItems.Add(WorkItem.Parse(m.Groups[1].Value, result.Callender));
+                        var w = WorkItem.Parse(m.Groups[1].Value, result.Callender);
+                        if (!result.Callender.Days.Contains(w.Period.From) ||
+                            !result.Callender.Days.Contains(w.Period.To))
+                        {
+                            error = "day error" + w.Period.From + "/" + w.Period.To;
+                            return null;
+                        }
+                        if (!result.Members.Contain(w.AssignedMember))
+                        {
+                            error = "member error" + w.AssignedMember.ToSerializeString();
+                            return null;
+                        }
+                        result.WorkItems.Add(w);
                         continue;
                     }
                 }

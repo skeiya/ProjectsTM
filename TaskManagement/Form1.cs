@@ -184,7 +184,14 @@ namespace TaskManagement
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData = new ViewData(AppDataSerializer.Deserialize(dlg.FileName));
+                string error;
+                var result = AppDataSerializer.Deserialize(dlg.FileName, out error);
+                if (result == null)
+                {
+                    MessageBox.Show(error);
+                    return;
+                }
+                _viewData = new ViewData(result);
             }
         }
     }
