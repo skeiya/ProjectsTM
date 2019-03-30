@@ -29,16 +29,29 @@ namespace TaskManagement
                     var words = line.Split(',');
 
                     var project = ParseProject(words[5]);
+                    var tags = ParseTags(words[5]);
                     var taskName = words[3];
                     var period = ParsePeriod(words[1], words[2], callender);
                     var member = ParseMember(words[0]);
 
-                    original.WorkItems.Add(new WorkItem(project, taskName, period, member));
+                    original.WorkItems.Add(new WorkItem(project, taskName, tags, period, member));
                     original.Callender = callender;
                     original.Members.Add(member);
                     original.Projects.Add(project);
                 }
             }
+        }
+
+        private static List<string> ParseTags(string tag)
+        {
+            var result = new List<string>();
+            var words = tag.Split('|');
+            foreach (var w in words)
+            {
+                if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) continue;
+                result.Add(w);
+            }
+            return result;
         }
 
         private  static Project ParseProject(string tag)

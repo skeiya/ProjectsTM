@@ -52,8 +52,8 @@ namespace TaskManagement
                 }
             }
 
-            WorkItems.Add(new WorkItem(Projects.Get("Z123"), "基礎料金", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 5, 1), Callender), shimo));
-            WorkItems.Add(new WorkItem(Projects.Get("Y345"), "インストーラ", new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 4, 6), Callender), hoge));
+            WorkItems.Add(new WorkItem(Projects.Get("Z123"), "基礎料金", null, new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 5, 1), Callender), shimo));
+            WorkItems.Add(new WorkItem(Projects.Get("Y345"), "インストーラ",null, new Period(Callender.Get(2019, 4, 5), Callender.Get(2019, 4, 6), Callender), hoge));
             {
                 var rand = new Random(345);
                 foreach (var m in Members)
@@ -64,7 +64,7 @@ namespace TaskManagement
                         var to = Callender.ApplyOffset(from, 15);
                         if (to == null) break;
                         var period = new Period(from, to, Callender);
-                        var wi = new WorkItem(Projects.Get("Z123"), rand.Next().ToString(), period, m);
+                        var wi = new WorkItem(Projects.Get("Z123"), rand.Next().ToString(), null, period, m);
                         WorkItems.Add(wi);
                         from = Callender.ApplyOffset(to, 1);
                         if (from == null) break;

@@ -83,6 +83,7 @@ namespace TaskManagement
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
+            if (member == null || day == null) return null;
             foreach (var wi in _workItems.GetWorkItems(viewData.GetFilteredMembers(), viewData.GetFilteredDays()))
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
