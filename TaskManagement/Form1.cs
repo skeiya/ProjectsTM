@@ -102,97 +102,9 @@ namespace TaskManagement
 
         private ViewData LoadFile(string fileName)
         {
-            return new ViewData(ReadOriginalData(fileName));
+            return new ViewData(CsvReader.ReadOriginalData(fileName, _viewData.Original.Callender));
         }
 
-        private AppData ReadOriginalData(string fileName)
-        {
-            var original = new AppData(false);
-            var isFirstLine = true;
-            using (var r = new StreamReader(fileName))
-            {
-                while (true)
-                {
-                    var line = r.ReadLine();
-                    if (string.IsNullOrEmpty(line)) return original;
-                    if (isFirstLine)
-                    {
-                        isFirstLine = false;
-                        continue;
-                    }
-
-                    var words = line.Split(',');
-
-                    var project = ParseProject(words[5]);
-                    var taskName = words[3];
-                    var period = ParsePeriod(words[1], words[2]);
-                    var member = ParseMember(words[0]);
-
-                    original.WorkItems.Add(new WorkItem(project, taskName, period, member));
-                    original.Callender = _viewData.Original.Callender; // TODO
-                    original.Members.Add(member);
-                    original.Projects.Add(project);
-                }
-            }
-        }
-
-        private Member ParseMember(string str)
-        {
-            string lastName = "";
-            string firstName = "";
-            string company = "";
-
-            var match = Regex.Match(str, "([a-zA-Z]+)(.*)");
-            var groups = match.Groups;
-            switch (groups.Count)
-            {
-                case 0:
-                case 1:
-                    break;
-                case 2:
-                    lastName = groups[1].Value;
-                    break;
-                case 3:
-                    company = groups[1].Value;
-                    lastName = groups[2].Value;
-                    break;
-                default:
-                    break;
-            }
-            var member = new Member(lastName, firstName, company);
-            foreach (var m in _viewData.Original.Members)
-            {
-                if (m.Equals(member)) return m;
-            }
-            _viewData.Original.Members.Add(member);
-            return member;
-        }
-
-        private Period ParsePeriod(string from, string to)
-        {
-            var f = GetDay(from);
-            var t = GetDay(to);
-            return new Period(f, t, _viewData.Original.Callender);
-        }
-
-        private CallenderDay GetDay(string dayString)
-        {
-            var words = dayString.Split('/');
-            var year = int.Parse(words[0]);
-            var month = int.Parse(words[1]);
-            var day = int.Parse(words[2]);
-            return _viewData.Original.Callender.Get(year, month, day);
-        }
-
-        private Project ParseProject(string tag)
-        {
-            var words = tag.Split('|');
-            foreach (var w in words)
-            {
-                if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) return new Project(w);
-            }
-            return new Project("tmp");
-        }
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {

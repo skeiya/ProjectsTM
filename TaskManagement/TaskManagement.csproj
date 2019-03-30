@@ -64,6 +64,7 @@
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CommonGrid.cs" />
+    <Compile Include="CsvReader.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="FilterForm.cs">
       <SubType>Form</SubType>
