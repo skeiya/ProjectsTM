@@ -39,17 +39,16 @@ namespace TaskManagement
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.フィルターToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemFilterSetting = new System.Windows.Forms.ToolStripMenuItem();
-            this.カラーToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -84,8 +83,7 @@ namespace TaskManagement
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemFile,
             this.編集ToolStripMenuItem,
-            this.フィルターToolStripMenuItem,
-            this.カラーToolStripMenuItem,
+            this.表示ToolStripMenuItem,
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -119,6 +117,14 @@ namespace TaskManagement
             this.ToolStripMenuItemSave.Text = "保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
+            // ToolStripMenuItemPrint
+            // 
+            this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
+            this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemPrint.Text = "印刷";
+            this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
+            // 
             // ToolStripMenuItemImportOldFile
             // 
             this.ToolStripMenuItemImportOldFile.Name = "ToolStripMenuItemImportOldFile";
@@ -133,14 +139,6 @@ namespace TaskManagement
             this.ToolStripMenuItemExportRS.Text = "RSファイルをエクスポート";
             this.ToolStripMenuItemExportRS.Click += new System.EventHandler(this.ToolStripMenuItemExportRS_Click);
             // 
-            // ToolStripMenuItemPrint
-            // 
-            this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
-            this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(333, 38);
-            this.ToolStripMenuItemPrint.Text = "印刷";
-            this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
-            // 
             // 編集ToolStripMenuItem
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -152,41 +150,9 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
-            // 
-            // フィルターToolStripMenuItem
-            // 
-            this.フィルターToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemFilterSetting});
-            this.フィルターToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
-            this.フィルターToolStripMenuItem.Name = "フィルターToolStripMenuItem";
-            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(142, 38);
-            this.フィルターToolStripMenuItem.Text = "フィルター";
-            // 
-            // ToolStripMenuItemFilterSetting
-            // 
-            this.ToolStripMenuItemFilterSetting.Name = "ToolStripMenuItemFilterSetting";
-            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(324, 38);
-            this.ToolStripMenuItemFilterSetting.Text = "設定";
-            this.ToolStripMenuItemFilterSetting.Click += new System.EventHandler(this.ToolStripMenuItemFilterSetting_Click);
-            // 
-            // カラーToolStripMenuItem
-            // 
-            this.カラーToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemColorSetting});
-            this.カラーToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
-            this.カラーToolStripMenuItem.Name = "カラーToolStripMenuItem";
-            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(109, 38);
-            this.カラーToolStripMenuItem.Text = "カラー";
-            // 
-            // ToolStripMenuItemColorSetting
-            // 
-            this.ToolStripMenuItemColorSetting.Name = "ToolStripMenuItemColorSetting";
-            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(324, 38);
-            this.ToolStripMenuItemColorSetting.Text = "設定";
-            this.ToolStripMenuItemColorSetting.Click += new System.EventHandler(this.ToolStripMenuItemColorSetting_Click);
             // 
             // 管理ToolStripMenuItem
             // 
@@ -202,6 +168,31 @@ namespace TaskManagement
             this.statusStrip1.Size = new System.Drawing.Size(1163, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // 表示ToolStripMenuItem
+            // 
+            this.表示ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemFilter,
+            this.ToolStripMenuItemColor});
+            this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
+            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
+            this.表示ToolStripMenuItem.Text = "表示";
+            // 
+            // ToolStripMenuItemFilter
+            // 
+            this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
+            this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemFilter.Text = "フィルター";
+            this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
+            // 
+            // ToolStripMenuItemColor
+            // 
+            this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
+            this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemColor.Text = "色";
+            this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
             // Form1
             // 
@@ -234,16 +225,15 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpen;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemImportOldFile;
         private System.Windows.Forms.ToolStripMenuItem 編集ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem フィルターToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFilterSetting;
-        private System.Windows.Forms.ToolStripMenuItem カラーToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemPrint;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColorSetting;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddWorkItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSave;
+        private System.Windows.Forms.ToolStripMenuItem 表示ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFilter;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColor;
     }
 }
 

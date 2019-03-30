@@ -138,23 +138,6 @@ namespace TaskManagement
             if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
         }
 
-        private void ToolStripMenuItemColorSetting_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new ColorManagementForm(_viewData.ColorConditions, this))
-            {
-                dlg.ShowDialog();
-            }
-        }
-
-        private void ToolStripMenuItemFilterSetting_Click(object sender, EventArgs e)
-        {
-            if (_filterForm == null || _filterForm.IsDisposed)
-            {
-                _filterForm = new FilterForm(_viewData);
-            }
-            if (!_filterForm.Visible) _filterForm.Show(this);
-        }
-
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new EditWorkItem(_viewData.Original))
@@ -192,6 +175,23 @@ namespace TaskManagement
                     return;
                 }
                 _viewData = new ViewData(result);
+            }
+        }
+
+        private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
+        {
+            if (_filterForm == null || _filterForm.IsDisposed)
+            {
+                _filterForm = new FilterForm(_viewData);
+            }
+            if (!_filterForm.Visible) _filterForm.Show(this);
+        }
+
+        private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ColorManagementForm(_viewData.ColorConditions, this))
+            {
+                dlg.ShowDialog();
             }
         }
     }
