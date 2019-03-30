@@ -1,47 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace TaskManagement
 {
     class CsvReader
     {
-        public static AppData ReadOriginalData(string fileName, Callender callender/*TODO*/)
-        {
-            var original = new AppData(false);
-            var isFirstLine = true;
-            using (var r = new StreamReader(fileName))
-            {
-                while (true)
-                {
-                    var line = r.ReadLine();
-                    if (string.IsNullOrEmpty(line)) return original;
-                    if (isFirstLine)
-                    {
-                        isFirstLine = false;
-                        continue;
-                    }
-
-                    var words = line.Split(',');
-
-                    var project = ParseProject(words[5]);
-                    var tags = ParseTags(words[5]);
-                    var taskName = words[3];
-                    var period = ParsePeriod(words[1], words[2], callender);
-                    var member = ParseMember(words[0]);
-
-                    original.WorkItems.Add(new WorkItem(project, taskName, tags, period, member));
-                    original.Callender = callender;
-                    original.Members.Add(member);
-                    original.Projects.Add(project);
-                }
-            }
-        }
-
         private static List<string> ParseTags(string tag)
         {
             var result = new List<string>();
@@ -131,6 +95,35 @@ namespace TaskManagement
                     var words = line.Split(',');
                     var member = ParseMember(words[0]);
                     result.Add(member);
+                }
+            }
+        }
+
+        public static WorkItems ReadWorkItems(string fileName, Callender callender)
+        {
+            var result = new WorkItems();
+            var isFirstLine = true;
+            using (var r = new StreamReader(fileName))
+            {
+                while (true)
+                {
+                    var line = r.ReadLine();
+                    if (string.IsNullOrEmpty(line)) return result;
+                    if (isFirstLine)
+                    {
+                        isFirstLine = false;
+                        continue;
+                    }
+
+                    var words = line.Split(',');
+
+                    var project = ParseProject(words[5]);
+                    var tags = ParseTags(words[5]);
+                    var taskName = words[3];
+                    var period = ParsePeriod(words[1], words[2], callender);
+                    var member = ParseMember(words[0]);
+
+                    result.Add(new WorkItem(project, taskName, tags, period, member));
                 }
             }
         }

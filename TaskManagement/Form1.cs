@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -106,7 +105,7 @@ namespace TaskManagement
                         ImportMembers();
                         break;
                     case CsvImportType.WorkItems:
-                        ImportWorkItems();
+                        ImportWorkItems(_viewData.Original.Callender);
                         break;
                     default:
                         break;
@@ -123,12 +122,12 @@ namespace TaskManagement
             }
         }
 
-        private void ImportWorkItems()
+        private void ImportWorkItems(Callender callender)
         {
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData = LoadFile(dlg.FileName);
+                _viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName, callender);
             }
         }
 
@@ -140,12 +139,6 @@ namespace TaskManagement
                 _viewData.Original.Callender = CsvReader.ReadWorkingDays(dlg.FileName);
             }
         }
-
-        private ViewData LoadFile(string fileName)
-        {
-            return new ViewData(CsvReader.ReadOriginalData(fileName, _viewData.Original.Callender));
-        }
-
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {
