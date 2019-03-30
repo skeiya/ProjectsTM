@@ -78,5 +78,24 @@ namespace TaskManagement
             }
             return result;
         }
+
+        private void buttonClearWorkItem_Click(object sender, EventArgs e)
+        {
+            textBoxWorkItem.Text = string.Empty;
+        }
+
+        private void buttonClearPeriod_Click(object sender, EventArgs e)
+        {
+            textBoxFrom.Text = string.Empty;
+            textBoxTo.Text = string.Empty;
+        }
+
+        private void buttonClearMembers_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < checkedListBox1.Items.Count; index++)
+            {
+                checkedListBox1.SetItemChecked(index, true);
+            }
+        }
     }
 }
