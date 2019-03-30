@@ -5,13 +5,12 @@ using System.Linq;
 
 namespace TaskManagement
 {
-    class AppData
+    internal class AppData
     {
         public Callender Callender = new Callender();
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
         public Projects Projects = new Projects();
-        public ColorConditions ColorConditions = new ColorConditions();
 
         public AppData(bool isDummy)
         {
@@ -72,9 +71,7 @@ namespace TaskManagement
                     }
                 }
             }
-
-            ColorConditions.Add(new ColorCondition("下圭", Color.Green));
-            ColorConditions.Add(new ColorCondition("Z123", Color.Red));
         }
+
     }
 }

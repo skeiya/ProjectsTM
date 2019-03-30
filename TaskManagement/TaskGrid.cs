@@ -14,20 +14,20 @@ namespace TaskManagement
         private WorkItems _workItems;
         private ColorConditions _colorConditions;
 
-        public TaskGrid(AppData appData, Graphics g, Rectangle pageBounds, Font font)
+        public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font)
         {
             _grid = new CommonGrid(g, new Font(font.FontFamily, 4));
 
-            UpdateRowColMap(appData);
+            UpdateRowColMap(viewData);
 
-            _grid.RowCount = appData.Callender.FilteredDays.Count + Members.RowCount;
+            _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
             SetRowHeight(pageBounds);
 
-            _grid.ColCount = appData.Members.Count + Callender.ColCount;
+            _grid.ColCount = viewData.GetFilteredMembers().Count + Callender.ColCount;
             SetColWidth(g, pageBounds);
 
-            _workItems = appData.WorkItems;
-            _colorConditions = appData.ColorConditions;
+            _workItems = viewData.GetFilteredWorkItems();
+            _colorConditions = viewData.ColorConditions;
         }
 
         private void SetColWidth(Graphics g, Rectangle pageBounds)
@@ -60,10 +60,10 @@ namespace TaskManagement
 
         }
 
-        private void UpdateRowColMap(AppData appData)
+        private void UpdateRowColMap(ViewData viewData)
         {
             int c = Callender.ColCount;
-            foreach (var m in appData.Members)
+            foreach (var m in viewData.GetFilterdMembers())
             {
                 _colToMember.Add(c, m);
                 _memberToCol.Add(m, c);
@@ -71,7 +71,7 @@ namespace TaskManagement
             }
 
             int r = Members.RowCount;
-            foreach (var d in appData.Callender.FilteredDays)
+            foreach (var d in viewData.GetFilteredDays())
             {
                 _dayToRow.Add(d, r);
                 _rowToDay.Add(r, d);
@@ -79,11 +79,11 @@ namespace TaskManagement
             }
         }
 
-        internal WorkItem PickFromPoint(PointF point, AppData appData)
+        internal WorkItem PickFromPoint(PointF point, ViewData viewData)
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
-            foreach (var wi in _workItems.GetWorkItems(appData.Members, appData.Callender.FilteredDays))
+            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilterdMembers(), viewData.GetFilteredDays()))
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
                 if (!wi.Period.Contains(day)) continue;
@@ -136,7 +136,7 @@ namespace TaskManagement
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
-        internal void Draw(AppData appData)
+        internal void Draw(ViewData appData)
         {
             DrawCallenderDays();
             DrawTeamMembers();
@@ -186,9 +186,9 @@ namespace TaskManagement
             }
         }
 
-        private void DrawWorkItems(AppData appData)
+        private void DrawWorkItems(ViewData viewData)
         {
-            foreach (var wi in _workItems.GetWorkItems(appData.Members, appData.Callender.FilteredDays))
+            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilterdMembers(), viewData.GetFilteredDays()))
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString());

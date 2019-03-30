@@ -8,12 +8,11 @@ namespace TaskManagement
 {
     public partial class Form1 : Form
     {
-        private AppData _appData;
+        private ViewData _viewData = new ViewData(null);
 
         public Form1()
         {
             InitializeComponent();
-            _appData = new AppData(true);
 
             foreach (System.Drawing.Printing.PaperSize s in printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
             {
@@ -44,7 +43,7 @@ namespace TaskManagement
             if (curDay == null) return;
 
             _draggingWorkItem.AssignedMember = member;
-            var offset = _appData.Callender.GetOffset(_draggedDay, curDay);
+            var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
             _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
         }
 
@@ -55,7 +54,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
         {
-            var wi = _grid.PickFromPoint(e.Location, _appData);
+            var wi = _grid.PickFromPoint(e.Location, _viewData);
             if (wi == null) return;
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
@@ -66,15 +65,15 @@ namespace TaskManagement
         TaskGrid _grid;
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_appData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
-            _grid.Draw(_appData);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
+            _grid.Draw(_viewData);
             taskDrawAria.Invalidate();
         }
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            var grid = new TaskGrid(_appData, e.Graphics, e.PageBounds, this.Font);
-            grid.Draw(_appData);
+            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, this.Font);
+            grid.Draw(_viewData);
         }
 
         private void buttonPrintPreview_Click(object sender, EventArgs e)
@@ -85,12 +84,12 @@ namespace TaskManagement
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _appData.WorkItems.SetFilter(textBox1.Text);
+            _viewData.SetFilter(textBox1.Text);
         }
 
         private void buttonColorSetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorManagementForm(_appData.ColorConditions, this))
+            using (var dlg = new ColorManagementForm(_viewData.ColorConditions, this))
             {
                 dlg.ShowDialog();
             }
@@ -101,20 +100,25 @@ namespace TaskManagement
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _appData = LoadFile(dlg.FileName);
+                _viewData = LoadFile(dlg.FileName);
             }
         }
 
-        private AppData LoadFile(string fileName)
+        private ViewData LoadFile(string fileName)
         {
-            var appData = new AppData(false);
+            return new ViewData(ReadOriginalData(fileName));
+        }
+
+        private AppData ReadOriginalData(string fileName)
+        {
+            var original = new AppData(false);
             var isFirstLine = true;
             using (var r = new StreamReader(fileName))
             {
                 while (true)
                 {
                     var line = r.ReadLine();
-                    if (string.IsNullOrEmpty(line)) return appData;
+                    if (string.IsNullOrEmpty(line)) return original;
                     if (isFirstLine)
                     {
                         isFirstLine = false;
@@ -123,20 +127,20 @@ namespace TaskManagement
 
                     var words = line.Split(',');
 
-                    var project = GetProject(words[5]);
+                    var project = ParseProject(words[5]);
                     var taskName = words[3];
-                    var period = GetPeriod(words[1], words[2]);
-                    var member = GetMember(words[0]);
+                    var period = ParsePeriod(words[1], words[2]);
+                    var member = ParseMember(words[0]);
 
-                    appData.WorkItems.Add(new WorkItem(project, taskName, period, member));
-                    appData.Callender = _appData.Callender;
-                    appData.Members.Add(member);
-                    appData.Projects.Add(project);
+                    original.WorkItems.Add(new WorkItem(project, taskName, period, member));
+                    original.Callender = _viewData.Original.Callender; // TODO
+                    original.Members.Add(member);
+                    original.Projects.Add(project);
                 }
             }
         }
 
-        private Member GetMember(string str)
+        private Member ParseMember(string str)
         {
             string lastName = "";
             string firstName = "";
@@ -160,19 +164,19 @@ namespace TaskManagement
                     break;
             }
             var member = new Member(lastName, firstName, company);
-            foreach (var m in _appData.Members)
+            foreach (var m in _viewData.Original.Members)
             {
                 if (m.Equals(member)) return m;
             }
-            _appData.Members.Add(member);
+            _viewData.Original.Members.Add(member);
             return member;
         }
 
-        private Period GetPeriod(string from, string to)
+        private Period ParsePeriod(string from, string to)
         {
             var f = GetDay(from);
             var t = GetDay(to);
-            return new Period(f, t, _appData.Callender);
+            return new Period(f, t, _viewData.Original.Callender);
         }
 
         private CallenderDay GetDay(string dayString)
@@ -181,10 +185,10 @@ namespace TaskManagement
             var year = int.Parse(words[0]);
             var month = int.Parse(words[1]);
             var day = int.Parse(words[2]);
-            return _appData.Callender.Get(year, month, day);
+            return _viewData.Original.Callender.Get(year, month, day);
         }
 
-        private Project GetProject(string tag)
+        private Project ParseProject(string tag)
         {
             var words = tag.Split('|');
             foreach (var w in words)
@@ -196,11 +200,11 @@ namespace TaskManagement
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_appData.Members, _appData.Callender))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _appData.Callender.SetFilter(dlg.Period);
-                _appData.Members.SetFilter(dlg.FilterMembers);
+                _viewData.SetFilter(dlg.Period);
+                _viewData.SetFilter(dlg.FilterMembers);
             }
         }
 
@@ -263,12 +267,12 @@ namespace TaskManagement
 
         private int GetTotalDays(int year, int month)
         {
-            return _appData.Callender.GetDaysOfMonth(year, month);
+            return _viewData.Original.Callender.GetDaysOfMonth(year, month);
         }
 
         private int GetTargetDays(int year, int month, Member member, Project project)
         {
-            return _appData.WorkItems.GetWorkItemDays(year, month, member, project);
+            return _viewData.Original.WorkItems.GetWorkItemDaysOfMonth(year, month, member, project);
         }
 
         private List<Tuple<int, int>> GetMonths()
@@ -276,7 +280,7 @@ namespace TaskManagement
             var result = new List<Tuple<int, int>>();
 
             var month = 0;
-            foreach (var d in _appData.Callender.Days)
+            foreach (var d in _viewData.Original.Callender.Days)
             {
                 if (month != d.Month)
                 {
@@ -290,7 +294,7 @@ namespace TaskManagement
         private List<Project> GetProjects()
         {
             var result = new List<Project>();
-            foreach (var p in _appData.Projects)
+            foreach (var p in _viewData.Original.Projects)
             {
                 result.Add(p.Value);
             }
@@ -300,7 +304,7 @@ namespace TaskManagement
         private List<Member> GetMembers()
         {
             var result = new List<Member>();
-            foreach (var m in _appData.Members)
+            foreach (var m in _viewData.Original.Members)
             {
                 result.Add(m);
             }

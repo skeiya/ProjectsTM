@@ -42,7 +42,7 @@ namespace TaskManagement
             return filteredList;
         }
 
-        internal int GetWorkItemDays(int year, int month, Member member, Project project)
+        internal int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project)
         {
             int result = 0;
             foreach(var wi in _items.Where((w)=>w.AssignedMember.Equals(member) && w.Project.Equals(project)))
