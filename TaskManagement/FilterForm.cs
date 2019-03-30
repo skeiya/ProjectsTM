@@ -15,7 +15,7 @@ namespace TaskManagement
         private IPeriodCalculator _callender;
 
         public List<Member> FilterMembers { get; internal set; }
-        public Period Period { get; internal set; }
+        public Filter Filter { get; internal set; }
 
         public FilterForm(Members members, IPeriodCalculator callender)
         {
@@ -26,7 +26,7 @@ namespace TaskManagement
         private void buttonOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Period = new Period(new CallenderDay(textBoxFrom.Text), new CallenderDay(textBoxTo.Text), _callender);
+            Filter = GetFilter();
             Close();
         }
 
@@ -34,6 +34,30 @@ namespace TaskManagement
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private Filter GetFilter()
+        {
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetMembersFilter());
+        }
+
+        private string GetWorkItemFilter()
+        {
+            if (string.IsNullOrEmpty(textBoxWorkItem.Text)) return null;
+            return textBoxWorkItem.Text;
+        }
+
+        private Period GetPeriodFilter()
+        {
+            var from = CallenderDay.Parse(textBoxFrom.Text);
+            var to = CallenderDay.Parse(textBoxTo.Text);
+            if (from == null || to == null) return null;
+            return new Period(from, to, _callender);
+        }
+
+        private Members GetMembersFilter()
+        {
+            return null;
         }
     }
 }

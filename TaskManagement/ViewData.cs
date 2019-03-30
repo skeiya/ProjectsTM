@@ -21,19 +21,16 @@ namespace TaskManagement
             Original = original;
         }
 
-        internal void SetFilter(string text)
+        internal void SetFilter(Filter filter)
         {
-            Original.WorkItems.SetFilter(text);
+            Original.WorkItems.SetFilter(filter.WorkItem);
+            Original.Callender.SetFilter(filter.Period);
+            //Original.Members.SetFilter(filter.Members);
         }
 
         internal int GetDaysCount()
         {
             return Original.Callender.FilteredDays.Count;
-        }
-
-        internal void SetFilter(Period period)
-        {
-            Original.Callender.SetFilter(period);
         }
 
         internal Members GetFilteredMembers()
@@ -44,11 +41,6 @@ namespace TaskManagement
         internal WorkItems GetFilteredWorkItems()
         {
             return Original.WorkItems;
-        }
-
-        internal void SetFilter(List<Member> filterMembers)
-        {
-            Original.Members.SetFilter(filterMembers);
         }
 
         internal Members GetFilterdMembers()

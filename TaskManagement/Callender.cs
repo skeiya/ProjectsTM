@@ -33,6 +33,11 @@ namespace TaskManagement
             return Days.Find((d) => (d.Year == year) && (d.Month == month) && (d.Day == day));
         }
 
+        internal void SetFilter(object period)
+        {
+            throw new NotImplementedException();
+        }
+
         public int GetOffset(CallenderDay from, CallenderDay to)
         {
             int fromIndex = 0;

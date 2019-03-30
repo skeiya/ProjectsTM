@@ -82,11 +82,6 @@ namespace TaskManagement
             if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _viewData.SetFilter(textBox1.Text);
-        }
-
         private void buttonColorSetting_Click(object sender, EventArgs e)
         {
             using (var dlg = new ColorManagementForm(_viewData.ColorConditions, this))
@@ -203,8 +198,7 @@ namespace TaskManagement
             using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.SetFilter(dlg.Period);
-                _viewData.SetFilter(dlg.FilterMembers);
+                _viewData.SetFilter(dlg.Filter);
             }
         }
 
@@ -253,7 +247,7 @@ namespace TaskManagement
                 result += Environment.NewLine;
             }
 
-            using(var dlg = new SaveFileDialog())
+            using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 File.WriteAllText(dlg.FileName, result);
@@ -262,7 +256,7 @@ namespace TaskManagement
 
         private string GetRatio(int year, int month, Member member, Project project)
         {
-            return string.Format("{0:0.0}",(float)GetTargetDays(year, month, member, project) / (float)GetTotalDays(year, month));
+            return string.Format("{0:0.0}", (float)GetTargetDays(year, month, member, project) / (float)GetTotalDays(year, month));
         }
 
         private int GetTotalDays(int year, int month)
