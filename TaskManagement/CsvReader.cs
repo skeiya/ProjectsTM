@@ -54,7 +54,7 @@ namespace TaskManagement
             return result;
         }
 
-        private  static Project ParseProject(string tag)
+        private static Project ParseProject(string tag)
         {
             var words = tag.Split('|');
             foreach (var w in words)
@@ -110,6 +110,29 @@ namespace TaskManagement
                 }
             }
             return result;
+        }
+
+        internal static Members ReadMembers(string fileName)
+        {
+            var result = new Members();
+            var isFirstLine = true;
+            using (var r = new StreamReader(fileName))
+            {
+                while (true)
+                {
+                    var line = r.ReadLine();
+                    if (string.IsNullOrEmpty(line)) return result;
+                    if (isFirstLine)
+                    {
+                        isFirstLine = false;
+                        continue;
+                    }
+
+                    var words = line.Split(',');
+                    var member = ParseMember(words[0]);
+                    result.Add(member);
+                }
+            }
         }
     }
 }

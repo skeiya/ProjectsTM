@@ -103,6 +103,7 @@ namespace TaskManagement
                         ImportWorkingDays();
                         break;
                     case CsvImportType.Members:
+                        ImportMembers();
                         break;
                     case CsvImportType.WorkItems:
                         ImportWorkItems();
@@ -110,6 +111,15 @@ namespace TaskManagement
                     default:
                         break;
                 }
+            }
+        }
+
+        private void ImportMembers()
+        {
+            using (var dlg = new OpenFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Original.Members = CsvReader.ReadMembers(dlg.FileName);
             }
         }
 
