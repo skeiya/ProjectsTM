@@ -6,8 +6,6 @@ namespace TaskManagement
 {
     internal class Callender : IPeriodCalculator
     {
-        private Period _period;
-
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
 
         public int GetTerm(CallenderDay from, CallenderDay to)
@@ -26,16 +24,6 @@ namespace TaskManagement
         internal void Add(CallenderDay callenderDay)
         {
             Days.Add(callenderDay);
-        }
-
-        internal CallenderDay Get(int year, int month, int day)
-        {
-            return Days.Find((d) => (d.Year == year) && (d.Month == month) && (d.Day == day));
-        }
-
-        internal void SetFilter(object period)
-        {
-            throw new NotImplementedException();
         }
 
         public int GetOffset(CallenderDay from, CallenderDay to)
@@ -79,28 +67,6 @@ namespace TaskManagement
         }
 
         static public int ColCount => 3;
-
-        public List<CallenderDay> FilteredDays
-        {
-            get
-            {
-                if (_period == null) return Days;
-                var result = new List<CallenderDay>();
-                bool isFound = false;
-                foreach (var d in Days)
-                {
-                    if (d.Equals(_period.From)) isFound = true;
-                    if (isFound) result.Add(d);
-                    if (d.Equals(_period.To)) return result;
-                }
-                return result;
-            }
-        }
-
-        internal void SetFilter(Period period)
-        {
-            _period = period;
-        }
 
         internal int GetDaysOfMonth(int year, int month)
         {

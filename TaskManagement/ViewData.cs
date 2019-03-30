@@ -4,7 +4,6 @@ namespace TaskManagement
 {
     internal class ViewData
     {
-        public AppData Filtered { get; }
         private Filter _filter;
         public AppData Original { get; }
 
@@ -18,13 +17,12 @@ namespace TaskManagement
         internal void SetFilter(Filter filter)
         {
             _filter = filter;
-            Original.WorkItems.SetFilter(filter.WorkItem);
-            Original.Callender.SetFilter(filter.Period);
         }
 
         internal int GetDaysCount()
         {
-            return Original.Callender.FilteredDays.Count;
+            if (_filter == null || _filter.Period == null) return Original.Callender.Days.Count;
+            return _filter.Period.Days.Count;
         }
 
         internal Members GetFilteredMembers()
@@ -42,12 +40,30 @@ namespace TaskManagement
 
         internal WorkItems GetFilteredWorkItems()
         {
-            return Original.WorkItems;
+            if (_filter == null) return Original.WorkItems;
+            var filteredMembers = GetFilteredMembers();
+            var period = GetFilteredDays();
+            var result = new WorkItems();
+            foreach (var w in Original.WorkItems)
+            {
+                //if(w.)
+            }
+            return result;
         }
 
         internal List<CallenderDay> GetFilteredDays()
         {
-            return Original.Callender.FilteredDays;
+            if (_filter == null) return Original.Callender.Days;
+            if (_filter.Period == null) return Original.Callender.Days;
+            var result = new List<CallenderDay>();
+            bool isFound = false;
+            foreach (var d in Original.Callender.Days)
+            {
+                if (d.Equals(_filter.Period.From)) isFound = true;
+                if (isFound) result.Add(d);
+                if (d.Equals(_filter.Period.To)) return result;
+            }
+            return result;
         }
     }
 }

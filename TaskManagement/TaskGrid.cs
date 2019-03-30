@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Text.RegularExpressions;
 
 namespace TaskManagement
 {
@@ -11,7 +10,6 @@ namespace TaskManagement
         private Dictionary<Member, int> _memberToCol = new Dictionary<Member, int>();
         private Dictionary<CallenderDay, int> _dayToRow = new Dictionary<CallenderDay, int>();
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
-        private WorkItems _workItems;
         private ColorConditions _colorConditions;
 
         public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font)
@@ -26,7 +24,6 @@ namespace TaskManagement
             _grid.ColCount = viewData.GetFilteredMembers().Count + Callender.ColCount;
             SetColWidth(g, pageBounds);
 
-            _workItems = viewData.GetFilteredWorkItems();
             _colorConditions = viewData.ColorConditions;
         }
 
@@ -84,7 +81,7 @@ namespace TaskManagement
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
             if (member == null || day == null) return null;
-            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilteredMembers(), viewData.GetFilteredDays()))
+            foreach (var wi in viewData.Original.WorkItems)
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
                 if (!wi.Period.Contains(day)) continue;
@@ -189,7 +186,7 @@ namespace TaskManagement
 
         private void DrawWorkItems(ViewData viewData)
         {
-            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilteredMembers(), viewData.GetFilteredDays()))
+            foreach (var wi in viewData.GetFilteredWorkItems())
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString());

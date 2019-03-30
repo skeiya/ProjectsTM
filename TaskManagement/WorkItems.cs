@@ -2,51 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace TaskManagement
 {
-    class WorkItems
+    class WorkItems : IEnumerable<WorkItem>
     {
-
         private List<WorkItem> _items = new List<WorkItem>();
-        private string _filter;
 
         internal void Add(WorkItem wi)
         {
             _items.Add(wi);
-        }
-
-        internal void SetFilter(string filter)
-        {
-            _filter = filter;
-        }
-
-        public List<WorkItem> GetWorkItems(Members members, List<CallenderDay> days)
-        {
-            var filteredList = new List<WorkItem>();
-            if (!string.IsNullOrEmpty(_filter))
-            {
-                filteredList = _items.Where((i) => Regex.IsMatch(i.ToString(), _filter)).ToList();
-            }
-            else
-            {
-                filteredList = _items;
-            }
-            if (members != null)
-            {
-                filteredList = filteredList.Where((i) => members.Contains(i.AssignedMember)).ToList();
-            }
-            if (days != null)
-            {
-                filteredList = filteredList.Where((i) => days.Contains(i.Period.From) && days.Contains(i.Period.To)).ToList();
-            }
-            return filteredList;
-        }
-
-        internal void SetFilter(object workItem)
-        {
-            throw new NotImplementedException();
         }
 
         internal int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project)
@@ -64,9 +29,14 @@ namespace TaskManagement
             return result;
         }
 
-        internal void Add(object workItem)
+        public IEnumerator<WorkItem> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _items.GetEnumerator();
         }
     }
 }
