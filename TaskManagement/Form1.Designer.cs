@@ -124,6 +124,7 @@ namespace TaskManagement
             // 
             // ToolStripMenuItemPrint
             // 
+            this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
             this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(333, 38);
             this.ToolStripMenuItemPrint.Text = "印刷";
@@ -139,8 +140,9 @@ namespace TaskManagement
             // 
             this.フィルターToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemFilterSetting});
+            this.フィルターToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
             this.フィルターToolStripMenuItem.Name = "フィルターToolStripMenuItem";
-            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(110, 36);
+            this.フィルターToolStripMenuItem.Size = new System.Drawing.Size(142, 36);
             this.フィルターToolStripMenuItem.Text = "フィルター";
             // 
             // ToolStripMenuItemFilterSetting
@@ -154,8 +156,9 @@ namespace TaskManagement
             // 
             this.カラーToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemColorSetting});
+            this.カラーToolStripMenuItem.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.カラーToolStripMenuItem.Name = "カラーToolStripMenuItem";
-            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(77, 36);
+            this.カラーToolStripMenuItem.Size = new System.Drawing.Size(109, 36);
             this.カラーToolStripMenuItem.Text = "カラー";
             // 
             // ToolStripMenuItemColorSetting
