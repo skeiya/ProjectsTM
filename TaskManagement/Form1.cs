@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace TaskManagement
     {
         private ViewData _viewData = new ViewData(new AppData());
         private FilterForm _filterForm;
+        private int _fontSize = 4;
 
         public Form1()
         {
@@ -65,14 +67,14 @@ namespace TaskManagement
         TaskGrid _grid;
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, new Font(this.Font.FontFamily, _fontSize));
             _grid.Draw(_viewData);
             taskDrawAria.Invalidate();
         }
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, this.Font);
+            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, new Font(this.Font.FontFamily, _fontSize));
             grid.Draw(_viewData);
         }
 
@@ -193,6 +195,16 @@ namespace TaskManagement
             {
                 dlg.ShowDialog();
             }
+        }
+
+        private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
+        {
+            _fontSize++;
+        }
+
+        private void フォント小ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _fontSize--;
         }
     }
 }

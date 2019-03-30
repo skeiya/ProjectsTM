@@ -14,7 +14,7 @@ namespace TaskManagement
 
         public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font)
         {
-            _grid = new CommonGrid(g, new Font(font.FontFamily, 4));
+            _grid = new CommonGrid(g, font);
 
             UpdateRowColMap(viewData);
 

@@ -49,6 +49,8 @@ namespace TaskManagement
             this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemLargerFont = new System.Windows.Forms.ToolStripMenuItem();
+            this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -173,7 +175,9 @@ namespace TaskManagement
             // 
             this.表示ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemFilter,
-            this.ToolStripMenuItemColor});
+            this.ToolStripMenuItemColor,
+            this.ToolStripMenuItemLargerFont,
+            this.フォント小ToolStripMenuItem});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
             this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.表示ToolStripMenuItem.Text = "表示";
@@ -193,6 +197,20 @@ namespace TaskManagement
             this.ToolStripMenuItemColor.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemColor.Text = "色";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
+            // 
+            // ToolStripMenuItemLargerFont
+            // 
+            this.ToolStripMenuItemLargerFont.Name = "ToolStripMenuItemLargerFont";
+            this.ToolStripMenuItemLargerFont.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemLargerFont.Text = "フォント(→大)";
+            this.ToolStripMenuItemLargerFont.Click += new System.EventHandler(this.ToolStripMenuItemLargerFont_Click);
+            // 
+            // フォント小ToolStripMenuItem
+            // 
+            this.フォント小ToolStripMenuItem.Name = "フォント小ToolStripMenuItem";
+            this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
+            this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -234,6 +252,8 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem 表示ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFilter;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColor;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargerFont;
+        private System.Windows.Forms.ToolStripMenuItem フォント小ToolStripMenuItem;
     }
 }
 
