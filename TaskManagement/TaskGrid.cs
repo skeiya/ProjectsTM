@@ -63,7 +63,7 @@ namespace TaskManagement
         private void UpdateRowColMap(ViewData viewData)
         {
             int c = Callender.ColCount;
-            foreach (var m in viewData.GetFilterdMembers())
+            foreach (var m in viewData.GetFilteredMembers())
             {
                 _colToMember.Add(c, m);
                 _memberToCol.Add(m, c);
@@ -83,7 +83,7 @@ namespace TaskManagement
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
-            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilterdMembers(), viewData.GetFilteredDays()))
+            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilteredMembers(), viewData.GetFilteredDays()))
             {
                 if (!wi.AssignedMember.Equals(member)) continue;
                 if (!wi.Period.Contains(day)) continue;
@@ -188,7 +188,7 @@ namespace TaskManagement
 
         private void DrawWorkItems(ViewData viewData)
         {
-            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilterdMembers(), viewData.GetFilteredDays()))
+            foreach (var wi in _workItems.GetWorkItems(viewData.GetFilteredMembers(), viewData.GetFilteredDays()))
             {
                 var bounds = GetBounds(wi.Period, wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString());

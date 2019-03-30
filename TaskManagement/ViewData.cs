@@ -6,6 +6,7 @@ namespace TaskManagement
     internal class ViewData
     {
         public AppData Filtered { get; }
+        private Filter _filter;
         public AppData Original { get; }
 
         public ColorConditions ColorConditions = new ColorConditions();
@@ -23,9 +24,9 @@ namespace TaskManagement
 
         internal void SetFilter(Filter filter)
         {
+            _filter = filter;
             Original.WorkItems.SetFilter(filter.WorkItem);
             Original.Callender.SetFilter(filter.Period);
-            //Original.Members.SetFilter(filter.Members);
         }
 
         internal int GetDaysCount()
@@ -35,17 +36,13 @@ namespace TaskManagement
 
         internal Members GetFilteredMembers()
         {
+            if (_filter != null && _filter.Members != null) return _filter.Members;
             return Original.Members;
         }
 
         internal WorkItems GetFilteredWorkItems()
         {
             return Original.WorkItems;
-        }
-
-        internal Members GetFilterdMembers()
-        {
-            return Original.Members;
         }
 
         internal List<CallenderDay> GetFilteredDays()

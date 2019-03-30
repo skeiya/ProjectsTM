@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -14,13 +7,17 @@ namespace TaskManagement
     {
         private IPeriodCalculator _callender;
 
-        public List<Member> FilterMembers { get; internal set; }
         public Filter Filter { get; internal set; }
 
-        public FilterForm(Members members, IPeriodCalculator callender)
+        public FilterForm(Members fullMembers, IPeriodCalculator callender)
         {
             InitializeComponent();
             _callender = callender;
+
+            foreach (var m in fullMembers)
+            {
+                checkedListBox1.Items.Add(m);
+            }
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -57,7 +54,12 @@ namespace TaskManagement
 
         private Members GetMembersFilter()
         {
-            return null;
+            var result = new Members();
+            foreach(var c in checkedListBox1.CheckedItems)
+            {
+                if (c is Member m) result.Add(m);
+            }
+            return result;
         }
     }
 }

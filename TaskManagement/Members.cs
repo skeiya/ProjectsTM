@@ -29,11 +29,6 @@ namespace TaskManagement
             return _members.GetEnumerator();
         }
 
-        internal void SetFilter(object members)
-        {
-            throw new NotImplementedException();
-        }
-
         public static int RowCount => 2;
 
         internal void SetFilter(List<Member> filterMembers)
