@@ -58,7 +58,6 @@
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(200, 31);
             this.textBoxFrom.TabIndex = 1;
-            this.textBoxFrom.Text = "2019/6/1";
             // 
             // textBoxTo
             // 
@@ -66,7 +65,6 @@
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(200, 31);
             this.textBoxTo.TabIndex = 1;
-            this.textBoxTo.Text = "2019/8/1";
             // 
             // label2
             // 
