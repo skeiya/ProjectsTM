@@ -5,13 +5,13 @@ namespace TaskManagement
     internal class ViewData
     {
         private Filter _filter;
-        public AppData Original { get; }
+        public AppData Original { get; private set; }
 
         public ColorConditions ColorConditions = new ColorConditions();
 
-        public ViewData()
+        public ViewData(AppData appData)
         {
-            Original = new AppData();
+            Original = appData;
         }
 
         internal void SetFilter(Filter filter)
@@ -27,9 +27,16 @@ namespace TaskManagement
 
         internal Members GetFilteredMembers()
         {
-            if (_filter == null) return Original.Members;
-            if (_filter.FilteringMembers == null) return Original.Members;
             var result = new Members();
+            if (_filter == null || _filter.FilteringMembers == null)
+            {
+                foreach(var m in this.Original.Members)
+                {
+                    result.Add(m);
+                }
+                return result;
+            }
+
             foreach (var m in Original.Members)
             {
                 if (_filter.FilteringMembers.Contain(m)) continue;

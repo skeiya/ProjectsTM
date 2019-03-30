@@ -37,7 +37,8 @@ namespace TaskManagement
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.開くToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@ namespace TaskManagement
             this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -96,20 +96,28 @@ namespace TaskManagement
             // ToolStripMenuItemFile
             // 
             this.ToolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.開くToolStripMenuItem,
-            this.ToolStripMenuItemImportOldFile,
-            this.ToolStripMenuItemExportRS,
+            this.ToolStripMenuItemOpen,
+            this.ToolStripMenuItemSave,
             this.ToolStripMenuItemPrint,
-            this.ToolStripMenuItemSave});
+            this.ToolStripMenuItemImportOldFile,
+            this.ToolStripMenuItemExportRS});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
             this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
-            // 開くToolStripMenuItem
+            // ToolStripMenuItemOpen
             // 
-            this.開くToolStripMenuItem.Name = "開くToolStripMenuItem";
-            this.開くToolStripMenuItem.Size = new System.Drawing.Size(333, 38);
-            this.開くToolStripMenuItem.Text = "開く";
+            this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemOpen.Text = "開く";
+            this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
+            // 
+            // ToolStripMenuItemSave
+            // 
+            this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemSave.Text = "保存";
+            this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
             // ToolStripMenuItemImportOldFile
             // 
@@ -144,7 +152,7 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -160,7 +168,7 @@ namespace TaskManagement
             // ToolStripMenuItemFilterSetting
             // 
             this.ToolStripMenuItemFilterSetting.Name = "ToolStripMenuItemFilterSetting";
-            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemFilterSetting.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemFilterSetting.Text = "設定";
             this.ToolStripMenuItemFilterSetting.Click += new System.EventHandler(this.ToolStripMenuItemFilterSetting_Click);
             // 
@@ -176,7 +184,7 @@ namespace TaskManagement
             // ToolStripMenuItemColorSetting
             // 
             this.ToolStripMenuItemColorSetting.Name = "ToolStripMenuItemColorSetting";
-            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(162, 38);
+            this.ToolStripMenuItemColorSetting.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemColorSetting.Text = "設定";
             this.ToolStripMenuItemColorSetting.Click += new System.EventHandler(this.ToolStripMenuItemColorSetting_Click);
             // 
@@ -194,13 +202,6 @@ namespace TaskManagement
             this.statusStrip1.Size = new System.Drawing.Size(1163, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // ToolStripMenuItemSave
-            // 
-            this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(333, 38);
-            this.ToolStripMenuItemSave.Text = "保存";
-            this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
             // Form1
             // 
@@ -230,7 +231,7 @@ namespace TaskManagement
         private System.Windows.Forms.PictureBox taskDrawAria;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFile;
-        private System.Windows.Forms.ToolStripMenuItem 開くToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpen;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemImportOldFile;
         private System.Windows.Forms.ToolStripMenuItem 編集ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem フィルターToolStripMenuItem;

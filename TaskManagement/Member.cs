@@ -34,10 +34,10 @@ namespace TaskManagement
             return FirstName + "/" + LastName + "/" + Company;
         }
 
-        internal Member Parse(string text)
+        internal static Member Parse(string text)
         {
             var words = text.Split('/');
-            if (words.Length == 3) return null;
+            if (words.Length < 3) return null;
             return new Member(words[1], words[0], words[2]);
         }
 

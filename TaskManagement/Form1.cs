@@ -7,7 +7,7 @@ namespace TaskManagement
 {
     public partial class Form1 : Form
     {
-        private ViewData _viewData = new ViewData();
+        private ViewData _viewData = new ViewData(new AppData());
         private FilterForm _filterForm;
 
         public Form1()
@@ -176,6 +176,15 @@ namespace TaskManagement
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 AppDataSerializer.Serialize(dlg.FileName, _viewData.Original);
+            }
+        }
+
+        private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new OpenFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData = new ViewData(AppDataSerializer.Deserialize(dlg.FileName));
             }
         }
     }

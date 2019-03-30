@@ -12,7 +12,6 @@ namespace TaskManagement
 
         public IEnumerator<Member> GetEnumerator()
         {
-            //if (_filterMembers != null) return _filterMembers.GetEnumerator();
             return _members.GetEnumerator();
         }
 
@@ -24,7 +23,6 @@ namespace TaskManagement
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            //if (_filterMembers != null) return _filterMembers.GetEnumerator();
             return _members.GetEnumerator();
         }
 
