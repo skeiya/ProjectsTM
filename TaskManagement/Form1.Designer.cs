@@ -34,7 +34,6 @@ namespace TaskManagement
             this.printDocument = new System.Drawing.Printing.PrintDocument();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.label1 = new System.Windows.Forms.Label();
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +47,7 @@ namespace TaskManagement
             this.カラーToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemColorSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -66,26 +66,13 @@ namespace TaskManagement
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(754, 635);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 24);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
-            // 
             // taskDrawAria
             // 
-            this.taskDrawAria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskDrawAria.Location = new System.Drawing.Point(13, 45);
+            this.taskDrawAria.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.taskDrawAria.Location = new System.Drawing.Point(0, 40);
             this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1139, 560);
+            this.taskDrawAria.Size = new System.Drawing.Size(1163, 648);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             // 
@@ -184,12 +171,21 @@ namespace TaskManagement
             this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 666);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1163, 22);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1163, 688);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.taskDrawAria);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -210,7 +206,6 @@ namespace TaskManagement
         private System.Windows.Forms.PrintDialog printDialog1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.PictureBox taskDrawAria;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFile;
         private System.Windows.Forms.ToolStripMenuItem 開くToolStripMenuItem;
@@ -223,6 +218,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemPrint;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColorSetting;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 

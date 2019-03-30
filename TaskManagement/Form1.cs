@@ -59,7 +59,7 @@ namespace TaskManagement
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
-            label1.Text = wi.ToString();
+            statusStrip1.Text = wi.ToString();
         }
 
         TaskGrid _grid;
