@@ -32,15 +32,15 @@
             this.printDocument = new System.Drawing.Printing.PrintDocument();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.taskDrawAria = new System.Windows.Forms.PictureBox();
             this.buttonPrintPreview = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonColorSetting = new System.Windows.Forms.Button();
             this.buttonImportCSV = new System.Windows.Forms.Button();
-            this.buttonFilter = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.buttonFilter = new System.Windows.Forms.Button();
+            this.taskDrawAria = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,18 +57,6 @@
             this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
-            // 
-            // taskDrawAria
-            // 
-            this.taskDrawAria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskDrawAria.Location = new System.Drawing.Point(13, 12);
-            this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1573, 724);
-            this.taskDrawAria.TabIndex = 1;
-            this.taskDrawAria.TabStop = false;
             // 
             // buttonPrintPreview
             // 
@@ -117,12 +105,12 @@
             // buttonColorSetting
             // 
             this.buttonColorSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonColorSetting.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.buttonColorSetting.Location = new System.Drawing.Point(633, 752);
             this.buttonColorSetting.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.buttonColorSetting.Name = "buttonColorSetting";
-            this.buttonColorSetting.Size = new System.Drawing.Size(147, 46);
+            this.buttonColorSetting.Size = new System.Drawing.Size(46, 46);
             this.buttonColorSetting.TabIndex = 6;
-            this.buttonColorSetting.Text = "色設定...";
             this.buttonColorSetting.UseVisualStyleBackColor = true;
             this.buttonColorSetting.Click += new System.EventHandler(this.buttonColorSetting_Click);
             // 
@@ -138,17 +126,6 @@
             this.buttonImportCSV.UseVisualStyleBackColor = true;
             this.buttonImportCSV.Click += new System.EventHandler(this.ButtonImportCSV_Click);
             // 
-            // buttonFilter
-            // 
-            this.buttonFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonFilter.Location = new System.Drawing.Point(786, 760);
-            this.buttonFilter.Name = "buttonFilter";
-            this.buttonFilter.Size = new System.Drawing.Size(124, 40);
-            this.buttonFilter.TabIndex = 8;
-            this.buttonFilter.Text = "フィルター";
-            this.buttonFilter.UseVisualStyleBackColor = true;
-            this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
-            // 
             // buttonExport
             // 
             this.buttonExport.Location = new System.Drawing.Point(528, 744);
@@ -158,6 +135,29 @@
             this.buttonExport.Text = "RS";
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            // 
+            // buttonFilter
+            // 
+            this.buttonFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
+            this.buttonFilter.Location = new System.Drawing.Point(694, 751);
+            this.buttonFilter.Name = "buttonFilter";
+            this.buttonFilter.Size = new System.Drawing.Size(46, 46);
+            this.buttonFilter.TabIndex = 8;
+            this.buttonFilter.UseVisualStyleBackColor = true;
+            this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
+            // 
+            // taskDrawAria
+            // 
+            this.taskDrawAria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.taskDrawAria.Location = new System.Drawing.Point(13, 12);
+            this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.taskDrawAria.Name = "taskDrawAria";
+            this.taskDrawAria.Size = new System.Drawing.Size(1573, 724);
+            this.taskDrawAria.TabIndex = 1;
+            this.taskDrawAria.TabStop = false;
             // 
             // Form1
             // 
