@@ -204,6 +204,7 @@ namespace TaskManagement
 
         private void フォント小ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (_fontSize <= 1) return;
             _fontSize--;
         }
     }

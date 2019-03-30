@@ -201,14 +201,16 @@ namespace TaskManagement
             // ToolStripMenuItemLargerFont
             // 
             this.ToolStripMenuItemLargerFont.Name = "ToolStripMenuItemLargerFont";
-            this.ToolStripMenuItemLargerFont.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemLargerFont.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this.ToolStripMenuItemLargerFont.Size = new System.Drawing.Size(328, 38);
             this.ToolStripMenuItemLargerFont.Text = "フォント(→大)";
             this.ToolStripMenuItemLargerFont.Click += new System.EventHandler(this.ToolStripMenuItemLargerFont_Click);
             // 
             // フォント小ToolStripMenuItem
             // 
             this.フォント小ToolStripMenuItem.Name = "フォント小ToolStripMenuItem";
-            this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.フォント小ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
             this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
             this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
             // 
