@@ -63,6 +63,16 @@ namespace TaskManagement.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap icon_129150_48 {
+            get {
+                object obj = ResourceManager.GetObject("icon_129150_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_filter_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8_filter_24", resourceCulture);

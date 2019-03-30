@@ -130,5 +130,8 @@
   <ItemGroup>
     <None Include="Properties\icons8-swatch-48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\icon_129150_48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

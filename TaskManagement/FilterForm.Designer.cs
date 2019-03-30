@@ -132,7 +132,7 @@
             // 
             this.buttonClearWorkItem.Location = new System.Drawing.Point(300, 53);
             this.buttonClearWorkItem.Name = "buttonClearWorkItem";
-            this.buttonClearWorkItem.Size = new System.Drawing.Size(85, 30);
+            this.buttonClearWorkItem.Size = new System.Drawing.Size(85, 31);
             this.buttonClearWorkItem.TabIndex = 5;
             this.buttonClearWorkItem.Text = "クリア";
             this.buttonClearWorkItem.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             // 
             this.buttonClearPeriod.Location = new System.Drawing.Point(300, 149);
             this.buttonClearPeriod.Name = "buttonClearPeriod";
-            this.buttonClearPeriod.Size = new System.Drawing.Size(85, 30);
+            this.buttonClearPeriod.Size = new System.Drawing.Size(85, 31);
             this.buttonClearPeriod.TabIndex = 5;
             this.buttonClearPeriod.Text = "クリア";
             this.buttonClearPeriod.UseVisualStyleBackColor = true;
@@ -150,9 +150,9 @@
             // 
             // buttonClearMembers
             // 
-            this.buttonClearMembers.Location = new System.Drawing.Point(300, 266);
+            this.buttonClearMembers.Location = new System.Drawing.Point(300, 269);
             this.buttonClearMembers.Name = "buttonClearMembers";
-            this.buttonClearMembers.Size = new System.Drawing.Size(85, 30);
+            this.buttonClearMembers.Size = new System.Drawing.Size(85, 31);
             this.buttonClearMembers.TabIndex = 5;
             this.buttonClearMembers.Text = "クリア";
             this.buttonClearMembers.UseVisualStyleBackColor = true;
@@ -162,8 +162,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 887);
-            this.ControlBox = false;
+            this.ClientSize = new System.Drawing.Size(399, 887);
             this.Controls.Add(this.buttonClearMembers);
             this.Controls.Add(this.buttonClearPeriod);
             this.Controls.Add(this.buttonClearWorkItem);
@@ -179,6 +178,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FilterForm";
+            this.ShowIcon = false;
             this.Text = "FilterForm";
             this.ResumeLayout(false);
             this.PerformLayout();
