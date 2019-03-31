@@ -27,6 +27,9 @@ namespace TaskManagement
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
+
+            statusStrip1.Items.Add("");
+//            statusStrip1.Items["cur"].Text = "";
         }
 
         WorkItem _draggingWorkItem = null;
@@ -65,7 +68,7 @@ namespace TaskManagement
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
-            statusStrip1.Text = wi.ToString();
+            statusStrip1.Items[0].Text = wi.ToString();
         }
 
         TaskGrid _grid;
@@ -148,7 +151,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditWorkItemForm(null,_viewData.Original.Callender))
+            using (var dlg = new EditWorkItemForm(null, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem(_viewData.Original.Callender);
