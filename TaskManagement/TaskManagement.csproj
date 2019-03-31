@@ -73,11 +73,11 @@
     </Compile>
     <Compile Include="CsvImportType.cs" />
     <Compile Include="CsvReader.cs" />
-    <Compile Include="EditWorkItem.cs">
+    <Compile Include="EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditWorkItem.Designer.cs">
-      <DependentUpon>EditWorkItem.cs</DependentUpon>
+    <Compile Include="EditWorkItemForm.Designer.cs">
+      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Filter.cs" />
     <Compile Include="FilterForm.cs">
@@ -107,6 +107,7 @@
     <Compile Include="SearchWorkitemForm.Designer.cs">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tags.cs" />
     <Compile Include="TaskGrid.cs" />
     <Compile Include="ViewData.cs" />
     <Compile Include="WorkItem.cs" />
@@ -120,8 +121,8 @@
     <EmbeddedResource Include="CsvImportSelectForm.resx">
       <DependentUpon>CsvImportSelectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditWorkItem.resx">
-      <DependentUpon>EditWorkItem.cs</DependentUpon>
+    <EmbeddedResource Include="EditWorkItemForm.resx">
+      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>

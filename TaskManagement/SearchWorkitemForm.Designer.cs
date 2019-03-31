@@ -42,6 +42,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(775, 340);
             this.listBox1.TabIndex = 0;
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
             // textBoxPattern
             // 

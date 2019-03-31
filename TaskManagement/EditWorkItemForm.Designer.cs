@@ -1,6 +1,6 @@
 ﻿namespace TaskManagement
 {
-    partial class EditWorkItem
+    partial class EditWorkItemForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,15 +37,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.textBoxTags = new System.Windows.Forms.TextBox();
-            this.comboBoxProject = new System.Windows.Forms.ComboBox();
-            this.comboBoxAssignedMemer = new System.Windows.Forms.ComboBox();
             this.textBoxFrom = new System.Windows.Forms.TextBox();
             this.textBoxTo = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.buttonProjectEdit = new System.Windows.Forms.Button();
-            this.buttonEditMembers = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBoxCompany = new System.Windows.Forms.TextBox();
+            this.textBoxProject = new System.Windows.Forms.TextBox();
+            this.textBoxMember = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -62,14 +58,14 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 142);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 24);
+            this.label2.Size = new System.Drawing.Size(130, 24);
             this.label2.TabIndex = 1;
-            this.label2.Text = "担当者";
+            this.label2.Text = "氏/名/所属";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 283);
+            this.label3.Location = new System.Drawing.Point(17, 212);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 24);
             this.label3.TabIndex = 2;
@@ -87,7 +83,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 405);
+            this.label5.Location = new System.Drawing.Point(21, 334);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(45, 24);
             this.label5.TabIndex = 4;
@@ -102,7 +98,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(318, 471);
+            this.button1.Location = new System.Drawing.Point(318, 400);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 43);
             this.button1.TabIndex = 6;
@@ -112,7 +108,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(414, 471);
+            this.button2.Location = new System.Drawing.Point(414, 400);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(138, 43);
             this.button2.TabIndex = 6;
@@ -122,37 +118,21 @@
             // 
             // textBoxTags
             // 
-            this.textBoxTags.Location = new System.Drawing.Point(223, 402);
+            this.textBoxTags.Location = new System.Drawing.Point(223, 331);
             this.textBoxTags.Name = "textBoxTags";
             this.textBoxTags.Size = new System.Drawing.Size(329, 31);
             this.textBoxTags.TabIndex = 7;
             // 
-            // comboBoxProject
-            // 
-            this.comboBoxProject.FormattingEnabled = true;
-            this.comboBoxProject.Location = new System.Drawing.Point(223, 74);
-            this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(234, 32);
-            this.comboBoxProject.TabIndex = 8;
-            // 
-            // comboBoxAssignedMemer
-            // 
-            this.comboBoxAssignedMemer.FormattingEnabled = true;
-            this.comboBoxAssignedMemer.Location = new System.Drawing.Point(223, 139);
-            this.comboBoxAssignedMemer.Name = "comboBoxAssignedMemer";
-            this.comboBoxAssignedMemer.Size = new System.Drawing.Size(234, 32);
-            this.comboBoxAssignedMemer.TabIndex = 9;
-            // 
             // textBoxFrom
             // 
-            this.textBoxFrom.Location = new System.Drawing.Point(223, 280);
+            this.textBoxFrom.Location = new System.Drawing.Point(223, 209);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(329, 31);
             this.textBoxFrom.TabIndex = 7;
             // 
             // textBoxTo
             // 
-            this.textBoxTo.Location = new System.Drawing.Point(223, 343);
+            this.textBoxTo.Location = new System.Drawing.Point(223, 272);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(329, 31);
             this.textBoxTo.TabIndex = 7;
@@ -160,59 +140,35 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(356, 317);
+            this.label6.Location = new System.Drawing.Point(356, 246);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(47, 24);
             this.label6.TabIndex = 10;
             this.label6.Text = "から";
             // 
-            // buttonProjectEdit
+            // textBoxProject
             // 
-            this.buttonProjectEdit.Location = new System.Drawing.Point(464, 71);
-            this.buttonProjectEdit.Name = "buttonProjectEdit";
-            this.buttonProjectEdit.Size = new System.Drawing.Size(88, 39);
-            this.buttonProjectEdit.TabIndex = 11;
-            this.buttonProjectEdit.Text = "編集";
-            this.buttonProjectEdit.UseVisualStyleBackColor = true;
+            this.textBoxProject.Location = new System.Drawing.Point(223, 74);
+            this.textBoxProject.Name = "textBoxProject";
+            this.textBoxProject.Size = new System.Drawing.Size(329, 31);
+            this.textBoxProject.TabIndex = 11;
             // 
-            // buttonEditMembers
+            // textBoxMember
             // 
-            this.buttonEditMembers.Location = new System.Drawing.Point(464, 135);
-            this.buttonEditMembers.Name = "buttonEditMembers";
-            this.buttonEditMembers.Size = new System.Drawing.Size(88, 39);
-            this.buttonEditMembers.TabIndex = 11;
-            this.buttonEditMembers.Text = "編集";
-            this.buttonEditMembers.UseVisualStyleBackColor = true;
-            this.buttonEditMembers.Click += new System.EventHandler(this.Button4_Click);
+            this.textBoxMember.Location = new System.Drawing.Point(223, 139);
+            this.textBoxMember.Name = "textBoxMember";
+            this.textBoxMember.Size = new System.Drawing.Size(329, 31);
+            this.textBoxMember.TabIndex = 12;
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 209);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 24);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "所属";
-            // 
-            // textBoxCompany
-            // 
-            this.textBoxCompany.Location = new System.Drawing.Point(223, 206);
-            this.textBoxCompany.Name = "textBoxCompany";
-            this.textBoxCompany.Size = new System.Drawing.Size(329, 31);
-            this.textBoxCompany.TabIndex = 7;
-            // 
-            // EditWorkItem
+            // EditWorkItemForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 526);
-            this.Controls.Add(this.buttonEditMembers);
-            this.Controls.Add(this.buttonProjectEdit);
+            this.ClientSize = new System.Drawing.Size(571, 465);
+            this.Controls.Add(this.textBoxMember);
+            this.Controls.Add(this.textBoxProject);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBoxAssignedMemer);
-            this.Controls.Add(this.comboBoxProject);
             this.Controls.Add(this.textBoxTo);
-            this.Controls.Add(this.textBoxCompany);
             this.Controls.Add(this.textBoxFrom);
             this.Controls.Add(this.textBoxTags);
             this.Controls.Add(this.button2);
@@ -221,10 +177,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "EditWorkItem";
+            this.Name = "EditWorkItemForm";
             this.Text = "EditWorkItem";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -242,14 +197,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBoxTags;
-        private System.Windows.Forms.ComboBox comboBoxProject;
-        private System.Windows.Forms.ComboBox comboBoxAssignedMemer;
         private System.Windows.Forms.TextBox textBoxFrom;
         private System.Windows.Forms.TextBox textBoxTo;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button buttonProjectEdit;
-        private System.Windows.Forms.Button buttonEditMembers;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxCompany;
+        private System.Windows.Forms.TextBox textBoxProject;
+        private System.Windows.Forms.TextBox textBoxMember;
     }
 }

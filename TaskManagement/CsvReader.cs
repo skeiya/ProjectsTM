@@ -6,7 +6,7 @@ namespace TaskManagement
 {
     class CsvReader
     {
-        private static List<string> ParseTags(string tag)
+        private static Tags ParseTags(string tag)
         {
             var result = new List<string>();
             var words = tag.Split('|');
@@ -15,7 +15,7 @@ namespace TaskManagement
                 if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) continue;
                 result.Add(w);
             }
-            return result;
+            return new Tags(result);
         }
 
         private static Project ParseProject(string tag)

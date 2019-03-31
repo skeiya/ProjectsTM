@@ -7,12 +7,12 @@ namespace TaskManagement
     public class WorkItem
     {
         public Project Project { get; private set; }
-        public List<string> Tags { get; }
-        private string Name;
+        public Tags Tags { get; private set; }
+        public string Name { get; private set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
 
-        public WorkItem(Project project, string name, List<string> tags, Period period, Member assignedMember)
+        public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember)
         {
             this.Project = project;
             this.Name = name;
@@ -21,25 +21,18 @@ namespace TaskManagement
             AssignedMember = assignedMember;
         }
 
-        public override string ToString()
+        public WorkItem()
         {
-            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + GetTagsString() + "][" + Period.ToString() + "d]";
         }
 
-        private string GetTagsString()
+        public override string ToString()
         {
-            if (Tags == null || Tags.Count == 0) return string.Empty;
-            var result = Tags[0];
-            for (int index = 1; index < Tags.Count; index++)
-            {
-                result += "|" + Tags[index];
-            }
-            return result;
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + Period.ToString() + "d]";
         }
 
         internal string ToSerializeString()
         {
-            return Name + "," + Project.ToString() + "," + AssignedMember.ToSerializeString() + "," + GetTagsString() + "," + Period.From.ToString() + "," + Period.To.ToString();
+            return Name + "," + Project.ToString() + "," + AssignedMember.ToSerializeString() + "," + Tags.ToString() + "," + Period.From.ToString() + "," + Period.To.ToString();
         }
 
         internal static WorkItem Parse(string value, Callender callender)
@@ -49,10 +42,19 @@ namespace TaskManagement
             var taskName = words[0];
             var project = new Project(words[1]);
             var member = Member.Parse(words[2]);
-            var tags = words[3].Split('|');
+            var tags = Tags.Parse(words[3]);
             var period = new Period(CallenderDay.Parse(words[4]), CallenderDay.Parse(words[5]), callender);
-            var result = new WorkItem(project, taskName, tags.ToList(), period, member);
+            var result = new WorkItem(project, taskName, tags, period, member);
             return result;
+        }
+
+        internal void Edit(Project project, string v, Period period, Member member, Tags tags)
+        {
+            this.Project = project;
+            this.Name = v;
+            this.Period = period;
+            this.AssignedMember = member;
+            this.Tags = tags;
         }
     }
 }

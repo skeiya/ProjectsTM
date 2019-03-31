@@ -142,10 +142,10 @@ namespace TaskManagement
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditWorkItem(_viewData.Original))
+            using (var dlg = new EditWorkItemForm(null,_viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var wi = dlg.WorkItem;
+                var wi = dlg.GetWorkItem(_viewData.Original.Callender);
                 _viewData.Original.WorkItems.Add(wi);
                 var days = _viewData.Original.Callender.Days;
                 if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
@@ -216,6 +216,16 @@ namespace TaskManagement
                 _searchForm = new SearchWorkitemForm(_viewData);
             }
             if (!_searchForm.Visible) _searchForm.Show(this);
+        }
+
+        private void TaskDrawAria_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var wi = _grid.PickFromPoint(e.Location, _viewData);
+            if (wi == null) return;
+            using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+            }
         }
     }
 }

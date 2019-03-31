@@ -75,5 +75,16 @@ namespace TaskManagement
             _tickCount = 0;
 
         }
+
+        private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var wi = listBox1.SelectedItem as WorkItem;
+            if (wi == null) return;
+            using(var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+
+            }
+        }
     }
 }
