@@ -42,6 +42,7 @@ namespace TaskManagement
             this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.詳細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
             this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,6 @@ namespace TaskManagement
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -147,6 +147,13 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile.Text = "旧ファイルをインポート";
             this.ToolStripMenuItemImportOldFile.Click += new System.EventHandler(this.ToolStripMenuItemImportOldFile_Click);
             // 
+            // ToolStripMenuItemExportRS
+            // 
+            this.ToolStripMenuItemExportRS.Name = "ToolStripMenuItemExportRS";
+            this.ToolStripMenuItemExportRS.Size = new System.Drawing.Size(333, 38);
+            this.ToolStripMenuItemExportRS.Text = "RSファイルをエクスポート";
+            this.ToolStripMenuItemExportRS.Click += new System.EventHandler(this.ToolStripMenuItemExportRS_Click);
+            // 
             // 編集ToolStripMenuItem
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -159,7 +166,7 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -167,7 +174,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -228,13 +235,6 @@ namespace TaskManagement
             this.statusStrip1.Size = new System.Drawing.Size(1163, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // ToolStripMenuItemExportRS
-            // 
-            this.ToolStripMenuItemExportRS.Name = "ToolStripMenuItemExportRS";
-            this.ToolStripMenuItemExportRS.Size = new System.Drawing.Size(333, 38);
-            this.ToolStripMenuItemExportRS.Text = "RSファイルをエクスポート";
-            this.ToolStripMenuItemExportRS.Click += new System.EventHandler(this.ToolStripMenuItemExportRS_Click);
             // 
             // Form1
             // 
