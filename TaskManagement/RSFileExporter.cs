@@ -13,8 +13,8 @@ namespace TaskManagement
         public static void Export(AppData appData)
         {
             var members = GetMembers(appData.Members);
-            var projects = GetProjects(appData.Projects);
             var months = GetMonths(appData.Callender);
+            var projects = GetProjects(appData.WorkItems);
             var rowCount = members.Count * projects.Count;
             var colCount = months.Count + 3;
             var csv = new string[rowCount, colCount];
@@ -63,12 +63,12 @@ namespace TaskManagement
         }
 
 
-        private static List<Project> GetProjects(Projects projects)
+        private static List<Project> GetProjects(WorkItems workItems)
         {
             var result = new List<Project>();
-            foreach (var p in projects)
+            foreach (var wi in workItems)
             {
-                result.Add(p.Value);
+                if (!result.Contains(wi.Project)) result.Add(wi.Project);
             }
             return result;
         }
@@ -102,7 +102,7 @@ namespace TaskManagement
 
         private static string GetRatio(int year, int month, Member member, Project project, Callender callender, WorkItems workItems)
         {
-            return string.Format("{0:0.0}", (float)GetTargetDays(year, month, member, project, workItems) / (float)GetTotalDays(year, month, callender));
+            return string.Format("{0:f1}", (float)GetTargetDays(year, month, member, project, workItems) / (float)GetTotalDays(year, month, callender));
         }
 
         private static int GetTotalDays(int year, int month, Callender callender)

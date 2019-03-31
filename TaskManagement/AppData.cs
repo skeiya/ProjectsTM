@@ -10,7 +10,6 @@ namespace TaskManagement
         public Callender Callender = new Callender();
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
-        public Projects Projects = new Projects();
 
         public AppData()
         {

@@ -31,14 +31,14 @@ namespace TaskManagement
 
         internal string ToSerializeString()
         {
-            return FirstName + "/" + LastName + "/" + Company;
+            return LastName + "/" + FirstName + "/" + Company;
         }
 
         internal static Member Parse(string text)
         {
             var words = text.Split('/');
             if (words.Length < 3) return null;
-            return new Member(words[1], words[0], words[2]);
+            return new Member(words[0], words[1], words[2]);
         }
 
         public override string ToString()
