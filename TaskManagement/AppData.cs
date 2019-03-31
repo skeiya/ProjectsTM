@@ -1,4 +1,6 @@
-﻿namespace TaskManagement
+﻿using System.Collections.Generic;
+
+namespace TaskManagement
 {
     public class AppData
     {
@@ -17,6 +19,15 @@
             if (!Callender.Equals(target.Callender)) return false;
             if (!Members.Equals(target.Members)) return false;
             return WorkItems.Equals(target.WorkItems);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1155948461;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Callender>.Default.GetHashCode(Callender);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Members>.Default.GetHashCode(Members);
+            hashCode = hashCode * -1521134295 + EqualityComparer<WorkItems>.Default.GetHashCode(WorkItems);
+            return hashCode;
         }
 
         //private void SetupDummyData()

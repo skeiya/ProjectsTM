@@ -1,4 +1,6 @@
-﻿namespace TaskManagement
+﻿using System.Collections.Generic;
+
+namespace TaskManagement
 {
     public class Project
     {
@@ -13,6 +15,11 @@
         {
             return obj is Project project &&
                    _name == project._name;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1125283371 + EqualityComparer<string>.Default.GetHashCode(_name);
         }
 
         public override string ToString()

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TaskManagement
 {
@@ -36,6 +33,11 @@ namespace TaskManagement
             var target = obj as Tags;
             if (target == null) return false;
             return _tags.SequenceEqual(target._tags);
+        }
+
+        public override int GetHashCode()
+        {
+            return -411299617 + EqualityComparer<List<string>>.Default.GetHashCode(_tags);
         }
     }
 }

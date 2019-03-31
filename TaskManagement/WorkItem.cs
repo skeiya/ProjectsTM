@@ -67,5 +67,16 @@ namespace TaskManagement
             if (!Period.Equals(target.Period)) return false;
             return AssignedMember.Equals(target.AssignedMember);
         }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1729748131;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Project>.Default.GetHashCode(Project);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Tags>.Default.GetHashCode(Tags);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Member>.Default.GetHashCode(AssignedMember);
+            return hashCode;
+        }
     }
 }

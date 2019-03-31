@@ -54,5 +54,10 @@ namespace TaskManagement
             }
             return true;
         }
+
+        public override int GetHashCode()
+        {
+            return 229854969 + EqualityComparer<List<Member>>.Default.GetHashCode(_members);
+        }
     }
 }

@@ -46,5 +46,13 @@ namespace TaskManagement
                    EqualityComparer<CallenderDay>.Default.Equals(From, period.From) &&
                    EqualityComparer<CallenderDay>.Default.Equals(To, period.To);
         }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1781160927;
+            hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(From);
+            hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(To);
+            return hashCode;
+        }
     }
 }

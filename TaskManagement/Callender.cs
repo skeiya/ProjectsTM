@@ -105,5 +105,10 @@ namespace TaskManagement
             if (Days.Count != target.Days.Count) return false;
             return Days.SequenceEqual(target.Days);
         }
+
+        public override int GetHashCode()
+        {
+            return -1681856198 + EqualityComparer<List<CallenderDay>>.Default.GetHashCode(Days);
+        }
     }
 }

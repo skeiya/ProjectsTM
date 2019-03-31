@@ -46,5 +46,10 @@ namespace TaskManagement
             if (_items.Count != target._items.Count) return false;
             return _items.SequenceEqual(target._items);
         }
+
+        public override int GetHashCode()
+        {
+            return -566117206 + EqualityComparer<List<WorkItem>>.Default.GetHashCode(_items);
+        }
     }
 }
