@@ -42,9 +42,15 @@ namespace TaskManagement
             var curDay = _grid.GetDayFromY(e.Location.Y);
             if (curDay == null) return;
 
-            _draggingWorkItem.AssignedMember = member;
+            if (!_draggingWorkItem.AssignedMember.Equals(member))
+            {
+                _draggingWorkItem.AssignedMember = member;
+            }
             var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
-            _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
+            if (offset != 0)
+            {
+                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
+            }
         }
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)

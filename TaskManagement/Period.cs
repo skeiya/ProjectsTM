@@ -29,7 +29,10 @@ namespace TaskManagement
 
         internal Period ApplyOffset(int offset)
         {
-            return new Period(_periodCalculator.ApplyOffset(From, offset), _periodCalculator.ApplyOffset(To, offset), _periodCalculator);
+            var from = _periodCalculator.ApplyOffset(From, offset);
+            var to = _periodCalculator.ApplyOffset(To, offset);
+            if (from == null || to == null) return this;
+            return new Period(from, to, _periodCalculator);
         }
 
         internal Period Clone()
