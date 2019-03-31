@@ -49,22 +49,22 @@ namespace TaskManagement
             return _colToWidth[col];
         }
 
-        internal void SetRowHeight(int r, float height)
+        public void SetRowHeight(int r, float height)
         {
             _rowToHeight[r] = height;
         }
 
-        internal void SetColWidth(int c, float width)
+        public void SetColWidth(int c, float width)
         {
             _colToWidth[c] = width;
         }
 
-        internal SizeF MeasureString(string s)
+        public SizeF MeasureString(string s)
         {
             return Graphics.MeasureString(s, Font, 100, StringFormat.GenericTypographic);
         }
 
-        internal void DrawString(string s, RectangleF rect)
+        public void DrawString(string s, RectangleF rect)
         {
             Graphics.DrawString(s, Font, Brushes.Black, rect, StringFormat.GenericTypographic);
         }

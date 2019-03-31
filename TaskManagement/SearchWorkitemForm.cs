@@ -18,7 +18,7 @@ namespace TaskManagement
         private System.Timers.Timer _timer = new System.Timers.Timer(100);
         private int _tickCount = 0;
 
-        internal SearchWorkitemForm(ViewData viewData)
+        public SearchWorkitemForm(ViewData viewData)
         {
             InitializeComponent();
 

@@ -30,12 +30,12 @@ namespace TaskManagement
             return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + Period.ToString() + "d]";
         }
 
-        internal string ToSerializeString()
+        public string ToSerializeString()
         {
             return Name + "," + Project.ToString() + "," + AssignedMember.ToSerializeString() + "," + Tags.ToString() + "," + Period.From.ToString() + "," + Period.To.ToString();
         }
 
-        internal static WorkItem Parse(string value, Callender callender)
+        public static WorkItem Parse(string value, Callender callender)
         {
             var words = value.Split(',');
             if (words.Length < 6) return null;
@@ -48,13 +48,24 @@ namespace TaskManagement
             return result;
         }
 
-        internal void Edit(Project project, string v, Period period, Member member, Tags tags)
+        public void Edit(Project project, string v, Period period, Member member, Tags tags)
         {
             this.Project = project;
             this.Name = v;
             this.Period = period;
             this.AssignedMember = member;
             this.Tags = tags;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as WorkItem;
+            if (target == null) return false;
+            if (!Project.Equals(target.Project)) return false;
+            if (!Tags.Equals(target.Tags)) return false;
+            if (!Name.Equals(target.Name)) return false;
+            if (!Period.Equals(target.Period)) return false;
+            return AssignedMember.Equals(target.AssignedMember);
         }
     }
 }

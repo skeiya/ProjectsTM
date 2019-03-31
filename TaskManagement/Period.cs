@@ -22,12 +22,12 @@ namespace TaskManagement
             return _periodCalculator.GetTerm(From, To).ToString();
         }
 
-        internal bool Contains(CallenderDay day)
+        public bool Contains(CallenderDay day)
         {
             return From.LesserThan(day) && day.LesserThan(To);
         }
 
-        internal Period ApplyOffset(int offset)
+        public Period ApplyOffset(int offset)
         {
             var from = _periodCalculator.ApplyOffset(From, offset);
             var to = _periodCalculator.ApplyOffset(To, offset);
@@ -35,9 +35,16 @@ namespace TaskManagement
             return new Period(from, to, _periodCalculator);
         }
 
-        internal Period Clone()
+        public Period Clone()
         {
             return new Period(From, To, _periodCalculator);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Period period &&
+                   EqualityComparer<CallenderDay>.Default.Equals(From, period.From) &&
+                   EqualityComparer<CallenderDay>.Default.Equals(To, period.To);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TaskManagement
             this._parent = parent;
         }
 
-        public ColorCondition ColorCondition { get; internal set; }
+        public ColorCondition ColorCondition { get; private set; }
 
         private void button1_Click(object sender, EventArgs e)
         {

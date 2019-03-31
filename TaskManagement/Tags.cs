@@ -30,5 +30,12 @@ namespace TaskManagement
         {
             return new Tags(text.Split('|').ToList());
         }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Tags;
+            if (target == null) return false;
+            return _tags.SequenceEqual(target._tags);
+        }
     }
 }

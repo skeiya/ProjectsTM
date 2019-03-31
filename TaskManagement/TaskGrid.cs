@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace TaskManagement
 {
-    internal class TaskGrid
+    public class TaskGrid
     {
         private CommonGrid _grid;
         private Dictionary<int, Member> _colToMember = new Dictionary<int, Member>();
@@ -76,7 +76,7 @@ namespace TaskManagement
             }
         }
 
-        internal WorkItem PickFromPoint(PointF point, ViewData viewData)
+        public WorkItem PickFromPoint(PointF point, ViewData viewData)
         {
             var member = GetMemberFromX(point.X);
             var day = GetDayFromY(point.Y);
@@ -124,7 +124,7 @@ namespace TaskManagement
             return null;
         }
 
-        internal RectangleF GetBounds(Period period, Member assignedMember)
+        public RectangleF GetBounds(Period period, Member assignedMember)
         {
             var col = _memberToCol[assignedMember];
             var rowTop = _dayToRow[period.From];
@@ -134,7 +134,7 @@ namespace TaskManagement
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
-        internal void Draw(ViewData appData)
+        public void Draw(ViewData appData)
         {
             DrawCallenderDays();
             DrawTeamMembers();

@@ -8,9 +8,20 @@ using System.Windows.Forms;
 
 namespace TaskManagement
 {
-    class RSFileExporter
+    public class RSFileExporter
     {
         public static void Export(AppData appData)
+        {
+            string result = MakeText(appData);
+
+            using (var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                File.WriteAllText(dlg.FileName, result);
+            }
+        }
+
+        public static string MakeText(AppData appData)
         {
             var members = GetMembers(appData.Members);
             var months = GetMonths(appData.Callender);
@@ -55,13 +66,8 @@ namespace TaskManagement
                 result += Environment.NewLine;
             }
 
-            using (var dlg = new SaveFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                File.WriteAllText(dlg.FileName, result);
-            }
+            return result;
         }
-
 
         private static List<Project> GetProjects(WorkItems workItems)
         {

@@ -61,7 +61,7 @@ namespace TaskManagement
             return new Period(f, t, callender);
         }
 
-        internal static Callender ReadWorkingDays(string fileName)
+        public static Callender ReadWorkingDays(string fileName)
         {
             var result = new Callender();
             using (var r = new StreamReader(fileName))
@@ -76,7 +76,7 @@ namespace TaskManagement
             return result;
         }
 
-        internal static Members ReadMembers(string fileName)
+        public static Members ReadMembers(string fileName)
         {
             var result = new Members();
             var isFirstLine = true;

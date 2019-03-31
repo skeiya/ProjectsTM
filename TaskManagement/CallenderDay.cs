@@ -44,7 +44,7 @@ namespace TaskManagement
             return true;
         }
 
-        internal bool LesserThan(CallenderDay to)
+        public bool LesserThan(CallenderDay to)
         {
             if (Year != to.Year) return Year < to.Year;
             if (Month != to.Month) return Month < to.Month;

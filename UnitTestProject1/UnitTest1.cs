@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaskManagement;
@@ -54,6 +55,53 @@ namespace UnitTestProject1
             var text = "2019/3/10";
             var c = CallenderDay.Parse(text);
             Assert.AreEqual(new CallenderDay(2019, 3, 10), c);
+        }
+
+        [TestMethod]
+        public void LoadFile()
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            using (var reader = new StreamReader(writer.BaseStream))
+            {
+                var orgApp = new AppData();
+                var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
+                var gozzila = new Member("松井", "秀喜", "ヤンキース");
+                orgApp.Members.Add(ichiro);
+                orgApp.Members.Add(gozzila);
+                orgApp.Callender.Add(new CallenderDay(2018, 4, 1));
+                orgApp.Callender.Add(new CallenderDay(2018, 5, 2));
+                orgApp.Callender.Add(new CallenderDay(2018, 6, 3));
+                orgApp.Callender.Add(new CallenderDay(2018, 7, 4));
+                orgApp.Callender.Add(new CallenderDay(2018, 8, 5));
+                orgApp.WorkItems.Add(new WorkItem(
+                    new Project("オープン戦"),
+                    "対エンジェルス",
+                    Tags.Parse("a|b"),
+                    new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2), orgApp.Callender),
+                    ichiro));
+                orgApp.WorkItems.Add(new WorkItem(
+                    new Project("シーズン"),
+                    "対カブス",
+                    Tags.Parse("c|d"),
+                    new Period(new CallenderDay(2018,6,3), new CallenderDay(2018,8,5), orgApp.Callender),
+                    gozzila));
+
+                AppDataSerializer.WriteToStream(orgApp, writer);
+                writer.Flush();
+                stream.Position = 0;
+                var loadedApp = AppDataSerializer.LoadFromStream(out string error, reader);
+                Assert.AreEqual(orgApp, loadedApp);
+            }
+        }
+
+        [TestMethod]
+        public void RSExport()
+        {
+            var appData = new AppData();
+            var result = RSFileExporter.MakeText(appData);
+            var expect = "";
+            Assert.AreEqual(expect, result);
         }
     }
 }

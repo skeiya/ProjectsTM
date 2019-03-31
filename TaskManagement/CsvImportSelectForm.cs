@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TaskManagement
 {
-    internal partial class CsvImportSelectForm : Form
+    public partial class CsvImportSelectForm : Form
     {
         public CsvImportSelectForm(bool workItemSelectable)
         {

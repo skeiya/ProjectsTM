@@ -29,12 +29,12 @@ namespace TaskManagement
             }
         }
 
-        internal string ToSerializeString()
+        public string ToSerializeString()
         {
             return LastName + "/" + FirstName + "/" + Company;
         }
 
-        internal static Member Parse(string text)
+        public static Member Parse(string text)
         {
             var words = text.Split('/');
             if (words.Length < 3) return null;

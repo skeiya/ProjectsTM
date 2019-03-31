@@ -9,8 +9,8 @@
             FilteringMembers = filteredMembers;
         }
 
-        public Members FilteringMembers { get; internal set; }
-        public Period Period { get; internal set; }
-        public string WorkItem { get; internal set; }
+        public Members FilteringMembers { get; private set; }
+        public Period Period { get; private set; }
+        public string WorkItem { get; private set; }
     }
 }

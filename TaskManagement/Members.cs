@@ -15,7 +15,7 @@ namespace TaskManagement
             return _members.GetEnumerator();
         }
 
-        internal void Add(Member member)
+        public void Add(Member member)
         {
             if (_members.Contains(member)) return;
             _members.Add(member);
@@ -29,7 +29,7 @@ namespace TaskManagement
         public static int RowCount => 2;
 
 
-        internal bool Contain(Member m)
+        public bool Contain(Member m)
         {
             foreach(var f in _members)
             {
@@ -38,9 +38,21 @@ namespace TaskManagement
             return false;
         }
 
-        internal bool IsEmpty()
+        public bool IsEmpty()
         {
             return _members == null || _members.Count == 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Members;
+            if (target == null) return false;
+            if (_members.Count != target._members.Count) return false;
+            for (int index = 0; index < _members.Count; index++)
+            {
+                if (!_members[index].Equals(target._members[index])) return false;
+            }
+            return true;
         }
     }
 }

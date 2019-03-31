@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace TaskManagement
 {
-    internal partial class EditWorkItemForm : Form
+    public partial class EditWorkItemForm : Form
     {
         private readonly WorkItem _wi;
         private readonly Callender _callender;

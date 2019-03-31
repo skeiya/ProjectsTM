@@ -2,7 +2,7 @@
 
 namespace TaskManagement
 {
-    internal class ViewData
+    public class ViewData
     {
         private Filter _filter;
         public AppData Original { get; private set; }
@@ -14,18 +14,18 @@ namespace TaskManagement
             Original = appData;
         }
 
-        internal void SetFilter(Filter filter)
+        public void SetFilter(Filter filter)
         {
             _filter = filter;
         }
 
-        internal int GetDaysCount()
+        public int GetDaysCount()
         {
             if (_filter == null || _filter.Period == null) return Original.Callender.Days.Count;
             return _filter.Period.Days.Count;
         }
 
-        internal Members GetFilteredMembers()
+        public Members GetFilteredMembers()
         {
             var result = new Members();
             if (_filter == null || _filter.FilteringMembers == null)
@@ -45,7 +45,7 @@ namespace TaskManagement
             return result;
         }
 
-        internal WorkItems GetFilteredWorkItems()
+        public WorkItems GetFilteredWorkItems()
         {
             if (_filter == null) return Original.WorkItems;
             var filteredMembers = GetFilteredMembers();
@@ -58,7 +58,7 @@ namespace TaskManagement
             return result;
         }
 
-        internal List<CallenderDay> GetFilteredDays()
+        public List<CallenderDay> GetFilteredDays()
         {
             if (_filter == null) return Original.Callender.Days;
             if (_filter.Period == null) return Original.Callender.Days;
@@ -73,7 +73,7 @@ namespace TaskManagement
             return result;
         }
 
-        internal void UpdateCallenderAndMembers(WorkItem wi)
+        public void UpdateCallenderAndMembers(WorkItem wi)
         {
             var days = Original.Callender.Days;
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);

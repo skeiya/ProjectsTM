@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
-namespace TaskManagement
+﻿namespace TaskManagement
 {
-    internal class AppData
+    public class AppData
     {
         public Callender Callender = new Callender();
         public Members Members = new Members();
@@ -13,6 +8,15 @@ namespace TaskManagement
 
         public AppData()
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as AppData;
+            if (target == null) return false;
+            if (!Callender.Equals(target.Callender)) return false;
+            if (!Members.Equals(target.Members)) return false;
+            return WorkItems.Equals(target.WorkItems);
         }
 
         //private void SetupDummyData()

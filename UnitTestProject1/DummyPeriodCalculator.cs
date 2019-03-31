@@ -3,7 +3,7 @@ using TaskManagement;
 
 namespace UnitTestProject1
 {
-    internal class DummyPeriodCalculator : IPeriodCalculator
+    public class DummyPeriodCalculator : IPeriodCalculator
     {
         public CallenderDay ApplyOffset(CallenderDay from, int offset)
         {

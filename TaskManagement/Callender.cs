@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TaskManagement
 {
-    internal class Callender : IPeriodCalculator
+    public class Callender : IPeriodCalculator
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
 
@@ -21,7 +21,7 @@ namespace TaskManagement
             return term;
         }
 
-        internal void Add(CallenderDay callenderDay)
+        public void Add(CallenderDay callenderDay)
         {
             Days.Add(callenderDay);
         }
@@ -68,7 +68,7 @@ namespace TaskManagement
 
         static public int ColCount => 3;
 
-        internal int GetDaysOfMonth(int year, int month)
+        public int GetDaysOfMonth(int year, int month)
         {
             var count = 0;
             foreach (var d in Days)
@@ -93,9 +93,17 @@ namespace TaskManagement
             return result;
         }
 
-        internal bool IsEmpty()
+        public bool IsEmpty()
         {
             return Days == null || Days.Count == 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Callender;
+            if (target == null) return false;
+            if (Days.Count != target.Days.Count) return false;
+            return Days.SequenceEqual(target.Days);
         }
     }
 }

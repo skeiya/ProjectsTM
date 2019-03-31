@@ -20,12 +20,12 @@ namespace TaskManagement
             return _list.GetEnumerator();
         }
 
-        internal void Add(ColorCondition cond)
+        public void Add(ColorCondition cond)
         {
             _list.Add(cond);
         }
 
-        internal Color? GetMatchColor(string input)
+        public Color? GetMatchColor(string input)
         {
             foreach (var c in _list)
             {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace TaskManagement
 {
-    internal partial class FilterForm : Form
+    public partial class FilterForm : Form
     {
         private ViewData _viewData;
 

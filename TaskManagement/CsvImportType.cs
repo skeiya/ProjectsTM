@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagement
 {
-    enum CsvImportType
+    public enum CsvImportType
     {
         WorkingDays,
         Members,
