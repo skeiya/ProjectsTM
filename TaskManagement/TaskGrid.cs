@@ -134,11 +134,11 @@ namespace TaskManagement
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
-        public void Draw(ViewData appData)
+        public void Draw(ViewData viewData)
         {
             DrawCallenderDays();
             DrawTeamMembers();
-            DrawWorkItems(appData);
+            DrawWorkItems(viewData);
         }
 
         private void DrawCallenderDays()
@@ -193,6 +193,12 @@ namespace TaskManagement
                 if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
                 _grid.DrawString(wi.ToString(), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
+            }
+
+            if(viewData.Selected != null)
+            {
+                var bounds = GetBounds(viewData.Selected.Period, viewData.Selected.AssignedMember);
+                _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
             }
         }
     }

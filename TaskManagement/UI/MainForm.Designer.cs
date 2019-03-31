@@ -74,10 +74,10 @@ namespace TaskManagement
             // taskDrawAria
             // 
             this.taskDrawAria.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.taskDrawAria.Location = new System.Drawing.Point(0, 42);
+            this.taskDrawAria.Location = new System.Drawing.Point(0, 40);
             this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1163, 646);
+            this.taskDrawAria.Size = new System.Drawing.Size(1163, 648);
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             this.taskDrawAria.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
@@ -92,7 +92,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 

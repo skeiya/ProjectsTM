@@ -6,6 +6,7 @@ namespace TaskManagement
     {
         private Filter _filter;
         public AppData Original { get; private set; }
+        public WorkItem Selected { get; set; }
 
         public ColorConditions ColorConditions = new ColorConditions();
 
@@ -30,7 +31,7 @@ namespace TaskManagement
             var result = new Members();
             if (_filter == null || _filter.FilteringMembers == null)
             {
-                foreach(var m in this.Original.Members)
+                foreach (var m in this.Original.Members)
                 {
                     result.Add(m);
                 }

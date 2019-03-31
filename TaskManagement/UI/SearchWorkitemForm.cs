@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Timers;
 using System.Text.RegularExpressions;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace TaskManagement
 {
@@ -29,6 +22,14 @@ namespace TaskManagement
 
             this._viewData = viewData;
             _timer.Elapsed += _timer_Elapsed;
+            listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
+        }
+
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var wi = listBox1.SelectedItem as WorkItem;
+            if (wi == null) return;
+            _viewData.Selected = wi;
         }
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)

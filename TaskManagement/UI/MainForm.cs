@@ -78,6 +78,8 @@ namespace TaskManagement
         {
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             if (wi == null) return;
+            _viewData.Selected = wi;
+
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
