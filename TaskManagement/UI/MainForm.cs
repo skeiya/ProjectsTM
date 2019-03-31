@@ -38,7 +38,20 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_draggingWorkItem == null) return;
+            if (_draggingWorkItem == null)
+            {
+                if (_grid == null) return;
+                var wi = _grid.PickFromPoint(e.Location, _viewData);
+                if (wi == null)
+                {
+                    statusStrip1.Items[0].Text = string.Empty;
+                }
+                else
+                {
+                    statusStrip1.Items[0].Text = wi.ToString();
+                }
+                return;
+            }
 
             var member = _grid.GetMemberFromX(e.Location.X);
             if (member == null) return;
@@ -68,7 +81,6 @@ namespace TaskManagement
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
-            statusStrip1.Items[0].Text = wi.ToString();
         }
 
         TaskGrid _grid;
