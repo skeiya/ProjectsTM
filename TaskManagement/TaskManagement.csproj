@@ -51,46 +51,46 @@
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />
     <Compile Include="ColorCondition.cs" />
-    <Compile Include="ColorConditionEditorForm.cs">
+    <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorConditionEditorForm.Designer.cs">
+    <Compile Include="UI\ColorConditionEditorForm.Designer.cs">
       <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorConditions.cs" />
-    <Compile Include="ColorManagementForm.cs">
+    <Compile Include="UI\ColorManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorManagementForm.Designer.cs">
+    <Compile Include="UI\ColorManagementForm.Designer.cs">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CommonGrid.cs" />
-    <Compile Include="CsvImportSelectForm.cs">
+    <Compile Include="UI\CsvImportSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CsvImportSelectForm.Designer.cs">
+    <Compile Include="UI\CsvImportSelectForm.Designer.cs">
       <DependentUpon>CsvImportSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CsvImportType.cs" />
     <Compile Include="CsvReader.cs" />
-    <Compile Include="EditWorkItemForm.cs">
+    <Compile Include="UI\EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditWorkItemForm.Designer.cs">
+    <Compile Include="UI\EditWorkItemForm.Designer.cs">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Filter.cs" />
-    <Compile Include="FilterForm.cs">
+    <Compile Include="UI\FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FilterForm.Designer.cs">
+    <Compile Include="UI\FilterForm.Designer.cs">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IPeriodProvider.cs" />
     <Compile Include="Member.cs" />
@@ -111,23 +111,23 @@
     <Compile Include="ViewData.cs" />
     <Compile Include="WorkItem.cs" />
     <Compile Include="WorkItems.cs" />
-    <EmbeddedResource Include="ColorConditionEditorForm.resx">
+    <EmbeddedResource Include="UI\ColorConditionEditorForm.resx">
       <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ColorManagementForm.resx">
+    <EmbeddedResource Include="UI\ColorManagementForm.resx">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CsvImportSelectForm.resx">
+    <EmbeddedResource Include="UI\CsvImportSelectForm.resx">
       <DependentUpon>CsvImportSelectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditWorkItemForm.resx">
+    <EmbeddedResource Include="UI\EditWorkItemForm.resx">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FilterForm.resx">
+    <EmbeddedResource Include="UI\FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
