@@ -83,7 +83,7 @@ namespace TaskManagement
             using(var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-
+                _viewData.UpdateCallenderAndMembers(wi);
             }
         }
     }

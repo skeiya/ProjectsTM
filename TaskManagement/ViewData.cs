@@ -72,5 +72,14 @@ namespace TaskManagement
             }
             return result;
         }
+
+        internal void UpdateCallenderAndMembers(WorkItem wi)
+        {
+            var days = Original.Callender.Days;
+            if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
+            if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
+            days.Sort();
+            if (!Original.Members.Contain(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+        }
     }
 }

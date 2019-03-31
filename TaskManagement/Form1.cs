@@ -153,11 +153,7 @@ namespace TaskManagement
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem(_viewData.Original.Callender);
                 _viewData.Original.WorkItems.Add(wi);
-                var days = _viewData.Original.Callender.Days;
-                if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
-                if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
-                days.Sort();
-                if (!_viewData.Original.Members.Contain(wi.AssignedMember)) _viewData.Original.Members.Add(wi.AssignedMember);
+                _viewData.UpdateCallenderAndMembers(wi);
             }
         }
 
@@ -231,6 +227,7 @@ namespace TaskManagement
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.UpdateCallenderAndMembers(wi);
             }
         }
     }
