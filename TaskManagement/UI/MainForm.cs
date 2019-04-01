@@ -117,6 +117,10 @@ namespace TaskManagement
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName, callender);
+                foreach (var w in _viewData.Original.WorkItems) // TODO 暫定
+                {
+                    _viewData.UpdateCallenderAndMembers(w);
+                }
             }
         }
 
@@ -131,7 +135,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
-            var workItemImportable = !_viewData.Original.Callender.IsEmpty() && _viewData.Original.Members.IsEmpty();
+            var workItemImportable = !_viewData.Original.Callender.IsEmpty() && !_viewData.Original.Members.IsEmpty();
             using (var dlg = new CsvImportSelectForm(workItemImportable))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
