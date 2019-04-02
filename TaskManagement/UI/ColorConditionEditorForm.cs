@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -24,16 +18,8 @@ namespace TaskManagement
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                _parent.Visible = false;
-                if (colorDialog1.ShowDialog() != DialogResult.OK) return;
-                SetColor(colorDialog1.Color);
-            }
-            finally
-            {
-                _parent.Visible = true;
-            }
+            if (colorDialog1.ShowDialog() != DialogResult.OK) return;
+            SetColor(colorDialog1.Color);
         }
 
         private void SetColor(Color color)

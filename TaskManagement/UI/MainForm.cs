@@ -27,9 +27,20 @@ namespace TaskManagement
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
+            this.taskDrawAria.Resize += TaskDrawAria_Resize;
+            _viewData.FilterChanged += _viewData_FilterChanged;
 
             statusStrip1.Items.Add("");
-//            statusStrip1.Items["cur"].Text = "";
+        }
+
+        private void _viewData_FilterChanged(object sender, EventArgs e)
+        {
+            taskDrawAria.Invalidate();
+        }
+
+        private void TaskDrawAria_Resize(object sender, EventArgs e)
+        {
+            taskDrawAria.Invalidate();
         }
 
         WorkItem _draggingWorkItem = null;
@@ -67,6 +78,7 @@ namespace TaskManagement
             {
                 _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
             }
+            taskDrawAria.Invalidate();
         }
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
@@ -83,6 +95,8 @@ namespace TaskManagement
             _draggingWorkItem = wi;
             _draggedPeriod = wi.Period.Clone();
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
+
+            taskDrawAria.Invalidate();
         }
 
         TaskGrid _grid;
@@ -92,7 +106,6 @@ namespace TaskManagement
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, new Font(this.Font.FontFamily, _fontSize));
             _grid.Draw(_viewData);
-            taskDrawAria.Invalidate();
         }
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -154,6 +167,7 @@ namespace TaskManagement
                         break;
                 }
             }
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -176,6 +190,7 @@ namespace TaskManagement
                 _viewData.Original.WorkItems.Add(wi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -199,8 +214,9 @@ namespace TaskManagement
                     MessageBox.Show(error);
                     return;
                 }
-                _viewData = new ViewData(result);
+                _viewData.Original = result;
             }
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
@@ -212,23 +228,31 @@ namespace TaskManagement
             if (!_filterForm.Visible) _filterForm.Show(this);
         }
 
+        private void OnApplyFilter()
+        {
+            taskDrawAria.Invalidate();
+        }
+
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
         {
             using (var dlg = new ColorManagementForm(_viewData.ColorConditions, this))
             {
                 dlg.ShowDialog();
             }
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
         {
             _fontSize++;
+            taskDrawAria.Invalidate();
         }
 
         private void フォント小ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_fontSize <= 1) return;
             _fontSize--;
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
@@ -250,6 +274,7 @@ namespace TaskManagement
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
+            taskDrawAria.Invalidate();
         }
     }
 }

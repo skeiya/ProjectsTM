@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskManagement
 {
     public class ViewData
     {
         private Filter _filter;
-        public AppData Original { get; private set; }
+        public AppData Original { get; set; }
         public WorkItem Selected { get; set; }
 
         public ColorConditions ColorConditions = new ColorConditions();
+
+        public event EventHandler FilterChanged;
 
         public ViewData(AppData appData)
         {
@@ -18,6 +21,7 @@ namespace TaskManagement
         public void SetFilter(Filter filter)
         {
             _filter = filter;
+            FilterChanged(this, null);
         }
 
         public int GetDaysCount()
