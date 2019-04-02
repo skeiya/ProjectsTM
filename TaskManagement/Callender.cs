@@ -8,6 +8,11 @@ namespace TaskManagement
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
 
+        public void Delete(CallenderDay d)
+        {
+            Days.Remove(d);
+        }
+
         public int GetTerm(CallenderDay from, CallenderDay to)
         {
             int term = 0;

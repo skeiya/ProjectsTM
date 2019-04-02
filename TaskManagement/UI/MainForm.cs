@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using TaskManagement.UI;
 
 namespace TaskManagement
 {
@@ -273,6 +274,15 @@ namespace TaskManagement
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.UpdateCallenderAndMembers(wi);
+            }
+            taskDrawAria.Invalidate();
+        }
+
+        private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender))
+            {
+                dlg.ShowDialog();
             }
             taskDrawAria.Invalidate();
         }
