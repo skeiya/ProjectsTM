@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace TaskManagement
 {
@@ -58,7 +59,11 @@ namespace TaskManagement
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)
             {
-                //if(w.)
+                if (!filteredMembers.Contain(w.AssignedMember)) continue;
+                if (!period.Contains(w.Period.From)) continue;
+                if (!period.Contains(w.Period.To)) continue;
+                if (!Regex.IsMatch(w.ToString(), _filter.WorkItem)) continue;
+                result.Add(w);
             }
             return result;
         }
