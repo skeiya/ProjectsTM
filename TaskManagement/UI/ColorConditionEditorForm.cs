@@ -6,12 +6,9 @@ namespace TaskManagement
 {
     public partial class ColorConditionEditorForm : Form
     {
-        private readonly Form1 _parent;
-
-        public ColorConditionEditorForm(Form1 parent)
+        public ColorConditionEditorForm()
         {
             InitializeComponent();
-            this._parent = parent;
         }
 
         public ColorCondition ColorCondition { get; private set; }
