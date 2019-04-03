@@ -280,7 +280,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender))
+            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems))
             {
                 dlg.ShowDialog();
             }

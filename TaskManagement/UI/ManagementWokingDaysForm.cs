@@ -7,11 +7,13 @@ namespace TaskManagement.UI
     public partial class ManagementWokingDaysForm : Form
     {
         private Callender _callender;
+        private readonly WorkItems _workItems;
 
-        public ManagementWokingDaysForm(Callender callender)
+        public ManagementWokingDaysForm(Callender callender, WorkItems workItems)
         {
             InitializeComponent();
             this._callender = callender;
+            this._workItems = workItems;
             UpdateListView();
         }
 
@@ -26,21 +28,30 @@ namespace TaskManagement.UI
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            foreach(var d in GetSelectedDays())
-            {
-                _callender.Delete(d);
-            }
+            var selectedDay = GetSelectedDay();
+            if (selectedDay == null) return;
+            if (!Deletable(selectedDay)) return;
+            _callender.Delete(selectedDay);
             UpdateListView();
         }
 
-        private IEnumerable<CallenderDay> GetSelectedDays()
+        private bool Deletable(CallenderDay selectedDay)
         {
-            var result = new List<CallenderDay>();
-            foreach(int index in listView1.SelectedIndices)
+            foreach(var w in _workItems)
             {
-                result.Add(CallenderDay.Parse(listView1.Items[index].Text));
+                if (w.Period.From.Equals(selectedDay)) return false;
+                if (w.Period.To.Equals(selectedDay)) return false;
             }
-            return result;
+            return true;
+        }
+
+        private CallenderDay GetSelectedDay()
+        {
+            foreach (int index in listView1.SelectedIndices)
+            {
+                return CallenderDay.Parse(listView1.Items[index].Text);
+            }
+            return null;
         }
 
         private void ButtonAdd_Click(object sender, EventArgs e)
