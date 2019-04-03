@@ -29,7 +29,7 @@ namespace TaskManagement
         {
             foreach (var c in _list)
             {
-                if (Regex.IsMatch(input, c.Regex)) return c.Color;
+                if (Regex.IsMatch(input, c.Pattern)) return c.Color;
             }
             return null;
         }

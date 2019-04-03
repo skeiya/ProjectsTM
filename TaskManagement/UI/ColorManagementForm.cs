@@ -19,7 +19,7 @@ namespace TaskManagement
             this.listView1.Items.Clear();
             foreach (var cond in _colorConditions)
             {
-                var i = new ListViewItem(cond.Regex);
+                var i = new ListViewItem(cond.Pattern);
                 i.BackColor = cond.Color;
                 this.listView1.Items.Add(i);
             }
