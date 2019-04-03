@@ -34,5 +34,22 @@ namespace TaskManagement
             }
             UpdateList();
         }
+
+        private void bottonDelete_Click(object sender, EventArgs e)
+        {
+            var c = GetSelectedCondition();
+            if (c == null) return;
+            _colorConditions.Remove(c);
+            UpdateList();
+        }
+
+        private ColorCondition GetSelectedCondition()
+        {
+            foreach(int i in listView1.SelectedIndices)
+            {
+                return _colorConditions.At(i);
+            }
+            return null;
+        }
     }
 }

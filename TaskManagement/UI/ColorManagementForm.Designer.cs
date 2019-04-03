@@ -32,14 +32,15 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bottonAdd
             // 
-            this.bottonAdd.Location = new System.Drawing.Point(306, 24);
-            this.bottonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.bottonAdd.Location = new System.Drawing.Point(670, 13);
+            this.bottonAdd.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.bottonAdd.Name = "bottonAdd";
-            this.bottonAdd.Size = new System.Drawing.Size(55, 23);
+            this.bottonAdd.Size = new System.Drawing.Size(119, 46);
             this.bottonAdd.TabIndex = 1;
             this.bottonAdd.Text = "追加...";
             this.bottonAdd.UseVisualStyleBackColor = true;
@@ -53,10 +54,10 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.listView1.Location = new System.Drawing.Point(6, 6);
-            this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.listView1.Location = new System.Drawing.Point(13, 12);
+            this.listView1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(297, 214);
+            this.listView1.Size = new System.Drawing.Size(639, 425);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -70,14 +71,26 @@
             // 
             this.columnHeader2.Text = "色";
             // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Location = new System.Drawing.Point(670, 78);
+            this.buttonDelete.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(119, 46);
+            this.buttonDelete.TabIndex = 1;
+            this.buttonDelete.Text = "削除";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.bottonDelete_Click);
+            // 
             // ColorManagementForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(369, 225);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.listView1);
+            this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.bottonAdd);
-            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "ColorManagementForm";
             this.Text = "ColorManagementForm";
             this.ResumeLayout(false);
@@ -89,5 +102,6 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Button buttonDelete;
     }
 }

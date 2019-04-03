@@ -33,5 +33,21 @@ namespace TaskManagement
             }
             return null;
         }
+
+        internal void Remove(ColorCondition c)
+        {
+            _list.Remove(c);
+        }
+
+        internal ColorCondition At(int i)
+        {
+            var index = 0;
+            foreach(var c in _list)
+            {
+                if (index == i) return c;
+                index++;
+            }
+            return null;
+        }
     }
 }
