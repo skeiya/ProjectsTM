@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.Serialization;
 
@@ -31,6 +32,19 @@ namespace TaskManagement
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_regex);
             hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(_color);
             return hashCode;
+        }
+
+        internal string ToSerializeString()
+        {
+            return this._color.Name + "/" + this.Regex;
+        }
+
+        internal static ColorCondition Parse(string value)
+        {
+            var index = value.IndexOf('/');
+            var color = Color.FromName((value.Substring(0, index)));
+            var regex = value.Substring(index + 1, value.Length - index - 1);
+            return new ColorCondition(regex, color);
         }
     }
 }

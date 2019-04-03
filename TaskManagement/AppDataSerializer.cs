@@ -10,6 +10,7 @@ namespace TaskManagement
         private const string DAY_TAG = "<@DAY_TAG>";
         private const string MEMBER_TAG = "<@MEMBER_TAG>";
         private const string WORKITEM_TAG = "<@WORKITEM_TAG>";
+        private const string COLORCONDITION_TAG = "<@COLORCONDITION_TAG>";
 
         public static void Serialize(string fileName, AppData appData)
         {
@@ -32,6 +33,10 @@ namespace TaskManagement
             foreach (var t in appData.WorkItems)
             {
                 stream.WriteLine(WORKITEM_TAG + t.ToSerializeString());
+            }
+            foreach(var c in appData.ColorConditions)
+            {
+                stream.WriteLine(COLORCONDITION_TAG + c.ToSerializeString());
             }
         }
 
@@ -85,6 +90,12 @@ namespace TaskManagement
                     }
                     result.WorkItems.Add(w);
                     continue;
+                }
+                m = Regex.Match(line, COLORCONDITION_TAG + "(.*)");
+                if (m.Success)
+                {
+                    var c = ColorCondition.Parse(m.Groups[1].Value);
+                    result.ColorConditions.Add(c);
                 }
             }
         }

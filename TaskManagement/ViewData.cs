@@ -10,7 +10,6 @@ namespace TaskManagement
         public AppData Original { get; set; }
         public WorkItem Selected { get; set; }
 
-        public ColorConditions ColorConditions = new ColorConditions();
 
         public event EventHandler FilterChanged;
 

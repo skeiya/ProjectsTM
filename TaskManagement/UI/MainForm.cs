@@ -236,7 +236,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorManagementForm(_viewData.ColorConditions))
+            using (var dlg = new ColorManagementForm(_viewData.Original.ColorConditions))
             {
                 dlg.ShowDialog();
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -86,6 +87,8 @@ namespace UnitTestProject1
                     Tags.Parse("c|d"),
                     new Period(new CallenderDay(2018,6,3), new CallenderDay(2018,8,5), orgApp.Callender),
                     gozzila));
+
+                orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue));
 
                 AppDataSerializer.WriteToStream(orgApp, writer);
                 writer.Flush();

@@ -24,7 +24,7 @@ namespace TaskManagement
             _grid.ColCount = viewData.GetFilteredMembers().Count + Callender.ColCount;
             SetColWidth(g, pageBounds);
 
-            _colorConditions = viewData.ColorConditions;
+            _colorConditions = viewData.Original.ColorConditions;
         }
 
         private void SetColWidth(Graphics g, Rectangle pageBounds)

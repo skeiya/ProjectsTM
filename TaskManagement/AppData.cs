@@ -7,6 +7,7 @@ namespace TaskManagement
         public Callender Callender = new Callender();
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
+        public ColorConditions ColorConditions = new ColorConditions();
 
         public AppData()
         {
@@ -18,6 +19,7 @@ namespace TaskManagement
             if (target == null) return false;
             if (!Callender.Equals(target.Callender)) return false;
             if (!Members.Equals(target.Members)) return false;
+            if(!ColorConditions.Equals(target.ColorConditions)) return false;
             return WorkItems.Equals(target.WorkItems);
         }
 
@@ -26,6 +28,7 @@ namespace TaskManagement
             var hashCode = 1155948461;
             hashCode = hashCode * -1521134295 + EqualityComparer<Callender>.Default.GetHashCode(Callender);
             hashCode = hashCode * -1521134295 + EqualityComparer<Members>.Default.GetHashCode(Members);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ColorConditions>.Default.GetHashCode(ColorConditions);
             hashCode = hashCode * -1521134295 + EqualityComparer<WorkItems>.Default.GetHashCode(WorkItems);
             return hashCode;
         }

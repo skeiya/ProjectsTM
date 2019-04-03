@@ -49,5 +49,22 @@ namespace TaskManagement
             }
             return null;
         }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as ColorConditions;
+            if (target == null) return false;
+            if (_list.Count != target._list.Count) return false;
+            for (var index = 0; index < _list.Count; index++)
+            {
+                if (!_list[index].Equals(target._list[index])) return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return _list.GetHashCode();
+        }
     }
 }
