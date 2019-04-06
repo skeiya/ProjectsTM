@@ -49,7 +49,7 @@
             this.label1.Location = new System.Drawing.Point(13, 103);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(126, 24);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 3;
             this.label1.Text = "日付の範囲";
             // 
             // textBoxFrom
@@ -57,14 +57,14 @@
             this.textBoxFrom.Location = new System.Drawing.Point(48, 149);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(200, 31);
-            this.textBoxFrom.TabIndex = 1;
+            this.textBoxFrom.TabIndex = 4;
             // 
             // textBoxTo
             // 
             this.textBoxTo.Location = new System.Drawing.Point(48, 216);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(200, 31);
-            this.textBoxTo.TabIndex = 1;
+            this.textBoxTo.TabIndex = 6;
             // 
             // label2
             // 
@@ -72,7 +72,7 @@
             this.label2.Location = new System.Drawing.Point(13, 269);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(153, 24);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 8;
             this.label2.Text = "メンバーの選択";
             // 
             // checkedListBox1
@@ -81,14 +81,14 @@
             this.checkedListBox1.Location = new System.Drawing.Point(17, 311);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(368, 498);
-            this.checkedListBox1.TabIndex = 3;
+            this.checkedListBox1.TabIndex = 10;
             // 
             // buttonOK
             // 
             this.buttonOK.Location = new System.Drawing.Point(113, 829);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(133, 46);
-            this.buttonOK.TabIndex = 4;
+            this.buttonOK.TabIndex = 11;
             this.buttonOK.Text = "適用";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -98,7 +98,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(252, 829);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(133, 46);
-            this.buttonCancel.TabIndex = 4;
+            this.buttonCancel.TabIndex = 0;
             this.buttonCancel.Text = "閉じる";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -125,7 +125,7 @@
             this.label4.Location = new System.Drawing.Point(118, 187);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 24);
-            this.label4.TabIndex = 0;
+            this.label4.TabIndex = 5;
             this.label4.Text = "から";
             // 
             // buttonClearWorkItem
@@ -133,7 +133,7 @@
             this.buttonClearWorkItem.Location = new System.Drawing.Point(300, 53);
             this.buttonClearWorkItem.Name = "buttonClearWorkItem";
             this.buttonClearWorkItem.Size = new System.Drawing.Size(85, 31);
-            this.buttonClearWorkItem.TabIndex = 5;
+            this.buttonClearWorkItem.TabIndex = 2;
             this.buttonClearWorkItem.Text = "クリア";
             this.buttonClearWorkItem.UseVisualStyleBackColor = true;
             this.buttonClearWorkItem.Click += new System.EventHandler(this.buttonClearWorkItem_Click);
@@ -143,7 +143,7 @@
             this.buttonClearPeriod.Location = new System.Drawing.Point(300, 149);
             this.buttonClearPeriod.Name = "buttonClearPeriod";
             this.buttonClearPeriod.Size = new System.Drawing.Size(85, 31);
-            this.buttonClearPeriod.TabIndex = 5;
+            this.buttonClearPeriod.TabIndex = 7;
             this.buttonClearPeriod.Text = "クリア";
             this.buttonClearPeriod.UseVisualStyleBackColor = true;
             this.buttonClearPeriod.Click += new System.EventHandler(this.buttonClearPeriod_Click);
@@ -153,7 +153,7 @@
             this.buttonClearMembers.Location = new System.Drawing.Point(300, 269);
             this.buttonClearMembers.Name = "buttonClearMembers";
             this.buttonClearMembers.Size = new System.Drawing.Size(85, 31);
-            this.buttonClearMembers.TabIndex = 5;
+            this.buttonClearMembers.TabIndex = 9;
             this.buttonClearMembers.Text = "クリア";
             this.buttonClearMembers.UseVisualStyleBackColor = true;
             this.buttonClearMembers.Click += new System.EventHandler(this.buttonClearMembers_Click);
