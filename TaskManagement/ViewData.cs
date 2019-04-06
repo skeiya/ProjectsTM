@@ -59,9 +59,10 @@ namespace TaskManagement
             foreach (var w in Original.WorkItems)
             {
                 if (!filteredMembers.Contain(w.AssignedMember)) continue;
-                if (!period.Contains(w.Period.From)) continue;
-                if (!period.Contains(w.Period.To)) continue;
-                if (!Regex.IsMatch(w.ToString(), _filter.WorkItem)) continue;
+                if (!string.IsNullOrEmpty(_filter.WorkItem))
+                {
+                    if (!Regex.IsMatch(w.ToString(), _filter.WorkItem)) continue;
+                }
                 result.Add(w);
             }
             return result;
@@ -89,6 +90,12 @@ namespace TaskManagement
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
             if (!Original.Members.Contain(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+        }
+
+        internal Period GetFilteredPeriod()
+        {
+            if (_filter == null) return null;
+            return _filter.Period;
         }
     }
 }

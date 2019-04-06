@@ -41,7 +41,7 @@ namespace TaskManagement
                 _grid.SetColWidth(c, member);
             }
 
-        }   
+        }
 
         private void SetRowHeight(Rectangle pageBounds)
         {
@@ -188,18 +188,30 @@ namespace TaskManagement
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
-                var bounds = GetBounds(wi.Period, wi.AssignedMember);
+                var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString());
                 if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
                 _grid.DrawString(wi.ToString(), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
 
-            if(viewData.Selected != null)
+            if (viewData.Selected != null)
             {
-                var bounds = GetBounds(viewData.Selected.Period, viewData.Selected.AssignedMember);
+                var bounds = GetBounds(GetDrawPeriod(viewData, viewData.Selected), viewData.Selected.AssignedMember);
                 _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
             }
+        }
+
+        private static Period GetDrawPeriod(ViewData viewData, WorkItem wi)
+        {
+            var org = wi.Period;
+            var filter = viewData.GetFilteredPeriod();
+            if (filter == null) return org;
+            var from = org.From;
+            var to = org.To;
+            if (from.LesserThan(filter.From)) from = filter.From;
+            if (filter.To.LesserThan(to)) to = filter.To;
+            return new Period(from, to, viewData.Original.Callender);
         }
     }
 }
