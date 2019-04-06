@@ -9,7 +9,13 @@ namespace TaskManagement
     {
         private ViewData _viewData = new ViewData(new AppData());
         private FilterForm _filterForm;
+        private SearchWorkitemForm _searchForm;
         private int _fontSize = 4;
+        TaskGrid _grid;
+        WorkItem _draggingWorkItem = null;
+        CallenderDay _draggedDay = null;
+        Period _draggedPeriod = null;
+        private float _viewRatio = 1.0f;
 
         public Form1()
         {
@@ -44,11 +50,7 @@ namespace TaskManagement
         {
             taskDrawAria.Invalidate();
         }
-
-        WorkItem _draggingWorkItem = null;
-        CallenderDay _draggedDay = null;
-        Period _draggedPeriod = null;
-
+        
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringTest(e);
@@ -102,14 +104,10 @@ namespace TaskManagement
             taskDrawAria.Invalidate();
         }
 
-        TaskGrid _grid;
         private bool IsDradding()
         {
             return _draggingWorkItem != null;
         }
-
-        private SearchWorkitemForm _searchForm;
-        private float _viewRatio = 1.0f;
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
