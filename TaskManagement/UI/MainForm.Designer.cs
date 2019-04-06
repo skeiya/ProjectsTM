@@ -51,13 +51,13 @@ namespace TaskManagement
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargerFont = new System.Windows.Forms.ToolStripMenuItem();
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.倍率ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.倍率ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -98,7 +98,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -110,7 +110,7 @@ namespace TaskManagement
             this.ToolStripMenuItemPrint,
             this.詳細ToolStripMenuItem});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 36);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
             // ToolStripMenuItemOpen
@@ -166,7 +166,7 @@ namespace TaskManagement
             this.ToolStripMenuItemAddWorkItem,
             this.ToolStripMenuItemSearch});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
-            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
             // 
             // ToolStripMenuItemAddWorkItem
@@ -228,18 +228,41 @@ namespace TaskManagement
             this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
             this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
             // 
+            // 倍率ToolStripMenuItem
+            // 
+            this.倍率ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3});
+            this.倍率ToolStripMenuItem.Name = "倍率ToolStripMenuItem";
+            this.倍率ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
+            this.倍率ToolStripMenuItem.Text = "倍率";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(173, 38);
+            this.toolStripMenuItem2.Text = "100%";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.ToolStripMenuItem2_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(173, 38);
+            this.toolStripMenuItem3.Text = "200%";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.ToolStripMenuItem3_Click);
+            // 
             // 管理ToolStripMenuItem
             // 
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemWorkingDas});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
-            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
             // ToolStripMenuItemWorkingDas
             // 
             this.ToolStripMenuItemWorkingDas.Name = "ToolStripMenuItemWorkingDas";
-            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(186, 38);
+            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemWorkingDas.Text = "稼働日";
             this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDas_Click);
             // 
@@ -257,33 +280,10 @@ namespace TaskManagement
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.taskDrawAria);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 40);
+            this.panel1.Location = new System.Drawing.Point(0, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1163, 626);
+            this.panel1.Size = new System.Drawing.Size(1163, 624);
             this.panel1.TabIndex = 12;
-            // 
-            // 倍率ToolStripMenuItem
-            // 
-            this.倍率ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3});
-            this.倍率ToolStripMenuItem.Name = "倍率ToolStripMenuItem";
-            this.倍率ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
-            this.倍率ToolStripMenuItem.Text = "倍率";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(324, 38);
-            this.toolStripMenuItem2.Text = "100%";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.ToolStripMenuItem2_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(324, 38);
-            this.toolStripMenuItem3.Text = "200%";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.ToolStripMenuItem3_Click);
             // 
             // Form1
             // 
