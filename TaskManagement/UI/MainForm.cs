@@ -28,18 +28,18 @@ namespace TaskManagement
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
-            this.taskDrawAria.Resize += TaskDrawAria_Resize;
             _viewData.FilterChanged += _viewData_FilterChanged;
-
+            this.panel1.Resize += Panel1_Resize;
+            taskDrawAria.Size = panel1.Size;
             statusStrip1.Items.Add("");
         }
 
-        private void _viewData_FilterChanged(object sender, EventArgs e)
+        private void Panel1_Resize(object sender, EventArgs e)
         {
             taskDrawAria.Invalidate();
         }
 
-        private void TaskDrawAria_Resize(object sender, EventArgs e)
+        private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawAria.Invalidate();
         }
@@ -102,6 +102,7 @@ namespace TaskManagement
 
         TaskGrid _grid;
         private SearchWorkitemForm _searchForm;
+        private float _viewRatio = 1.0f;
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
@@ -284,6 +285,20 @@ namespace TaskManagement
             {
                 dlg.ShowDialog();
             }
+            taskDrawAria.Invalidate();
+        }
+
+        private void ToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            _viewRatio = 2;
+            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
+            taskDrawAria.Invalidate();
+        }
+
+        private void ToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            _viewRatio = 1;
+            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
             taskDrawAria.Invalidate();
         }
     }
