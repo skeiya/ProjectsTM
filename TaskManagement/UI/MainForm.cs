@@ -51,21 +51,15 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_draggingWorkItem == null)
-            {
-                if (_grid == null) return;
-                var wi = _grid.PickFromPoint(e.Location, _viewData);
-                if (wi == null)
-                {
-                    statusStrip1.Items[0].Text = string.Empty;
-                }
-                else
-                {
-                    statusStrip1.Items[0].Text = wi.ToString();
-                }
-                return;
-            }
+            UpdateHoveringTest(e);
+            UpdateDraggingItem(e);
+            taskDrawAria.Invalidate();
+        }
 
+        private void UpdateDraggingItem(MouseEventArgs e)
+        {
+            if (_draggingWorkItem == null) return;
+            if (_grid == null) return;
             var member = _grid.GetMemberFromX(e.Location.X);
             if (member == null) return;
             var curDay = _grid.GetDayFromY(e.Location.Y);
@@ -80,7 +74,14 @@ namespace TaskManagement
             {
                 _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
             }
-            taskDrawAria.Invalidate();
+        }
+
+        private void UpdateHoveringTest(MouseEventArgs e)
+        {
+            if (IsDradding()) return;
+            if (_grid == null) return;
+            var wi = _grid.PickFromPoint(e.Location, _viewData);
+            statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString();
         }
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
@@ -102,6 +103,11 @@ namespace TaskManagement
         }
 
         TaskGrid _grid;
+        private bool IsDradding()
+        {
+            return _draggingWorkItem != null;
+        }
+
         private SearchWorkitemForm _searchForm;
         private float _viewRatio = 1.0f;
 
