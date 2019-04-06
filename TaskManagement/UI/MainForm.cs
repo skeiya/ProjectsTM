@@ -36,6 +36,7 @@ namespace TaskManagement
 
         private void Panel1_Resize(object sender, EventArgs e)
         {
+            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
             taskDrawAria.Invalidate();
         }
 
