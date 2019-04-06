@@ -14,12 +14,12 @@ namespace TaskManagement
             _items.Add(wi);
         }
 
-        public int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project)
+        public int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project, Callender callender)
         {
             int result = 0;
             foreach (var wi in _items.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
             {
-                foreach (var d in wi.Period.Days)
+                foreach (var d in callender.GetPediodDays(wi.Period))
                 {
                     if (d.Year != year) continue;
                     if (d.Month != month) continue;

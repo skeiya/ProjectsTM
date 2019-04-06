@@ -4,26 +4,13 @@ using System.Linq;
 
 namespace TaskManagement
 {
-    public class Callender : IPeriodCalculator
+    public class Callender
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
 
         public void Delete(CallenderDay d)
         {
             Days.Remove(d);
-        }
-
-        public int GetTerm(CallenderDay from, CallenderDay to)
-        {
-            int term = 0;
-            bool found = false;
-            foreach (var d in Days)
-            {
-                if (d.Equals(from)) found = true;
-                if (found) term++;
-                if (d.Equals(to)) break;
-            }
-            return term;
         }
 
         public void Add(CallenderDay callenderDay)
@@ -85,17 +72,22 @@ namespace TaskManagement
             return count;
         }
 
-        public List<CallenderDay> GetDays(CallenderDay from, CallenderDay to)
+        public List<CallenderDay> GetPediodDays(Period period)
         {
             var result = new List<CallenderDay>();
             var found = false;
             foreach (var d in Days)
             {
-                if (d.Equals(from)) found = true;
+                if (d.Equals(period.From)) found = true;
                 if (found) result.Add(d);
-                if (d.Equals(to)) break;
+                if (d.Equals(period.To)) break;
             }
             return result;
+        }
+
+        public int GetPeriodDayCount(Period period)
+        {
+            return GetPediodDays(period).Count;
         }
 
         public bool IsEmpty()

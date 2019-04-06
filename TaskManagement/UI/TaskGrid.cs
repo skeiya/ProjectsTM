@@ -189,9 +189,9 @@ namespace TaskManagement
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
                 var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
-                var color = _colorConditions.GetMatchColor(wi.ToString());
+                var color = _colorConditions.GetMatchColor(wi.ToString(viewData.Original.Callender));
                 if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
-                _grid.DrawString(wi.ToString(), bounds);
+                _grid.DrawString(wi.ToString(viewData.Original.Callender), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
 
@@ -211,7 +211,7 @@ namespace TaskManagement
             var to = org.To;
             if (from.LesserThan(filter.From)) from = filter.From;
             if (filter.To.LesserThan(to)) to = filter.To;
-            return new Period(from, to, viewData.Original.Callender);
+            return new Period(from, to);
         }
     }
 }

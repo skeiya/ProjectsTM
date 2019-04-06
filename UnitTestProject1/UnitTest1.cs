@@ -38,8 +38,12 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestWorkItemFormat()
         {
-            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22), new DummyPeriodCalculator()), new Member("A", "B", "C"));
-            Assert.AreEqual<string>("[仕様検討][Z123][AB(C)][a|b][3d]", wi.ToString());
+            var callender = new Callender();
+            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C"));
+            callender.Add(new CallenderDay(2019, 3, 20));
+            callender.Add(new CallenderDay(2019, 3, 21));
+            callender.Add(new CallenderDay(2019, 3, 22));
+            Assert.AreEqual<string>("[仕様検討][Z123][AB(C)][a|b][3d]", wi.ToString(callender));
         }
 
         [TestMethod]
@@ -79,13 +83,13 @@ namespace UnitTestProject1
                     new Project("オープン戦"),
                     "対エンジェルス",
                     Tags.Parse("a|b"),
-                    new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2), orgApp.Callender),
+                    new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
                     ichiro));
                 orgApp.WorkItems.Add(new WorkItem(
                     new Project("シーズン"),
                     "対カブス",
                     Tags.Parse("c|d"),
-                    new Period(new CallenderDay(2018,6,3), new CallenderDay(2018,8,5), orgApp.Callender),
+                    new Period(new CallenderDay(2018,6,3), new CallenderDay(2018,8,5)),
                     gozzila));
 
                 orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue));

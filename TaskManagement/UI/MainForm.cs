@@ -74,7 +74,7 @@ namespace TaskManagement
             var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
             if (offset != 0)
             {
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset);
+                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
             }
         }
 
@@ -83,7 +83,7 @@ namespace TaskManagement
             if (IsDradding()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
-            statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString();
+            statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
         }
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)

@@ -27,7 +27,7 @@ namespace TaskManagement
         public int GetDaysCount()
         {
             if (_filter == null || _filter.Period == null) return Original.Callender.Days.Count;
-            return _filter.Period.Days.Count;
+            return Original.Callender.GetPeriodDayCount(_filter.Period);
         }
 
         public Members GetFilteredMembers()

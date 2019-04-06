@@ -57,7 +57,7 @@ namespace TaskManagement
             if (from == null || to == null) return null;
             if (!_viewData.Original.Callender.Days.Contains(from)) return null;
             if (!_viewData.Original.Callender.Days.Contains(to)) return null;
-            return new Period(from, to, _viewData.Original.Callender);
+            return new Period(from, to);
         }
 
         private Members GetMembersFilter()

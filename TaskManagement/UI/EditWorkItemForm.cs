@@ -65,7 +65,7 @@ namespace TaskManagement
             var from = CallenderDay.Parse(textBoxFrom.Text);
             var to = CallenderDay.Parse(textBoxTo.Text);
             if (from == null || to == null) return null;
-            return new Period(from, to, callender);
+            return new Period(from, to);
         }
 
         private Tags GetTags()

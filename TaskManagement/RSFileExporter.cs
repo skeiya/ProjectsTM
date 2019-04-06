@@ -108,7 +108,7 @@ namespace TaskManagement
 
         private static string GetRatio(int year, int month, Member member, Project project, Callender callender, WorkItems workItems)
         {
-            return string.Format("{0:f1}", (float)GetTargetDays(year, month, member, project, workItems) / (float)GetTotalDays(year, month, callender));
+            return string.Format("{0:f1}", (float)GetTargetDays(year, month, member, project, workItems, callender) / (float)GetTotalDays(year, month, callender));
         }
 
         private static int GetTotalDays(int year, int month, Callender callender)
@@ -116,9 +116,9 @@ namespace TaskManagement
             return callender.GetDaysOfMonth(year, month);
         }
 
-        private static int GetTargetDays(int year, int month, Member member, Project project, WorkItems workItems)
+        private static int GetTargetDays(int year, int month, Member member, Project project, WorkItems workItems, Callender callender)
         {
-            return workItems.GetWorkItemDaysOfMonth(year, month, member, project);
+            return workItems.GetWorkItemDaysOfMonth(year, month, member, project, callender);
         }
     }
 }

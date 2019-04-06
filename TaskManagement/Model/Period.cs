@@ -4,40 +4,31 @@ namespace TaskManagement
 {
     public class Period
     {
-        private readonly IPeriodCalculator _periodCalculator;
-
-        public Period(CallenderDay from, CallenderDay to, IPeriodCalculator periodCalculator)
+        public Period(CallenderDay from, CallenderDay to)
         {
             this.From = from;
             this.To = to;
-            _periodCalculator = periodCalculator;
         }
 
         public CallenderDay From { set; get; }
         public CallenderDay To { set; get; }
-        public List<CallenderDay> Days => _periodCalculator.GetDays(From, To);
-
-        public override string ToString()
-        {
-            return _periodCalculator.GetTerm(From, To).ToString();
-        }
 
         public bool Contains(CallenderDay day)
         {
             return From.LesserThan(day) && day.LesserThan(To);
         }
 
-        public Period ApplyOffset(int offset)
+        public Period ApplyOffset(int offset, Callender callender)
         {
-            var from = _periodCalculator.ApplyOffset(From, offset);
-            var to = _periodCalculator.ApplyOffset(To, offset);
+            var from = callender.ApplyOffset(From, offset);
+            var to = callender.ApplyOffset(To, offset);
             if (from == null || to == null) return this;
-            return new Period(from, to, _periodCalculator);
+            return new Period(from, to);
         }
 
         public Period Clone()
         {
-            return new Period(From, To, _periodCalculator);
+            return new Period(From, To);
         }
 
         public override bool Equals(object obj)

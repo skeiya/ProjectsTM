@@ -58,7 +58,7 @@ namespace TaskManagement
         {
             var f = CallenderDay.Parse(from);
             var t = CallenderDay.Parse(to);
-            return new Period(f, t, callender);
+            return new Period(f, t);
         }
 
         public static Callender ReadWorkingDays(string fileName)

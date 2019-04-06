@@ -25,9 +25,10 @@ namespace TaskManagement
         {
         }
 
-        public override string ToString()
+
+        public string ToString(Callender callender)
         {
-            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + Period.ToString() + "d]";
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + callender.GetPeriodDayCount(Period).ToString() + "d]";
         }
 
         public string ToSerializeString()
@@ -43,7 +44,7 @@ namespace TaskManagement
             var project = new Project(words[1]);
             var member = Member.Parse(words[2]);
             var tags = Tags.Parse(words[3]);
-            var period = new Period(CallenderDay.Parse(words[4]), CallenderDay.Parse(words[5]), callender);
+            var period = new Period(CallenderDay.Parse(words[4]), CallenderDay.Parse(words[5]));
             var result = new WorkItem(project, taskName, tags, period, member);
             return result;
         }
