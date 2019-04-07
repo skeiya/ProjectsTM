@@ -35,9 +35,15 @@ namespace TaskManagement
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
             _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this.panel1.Resize += Panel1_Resize;
             taskDrawAria.Size = panel1.Size;
             statusStrip1.Items.Add("");
+        }
+
+        private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
+        {
+            taskDrawAria.Invalidate();
         }
 
         private void Panel1_Resize(object sender, EventArgs e)
