@@ -18,12 +18,7 @@ namespace TaskManagement
             InitializeComponent();
             this._viewData = viewData;
 
-            var tmp = new List<WorkItem>();
-            foreach (var wi in viewData.GetFilteredWorkItems())
-            {
-                tmp.Add(wi);
-            }
-            _list = tmp.ToArray();
+            UpdateFilteredList();
             UpdateListBox();
 
             _timer.Elapsed += _timer_Elapsed;
@@ -102,6 +97,9 @@ namespace TaskManagement
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
+
+            UpdateFilteredList();
+            UpdateListBox();
         }
     }
 }
