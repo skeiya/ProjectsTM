@@ -96,8 +96,7 @@ namespace TaskManagement
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var wi = listBox1.SelectedItem as WorkItem;
-            if (wi == null) return;
+            var wi = _list[listBox1.SelectedIndex];
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
