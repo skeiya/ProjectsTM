@@ -42,17 +42,30 @@ namespace TaskManagement
             this.panel1.Resize += Panel1_Resize;
             taskDrawAria.Size = panel1.Size;
             statusStrip1.Items.Add("");
-
-            LoadDefaultFile();
+            taskDrawAria.AllowDrop = true;
+            taskDrawAria.DragEnter += TaskDrawAria_DragEnter;
+            taskDrawAria.DragDrop += TaskDrawAria_DragDrop;
         }
 
-        private void LoadDefaultFile()
+        private void TaskDrawAria_DragDrop(object sender, DragEventArgs e)
         {
-            var fileName = Path.Combine(Environment.CurrentDirectory, "DefaultData.xml");
-            if (!File.Exists(fileName)) return;
-            OpenFile(fileName);
-            _previousFileName = fileName;
+            string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            if (fileName.Length == 0) return;
+            if (string.IsNullOrEmpty(fileName[0])) return;
+            OpenFile(fileName[0]);
             taskDrawAria.Invalidate();
+        }
+
+        private void TaskDrawAria_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
