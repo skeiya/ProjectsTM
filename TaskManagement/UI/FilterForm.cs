@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace TaskManagement
 {
@@ -16,7 +18,8 @@ namespace TaskManagement
 
             foreach (var m in _viewData.Original.Members)
             {
-                checkedListBox1.Items.Add(m, IsContain(m));
+                var check = _viewData.Filter == null ? true : !_viewData.Filter.FilteringMembers.Contain(m);
+                checkedListBox1.Items.Add(m, check);
             }
 
             if (viewData.Filter == null || viewData.Filter.Period == null)
@@ -33,15 +36,6 @@ namespace TaskManagement
             {
                 textBoxWorkItem.Text = viewData.Filter.WorkItem;
             }
-        }
-
-        private bool IsContain(Member m)
-        {
-            foreach (var f in _viewData.GetFilteredMembers())
-            {
-                if (!m.Equals(f)) return true;
-            }
-            return false;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -121,6 +115,38 @@ namespace TaskManagement
             for (int index = 0; index < checkedListBox1.Items.Count; index++)
             {
                 checkedListBox1.SetItemChecked(index, true);
+            }
+        }
+
+        private void buttonImport_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new OpenFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                using (var reader = new StreamReader(dlg.FileName))
+                {
+                    var s = new XmlSerializer(typeof(Members));
+                    var remain = (Members)s.Deserialize(reader);
+
+                    for(var index = 0; index < checkedListBox1.Items.Count; index++)
+                    {
+                        var m = checkedListBox1.Items[index] as Member;
+                        checkedListBox1.SetItemChecked(index, remain.Contain(m));
+                    }
+                }
+            }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                using (var writer = new StreamWriter(dlg.FileName))
+                {
+                    var s = new XmlSerializer(typeof(Members));
+                    s.Serialize(writer, GetRemainingMemger());
+                }
             }
         }
     }

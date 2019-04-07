@@ -41,6 +41,8 @@
             this.buttonClearWorkItem = new System.Windows.Forms.Button();
             this.buttonClearPeriod = new System.Windows.Forms.Button();
             this.buttonClearMembers = new System.Windows.Forms.Button();
+            this.buttonImport = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -78,9 +80,9 @@
             // checkedListBox1
             // 
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(17, 311);
+            this.checkedListBox1.Location = new System.Drawing.Point(17, 363);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(368, 498);
+            this.checkedListBox1.Size = new System.Drawing.Size(368, 446);
             this.checkedListBox1.TabIndex = 10;
             // 
             // buttonApply
@@ -151,13 +153,33 @@
             // 
             // buttonClearMembers
             // 
-            this.buttonClearMembers.Location = new System.Drawing.Point(300, 260);
+            this.buttonClearMembers.Location = new System.Drawing.Point(300, 261);
             this.buttonClearMembers.Name = "buttonClearMembers";
             this.buttonClearMembers.Size = new System.Drawing.Size(85, 40);
             this.buttonClearMembers.TabIndex = 9;
             this.buttonClearMembers.Text = "クリア";
             this.buttonClearMembers.UseVisualStyleBackColor = true;
             this.buttonClearMembers.Click += new System.EventHandler(this.buttonClearMembers_Click);
+            // 
+            // buttonImport
+            // 
+            this.buttonImport.Location = new System.Drawing.Point(17, 306);
+            this.buttonImport.Name = "buttonImport";
+            this.buttonImport.Size = new System.Drawing.Size(184, 40);
+            this.buttonImport.TabIndex = 9;
+            this.buttonImport.Text = "インポート";
+            this.buttonImport.UseVisualStyleBackColor = true;
+            this.buttonImport.Click += new System.EventHandler(this.buttonImport_Click);
+            // 
+            // buttonExport
+            // 
+            this.buttonExport.Location = new System.Drawing.Point(207, 307);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(178, 40);
+            this.buttonExport.TabIndex = 9;
+            this.buttonExport.Text = "エクスポート";
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // FilterForm
             // 
@@ -166,6 +188,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(399, 887);
+            this.Controls.Add(this.buttonExport);
+            this.Controls.Add(this.buttonImport);
             this.Controls.Add(this.buttonClearMembers);
             this.Controls.Add(this.buttonClearPeriod);
             this.Controls.Add(this.buttonClearWorkItem);
@@ -203,5 +227,7 @@
         private System.Windows.Forms.Button buttonClearWorkItem;
         private System.Windows.Forms.Button buttonClearPeriod;
         private System.Windows.Forms.Button buttonClearMembers;
+        private System.Windows.Forms.Button buttonImport;
+        private System.Windows.Forms.Button buttonExport;
     }
 }
