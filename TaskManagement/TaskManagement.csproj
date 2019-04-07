@@ -65,13 +65,6 @@
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CommonGrid.cs" />
-    <Compile Include="UI\CsvImportSelectForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CsvImportSelectForm.Designer.cs">
-      <DependentUpon>CsvImportSelectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CsvImportType.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="UI\EditWorkItemForm.cs">
       <SubType>Form</SubType>
@@ -127,9 +120,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ColorManagementForm.resx">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CsvImportSelectForm.resx">
-      <DependentUpon>CsvImportSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\EditWorkItemForm.resx">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>

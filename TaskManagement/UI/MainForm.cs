@@ -55,7 +55,7 @@ namespace TaskManagement
         {
             taskDrawAria.Invalidate();
         }
-        
+
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringTest(e);
@@ -126,22 +126,13 @@ namespace TaskManagement
             grid.Draw(_viewData);
         }
 
-
-        private void ImportMembers()
+        private void ImportMemberAndWorkItems()
         {
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.Members = CsvReader.ReadMembers(dlg.FileName);
-            }
-        }
-
-        private void ImportWorkItems(Callender callender)
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName, callender);
+                _viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName);
                 foreach (var w in _viewData.Original.WorkItems) // TODO 暫定
                 {
                     _viewData.UpdateCallenderAndMembers(w);
@@ -149,36 +140,9 @@ namespace TaskManagement
             }
         }
 
-        private void ImportWorkingDays()
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Original.Callender = CsvReader.ReadWorkingDays(dlg.FileName);
-            }
-        }
-
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
-            var workItemImportable = !_viewData.Original.Callender.IsEmpty() && !_viewData.Original.Members.IsEmpty();
-            using (var dlg = new CsvImportSelectForm(workItemImportable))
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                switch (dlg.ImportType)
-                {
-                    case CsvImportType.WorkingDays:
-                        ImportWorkingDays();
-                        break;
-                    case CsvImportType.Members:
-                        ImportMembers();
-                        break;
-                    case CsvImportType.WorkItems:
-                        ImportWorkItems(_viewData.Original.Callender);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            ImportMemberAndWorkItems();
             taskDrawAria.Invalidate();
         }
 
@@ -190,7 +154,7 @@ namespace TaskManagement
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
             printPreviewDialog1.Document = printDocument;
-            using(var dlg = new PrintDialog())
+            using (var dlg = new PrintDialog())
             {
                 dlg.Document = printPreviewDialog1.Document;
                 if (dlg.ShowDialog() != DialogResult.OK) return;
@@ -325,7 +289,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
         {
-            using(var dlg  = new ManageMemberForm(_viewData.Original.Members))
+            using (var dlg = new ManageMemberForm(_viewData.Original.Members))
             {
                 dlg.ShowDialog(this);
             }

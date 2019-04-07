@@ -54,7 +54,7 @@ namespace TaskManagement
             return new Member(lastName, firstName, company);
         }
 
-        private static Period ParsePeriod(string from, string to, Callender callender)
+        private static Period ParsePeriod(string from, string to)
         {
             var f = CallenderDay.Parse(from);
             var t = CallenderDay.Parse(to);
@@ -99,7 +99,7 @@ namespace TaskManagement
             }
         }
 
-        public static WorkItems ReadWorkItems(string fileName, Callender callender)
+        public static WorkItems ReadWorkItems(string fileName)
         {
             var result = new WorkItems();
             var isFirstLine = true;
@@ -120,7 +120,7 @@ namespace TaskManagement
                     var project = ParseProject(words[5]);
                     var tags = ParseTags(words[5]);
                     var taskName = words[3];
-                    var period = ParsePeriod(words[1], words[2], callender);
+                    var period = ParsePeriod(words[1], words[2]);
                     var member = ParseMember(words[0]);
 
                     result.Add(new WorkItem(project, taskName, tags, period, member));

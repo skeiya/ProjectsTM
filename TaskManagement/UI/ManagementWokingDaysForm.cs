@@ -37,7 +37,7 @@ namespace TaskManagement.UI
 
         private bool Deletable(CallenderDay selectedDay)
         {
-            foreach(var w in _workItems)
+            foreach (var w in _workItems)
             {
                 if (w.Period.From.Equals(selectedDay)) return false;
                 if (w.Period.To.Equals(selectedDay)) return false;
@@ -60,6 +60,21 @@ namespace TaskManagement.UI
             if (d == null) return;
             _callender.Days.Add(d);
             _callender.Days.Sort();
+            UpdateListView();
+        }
+
+        private void ButtonImport_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new OpenFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var cal = CsvReader.ReadWorkingDays(dlg.FileName);
+                foreach(var d in cal.Days)
+                {
+                    _callender.Days.Add(d);
+                }
+                _callender.Days.Sort();
+            }
             UpdateListView();
         }
     }
