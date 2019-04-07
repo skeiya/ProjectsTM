@@ -311,5 +311,13 @@ namespace TaskManagement
             taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
             taskDrawAria.Invalidate();
         }
+
+        private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
+        {
+            using(var dlg  = new ManageMemberForm(_viewData.Original.Members))
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }
