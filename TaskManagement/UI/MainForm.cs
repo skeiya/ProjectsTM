@@ -329,6 +329,7 @@ namespace TaskManagement
             {
                 dlg.ShowDialog(this);
             }
+            taskDrawAria.Invalidate();
         }
     }
 }

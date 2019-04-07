@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.buttonUp = new System.Windows.Forms.Button();
+            this.buttonDown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
@@ -43,11 +45,33 @@
             this.listBox1.Size = new System.Drawing.Size(616, 412);
             this.listBox1.TabIndex = 0;
             // 
+            // buttonUp
+            // 
+            this.buttonUp.Location = new System.Drawing.Point(662, 69);
+            this.buttonUp.Name = "buttonUp";
+            this.buttonUp.Size = new System.Drawing.Size(108, 53);
+            this.buttonUp.TabIndex = 1;
+            this.buttonUp.Text = "UP";
+            this.buttonUp.UseVisualStyleBackColor = true;
+            this.buttonUp.Click += new System.EventHandler(this.ButtonUp_Click);
+            // 
+            // buttonDown
+            // 
+            this.buttonDown.Location = new System.Drawing.Point(662, 153);
+            this.buttonDown.Name = "buttonDown";
+            this.buttonDown.Size = new System.Drawing.Size(108, 53);
+            this.buttonDown.TabIndex = 1;
+            this.buttonDown.Text = "DOWN";
+            this.buttonDown.UseVisualStyleBackColor = true;
+            this.buttonDown.Click += new System.EventHandler(this.ButtonDown_Click);
+            // 
             // ManageMemberForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonDown);
+            this.Controls.Add(this.buttonUp);
             this.Controls.Add(this.listBox1);
             this.Name = "ManageMemberForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -59,5 +83,7 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button buttonUp;
+        private System.Windows.Forms.Button buttonDown;
     }
 }

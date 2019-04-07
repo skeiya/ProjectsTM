@@ -28,6 +28,19 @@ namespace TaskManagement
 
         public static int RowCount => 2;
 
+        internal void Up(Member m)
+        {
+            var index = FindIndex(m);
+            if (index == 0) return;
+            var tmp = _members[index - 1];
+            _members[index - 1] = m;
+            _members[index] = tmp;
+        }
+
+        private int FindIndex(Member m)
+        {
+            return _members.FindIndex((x)=>x.Equals(m));
+        }
 
         public bool Contain(Member m)
         {
@@ -53,6 +66,15 @@ namespace TaskManagement
                 if (!_members[index].Equals(target._members[index])) return false;
             }
             return true;
+        }
+
+        internal void Down(Member m)
+        {
+            var index = FindIndex(m);
+            if (index == _members.Count - 1) return;
+            var tmp = _members[index + 1];
+            _members[index + 1] = m;
+            _members[index] = tmp;
         }
 
         public override int GetHashCode()

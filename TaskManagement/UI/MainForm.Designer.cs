@@ -330,9 +330,6 @@ namespace TaskManagement
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargeRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
-        private System.Windows.Forms.ToolStripMenuItem 倍率ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemManageMember;
     }
 }
