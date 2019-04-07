@@ -93,7 +93,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -105,7 +105,7 @@ namespace TaskManagement
             this.ToolStripMenuItemPrint,
             this.詳細ToolStripMenuItem});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 36);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
             // ToolStripMenuItemOpen
@@ -161,7 +161,7 @@ namespace TaskManagement
             this.ToolStripMenuItemAddWorkItem,
             this.ToolStripMenuItemSearch});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
-            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
             // 
             // ToolStripMenuItemAddWorkItem
@@ -188,7 +188,7 @@ namespace TaskManagement
             this.フォント小ToolStripMenuItem,
             this.倍率ToolStripMenuItem});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
-            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.表示ToolStripMenuItem.Text = "表示";
             // 
             // ToolStripMenuItemFilter
@@ -251,7 +251,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemWorkingDas});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
-            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
             // ToolStripMenuItemWorkingDas
@@ -275,9 +275,9 @@ namespace TaskManagement
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.taskDrawAria);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 40);
+            this.panel1.Location = new System.Drawing.Point(0, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1163, 626);
+            this.panel1.Size = new System.Drawing.Size(1163, 624);
             this.panel1.TabIndex = 12;
             // 
             // Form1

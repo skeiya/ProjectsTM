@@ -185,6 +185,11 @@ namespace TaskManagement
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
             printPreviewDialog1.Document = printDocument;
+            using(var dlg = new PrintDialog())
+            {
+                dlg.Document = printPreviewDialog1.Document;
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+            }
             if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
         }
 
