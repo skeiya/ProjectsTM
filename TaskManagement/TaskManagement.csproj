@@ -99,6 +99,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Members.cs" />
     <Compile Include="RSFileExporter.cs" />
+    <Compile Include="UI\ManageMemberForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ManageMemberForm.Designer.cs">
+      <DependentUpon>ManageMemberForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ManagementWokingDaysForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +150,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\ManageMemberForm.resx">
+      <DependentUpon>ManageMemberForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ManagementWokingDaysForm.resx">
       <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -322,5 +322,14 @@ namespace TaskManagement
             _viewRatio += 0.1f;
             ApplyViewRatio();
         }
+
+        private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
+        {
+            using(var dlg  = new ManageMemberForm(_viewData.Original.Members))
+            {
+                dlg.ShowDialog(this);
+            }
+            taskDrawAria.Invalidate();
+        }
     }
 }
