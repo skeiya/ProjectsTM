@@ -10,7 +10,7 @@ namespace TaskManagement
         private ViewData _viewData = new ViewData(new AppData());
         private FilterForm _filterForm;
         private SearchWorkitemForm _searchForm;
-        private int _fontSize = 4;
+        private int _fontSize = 6;
         TaskGrid _grid;
         WorkItem _draggingWorkItem = null;
         CallenderDay _draggedDay = null;

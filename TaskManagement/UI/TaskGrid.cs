@@ -14,6 +14,7 @@ namespace TaskManagement
 
         public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font)
         {
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             _grid = new CommonGrid(g, font);
 
             UpdateRowColMap(viewData);
