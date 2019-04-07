@@ -20,6 +20,7 @@ namespace TaskManagement
         public Form1()
         {
             InitializeComponent();
+            menuStrip1.ImageScalingSize = new Size(16, 16);
 
             foreach (System.Drawing.Printing.PaperSize s in printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
             {

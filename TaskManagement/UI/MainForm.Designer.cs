@@ -112,7 +112,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -120,7 +120,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemSave.Text = "保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
@@ -128,7 +128,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemPrint.Text = "印刷";
             this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
@@ -138,7 +138,7 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
