@@ -192,7 +192,7 @@ namespace TaskManagement
                 var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
                 var color = _colorConditions.GetMatchColor(wi.ToString(viewData.Original.Callender));
                 if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
-                _grid.DrawString(wi.ToString(viewData.Original.Callender), bounds);
+                _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
 

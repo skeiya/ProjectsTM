@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TaskManagement
 {
@@ -38,6 +40,18 @@ namespace TaskManagement
         public override int GetHashCode()
         {
             return -411299617 + EqualityComparer<List<string>>.Default.GetHashCode(_tags);
+        }
+
+        internal string ToDrawString()
+        {
+            if (_tags == null || _tags.Count == 0) return string.Empty;
+            var result = new StringBuilder();
+            foreach(var t in _tags)
+            {
+                result.Append(t + Environment.NewLine);
+            }
+            result.Remove(result.Length - 1, 1);
+            return result.ToString();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TaskManagement
 {
@@ -25,6 +26,18 @@ namespace TaskManagement
         {
         }
 
+        public string ToDrawString(Callender callender)
+        {
+            var result = new StringBuilder();
+            result.Append(Name);
+            result.Append(Environment.NewLine);
+            result.Append(Project.ToString());
+            result.Append(Environment.NewLine);
+            result.Append(Tags.ToDrawString());
+            result.Append(Environment.NewLine);
+            result.Append(callender.GetPeriodDayCount(Period).ToString() + "d");
+            return result.ToString();
+        }
 
         public string ToString(Callender callender)
         {
