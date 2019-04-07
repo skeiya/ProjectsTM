@@ -10,7 +10,7 @@ namespace TaskManagement
         private ViewData _viewData = new ViewData(new AppData());
         private FilterForm _filterForm;
         private SearchWorkitemForm _searchForm;
-        private int _fontSize = 4;
+        private int _fontSize = 6;
         TaskGrid _grid;
         WorkItem _draggingWorkItem = null;
         CallenderDay _draggedDay = null;
@@ -185,6 +185,11 @@ namespace TaskManagement
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
             printPreviewDialog1.Document = printDocument;
+            using(var dlg = new PrintDialog())
+            {
+                dlg.Document = printPreviewDialog1.Document;
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+            }
             if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
         }
 

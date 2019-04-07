@@ -32,7 +32,6 @@ namespace TaskManagement
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.printDocument = new System.Drawing.Printing.PrintDocument();
-            this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -62,10 +61,6 @@ namespace TaskManagement
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // printDialog1
-            // 
-            this.printDialog1.UseEXDialog = true;
             // 
             // printPreviewDialog1
             // 
@@ -117,7 +112,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(243, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -125,7 +120,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(243, 38);
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemSave.Text = "保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
@@ -133,7 +128,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(243, 38);
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemPrint.Text = "印刷";
             this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
@@ -143,7 +138,7 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
@@ -262,7 +257,7 @@ namespace TaskManagement
             // ToolStripMenuItemWorkingDas
             // 
             this.ToolStripMenuItemWorkingDas.Name = "ToolStripMenuItemWorkingDas";
-            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(186, 38);
             this.ToolStripMenuItemWorkingDas.Text = "稼働日";
             this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDas_Click);
             // 
@@ -309,7 +304,6 @@ namespace TaskManagement
         #endregion
 
         private System.Drawing.Printing.PrintDocument printDocument;
-        private System.Windows.Forms.PrintDialog printDialog1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.PictureBox taskDrawAria;
         private System.Windows.Forms.MenuStrip menuStrip1;
