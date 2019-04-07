@@ -37,6 +37,7 @@ namespace TaskManagement
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.詳細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +45,8 @@ namespace TaskManagement
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargerFont = new System.Windows.Forms.ToolStripMenuItem();
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargeRatio = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,9 +57,7 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
-            this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemSaveAsOtherName = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
@@ -82,7 +83,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -91,17 +92,18 @@ namespace TaskManagement
             this.ToolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemOpen,
             this.ToolStripMenuItemSave,
+            this.ToolStripMenuItemSaveAsOtherName,
             this.ToolStripMenuItemPrint,
             this.詳細ToolStripMenuItem});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 36);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
             // ToolStripMenuItemOpen
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(243, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -109,9 +111,17 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(243, 38);
-            this.ToolStripMenuItemSave.Text = "保存";
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSave.Text = "上書き保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
+            // 
+            // ToolStripMenuItemPrint
+            // 
+            this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
+            this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemPrint.Text = "印刷";
+            this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
             // 詳細ToolStripMenuItem
             // 
@@ -119,7 +129,7 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
@@ -142,7 +152,7 @@ namespace TaskManagement
             this.ToolStripMenuItemAddWorkItem,
             this.ToolStripMenuItemSearch});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
-            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
             // 
             // ToolStripMenuItemAddWorkItem
@@ -170,8 +180,24 @@ namespace TaskManagement
             this.ToolStripMenuItemLargeRatio,
             this.ToolStripMenuItemSmallRatio});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
-            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.表示ToolStripMenuItem.Text = "表示";
+            // 
+            // ToolStripMenuItemFilter
+            // 
+            this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
+            this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemFilter.Text = "フィルター";
+            this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
+            // 
+            // ToolStripMenuItemColor
+            // 
+            this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
+            this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemColor.Text = "色";
+            this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
             // ToolStripMenuItemLargerFont
             // 
@@ -213,7 +239,7 @@ namespace TaskManagement
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
-            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 36);
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
             // ToolStripMenuItemWorkingDas
@@ -243,9 +269,9 @@ namespace TaskManagement
             // 
             this.panel1.Controls.Add(this.taskDrawAria);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 40);
+            this.panel1.Location = new System.Drawing.Point(0, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1163, 626);
+            this.panel1.Size = new System.Drawing.Size(1163, 624);
             this.panel1.TabIndex = 12;
             // 
             // taskDrawAria
@@ -259,29 +285,12 @@ namespace TaskManagement
             this.taskDrawAria.TabStop = false;
             this.taskDrawAria.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
             // 
-            // ToolStripMenuItemPrint
+            // ToolStripMenuItemSaveAsOtherName
             // 
-            this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
-            this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(243, 38);
-            this.ToolStripMenuItemPrint.Text = "印刷";
-            this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
-            // 
-            // ToolStripMenuItemFilter
-            // 
-            this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
-            this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(328, 38);
-            this.ToolStripMenuItemFilter.Text = "フィルター";
-            this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
-            // 
-            // ToolStripMenuItemColor
-            // 
-            this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
-            this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(328, 38);
-            this.ToolStripMenuItemColor.Text = "色";
-            this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
+            this.ToolStripMenuItemSaveAsOtherName.Name = "ToolStripMenuItemSaveAsOtherName";
+            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSaveAsOtherName.Text = "別名保存";
+            this.ToolStripMenuItemSaveAsOtherName.Click += new System.EventHandler(this.ToolStripMenuItemSaveAsOtherName_Click);
             // 
             // Form1
             // 
@@ -333,6 +342,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargeRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemManageMember;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSaveAsOtherName;
     }
 }
 

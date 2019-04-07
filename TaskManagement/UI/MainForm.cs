@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using TaskManagement.UI;
 
@@ -16,6 +17,7 @@ namespace TaskManagement
         CallenderDay _draggedDay = null;
         Period _draggedPeriod = null;
         private float _viewRatio = 1.0f;
+        string _previousFileName;
 
         public Form1()
         {
@@ -40,6 +42,17 @@ namespace TaskManagement
             this.panel1.Resize += Panel1_Resize;
             taskDrawAria.Size = panel1.Size;
             statusStrip1.Items.Add("");
+
+            LoadDefaultFile();
+        }
+
+        private void LoadDefaultFile()
+        {
+            var fileName = Path.Combine(Environment.CurrentDirectory, "DefaultData.xml");
+            if (!File.Exists(fileName)) return;
+            OpenFile(fileName);
+            _previousFileName = fileName;
+            taskDrawAria.Invalidate();
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
@@ -177,11 +190,12 @@ namespace TaskManagement
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            using (var dlg = new SaveFileDialog())
+            if (string.IsNullOrEmpty(_previousFileName))
             {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                AppDataSerializer.Serialize(dlg.FileName, _viewData.Original);
+                ToolStripMenuItemSaveAsOtherName_Click(sender, e);
+                return;
             }
+            AppDataSerializer.Serialize(_previousFileName, _viewData.Original);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -189,16 +203,22 @@ namespace TaskManagement
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                string error;
-                var result = AppDataSerializer.Deserialize(dlg.FileName, out error);
-                if (result == null)
-                {
-                    MessageBox.Show(error);
-                    return;
-                }
-                _viewData.Original = result;
+                OpenFile(dlg.FileName);
+                _previousFileName = dlg.FileName;
             }
             taskDrawAria.Invalidate();
+        }
+
+        private void OpenFile(string fileName)
+        {
+            string error;
+            var result = AppDataSerializer.Deserialize(fileName, out error);
+            if (result == null)
+            {
+                MessageBox.Show(error);
+                return;
+            }
+            _viewData.Original = result;
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
@@ -295,6 +315,16 @@ namespace TaskManagement
                 dlg.ShowDialog(this);
             }
             taskDrawAria.Invalidate();
+        }
+
+        private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                AppDataSerializer.Serialize(dlg.FileName, _viewData.Original);
+                _previousFileName = dlg.FileName;
+            }
         }
     }
 }
