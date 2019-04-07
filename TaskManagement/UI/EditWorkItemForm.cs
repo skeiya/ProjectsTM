@@ -39,7 +39,7 @@ namespace TaskManagement
 
         bool CheckEdit()
         {
-            return CreateWorkItem(null) != null;
+            return CreateWorkItem(_callender) != null;
         }
 
         private WorkItem CreateWorkItem(Callender callender)
@@ -65,7 +65,9 @@ namespace TaskManagement
             var from = CallenderDay.Parse(textBoxFrom.Text);
             var to = CallenderDay.Parse(textBoxTo.Text);
             if (from == null || to == null) return null;
-            return new Period(from, to);
+            var result = new Period(from, to);
+            if (callender.GetPeriodDayCount(result) == 0) return null;
+            return result;
         }
 
         private Tags GetTags()

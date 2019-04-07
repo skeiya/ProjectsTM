@@ -88,7 +88,7 @@
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listView1);
             this.Name = "ManagementWokingDaysForm";
-            this.Text = "ManagementWokingDaysForm";
+            this.Text = "稼働日管理";
             this.ResumeLayout(false);
             this.PerformLayout();
 

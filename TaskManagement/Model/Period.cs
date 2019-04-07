@@ -4,6 +4,8 @@ namespace TaskManagement
 {
     public class Period
     {
+        public Period() { }
+
         public Period(CallenderDay from, CallenderDay to)
         {
             this.From = from;

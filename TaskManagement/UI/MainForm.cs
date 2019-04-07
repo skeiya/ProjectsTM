@@ -35,15 +35,20 @@ namespace TaskManagement
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
             _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this.panel1.Resize += Panel1_Resize;
             taskDrawAria.Size = panel1.Size;
             statusStrip1.Items.Add("");
         }
 
+        private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
+        {
+            taskDrawAria.Invalidate();
+        }
+
         private void Panel1_Resize(object sender, EventArgs e)
         {
-            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
-            taskDrawAria.Invalidate();
+            ApplyViewRatio();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
@@ -298,18 +303,24 @@ namespace TaskManagement
             taskDrawAria.Invalidate();
         }
 
-        private void ToolStripMenuItem3_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            _viewRatio = 2;
+            if (_viewRatio <= 0.2) return;
+            _viewRatio -= 0.1f;
+            ApplyViewRatio();
+        }
+
+        private void ApplyViewRatio()
+        {
+            panel1.AutoScroll = _viewRatio > 1;
             taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
             taskDrawAria.Invalidate();
         }
 
-        private void ToolStripMenuItem2_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            _viewRatio = 1;
-            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
-            taskDrawAria.Invalidate();
+            _viewRatio += 0.1f;
+            ApplyViewRatio();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)

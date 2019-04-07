@@ -66,7 +66,9 @@ namespace TaskManagement
 
         public void DrawString(string s, RectangleF rect)
         {
-            Graphics.DrawString(s, Font, Brushes.Black, rect, StringFormat.GenericTypographic);
+            var deflate = rect;
+            deflate.X += 1;
+            Graphics.DrawString(s, Font, Brushes.Black, deflate, StringFormat.GenericTypographic);
         }
     }
 }

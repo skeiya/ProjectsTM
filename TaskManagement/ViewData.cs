@@ -8,10 +8,24 @@ namespace TaskManagement
     {
         private Filter _filter;
         public AppData Original { get; set; }
-        public WorkItem Selected { get; set; }
+        private WorkItem _selected;
+        public WorkItem Selected
+        {
+            get { return _selected; }
+            set
+            {
+                var org = _selected;
+                _selected = value;
+                if (!_selected.Equals(org))
+                {
+                    SelectedWorkItemChanged(this, null);
+                }
+            }
+        }
 
 
         public event EventHandler FilterChanged;
+        public event EventHandler SelectedWorkItemChanged;
 
         public ViewData(AppData appData)
         {

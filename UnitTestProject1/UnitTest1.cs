@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaskManagement;
 
@@ -69,30 +70,7 @@ namespace UnitTestProject1
             using (var writer = new StreamWriter(stream))
             using (var reader = new StreamReader(writer.BaseStream))
             {
-                var orgApp = new AppData();
-                var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
-                var gozzila = new Member("松井", "秀喜", "ヤンキース");
-                orgApp.Members.Add(ichiro);
-                orgApp.Members.Add(gozzila);
-                orgApp.Callender.Add(new CallenderDay(2018, 4, 1));
-                orgApp.Callender.Add(new CallenderDay(2018, 5, 2));
-                orgApp.Callender.Add(new CallenderDay(2018, 6, 3));
-                orgApp.Callender.Add(new CallenderDay(2018, 7, 4));
-                orgApp.Callender.Add(new CallenderDay(2018, 8, 5));
-                orgApp.WorkItems.Add(new WorkItem(
-                    new Project("オープン戦"),
-                    "対エンジェルス",
-                    Tags.Parse("a|b"),
-                    new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
-                    ichiro));
-                orgApp.WorkItems.Add(new WorkItem(
-                    new Project("シーズン"),
-                    "対カブス",
-                    Tags.Parse("c|d"),
-                    new Period(new CallenderDay(2018,6,3), new CallenderDay(2018,8,5)),
-                    gozzila));
-
-                orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue));
+                var orgApp = BuildDummyData();
 
                 AppDataSerializer.WriteToStream(orgApp, writer);
                 writer.Flush();
@@ -102,6 +80,35 @@ namespace UnitTestProject1
             }
         }
 
+        private static AppData BuildDummyData()
+        {
+            var orgApp = new AppData();
+            var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
+            var gozzila = new Member("松井", "秀喜", "ヤンキース");
+            orgApp.Members.Add(ichiro);
+            orgApp.Members.Add(gozzila);
+            orgApp.Callender.Add(new CallenderDay(2018, 4, 1));
+            orgApp.Callender.Add(new CallenderDay(2018, 5, 2));
+            orgApp.Callender.Add(new CallenderDay(2018, 6, 3));
+            orgApp.Callender.Add(new CallenderDay(2018, 7, 4));
+            orgApp.Callender.Add(new CallenderDay(2018, 8, 5));
+            orgApp.WorkItems.Add(new WorkItem(
+                new Project("オープン戦"),
+                "対エンジェルス",
+                Tags.Parse("a|b"),
+                new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
+                ichiro));
+            orgApp.WorkItems.Add(new WorkItem(
+                new Project("シーズン"),
+                "対カブス",
+                Tags.Parse("c|d"),
+                new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
+                gozzila));
+
+            orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue));
+            return orgApp;
+        }
+
         [TestMethod]
         public void RSExport()
         {
@@ -109,6 +116,24 @@ namespace UnitTestProject1
             var result = RSFileExporter.MakeText(appData);
             var expect = "";
             Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod]
+        public void XML()
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            using (var reader = new StreamReader(writer.BaseStream))
+            {
+                var orgApp = BuildDummyData();
+
+                var xmlSerializer1 = new XmlSerializer(typeof(AppData));
+                xmlSerializer1.Serialize(writer, orgApp);
+                writer.Flush();
+                stream.Position = 0;
+                var loadedApp = (AppData)xmlSerializer1.Deserialize(reader);
+                Assert.AreEqual(orgApp, loadedApp);
+            }
         }
     }
 }
