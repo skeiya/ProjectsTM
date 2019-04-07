@@ -92,6 +92,7 @@
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.bottonAdd);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "ColorManagementForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

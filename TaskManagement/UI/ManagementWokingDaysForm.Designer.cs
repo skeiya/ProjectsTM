@@ -99,6 +99,7 @@
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ManagementWokingDaysForm";
             this.Text = "稼働日管理";
             this.ResumeLayout(false);
