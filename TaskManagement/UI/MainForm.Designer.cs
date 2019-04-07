@@ -50,13 +50,12 @@ namespace TaskManagement
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargerFont = new System.Windows.Forms.ToolStripMenuItem();
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.倍率ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemLargeRatio = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ToolStripMenuItemSmallRatio = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -112,7 +111,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -120,7 +119,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemSave.Text = "保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
@@ -128,7 +127,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(243, 38);
             this.ToolStripMenuItemPrint.Text = "印刷";
             this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
@@ -138,7 +137,7 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
@@ -186,7 +185,8 @@ namespace TaskManagement
             this.ToolStripMenuItemColor,
             this.ToolStripMenuItemLargerFont,
             this.フォント小ToolStripMenuItem,
-            this.倍率ToolStripMenuItem});
+            this.ToolStripMenuItemLargeRatio,
+            this.ToolStripMenuItemSmallRatio});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
             this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.表示ToolStripMenuItem.Text = "表示";
@@ -195,7 +195,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(410, 38);
             this.ToolStripMenuItemFilter.Text = "フィルター";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
@@ -203,7 +203,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(410, 38);
             this.ToolStripMenuItemColor.Text = "色";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -211,7 +211,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemLargerFont.Name = "ToolStripMenuItemLargerFont";
             this.ToolStripMenuItemLargerFont.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-            this.ToolStripMenuItemLargerFont.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemLargerFont.Size = new System.Drawing.Size(410, 38);
             this.ToolStripMenuItemLargerFont.Text = "フォント(→大)";
             this.ToolStripMenuItemLargerFont.Click += new System.EventHandler(this.ToolStripMenuItemLargerFont_Click);
             // 
@@ -219,32 +219,18 @@ namespace TaskManagement
             // 
             this.フォント小ToolStripMenuItem.Name = "フォント小ToolStripMenuItem";
             this.フォント小ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
+            this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(410, 38);
             this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
             this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
             // 
-            // 倍率ToolStripMenuItem
+            // ToolStripMenuItemLargeRatio
             // 
-            this.倍率ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3});
-            this.倍率ToolStripMenuItem.Name = "倍率ToolStripMenuItem";
-            this.倍率ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
-            this.倍率ToolStripMenuItem.Text = "倍率";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(173, 38);
-            this.toolStripMenuItem2.Text = "100%";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.ToolStripMenuItem2_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(173, 38);
-            this.toolStripMenuItem3.Text = "200%";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.ToolStripMenuItem3_Click);
+            this.ToolStripMenuItemLargeRatio.Name = "ToolStripMenuItemLargeRatio";
+            this.ToolStripMenuItemLargeRatio.ShortcutKeyDisplayString = "Ctrl++";
+            this.ToolStripMenuItemLargeRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
+            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemLargeRatio.Text = "倍率(→大)";
+            this.ToolStripMenuItemLargeRatio.Click += new System.EventHandler(this.ToolStripMenuItemLargeRatio_Click);
             // 
             // 管理ToolStripMenuItem
             // 
@@ -279,6 +265,15 @@ namespace TaskManagement
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1163, 624);
             this.panel1.TabIndex = 12;
+            // 
+            // ToolStripMenuItemSmallRatio
+            // 
+            this.ToolStripMenuItemSmallRatio.Name = "ToolStripMenuItemSmallRatio";
+            this.ToolStripMenuItemSmallRatio.ShortcutKeyDisplayString = "Ctrl+ー";
+            this.ToolStripMenuItemSmallRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
+            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(328, 38);
+            this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
+            this.ToolStripMenuItemSmallRatio.Click += new System.EventHandler(this.ToolStripMenuItemSmallRatio_Click);
             // 
             // Form1
             // 
@@ -326,9 +321,8 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemWorkingDas;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ToolStripMenuItem 倍率ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargeRatio;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
     }
 }
 
