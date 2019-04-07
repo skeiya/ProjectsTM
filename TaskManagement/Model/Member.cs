@@ -1,10 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace TaskManagement
 {
     public class Member : IComparable<Member>
     {
+        [XmlIgnore]
+        public string FirstName { get; private set; }
+        [XmlIgnore]
+        public string LastName { get; private set; }
+        [XmlIgnore]
+        public string Company { get; private set; }
+
+        [XmlElement]
+        public string MemberElement
+        {
+            get { return ToSerializeString(); }
+            set
+            {
+                var words = value.Split('/');
+                LastName = words[0];
+                FirstName = words[1];
+                Company = words[2];
+            }
+        }
+
+        /// <summary>
+        /// XMLシリアライズ用
+        /// </summary>
+        public Member() { }
+
         public Member(string lastName, string firstName, string company)
         {
             FirstName = firstName;
@@ -12,9 +38,6 @@ namespace TaskManagement
             Company = company;
         }
 
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string Company { get; private set; }
         public string DisplayName
         {
             get

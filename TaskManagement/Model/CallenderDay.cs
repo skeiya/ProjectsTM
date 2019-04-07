@@ -1,9 +1,37 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace TaskManagement
 {
     public class CallenderDay : IComparable<CallenderDay>
     {
+
+        [XmlIgnore]
+        public int Year { get; private set; }
+        [XmlIgnore]
+        public int Month { get; private set; }
+        [XmlIgnore]
+        public int Day { get; private set; }
+
+        [XmlElement]
+        public string Date
+        {
+            get { return ToString(); }
+            set
+            {
+                var words = value.Split('/');
+                Year = int.Parse(words[0]);
+                Month = int.Parse(words[1]);
+                Day = int.Parse(words[2]);
+            }
+        }
+
+        /// <summary>
+        /// XMLシリアライズ用
+        /// </summary>
+        public CallenderDay() { }
+
         public CallenderDay(int year, int month, int day)
         {
             Year = year;
@@ -23,10 +51,6 @@ namespace TaskManagement
                 return null;
             }
         }
-
-        public int Year { get; }
-        public int Month { get; }
-        public int Day { get; }
 
         public override string ToString()
         {

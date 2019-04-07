@@ -2,16 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace TaskManagement
 {
     public class WorkItem
     {
-        public Project Project { get; private set; }
-        public Tags Tags { get; private set; }
-        public string Name { get; private set; }
+        [XmlIgnore]
+        public Project Project { get; set; }
+        [XmlIgnore]
+        public Tags Tags { get; set; }
+        public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
+
+        [XmlElement]
+        public string ProjectElement
+        {
+            get { return Project.ToString(); }
+            set { Project = new Project(value); }
+        }
+
+        [XmlElement]
+        public string TagsElement
+        {
+            get { return Tags.ToString(); }
+            set { Tags = Tags.Parse(value); }
+        }
+
+        public WorkItem() { }
 
         public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember)
         {
@@ -20,10 +39,6 @@ namespace TaskManagement
             Tags = tags;
             Period = period;
             AssignedMember = assignedMember;
-        }
-
-        public WorkItem()
-        {
         }
 
         public string ToDrawString(Callender callender)
@@ -42,24 +57,6 @@ namespace TaskManagement
         public string ToString(Callender callender)
         {
             return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + callender.GetPeriodDayCount(Period).ToString() + "d]";
-        }
-
-        public string ToSerializeString()
-        {
-            return Name + "," + Project.ToString() + "," + AssignedMember.ToSerializeString() + "," + Tags.ToString() + "," + Period.From.ToString() + "," + Period.To.ToString();
-        }
-
-        public static WorkItem Parse(string value, Callender callender)
-        {
-            var words = value.Split(',');
-            if (words.Length < 6) return null;
-            var taskName = words[0];
-            var project = new Project(words[1]);
-            var member = Member.Parse(words[2]);
-            var tags = Tags.Parse(words[3]);
-            var period = new Period(CallenderDay.Parse(words[4]), CallenderDay.Parse(words[5]));
-            var result = new WorkItem(project, taskName, tags, period, member);
-            return result;
         }
 
         public void Edit(Project project, string v, Period period, Member member, Tags tags)
