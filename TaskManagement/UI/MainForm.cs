@@ -9,7 +9,6 @@ namespace TaskManagement
     public partial class Form1 : Form
     {
         private ViewData _viewData = new ViewData(new AppData());
-        private FilterForm _filterForm;
         private SearchWorkitemForm _searchForm;
         private int _fontSize = 6;
         TaskGrid _grid;
@@ -236,11 +235,10 @@ namespace TaskManagement
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            if (_filterForm == null || _filterForm.IsDisposed)
+            using (var dlg = new FilterForm(_viewData))
             {
-                _filterForm = new FilterForm(_viewData);
+                dlg.ShowDialog(this);
             }
-            if (!_filterForm.Visible) _filterForm.Show(this);
         }
 
         private void OnApplyFilter()

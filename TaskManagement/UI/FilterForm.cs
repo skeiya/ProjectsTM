@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -17,6 +18,21 @@ namespace TaskManagement
             {
                 checkedListBox1.Items.Add(m, IsContain(m));
             }
+
+            if (viewData.Filter == null || viewData.Filter.Period == null)
+            {
+                ClearPeriodFilter();
+            }
+            else
+            {
+                textBoxFrom.Text = viewData.Filter.Period.From.ToString();
+                textBoxTo.Text = viewData.Filter.Period.To.ToString();
+            }
+
+            if (viewData.Filter != null && !string.IsNullOrEmpty(viewData.Filter.WorkItem))
+            {
+                textBoxWorkItem.Text = viewData.Filter.WorkItem;
+            }
         }
 
         private bool IsContain(Member m)
@@ -32,6 +48,7 @@ namespace TaskManagement
         {
             if (GetPeriodFilter() == null) return;
             _viewData.SetFilter(GetFilter());
+            Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -89,8 +106,14 @@ namespace TaskManagement
 
         private void buttonClearPeriod_Click(object sender, EventArgs e)
         {
-            textBoxFrom.Text = string.Empty;
-            textBoxTo.Text = string.Empty;
+            ClearPeriodFilter();
+        }
+
+        private void ClearPeriodFilter()
+        {
+            var days = _viewData.Original.Callender.Days;
+            textBoxFrom.Text = days.First().ToString();
+            textBoxTo.Text = days.Last().ToString();
         }
 
         private void buttonClearMembers_Click(object sender, EventArgs e)

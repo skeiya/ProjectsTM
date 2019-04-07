@@ -89,7 +89,7 @@
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(133, 46);
             this.buttonApply.TabIndex = 11;
-            this.buttonApply.Text = "適用";
+            this.buttonApply.Text = "OK";
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -133,7 +133,7 @@
             // 
             this.buttonClearWorkItem.Location = new System.Drawing.Point(300, 53);
             this.buttonClearWorkItem.Name = "buttonClearWorkItem";
-            this.buttonClearWorkItem.Size = new System.Drawing.Size(85, 31);
+            this.buttonClearWorkItem.Size = new System.Drawing.Size(85, 44);
             this.buttonClearWorkItem.TabIndex = 2;
             this.buttonClearWorkItem.Text = "クリア";
             this.buttonClearWorkItem.UseVisualStyleBackColor = true;
@@ -143,7 +143,7 @@
             // 
             this.buttonClearPeriod.Location = new System.Drawing.Point(300, 149);
             this.buttonClearPeriod.Name = "buttonClearPeriod";
-            this.buttonClearPeriod.Size = new System.Drawing.Size(85, 31);
+            this.buttonClearPeriod.Size = new System.Drawing.Size(85, 43);
             this.buttonClearPeriod.TabIndex = 7;
             this.buttonClearPeriod.Text = "クリア";
             this.buttonClearPeriod.UseVisualStyleBackColor = true;
@@ -151,9 +151,9 @@
             // 
             // buttonClearMembers
             // 
-            this.buttonClearMembers.Location = new System.Drawing.Point(300, 269);
+            this.buttonClearMembers.Location = new System.Drawing.Point(300, 260);
             this.buttonClearMembers.Name = "buttonClearMembers";
-            this.buttonClearMembers.Size = new System.Drawing.Size(85, 31);
+            this.buttonClearMembers.Size = new System.Drawing.Size(85, 40);
             this.buttonClearMembers.TabIndex = 9;
             this.buttonClearMembers.Text = "クリア";
             this.buttonClearMembers.UseVisualStyleBackColor = true;

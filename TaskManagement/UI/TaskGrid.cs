@@ -206,7 +206,8 @@ namespace TaskManagement
         private static Period GetDrawPeriod(ViewData viewData, WorkItem wi)
         {
             var org = wi.Period;
-            var filter = viewData.GetFilteredPeriod();
+            if (viewData.Filter == null) return org;
+            var filter = viewData.Filter.Period;
             if (filter == null) return org;
             var from = org.From;
             var to = org.To;
