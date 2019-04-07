@@ -12,12 +12,12 @@ namespace TaskManagement.UI
 {
     public partial class ManageMemberForm : Form
     {
-        private readonly Members _members;
+        private readonly AppData _appData;
 
-        public ManageMemberForm(Members members)
+        public ManageMemberForm(AppData appData)
         {
             InitializeComponent();
-            _members = members;
+            _appData = appData;
             UpdateList();
         }
 
@@ -25,14 +25,14 @@ namespace TaskManagement.UI
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
-            _members.Up(m);
+            _appData.Members.Up(m);
             UpdateList();
         }
 
         private void UpdateList()
         {
             listBox1.Items.Clear();
-            foreach (var m in _members)
+            foreach (var m in _appData.Members)
             {
                 listBox1.Items.Add(m);
             }
@@ -42,8 +42,36 @@ namespace TaskManagement.UI
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
-            _members.Down(m);
+            _appData.Members.Down(m);
             UpdateList();
+        }
+
+        private void ButtonEdit_Click(object sender, EventArgs e)
+        {
+            Edit();
+        }
+
+        private void Edit()
+        {
+            var m = listBox1.SelectedItem as Member;
+            if (m == null) return;
+            using (var dlg = new EditMemberForm(m.ToSerializeString()))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var after = Member.Parse(dlg.EditText);
+                if (after == null) return;
+                foreach (var w in _appData.WorkItems)
+                {
+                    if (m.Equals(w.AssignedMember)) w.AssignedMember = after;
+                }
+                m.EditApply(dlg.EditText);
+            }
+            UpdateList();
+        }
+
+        private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Edit();
         }
     }
 }

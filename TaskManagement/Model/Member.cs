@@ -52,6 +52,15 @@ namespace TaskManagement
             }
         }
 
+        internal void EditApply(string text)
+        {
+            var m = Member.Parse(text);
+            if (m == null) return;
+            LastName = m.LastName;
+            FirstName = m.FirstName;
+            Company = m.Company;
+        }
+
         public string ToSerializeString()
         {
             return LastName + "/" + FirstName + "/" + Company;

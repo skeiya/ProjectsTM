@@ -289,7 +289,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMemberForm(_viewData.Original.Members))
+            using (var dlg = new ManageMemberForm(_viewData.Original))
             {
                 dlg.ShowDialog(this);
             }
