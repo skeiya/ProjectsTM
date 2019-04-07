@@ -180,5 +180,8 @@
   <ItemGroup>
     <None Include="Properties\icon_129150_48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Dakirby309-Simply-Styled-Calendar.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
