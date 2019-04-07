@@ -312,6 +312,7 @@ namespace TaskManagement
 
         private void ApplyViewRatio()
         {
+            panel1.AutoScroll = _viewRatio > 1;
             taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
             taskDrawAria.Invalidate();
         }
