@@ -37,6 +37,7 @@
             // 
             // bottonAdd
             // 
+            this.bottonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bottonAdd.Location = new System.Drawing.Point(670, 13);
             this.bottonAdd.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.bottonAdd.Name = "bottonAdd";
@@ -57,7 +58,7 @@
             this.listView1.Location = new System.Drawing.Point(13, 12);
             this.listView1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(639, 425);
+            this.listView1.Size = new System.Drawing.Size(644, 491);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -73,6 +74,7 @@
             // 
             // buttonDelete
             // 
+            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.Location = new System.Drawing.Point(670, 78);
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.buttonDelete.Name = "buttonDelete";
@@ -86,13 +88,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(805, 516);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.bottonAdd);
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Name = "ColorManagementForm";
-            this.Text = "ColorManagementForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "色条件リスト";
             this.ResumeLayout(false);
 
         }
