@@ -25,8 +25,10 @@ namespace TaskManagement.UI
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
+            var index = listBox1.SelectedIndex;
             _appData.Members.Up(m);
             UpdateList();
+            listBox1.SelectedIndex = index == 0 ? index : index - 1;
         }
 
         private void UpdateList()
@@ -42,8 +44,10 @@ namespace TaskManagement.UI
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
+            var index = listBox1.SelectedIndex;
             _appData.Members.Down(m);
             UpdateList();
+            listBox1.SelectedIndex = listBox1.Items.Count == index + 1 ? index : index + 1;
         }
 
         private void ButtonEdit_Click(object sender, EventArgs e)
