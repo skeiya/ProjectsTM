@@ -105,7 +105,7 @@ namespace UnitTestProject1
                 new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
                 gozzila));
 
-            orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue));
+            orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue, Color.Black));
             return orgApp;
         }
 

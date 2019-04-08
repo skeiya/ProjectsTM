@@ -6,13 +6,15 @@ namespace TaskManagement
 {
     class CsvReader
     {
+        private static List<string> _existingProjects = new List<string>() { "C171", "C173", "C174", "C181", "C175A", "C141B" };
+
         private static Tags ParseTags(string tag)
         {
             var result = new List<string>();
             var words = tag.Split('|');
             foreach (var w in words)
             {
-                if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) continue;
+                if (_existingProjects.Contains(w)) continue;
                 result.Add(w);
             }
             return new Tags(result);
@@ -23,7 +25,7 @@ namespace TaskManagement
             var words = tag.Split('|');
             foreach (var w in words)
             {
-                if (w.Equals("C171") || w.Equals("C173") || w.Equals("C174")) return new Project(w);
+                if (_existingProjects.Contains(w)) return new Project(w);
             }
             return new Project("tmp");
         }
