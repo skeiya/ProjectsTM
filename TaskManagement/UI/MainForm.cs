@@ -168,8 +168,14 @@ namespace TaskManagement
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
-            ImportMemberAndWorkItems();
-            taskDrawAria.Invalidate();
+            try
+            {
+                ImportMemberAndWorkItems();
+                taskDrawAria.Invalidate();
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -223,14 +229,20 @@ namespace TaskManagement
 
         private void OpenFile(string fileName)
         {
-            string error;
-            var result = AppDataSerializer.Deserialize(fileName, out error);
-            if (result == null)
+            try
             {
-                MessageBox.Show(error);
-                return;
+                string error;
+                var result = AppDataSerializer.Deserialize(fileName, out error);
+                if (result == null)
+                {
+                    MessageBox.Show(error);
+                    return;
+                }
+                _viewData.Original = result;
+            }catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
-            _viewData.Original = result;
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)

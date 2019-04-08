@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -107,9 +108,11 @@ namespace TaskManagement
             var isFirstLine = true;
             using (var r = new StreamReader(fileName))
             {
+                var lineNo = 0;
                 while (true)
                 {
                     var line = r.ReadLine();
+                    lineNo++;
                     if (string.IsNullOrEmpty(line)) return result;
                     if (isFirstLine)
                     {
@@ -118,6 +121,10 @@ namespace TaskManagement
                     }
 
                     var words = line.Split(',');
+                    if (words.Length != 10) {
+
+                        throw new System.Exception(String.Format("{0}行目の区切り数が異常です。", lineNo));
+                    }
 
                     var project = ParseProject(words[5]);
                     var tags = ParseTags(words[5]);
