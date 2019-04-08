@@ -6,9 +6,12 @@ namespace TaskManagement
 {
     public partial class ColorConditionEditorForm : Form
     {
-        public ColorConditionEditorForm()
+        public ColorConditionEditorForm(ColorCondition init)
         {
             InitializeComponent();
+            textBox1.Text = init.Pattern;
+            textBox1.BackColor = init.BackColor;
+            textBox1.ForeColor = init.ForeColor;
         }
 
         public ColorCondition ColorCondition { get; private set; }

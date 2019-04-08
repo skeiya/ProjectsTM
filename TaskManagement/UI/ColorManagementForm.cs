@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace TaskManagement
 {
@@ -21,13 +22,15 @@ namespace TaskManagement
             {
                 var i = new ListViewItem(cond.Pattern);
                 i.BackColor = cond.BackColor;
+                i.ForeColor = cond.ForeColor;
+                i.Tag = cond;
                 this.listView1.Items.Add(i);
             }
         }
 
         private void bottonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorConditionEditorForm())
+            using (var dlg = new ColorConditionEditorForm(new ColorCondition()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _colorConditions.Add(dlg.ColorCondition);
@@ -50,6 +53,30 @@ namespace TaskManagement
                 return _colorConditions.At(i);
             }
             return null;
+        }
+
+        private void ButtonEdit_Click(object sender, EventArgs e)
+        {
+            Edit();
+        }
+
+        private void Edit()
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            var index = listView1.SelectedIndices[0];
+            var cond = _colorConditions.At(index);
+            var clone = cond.Clone();
+            using (var dlg = new ColorConditionEditorForm(clone))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                cond.Apply(dlg.ColorCondition);
+            }
+            UpdateList();
+        }
+
+        private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Edit();
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace TaskManagement
@@ -18,7 +15,7 @@ namespace TaskManagement
             this.ForeColor = fore;
         }
 
-        public string Pattern;
+        public string Pattern = string.Empty;
 
         [XmlIgnore]
         public Color BackColor = Color.White;
@@ -59,6 +56,18 @@ namespace TaskManagement
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Pattern);
             hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(BackColor);
             return hashCode;
+        }
+
+        internal ColorCondition Clone()
+        {
+            return new ColorCondition(Pattern, BackColor, ForeColor);
+        }
+
+        internal void Apply(ColorCondition cond)
+        {
+            this.Pattern = cond.Pattern;
+            this.BackColor = cond.BackColor;
+            this.ForeColor = cond.ForeColor;
         }
     }
 }
