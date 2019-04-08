@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace TaskManagement
@@ -66,9 +67,18 @@ namespace TaskManagement
 
         public void DrawString(string s, RectangleF rect)
         {
+            DrawString(s, rect, Color.Black);
+        }
+
+        internal void DrawString(string s, RectangleF rect, Color c)
+        {
             var deflate = rect;
             deflate.X += 1;
-            Graphics.DrawString(s, Font, Brushes.Black, deflate, StringFormat.GenericTypographic);
+            deflate.Y += 1;
+            using (var b = new SolidBrush(c))
+            {
+                Graphics.DrawString(s, Font, b, deflate, StringFormat.GenericTypographic);
+            }
         }
     }
 }

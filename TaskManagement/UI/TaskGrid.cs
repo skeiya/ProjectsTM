@@ -190,9 +190,10 @@ namespace TaskManagement
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
                 var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
-                var color = _colorConditions.GetMatchColor(wi.ToString(viewData.Original.Callender));
-                if (color != null) _grid.Graphics.FillRectangle(new SolidBrush(color.Value), Rectangle.Round(bounds));
-                _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds);
+                var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
+                if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
+                var front = colorContidion == null ? Color.Black: colorContidion.ForeColor;
+                _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds, front);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
 

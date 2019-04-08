@@ -37,6 +37,7 @@ namespace TaskManagement
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemSaveAsOtherName = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.詳細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawAria = new System.Windows.Forms.PictureBox();
-            this.ToolStripMenuItemSaveAsOtherName = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
@@ -83,7 +83,7 @@ namespace TaskManagement
             this.管理ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -114,6 +114,13 @@ namespace TaskManagement
             this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemSave.Text = "上書き保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
+            // 
+            // ToolStripMenuItemSaveAsOtherName
+            // 
+            this.ToolStripMenuItemSaveAsOtherName.Name = "ToolStripMenuItemSaveAsOtherName";
+            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSaveAsOtherName.Text = "別名保存";
+            this.ToolStripMenuItemSaveAsOtherName.Click += new System.EventHandler(this.ToolStripMenuItemSaveAsOtherName_Click);
             // 
             // ToolStripMenuItemPrint
             // 
@@ -269,9 +276,9 @@ namespace TaskManagement
             // 
             this.panel1.Controls.Add(this.taskDrawAria);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 40);
+            this.panel1.Location = new System.Drawing.Point(0, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1163, 626);
+            this.panel1.Size = new System.Drawing.Size(1163, 624);
             this.panel1.TabIndex = 12;
             // 
             // taskDrawAria
@@ -284,13 +291,6 @@ namespace TaskManagement
             this.taskDrawAria.TabIndex = 1;
             this.taskDrawAria.TabStop = false;
             this.taskDrawAria.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
-            // 
-            // ToolStripMenuItemSaveAsOtherName
-            // 
-            this.ToolStripMenuItemSaveAsOtherName.Name = "ToolStripMenuItemSaveAsOtherName";
-            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(324, 38);
-            this.ToolStripMenuItemSaveAsOtherName.Text = "別名保存";
-            this.ToolStripMenuItemSaveAsOtherName.Click += new System.EventHandler(this.ToolStripMenuItemSaveAsOtherName_Click);
             // 
             // Form1
             // 

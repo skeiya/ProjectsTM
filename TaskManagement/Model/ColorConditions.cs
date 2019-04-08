@@ -25,11 +25,11 @@ namespace TaskManagement
             _list.Add(cond);
         }
 
-        public Color? GetMatchColor(string input)
+        public ColorCondition GetMatchColorCondition(string input)
         {
             foreach (var c in _list)
             {
-                if (Regex.IsMatch(input, c.Pattern)) return c.Color;
+                if (Regex.IsMatch(input, c.Pattern)) return c;
             }
             return null;
         }

@@ -20,7 +20,7 @@ namespace TaskManagement
             foreach (var cond in _colorConditions)
             {
                 var i = new ListViewItem(cond.Pattern);
-                i.BackColor = cond.Color;
+                i.BackColor = cond.BackColor;
                 this.listView1.Items.Add(i);
             }
         }

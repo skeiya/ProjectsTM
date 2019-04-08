@@ -11,28 +11,37 @@ namespace TaskManagement
     {
         public ColorCondition() { }
 
-        public ColorCondition(string v, Color c)
+        public ColorCondition(string v, Color back, Color fore)
         {
             this.Pattern = v;
-            this.Color = c;
+            this.BackColor = back;
+            this.ForeColor = fore;
         }
 
         public string Pattern;
 
         [XmlIgnore]
-        public Color Color;
+        public Color BackColor = Color.White;
+        [XmlIgnore]
+        public Color ForeColor = Color.Black;
 
         [XmlElement]
         public string ColorText
         {
-            get { return Color.R.ToString() + "/" + Color.G.ToString() + "/" + Color.B.ToString(); }
+            get { return BackColor.R.ToString() + "/" + BackColor.G.ToString() + "/" + BackColor.B.ToString() + "/"+ ForeColor.R.ToString() + "/" + ForeColor.G.ToString() + "/" + ForeColor.B.ToString(); }
             set
             {
                 var words = value.Split('/');
                 var r = int.Parse(words[0]);
                 var g = int.Parse(words[1]);
                 var b = int.Parse(words[2]);
-                Color = Color.FromArgb(r, g, b);
+                BackColor = Color.FromArgb(r, g, b);
+
+                if (words.Length <= 3) return;
+                var rf = int.Parse(words[3]);
+                var gf = int.Parse(words[4]);
+                var bf = int.Parse(words[5]);
+                ForeColor = Color.FromArgb(rf, gf, bf);
             }
         }
 
@@ -41,14 +50,14 @@ namespace TaskManagement
             var target = obj as ColorCondition;
             if (target == null) return false;
             if (!Pattern.Equals(target.Pattern)) return false;
-            return Color.ToArgb() == target.Color.ToArgb();
+            return BackColor.ToArgb() == target.BackColor.ToArgb();
         }
 
         public override int GetHashCode()
         {
             var hashCode = 671444674;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Pattern);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(Color);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(BackColor);
             return hashCode;
         }
     }
