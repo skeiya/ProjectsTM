@@ -15,20 +15,25 @@ namespace TaskManagement
             var words = tag.Split('|');
             foreach (var w in words)
             {
-                if (_existingProjects.Contains(w)) continue;
                 result.Add(w);
             }
             return new Tags(result);
         }
 
-        private static Project ParseProject(string tag)
+        private static Project ParseProject(string tag, string workitem)
         {
-            var words = tag.Split('|');
-            foreach (var w in words)
+            foreach (var w in tag.Split('|'))
             {
-                if (_existingProjects.Contains(w)) return new Project(w);
+                foreach(var p in _existingProjects)
+                {
+                    if (w.Contains(p)) return new Project(p);
+                }
             }
-            return new Project("tmp");
+            foreach(var p in _existingProjects)
+            {
+                if (workitem.Contains(p)) return new Project(p);
+            }
+            return new Project("NoPrj");
         }
 
         private static Member ParseMember(string str)
@@ -126,7 +131,7 @@ namespace TaskManagement
                         throw new System.Exception(String.Format("{0}行目の区切り数が異常です。", lineNo));
                     }
 
-                    var project = ParseProject(words[5]);
+                    var project = ParseProject(words[5], words[3]);
                     var tags = ParseTags(words[5]);
                     var taskName = words[3];
                     var period = ParsePeriod(words[1], words[2]);
