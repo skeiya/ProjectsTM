@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace TaskManagement
@@ -40,6 +41,14 @@ namespace TaskManagement
 
         private void button2_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Regex.IsMatch("", textBox1.Text);
+            }
+            catch (Exception)
+            {
+                return;
+            }
             ColorCondition = new ColorCondition(textBox1.Text, textBox1.BackColor, textBox1.ForeColor);
             DialogResult = DialogResult.OK;
             Close();
