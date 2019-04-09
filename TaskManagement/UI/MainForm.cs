@@ -13,8 +13,10 @@ namespace TaskManagement
         private int _fontSize = 6;
         TaskGrid _grid;
         WorkItem _draggingWorkItem = null;
+        private Point _draggedLocation;
         CallenderDay _draggedDay = null;
         Period _draggedPeriod = null;
+        private Member _draggedMember;
         private float _viewRatio = 1.0f;
         string _previousFileName;
 
@@ -98,12 +100,48 @@ namespace TaskManagement
             var curDay = _grid.GetDayFromY(e.Location.Y);
             if (curDay == null) return;
 
-            if (!_draggingWorkItem.AssignedMember.Equals(member))
+            if (IsOnlyMoveHorizontal(e))
             {
                 _draggingWorkItem.AssignedMember = member;
+                _draggingWorkItem.Period = _draggedPeriod;
             }
-            var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
-            _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
+            else if (IsOnlyMoveVirtical(e))
+            {
+                _draggingWorkItem.AssignedMember = _draggedMember;
+                var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
+                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
+            }
+            else
+            {
+                _draggingWorkItem.AssignedMember = member;
+                var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
+                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
+            }
+        }
+
+        private bool IsOnlyMoveHorizontal(MouseEventArgs e)
+        {
+            if (!IsShiftDown()) return false;
+            return !IsVirticalLong(_draggedLocation, e.Location);
+        }
+
+        private bool IsOnlyMoveVirtical(MouseEventArgs e)
+        {
+            if (!IsShiftDown()) return false;
+            return IsVirticalLong(_draggedLocation, e.Location);
+
+        }
+
+        private bool IsVirticalLong(Point a, Point b)
+        {
+            var h = Math.Abs(a.Y - b.Y);
+            var w = Math.Abs(a.X - b.X);
+            return w < h;
+        }
+
+        private bool IsShiftDown()
+        {
+            return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
         private void UpdateHoveringTest(MouseEventArgs e)
@@ -126,7 +164,9 @@ namespace TaskManagement
             _viewData.Selected = wi;
 
             _draggingWorkItem = wi;
+            _draggedLocation = e.Location;
             _draggedPeriod = wi.Period.Clone();
+            _draggedMember = wi.AssignedMember;
             _draggedDay = _grid.GetDayFromY(e.Location.Y);
 
             taskDrawAria.Invalidate();
