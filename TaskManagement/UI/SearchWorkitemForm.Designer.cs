@@ -30,6 +30,7 @@
         {
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBoxPattern = new System.Windows.Forms.TextBox();
+            this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // listBox1
@@ -54,11 +55,23 @@
             this.textBoxPattern.TabIndex = 1;
             this.textBoxPattern.TextChanged += new System.EventHandler(this.TextBoxPattern_TextChanged);
             // 
+            // checkBoxOverwrapPeriod
+            // 
+            this.checkBoxOverwrapPeriod.AutoSize = true;
+            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(13, 51);
+            this.checkBoxOverwrapPeriod.Name = "checkBoxOverwrapPeriod";
+            this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(173, 28);
+            this.checkBoxOverwrapPeriod.TabIndex = 2;
+            this.checkBoxOverwrapPeriod.Text = "期間重複あり";
+            this.checkBoxOverwrapPeriod.UseVisualStyleBackColor = true;
+            this.checkBoxOverwrapPeriod.CheckedChanged += new System.EventHandler(this.CheckBoxOverwrapPeriod_CheckedChanged);
+            // 
             // SearchWorkitemForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.checkBoxOverwrapPeriod);
             this.Controls.Add(this.textBoxPattern);
             this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -73,5 +86,6 @@
 
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox textBoxPattern;
+        private System.Windows.Forms.CheckBox checkBoxOverwrapPeriod;
     }
 }

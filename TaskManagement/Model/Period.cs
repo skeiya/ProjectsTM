@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskManagement
 {
@@ -46,6 +47,13 @@ namespace TaskManagement
             hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(From);
             hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(To);
             return hashCode;
+        }
+
+        internal bool HasInterSection(Period period)
+        {
+            if (period.Contains(From)) return true;
+            if (period.Contains(To)) return true;
+            return false;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TaskManagement
         private readonly ViewData _viewData;
         private System.Timers.Timer _timer = new System.Timers.Timer(100);
         private int _tickCount = 0;
-        private WorkItem[] _list = null;
+        private List<WorkItem> _list = new List<WorkItem>();
 
         public SearchWorkitemForm(ViewData viewData)
         {
@@ -60,12 +60,12 @@ namespace TaskManagement
 
         private void UpdateFilteredList()
         {
-            var tmp = new List<WorkItem>();
+            _list.Clear();
             if (string.IsNullOrEmpty(textBoxPattern.Text))
             {
                 foreach (var wi in _viewData.GetFilteredWorkItems())
                 {
-                    tmp.Add(wi);
+                    _list.Add(wi);
                 }
             }
             else
@@ -75,12 +75,11 @@ namespace TaskManagement
                     foreach (var wi in _viewData.GetFilteredWorkItems())
                     {
                         if (!Regex.IsMatch(wi.ToString(_viewData.Original.Callender), textBoxPattern.Text)) continue;
-                        tmp.Add(wi);
+                        _list.Add(wi);
                     }
                 }
                 catch { }
             }
-            _list = tmp.ToArray();
         }
 
         private void TextBoxPattern_TextChanged(object sender, EventArgs e)
@@ -100,6 +99,39 @@ namespace TaskManagement
 
             UpdateFilteredList();
             UpdateListBox();
+        }
+
+        private void CheckBoxOverwrapPeriod_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
+            if (!checkBoxOverwrapPeriod.Checked)
+            {
+                UpdateFilteredList();
+                UpdateListBox();
+                return;
+            }
+
+            textBoxPattern.Text = string.Empty;
+            _tickCount = 0;
+            _timer.Enabled = false; _list.Clear();
+            foreach (var src in _viewData.Original.WorkItems)
+            {
+                foreach (var dst in _viewData.Original.WorkItems)
+                {
+                    if (src.Equals(dst))
+                    {
+                        continue;
+                    }
+                    if (!src.AssignedMember.Equals(dst.AssignedMember)) continue;
+                    if (src.Period.HasInterSection(dst.Period)) _list.Add(src);
+                }
+            }
+
+            listBox1.Items.Clear();
+            foreach (var l in _list)
+            {
+                listBox1.Items.Add(l.ToString(_viewData.Original.Callender));
+            }
         }
     }
 }
