@@ -103,10 +103,7 @@ namespace TaskManagement
                 _draggingWorkItem.AssignedMember = member;
             }
             var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
-            if (offset != 0)
-            {
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
-            }
+            _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
         }
 
         private void UpdateHoveringTest(MouseEventArgs e)
@@ -172,7 +169,8 @@ namespace TaskManagement
             {
                 ImportMemberAndWorkItems();
                 taskDrawAria.Invalidate();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -239,7 +237,8 @@ namespace TaskManagement
                     return;
                 }
                 _viewData.Original = result;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
