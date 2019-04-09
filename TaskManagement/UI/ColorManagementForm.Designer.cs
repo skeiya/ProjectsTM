@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonUP = new System.Windows.Forms.Button();
             this.buttonDown = new System.Windows.Forms.Button();
+            this.buttonImport = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bottonAdd
@@ -128,11 +129,22 @@
             this.buttonDown.UseVisualStyleBackColor = true;
             this.buttonDown.Click += new System.EventHandler(this.ButtonDown_Click);
             // 
+            // buttonImport
+            // 
+            this.buttonImport.Location = new System.Drawing.Point(670, 360);
+            this.buttonImport.Name = "buttonImport";
+            this.buttonImport.Size = new System.Drawing.Size(119, 51);
+            this.buttonImport.TabIndex = 7;
+            this.buttonImport.Text = "インポート";
+            this.buttonImport.UseVisualStyleBackColor = true;
+            this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
+            // 
             // ColorManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 516);
+            this.Controls.Add(this.buttonImport);
             this.Controls.Add(this.buttonDown);
             this.Controls.Add(this.buttonUP);
             this.Controls.Add(this.label1);
@@ -160,5 +172,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonUP;
         private System.Windows.Forms.Button buttonDown;
+        private System.Windows.Forms.Button buttonImport;
     }
 }

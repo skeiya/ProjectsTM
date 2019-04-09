@@ -80,5 +80,14 @@ namespace TaskManagement
             _list[index] = _list[index + 1];
             _list[index + 1] = cond;
         }
+
+        internal void Apply(ColorConditions colorConditions)
+        {
+            _list.Clear();
+            foreach(var c in colorConditions)
+            {
+                _list.Add(c);
+            }
+        }
     }
 }
