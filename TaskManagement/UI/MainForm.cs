@@ -38,6 +38,7 @@ namespace TaskManagement
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
             this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
+            this.taskDrawAria.MouseWheel += TaskDrawAria_MouseWheel;
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this.panel1.Resize += Panel1_Resize;
@@ -46,6 +47,19 @@ namespace TaskManagement
             taskDrawAria.AllowDrop = true;
             taskDrawAria.DragEnter += TaskDrawAria_DragEnter;
             taskDrawAria.DragDrop += TaskDrawAria_DragDrop;
+        }
+
+        private void TaskDrawAria_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!IsControlDown()) return;
+            if (e.Delta > 0)
+            {
+                ToolStripMenuItemLargeRatio_Click(sender, e);
+            }
+            else
+            {
+                ToolStripMenuItemSmallRatio_Click(sender, e);
+            }
         }
 
         private void TaskDrawAria_DragDrop(object sender, DragEventArgs e)
@@ -142,6 +156,11 @@ namespace TaskManagement
         private bool IsShiftDown()
         {
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
+        }
+
+        private bool IsControlDown()
+        {
+            return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
 
         private void UpdateHoveringTest(MouseEventArgs e)
