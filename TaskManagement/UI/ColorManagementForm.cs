@@ -48,7 +48,7 @@ namespace TaskManagement
 
         private ColorCondition GetSelectedCondition()
         {
-            foreach(int i in listView1.SelectedIndices)
+            foreach (int i in listView1.SelectedIndices)
             {
                 return _colorConditions.At(i);
             }
@@ -77,6 +77,28 @@ namespace TaskManagement
         private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Edit();
+        }
+
+        private void ButtonUP_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            var index = listView1.SelectedIndices[0];
+            if (index == 0) return;
+            var cond = listView1.SelectedItems[0].Tag as ColorCondition;
+            _colorConditions.Up(index);
+            UpdateList();
+            listView1.Items[index - 1].Selected = true;
+        }
+
+        private void ButtonDown_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            var index = listView1.SelectedIndices[0];
+            if (listView1.Items.Count == index + 1) return;
+            var cond = listView1.SelectedItems[0].Tag as ColorCondition;
+            _colorConditions.Down(index);
+            UpdateList();
+            listView1.Items[index + 1].Selected = true;
         }
     }
 }

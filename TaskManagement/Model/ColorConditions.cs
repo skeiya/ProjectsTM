@@ -66,5 +66,19 @@ namespace TaskManagement
         {
             return _list.GetHashCode();
         }
+
+        internal void Up(int index)
+        {
+            var cond = _list[index];
+            _list[index] = _list[index - 1];
+            _list[index - 1] = cond;
+        }
+
+        internal void Down(int index)
+        {
+            var cond = _list[index];
+            _list[index] = _list[index + 1];
+            _list[index + 1] = cond;
+        }
     }
 }

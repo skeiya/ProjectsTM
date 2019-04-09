@@ -34,6 +34,9 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonUP = new System.Windows.Forms.Button();
+            this.buttonDown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bottonAdd
@@ -59,7 +62,7 @@
             this.listView1.Location = new System.Drawing.Point(13, 12);
             this.listView1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(644, 491);
+            this.listView1.Size = new System.Drawing.Size(644, 437);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -96,11 +99,43 @@
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 473);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(382, 24);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "上から順に最初にマッチした条件を適用";
+            // 
+            // buttonUP
+            // 
+            this.buttonUP.Location = new System.Drawing.Point(670, 212);
+            this.buttonUP.Name = "buttonUP";
+            this.buttonUP.Size = new System.Drawing.Size(119, 50);
+            this.buttonUP.TabIndex = 5;
+            this.buttonUP.Text = "UP";
+            this.buttonUP.UseVisualStyleBackColor = true;
+            this.buttonUP.Click += new System.EventHandler(this.ButtonUP_Click);
+            // 
+            // buttonDown
+            // 
+            this.buttonDown.Location = new System.Drawing.Point(670, 284);
+            this.buttonDown.Name = "buttonDown";
+            this.buttonDown.Size = new System.Drawing.Size(119, 53);
+            this.buttonDown.TabIndex = 6;
+            this.buttonDown.Text = "DOWN";
+            this.buttonDown.UseVisualStyleBackColor = true;
+            this.buttonDown.Click += new System.EventHandler(this.ButtonDown_Click);
+            // 
             // ColorManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 516);
+            this.Controls.Add(this.buttonDown);
+            this.Controls.Add(this.buttonUP);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonDelete);
@@ -111,6 +146,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "色条件リスト";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -121,5 +157,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonUP;
+        private System.Windows.Forms.Button buttonDown;
     }
 }
