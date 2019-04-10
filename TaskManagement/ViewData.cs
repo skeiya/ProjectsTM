@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace TaskManagement
@@ -9,6 +10,12 @@ namespace TaskManagement
         public Filter Filter { get; private set; }
         public AppData Original { get; set; }
         private WorkItem _selected;
+        private int _fontSize = 6;
+        private float _viewRatio = 1.0f;
+
+        public event EventHandler FilterChanged;
+        public event EventHandler SelectedWorkItemChanged;
+
         public WorkItem Selected
         {
             get { return _selected; }
@@ -23,9 +30,12 @@ namespace TaskManagement
             }
         }
 
+        public float Ratio => _viewRatio;
 
-        public event EventHandler FilterChanged;
-        public event EventHandler SelectedWorkItemChanged;
+        internal Font CreateFont(Font font)
+        {
+            return new Font(font.FontFamily, _fontSize);
+        }
 
         public ViewData(AppData appData)
         {
@@ -104,6 +114,33 @@ namespace TaskManagement
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
             if (!Original.Members.Contain(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+        }
+
+        internal void IncFont()
+        {
+            _fontSize++;
+        }
+
+        internal void DecFont()
+        {
+            if (_fontSize <= 1) return;
+            _fontSize--;
+        }
+
+        internal void DecRatio()
+        {
+            if (_viewRatio <= 0.2) return;
+            _viewRatio -= 0.1f;
+        }
+
+        internal void IncRatio()
+        {
+            _viewRatio += 0.1f;
+        }
+
+        internal bool IsEnlarged()
+        {
+            return _viewRatio > 1;
         }
     }
 }

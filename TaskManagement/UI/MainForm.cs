@@ -10,9 +10,7 @@ namespace TaskManagement
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm _searchForm;
-        private int _fontSize = 6;
         TaskGrid _grid;
-        private float _viewRatio = 1.0f;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private FileDragService _fileDragService = new FileDragService();
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
@@ -127,13 +125,13 @@ namespace TaskManagement
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, new Font(this.Font.FontFamily, _fontSize));
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
             _grid.Draw(_viewData);
         }
 
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, new Font(this.Font.FontFamily, _fontSize));
+            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, this.Font);
             grid.Draw(_viewData);
         }
 
@@ -230,14 +228,13 @@ namespace TaskManagement
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
         {
-            _fontSize++;
+            _viewData.IncFont();
             taskDrawAria.Invalidate();
         }
 
         private void フォント小ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_fontSize <= 1) return;
-            _fontSize--;
+            _viewData.DecFont();
             taskDrawAria.Invalidate();
         }
 
@@ -274,21 +271,20 @@ namespace TaskManagement
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            if (_viewRatio <= 0.2) return;
-            _viewRatio -= 0.1f;
+            _viewData.DecRatio();
             ApplyViewRatio();
         }
 
         private void ApplyViewRatio()
         {
-            panel1.AutoScroll = _viewRatio > 1;
-            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewRatio), (int)(panel1.Size.Height * _viewRatio));
+            panel1.AutoScroll = _viewData.IsEnlarged();
+            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewData.Ratio), (int)(panel1.Size.Height * _viewData.Ratio));
             taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            _viewRatio += 0.1f;
+            _viewData.IncRatio();
             ApplyViewRatio();
         }
 
