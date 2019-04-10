@@ -2,7 +2,7 @@
 
 namespace TaskManagement.Service
 {
-    class FileIOService
+    class AppDataFileIOService
     {
         private string _previousFileName;
 

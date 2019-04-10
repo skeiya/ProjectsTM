@@ -15,7 +15,7 @@ namespace TaskManagement
         private float _viewRatio = 1.0f;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private FileDragService _fileDragService = new FileDragService();
-        private FileIOService _fileIOService = new FileIOService();
+        private AppDataFileIOService _fileIOService = new AppDataFileIOService();
 
         public Form1()
         {
