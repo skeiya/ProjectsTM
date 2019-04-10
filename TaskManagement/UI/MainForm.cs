@@ -15,21 +15,13 @@ namespace TaskManagement
         private FileDragService _fileDragService = new FileDragService();
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private OldFileService _oldFileService = new OldFileService();
+        private PrintService _printService;
 
         public Form1()
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-
-            foreach (System.Drawing.Printing.PaperSize s in printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
-            {
-                if (s.Kind == System.Drawing.Printing.PaperKind.A3)
-                {
-                    printDocument.DefaultPageSettings.PaperSize = s;
-                }
-            }
-            printDocument.DefaultPageSettings.Landscape = true;
-            printDocument.PrintPage += PrintDocument_PrintPage;
+            _printService = new PrintService(this.Font, _viewData);
             this.taskDrawAria.Paint += TaskDrawAria_Paint;
             this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
             this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
@@ -130,12 +122,6 @@ namespace TaskManagement
             _grid.Draw(_viewData);
         }
 
-        private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            var grid = new TaskGrid(_viewData, e.Graphics, e.PageBounds, this.Font);
-            grid.Draw(_viewData);
-        }
-
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             _oldFileService.ImportMemberAndWorkItems(_viewData);
@@ -149,13 +135,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
-            printPreviewDialog1.Document = printDocument;
-            using (var dlg = new PrintDialog())
-            {
-                dlg.Document = printPreviewDialog1.Document;
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-            }
-            if (printPreviewDialog1.ShowDialog() != DialogResult.OK) return;
+            _printService.Print();
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)

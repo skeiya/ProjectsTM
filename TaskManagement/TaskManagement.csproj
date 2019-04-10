@@ -52,6 +52,7 @@
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\OldFileService.cs" />
+    <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\WorkItemDragService.cs" />
     <Compile Include="Model\AppData.cs" />
     <Compile Include="AppDataSerializer.cs" />
