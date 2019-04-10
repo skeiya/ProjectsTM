@@ -192,7 +192,7 @@ namespace TaskManagement
             taskDrawAria.Invalidate();
         }
 
-        private void フォント小ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
         {
             _viewData.DecFont();
             taskDrawAria.Invalidate();

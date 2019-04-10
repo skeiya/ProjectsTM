@@ -208,7 +208,7 @@ namespace TaskManagement
             this.フォント小ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.フォント小ToolStripMenuItem.Size = new System.Drawing.Size(328, 38);
             this.フォント小ToolStripMenuItem.Text = "フォント(→小)";
-            this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.フォント小ToolStripMenuItem_Click);
+            this.フォント小ToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItemSmallFont_Click);
             // 
             // ToolStripMenuItemLargeRatio
             // 
