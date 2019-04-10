@@ -213,7 +213,7 @@ namespace TaskManagement
             if (!_searchForm.Visible) _searchForm.Show(this);
         }
 
-        private void TaskDrawAria_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void TaskDrawArea_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             if (wi == null) return;

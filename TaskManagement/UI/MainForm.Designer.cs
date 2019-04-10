@@ -278,7 +278,7 @@ namespace TaskManagement
             this.taskDrawArea.Size = new System.Drawing.Size(1019, 543);
             this.taskDrawArea.TabIndex = 1;
             this.taskDrawArea.TabStop = false;
-            this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
+            this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
             // Form1
             // 
