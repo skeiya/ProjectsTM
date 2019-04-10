@@ -89,7 +89,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
-            UpdateHoveringTest(e);
+            UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
             taskDrawAria.Invalidate();
         }
@@ -99,7 +99,7 @@ namespace TaskManagement
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
 
-        private void UpdateHoveringTest(MouseEventArgs e)
+        private void UpdateHoveringText(MouseEventArgs e)
         {
             if (_workItemDragService.IsDragging()) return;
             if (_grid == null) return;
