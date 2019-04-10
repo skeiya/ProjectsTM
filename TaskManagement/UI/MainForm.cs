@@ -10,10 +10,11 @@ namespace TaskManagement
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm _searchForm;
-        TaskGrid _grid;
+        private TaskGrid _grid;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private FileDragService _fileDragService = new FileDragService();
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
+        private OldFileService _oldFileService = new OldFileService();
 
         public Form1()
         {
@@ -135,31 +136,10 @@ namespace TaskManagement
             grid.Draw(_viewData);
         }
 
-        private void ImportMemberAndWorkItems()
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Original.Members = CsvReader.ReadMembers(dlg.FileName);
-                _viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName);
-                foreach (var w in _viewData.Original.WorkItems) // TODO 暫定
-                {
-                    _viewData.UpdateCallenderAndMembers(w);
-                }
-            }
-        }
-
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
-            try
-            {
-                ImportMemberAndWorkItems();
-                taskDrawAria.Invalidate();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            _oldFileService.ImportMemberAndWorkItems(_viewData);
+            taskDrawAria.Invalidate();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -197,7 +177,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            var appData  = _fileIOService.Open();
+            var appData = _fileIOService.Open();
             if (appData == null) return;
             _viewData.Original = appData;
             taskDrawAria.Invalidate();
