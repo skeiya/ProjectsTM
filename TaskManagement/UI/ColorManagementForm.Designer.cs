@@ -92,6 +92,7 @@
             // 
             // buttonEdit
             // 
+            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEdit.Location = new System.Drawing.Point(670, 136);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(119, 54);
@@ -102,6 +103,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(21, 473);
             this.label1.Name = "label1";
@@ -111,6 +113,7 @@
             // 
             // buttonUP
             // 
+            this.buttonUP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUP.Location = new System.Drawing.Point(670, 212);
             this.buttonUP.Name = "buttonUP";
             this.buttonUP.Size = new System.Drawing.Size(119, 50);
@@ -121,6 +124,7 @@
             // 
             // buttonDown
             // 
+            this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDown.Location = new System.Drawing.Point(670, 284);
             this.buttonDown.Name = "buttonDown";
             this.buttonDown.Size = new System.Drawing.Size(119, 53);
@@ -131,6 +135,7 @@
             // 
             // buttonImport
             // 
+            this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonImport.Location = new System.Drawing.Point(670, 360);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(119, 51);

@@ -38,6 +38,9 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listView1.Location = new System.Drawing.Point(12, 12);
@@ -54,6 +57,7 @@
             // 
             // buttonDelete
             // 
+            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.Location = new System.Drawing.Point(650, 49);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(138, 42);
@@ -64,6 +68,7 @@
             // 
             // buttonAdd
             // 
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.Location = new System.Drawing.Point(650, 446);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(138, 48);
@@ -74,6 +79,8 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(12, 455);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(632, 31);
@@ -81,6 +88,7 @@
             // 
             // buttonImport
             // 
+            this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonImport.Location = new System.Drawing.Point(650, 126);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(138, 47);

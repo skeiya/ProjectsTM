@@ -49,6 +49,7 @@
             // 
             // buttonUp
             // 
+            this.buttonUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUp.Location = new System.Drawing.Point(662, 69);
             this.buttonUp.Name = "buttonUp";
             this.buttonUp.Size = new System.Drawing.Size(108, 53);
@@ -59,6 +60,7 @@
             // 
             // buttonDown
             // 
+            this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDown.Location = new System.Drawing.Point(662, 153);
             this.buttonDown.Name = "buttonDown";
             this.buttonDown.Size = new System.Drawing.Size(108, 53);
@@ -69,6 +71,7 @@
             // 
             // buttonEdit
             // 
+            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEdit.Location = new System.Drawing.Point(662, 233);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(108, 53);

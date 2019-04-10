@@ -106,6 +106,7 @@ namespace TaskManagement
         private void ClearPeriodFilter()
         {
             var days = _viewData.Original.Callender.Days;
+            if (days.Count == 0) return;
             textBoxFrom.Text = days.First().ToString();
             textBoxTo.Text = days.Last().ToString();
         }
