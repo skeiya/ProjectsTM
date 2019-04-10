@@ -13,8 +13,9 @@ namespace TaskManagement
         private int _fontSize = 6;
         TaskGrid _grid;
         private float _viewRatio = 1.0f;
-        string _previousFileName;
-        private WorkItemDragService _dragService = new WorkItemDragService();
+        private WorkItemDragService _workItemDragService = new WorkItemDragService();
+        private FileDragService _fileDragService = new FileDragService();
+        private string _previousFileName;
 
         public Form1()
         {
@@ -60,23 +61,15 @@ namespace TaskManagement
 
         private void TaskDrawAria_DragDrop(object sender, DragEventArgs e)
         {
-            string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (fileName.Length == 0) return;
-            if (string.IsNullOrEmpty(fileName[0])) return;
-            OpenFile(fileName[0]);
+            var fileName = _fileDragService.Drop(e);
+            if (string.IsNullOrEmpty(fileName)) return;
+            OpenFile(fileName);
             taskDrawAria.Invalidate();
         }
 
         private void TaskDrawAria_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
+            _fileDragService.DragEnter(e);
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
@@ -97,12 +90,9 @@ namespace TaskManagement
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringTest(e);
-            _dragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
+            _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
             taskDrawAria.Invalidate();
         }
-
-
-
 
         private bool IsControlDown()
         {
@@ -111,7 +101,7 @@ namespace TaskManagement
 
         private void UpdateHoveringTest(MouseEventArgs e)
         {
-            if (_dragService.IsDragging()) return;
+            if (_workItemDragService.IsDragging()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
@@ -119,7 +109,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
         {
-            _dragService.End();
+            _workItemDragService.End();
         }
 
         private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
@@ -128,7 +118,7 @@ namespace TaskManagement
             if (wi == null) return;
             _viewData.Selected = wi;
 
-            _dragService.Start(wi, e.Location, _grid);
+            _workItemDragService.Start(wi, e.Location, _grid);
 
             taskDrawAria.Invalidate();
         }
