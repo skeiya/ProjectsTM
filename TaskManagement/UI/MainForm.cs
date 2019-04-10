@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
+using TaskManagement.Service;
 using TaskManagement.UI;
 
 namespace TaskManagement
@@ -12,13 +12,9 @@ namespace TaskManagement
         private SearchWorkitemForm _searchForm;
         private int _fontSize = 6;
         TaskGrid _grid;
-        WorkItem _draggingWorkItem = null;
-        private Point _draggedLocation;
-        CallenderDay _draggedDay = null;
-        Period _draggedPeriod = null;
-        private Member _draggedMember;
         private float _viewRatio = 1.0f;
         string _previousFileName;
+        private WorkItemDragService _dragService = new WorkItemDragService();
 
         public Form1()
         {
@@ -101,62 +97,12 @@ namespace TaskManagement
         private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringTest(e);
-            UpdateDraggingItem(e);
+            _dragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
             taskDrawAria.Invalidate();
         }
 
-        private void UpdateDraggingItem(MouseEventArgs e)
-        {
-            if (_draggingWorkItem == null) return;
-            if (_grid == null) return;
-            var member = _grid.GetMemberFromX(e.Location.X);
-            if (member == null) return;
-            var curDay = _grid.GetDayFromY(e.Location.Y);
-            if (curDay == null) return;
 
-            if (IsOnlyMoveHorizontal(e))
-            {
-                _draggingWorkItem.AssignedMember = member;
-                _draggingWorkItem.Period = _draggedPeriod;
-            }
-            else if (IsOnlyMoveVirtical(e))
-            {
-                _draggingWorkItem.AssignedMember = _draggedMember;
-                var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
-            }
-            else
-            {
-                _draggingWorkItem.AssignedMember = member;
-                var offset = _viewData.Original.Callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, _viewData.Original.Callender);
-            }
-        }
 
-        private bool IsOnlyMoveHorizontal(MouseEventArgs e)
-        {
-            if (!IsShiftDown()) return false;
-            return !IsVirticalLong(_draggedLocation, e.Location);
-        }
-
-        private bool IsOnlyMoveVirtical(MouseEventArgs e)
-        {
-            if (!IsShiftDown()) return false;
-            return IsVirticalLong(_draggedLocation, e.Location);
-
-        }
-
-        private bool IsVirticalLong(Point a, Point b)
-        {
-            var h = Math.Abs(a.Y - b.Y);
-            var w = Math.Abs(a.X - b.X);
-            return w < h;
-        }
-
-        private bool IsShiftDown()
-        {
-            return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
-        }
 
         private bool IsControlDown()
         {
@@ -165,7 +111,7 @@ namespace TaskManagement
 
         private void UpdateHoveringTest(MouseEventArgs e)
         {
-            if (IsDradding()) return;
+            if (_dragService.IsDragging()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
@@ -173,7 +119,7 @@ namespace TaskManagement
 
         private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
         {
-            _draggingWorkItem = null;
+            _dragService.End();
         }
 
         private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
@@ -182,18 +128,9 @@ namespace TaskManagement
             if (wi == null) return;
             _viewData.Selected = wi;
 
-            _draggingWorkItem = wi;
-            _draggedLocation = e.Location;
-            _draggedPeriod = wi.Period.Clone();
-            _draggedMember = wi.AssignedMember;
-            _draggedDay = _grid.GetDayFromY(e.Location.Y);
+            _dragService.Start(wi, e.Location, _grid);
 
             taskDrawAria.Invalidate();
-        }
-
-        private bool IsDradding()
-        {
-            return _draggingWorkItem != null;
         }
 
         private void TaskDrawAria_Paint(object sender, PaintEventArgs e)

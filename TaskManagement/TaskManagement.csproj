@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Service\WorkItemDragService.cs" />
     <Compile Include="Model\AppData.cs" />
     <Compile Include="AppDataSerializer.cs" />
     <Compile Include="Model\Callender.cs" />
