@@ -21,18 +21,17 @@ namespace TaskManagement
             serializer.Serialize(stream, appData);
         }
 
-        public static AppData Deserialize(string fileName, out string error)
+        public static AppData Deserialize(string fileName)
         {
             using (var reader = new StreamReader(fileName))
             {
-                return LoadFromStream(out error, reader);
+                return LoadFromStream(reader);
             }
         }
 
-        public static AppData LoadFromStream(out string error, StreamReader reader)
+        public static AppData LoadFromStream(StreamReader reader)
         {
             var serializer = new XmlSerializer(typeof(AppData));
-            error = null;
             return (AppData)serializer.Deserialize(reader);
         }
     }

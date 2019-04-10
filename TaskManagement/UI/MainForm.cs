@@ -15,7 +15,7 @@ namespace TaskManagement
         private float _viewRatio = 1.0f;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private FileDragService _fileDragService = new FileDragService();
-        private string _previousFileName;
+        private FileIOService _fileIOService = new FileIOService();
 
         public Form1()
         {
@@ -63,7 +63,9 @@ namespace TaskManagement
         {
             var fileName = _fileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
-            OpenFile(fileName);
+            var appData = _fileIOService.OpenFile(fileName);
+            if (appData == null) return;
+            _viewData.Original = appData;
             taskDrawAria.Invalidate();
         }
 
@@ -192,43 +194,17 @@ namespace TaskManagement
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_previousFileName))
-            {
-                ToolStripMenuItemSaveAsOtherName_Click(sender, e);
-                return;
-            }
-            AppDataSerializer.Serialize(_previousFileName, _viewData.Original);
+            _fileIOService.Save(_viewData.Original);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            using (var dlg = new OpenFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                OpenFile(dlg.FileName);
-                _previousFileName = dlg.FileName;
-            }
+            var appData  = _fileIOService.Open();
+            if (appData == null) return;
+            _viewData.Original = appData;
             taskDrawAria.Invalidate();
         }
 
-        private void OpenFile(string fileName)
-        {
-            try
-            {
-                string error;
-                var result = AppDataSerializer.Deserialize(fileName, out error);
-                if (result == null)
-                {
-                    MessageBox.Show(error);
-                    return;
-                }
-                _viewData.Original = result;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
@@ -327,12 +303,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            using (var dlg = new SaveFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                AppDataSerializer.Serialize(dlg.FileName, _viewData.Original);
-                _previousFileName = dlg.FileName;
-            }
+            _fileIOService.SaveOtherName(_viewData.Original);
         }
     }
 }

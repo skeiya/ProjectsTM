@@ -106,7 +106,7 @@ namespace TaskManagement
             using(var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var appData = AppDataSerializer.Deserialize(dlg.FileName, out string error);
+                var appData = AppDataSerializer.Deserialize(dlg.FileName);
                 _colorConditions.Apply(appData.ColorConditions);
                 UpdateList();
             }

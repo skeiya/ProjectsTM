@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Service\FileDragService.cs" />
+    <Compile Include="Service\FileIOService.cs" />
     <Compile Include="Service\WorkItemDragService.cs" />
     <Compile Include="Model\AppData.cs" />
     <Compile Include="AppDataSerializer.cs" />
