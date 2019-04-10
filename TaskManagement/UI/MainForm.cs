@@ -22,22 +22,27 @@ namespace TaskManagement
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(this.Font, _viewData);
-            this.taskDrawAria.Paint += TaskDrawAria_Paint;
-            this.taskDrawAria.MouseDown += TaskDrawAria_MouseDown;
-            this.taskDrawAria.MouseUp += TaskDrawAria_MouseUp;
-            this.taskDrawAria.MouseMove += TaskDrawAria_MouseMove;
-            this.taskDrawAria.MouseWheel += TaskDrawAria_MouseWheel;
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-            this.panel1.Resize += Panel1_Resize;
-            taskDrawAria.Size = panel1.Size;
+            panel1.Resize += Panel1_Resize;
             statusStrip1.Items.Add("");
-            taskDrawAria.AllowDrop = true;
-            taskDrawAria.DragEnter += TaskDrawAria_DragEnter;
-            taskDrawAria.DragDrop += TaskDrawAria_DragDrop;
+            InitializeTaskDrawArea();
         }
 
-        private void TaskDrawAria_MouseWheel(object sender, MouseEventArgs e)
+        void InitializeTaskDrawArea()
+        {
+            taskDrawArea.Size = panel1.Size;
+            taskDrawArea.Paint += TaskDrawArea_Paint;
+            taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
+            taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
+            taskDrawArea.MouseMove += TaskDrawArea_MouseMove;
+            taskDrawArea.MouseWheel += TaskDrawArea_MouseWheel;
+            taskDrawArea.AllowDrop = true;
+            taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
+            taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+        }
+
+        private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
         {
             if (!IsControlDown()) return;
             if (e.Delta > 0)
@@ -50,24 +55,24 @@ namespace TaskManagement
             }
         }
 
-        private void TaskDrawAria_DragDrop(object sender, DragEventArgs e)
+        private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
             var fileName = _fileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
             var appData = _fileIOService.OpenFile(fileName);
             if (appData == null) return;
             _viewData.Original = appData;
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
-        private void TaskDrawAria_DragEnter(object sender, DragEventArgs e)
+        private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
         {
             _fileDragService.DragEnter(e);
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void Panel1_Resize(object sender, EventArgs e)
@@ -77,14 +82,14 @@ namespace TaskManagement
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
-        private void TaskDrawAria_MouseMove(object sender, MouseEventArgs e)
+        private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private bool IsControlDown()
@@ -100,12 +105,12 @@ namespace TaskManagement
             statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
         }
 
-        private void TaskDrawAria_MouseUp(object sender, MouseEventArgs e)
+        private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
             _workItemDragService.End();
         }
 
-        private void TaskDrawAria_MouseDown(object sender, MouseEventArgs e)
+        private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             if (wi == null) return;
@@ -113,19 +118,19 @@ namespace TaskManagement
 
             _workItemDragService.Start(wi, e.Location, _grid);
 
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
-        private void TaskDrawAria_Paint(object sender, PaintEventArgs e)
+        private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawAria.Bounds, this.Font);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
             _grid.Draw(_viewData);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             _oldFileService.ImportMemberAndWorkItems(_viewData);
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -147,7 +152,7 @@ namespace TaskManagement
                 _viewData.Original.WorkItems.Add(wi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -160,7 +165,7 @@ namespace TaskManagement
             var appData = _fileIOService.Open();
             if (appData == null) return;
             _viewData.Original = appData;
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
 
@@ -174,7 +179,7 @@ namespace TaskManagement
 
         private void OnApplyFilter()
         {
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
@@ -183,19 +188,19 @@ namespace TaskManagement
             {
                 dlg.ShowDialog();
             }
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
         {
             _viewData.IncFont();
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
         {
             _viewData.DecFont();
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
@@ -217,7 +222,7 @@ namespace TaskManagement
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -226,7 +231,7 @@ namespace TaskManagement
             {
                 dlg.ShowDialog();
             }
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
@@ -238,8 +243,8 @@ namespace TaskManagement
         private void ApplyViewRatio()
         {
             panel1.AutoScroll = _viewData.IsEnlarged();
-            taskDrawAria.Size = new Size((int)(panel1.Size.Width * _viewData.Ratio), (int)(panel1.Size.Height * _viewData.Ratio));
-            taskDrawAria.Invalidate();
+            taskDrawArea.Size = new Size((int)(panel1.Size.Width * _viewData.Ratio), (int)(panel1.Size.Height * _viewData.Ratio));
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
@@ -254,7 +259,7 @@ namespace TaskManagement
             {
                 dlg.ShowDialog(this);
             }
-            taskDrawAria.Invalidate();
+            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)

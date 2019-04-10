@@ -55,10 +55,10 @@ namespace TaskManagement
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.taskDrawAria = new System.Windows.Forms.PictureBox();
+            this.taskDrawArea = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -262,7 +262,7 @@ namespace TaskManagement
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.taskDrawAria);
+            this.panel1.Controls.Add(this.taskDrawArea);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Name = "panel1";
@@ -271,14 +271,14 @@ namespace TaskManagement
             // 
             // taskDrawAria
             // 
-            this.taskDrawAria.BackColor = System.Drawing.Color.White;
-            this.taskDrawAria.Location = new System.Drawing.Point(0, 0);
-            this.taskDrawAria.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.taskDrawAria.Name = "taskDrawAria";
-            this.taskDrawAria.Size = new System.Drawing.Size(1019, 543);
-            this.taskDrawAria.TabIndex = 1;
-            this.taskDrawAria.TabStop = false;
-            this.taskDrawAria.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
+            this.taskDrawArea.BackColor = System.Drawing.Color.White;
+            this.taskDrawArea.Location = new System.Drawing.Point(0, 0);
+            this.taskDrawArea.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.taskDrawArea.Name = "taskDrawAria";
+            this.taskDrawArea.Size = new System.Drawing.Size(1019, 543);
+            this.taskDrawArea.TabIndex = 1;
+            this.taskDrawArea.TabStop = false;
+            this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawAria_MouseDoubleClick);
             // 
             // Form1
             // 
@@ -296,14 +296,14 @@ namespace TaskManagement
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.taskDrawAria)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox taskDrawAria;
+        private System.Windows.Forms.PictureBox taskDrawArea;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFile;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpen;
