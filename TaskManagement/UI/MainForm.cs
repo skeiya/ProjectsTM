@@ -140,6 +140,7 @@ namespace TaskManagement
 
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
+            _viewData.Selected = null;
             _printService.Print();
         }
 

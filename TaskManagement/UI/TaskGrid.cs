@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace TaskManagement
@@ -192,7 +193,7 @@ namespace TaskManagement
                 var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
                 var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
                 if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
-                var front = colorContidion == null ? Color.Black: colorContidion.ForeColor;
+                var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
                 _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds, front);
                 _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
             }
@@ -201,7 +202,27 @@ namespace TaskManagement
             {
                 var bounds = GetBounds(GetDrawPeriod(viewData, viewData.Selected), viewData.Selected.AssignedMember);
                 _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
+                DrawTopDragBar(bounds);
+                DrawBottomDragBar(bounds);
             }
+        }
+
+        private void DrawBottomDragBar(RectangleF bounds)
+        {
+            var heigt = 10;
+            var rect = new RectangleF(bounds.Left, bounds.Bottom, bounds.Width, heigt);
+            _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
+            _grid.Graphics.DrawLine(Pens.White, new PointF(bounds.Left + bounds.Width / 4, bounds.Bottom + heigt / 2),
+                new PointF(bounds.Left + 3 * bounds.Width / 4, bounds.Bottom + heigt / 2));
+        }
+
+        private void DrawTopDragBar(RectangleF bounds)
+        {
+            var heigt = 10;
+            var rect = new RectangleF(bounds.Left, bounds.Top - heigt, bounds.Width, heigt);
+            _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
+            _grid.Graphics.DrawLine(Pens.White, new PointF(bounds.Left + bounds.Width / 4, bounds.Top - heigt / 2),
+                new PointF(bounds.Left + 3 * bounds.Width / 4, bounds.Top - heigt / 2));
         }
 
         private static Period GetDrawPeriod(ViewData viewData, WorkItem wi)

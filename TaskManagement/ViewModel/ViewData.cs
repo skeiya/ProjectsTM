@@ -23,7 +23,7 @@ namespace TaskManagement
             {
                 var org = _selected;
                 _selected = value;
-                if (!_selected.Equals(org))
+                if (_selected != org)
                 {
                     SelectedWorkItemChanged(this, null);
                 }
