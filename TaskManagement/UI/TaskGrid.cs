@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using TaskManagement.Service;
 
 namespace TaskManagement
 {
@@ -126,14 +127,32 @@ namespace TaskManagement
             return null;
         }
 
-        public RectangleF GetBounds(Period period, Member assignedMember)
+        internal int GetExpandDirection(ViewData viewData, Point location)
         {
-            var col = _memberToCol[assignedMember];
-            var rowTop = _dayToRow[period.From];
-            var rowBottom = _dayToRow[period.To];
-            var top = _grid.GetCellBounds(rowTop, col);
-            var bottom = _grid.GetCellBounds(rowBottom, col);
-            return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
+            if (viewData.Selected == null) return 0;
+            var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
+            if (IsTopBar(bounds, location)) return +1;
+            if (IsBottomBar(bounds, location)) return -1;
+            return 0;
+        }
+
+        internal bool IsTopBar(RectangleF workItemBounds, PointF point)
+        {
+            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds, _grid.RowHeight(2));
+            return topBar.Contains(point);
+        }
+
+        internal bool IsBottomBar(RectangleF workItemBounds, PointF point)
+        {
+            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds, _grid.RowHeight(2));
+            return bottomBar.Contains(point);
+        }
+
+        internal bool IsWorkItemExpandArea(ViewData viewData, Point location)
+        {
+            if (viewData.Selected == null) return false;
+            var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
+            return IsTopBar(bounds, location) || IsBottomBar(bounds, location);
         }
 
         public void Draw(ViewData viewData)
@@ -190,7 +209,7 @@ namespace TaskManagement
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
-                var bounds = GetBounds(GetDrawPeriod(viewData, wi), wi.AssignedMember);
+                var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
                 var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
                 if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
                 var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
@@ -200,41 +219,49 @@ namespace TaskManagement
 
             if (viewData.Selected != null)
             {
-                var bounds = GetBounds(GetDrawPeriod(viewData, viewData.Selected), viewData.Selected.AssignedMember);
+                var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
                 _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
                 DrawTopDragBar(bounds);
                 DrawBottomDragBar(bounds);
             }
         }
 
+        private RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
+        {
+            var period = GetVisiblePeriod(filter, w);
+            var col = _memberToCol[w.AssignedMember];
+            var rowTop = _dayToRow[period.From];
+            var rowBottom = _dayToRow[period.To];
+            var top = _grid.GetCellBounds(rowTop, col);
+            var bottom = _grid.GetCellBounds(rowBottom, col);
+            return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
+        }
+
         private void DrawBottomDragBar(RectangleF bounds)
         {
-            var heigt = 10;
-            var rect = new RectangleF(bounds.Left, bounds.Bottom, bounds.Width, heigt);
+            var rect = WorkItemDragService.GetBottomBarRect(bounds, _grid.RowHeight(2));// TODO (2)はやめる
+            var points = WorkItemDragService.GetBottomBarLine(bounds, _grid.RowHeight(2));
             _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
-            _grid.Graphics.DrawLine(Pens.White, new PointF(bounds.Left + bounds.Width / 4, bounds.Bottom + heigt / 2),
-                new PointF(bounds.Left + 3 * bounds.Width / 4, bounds.Bottom + heigt / 2));
+            _grid.Graphics.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
         private void DrawTopDragBar(RectangleF bounds)
         {
-            var heigt = 10;
-            var rect = new RectangleF(bounds.Left, bounds.Top - heigt, bounds.Width, heigt);
+            var rect = WorkItemDragService.GetTopBarRect(bounds, _grid.RowHeight(2));
+            var points = WorkItemDragService.GetTopBarLine(bounds, _grid.RowHeight(2));
             _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
-            _grid.Graphics.DrawLine(Pens.White, new PointF(bounds.Left + bounds.Width / 4, bounds.Top - heigt / 2),
-                new PointF(bounds.Left + 3 * bounds.Width / 4, bounds.Top - heigt / 2));
+            _grid.Graphics.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        private static Period GetDrawPeriod(ViewData viewData, WorkItem wi)
+        private static Period GetVisiblePeriod(Filter filter, WorkItem wi)
         {
             var org = wi.Period;
-            if (viewData.Filter == null) return org;
-            var filter = viewData.Filter.Period;
             if (filter == null) return org;
+            if (filter.Period == null) return org;
             var from = org.From;
             var to = org.To;
-            if (from.LesserThan(filter.From)) from = filter.From;
-            if (filter.To.LesserThan(to)) to = filter.To;
+            if (from.LesserThan(filter.Period.From)) from = filter.Period.From;
+            if (filter.Period.To.LesserThan(to)) to = filter.Period.To;
             return new Period(from, to);
         }
     }

@@ -11,11 +11,11 @@ namespace TaskManagement
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm _searchForm;
         private TaskGrid _grid;
-        private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private FileDragService _fileDragService = new FileDragService();
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private OldFileService _oldFileService = new OldFileService();
         private PrintService _printService;
+        private WorkItemDragService _workItemDragService = new WorkItemDragService();
 
         public Form1()
         {
@@ -88,7 +88,7 @@ namespace TaskManagement
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
-            _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData.Original.Callender);
+            _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData);
             taskDrawArea.Invalidate();
         }
 
@@ -112,11 +112,18 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
-            var wi = _grid.PickFromPoint(e.Location, _viewData);
-            if (wi == null) return;
-            _viewData.Selected = wi;
+            if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
+            {
+                _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location));
+            }
+            else
+            {
+                var wi = _grid.PickFromPoint(e.Location, _viewData);
+                if (wi == null) return;
+                _viewData.Selected = wi;
 
-            _workItemDragService.Start(wi, e.Location, _grid);
+                _workItemDragService.Start(wi, e.Location, _grid);
+            }
 
             taskDrawArea.Invalidate();
         }
