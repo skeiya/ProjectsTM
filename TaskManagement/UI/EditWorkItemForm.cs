@@ -26,13 +26,12 @@ namespace TaskManagement
 
         public WorkItem GetWorkItem(Callender callender)
         {
-            return _wi;
+            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), GetPeriod(_callender), GetAssignedMember());
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             if (!CheckEdit()) return;
-            _wi.Edit(GetProject(), GetWorkItemName(), GetPeriod(_callender), GetAssignedMember(), GetTags());
             DialogResult = DialogResult.OK;
             Close();
         }

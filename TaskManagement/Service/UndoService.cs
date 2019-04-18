@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TaskManagement.Service
 {
-    internal class UndoService
+    public class UndoService
     {
         private Stack<Tuple<string, string>> _stack = new Stack<Tuple<string, string>>();
 

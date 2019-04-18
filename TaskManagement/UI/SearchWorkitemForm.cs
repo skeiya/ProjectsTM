@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows.Forms;
+using TaskManagement.Service;
 
 namespace TaskManagement
 {
     public partial class SearchWorkitemForm : Form
     {
         private readonly ViewData _viewData;
+        private readonly UndoService _undoService;
         private System.Timers.Timer _timer = new System.Timers.Timer(100);
         private int _tickCount = 0;
         private List<WorkItem> _list = new List<WorkItem>();
 
-        public SearchWorkitemForm(ViewData viewData)
+        public SearchWorkitemForm(ViewData viewData, UndoService undoService)
         {
             InitializeComponent();
             this._viewData = viewData;
-
+            this._undoService = undoService;
             UpdateFilteredList();
             UpdateListBox();
 
@@ -94,6 +96,9 @@ namespace TaskManagement
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
+                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                _undoService.Push(wi.Serialize(), newWi.Serialize());
+                wi.Apply(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
 

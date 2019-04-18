@@ -217,7 +217,7 @@ namespace TaskManagement
 
             if (_searchForm == null || _searchForm.IsDisposed)
             {
-                _searchForm = new SearchWorkitemForm(_viewData);
+                _searchForm = new SearchWorkitemForm(_viewData, _undoService);
             }
             if (!_searchForm.Visible) _searchForm.Show(this);
         }
@@ -229,6 +229,9 @@ namespace TaskManagement
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
+                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                _undoService.Push(wi.Serialize(), newWi.Serialize());
+                wi.Apply(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
             taskDrawArea.Invalidate();
