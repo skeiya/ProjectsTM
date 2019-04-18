@@ -284,5 +284,11 @@ namespace TaskManagement
             _undoService.Undo(_viewData.Original.WorkItems);
             taskDrawArea.Invalidate();
         }
+
+        private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
+        {
+            _undoService.Redo(_viewData.Original.WorkItems);
+            taskDrawArea.Invalidate();
+        }
     }
 }

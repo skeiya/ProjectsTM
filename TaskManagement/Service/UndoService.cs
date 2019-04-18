@@ -5,7 +5,8 @@ namespace TaskManagement.Service
 {
     public class UndoService
     {
-        private Stack<Tuple<string, string>> _stack = new Stack<Tuple<string, string>>();
+        private Stack<Tuple<string, string>> _undoStack = new Stack<Tuple<string, string>>();
+        private Stack<Tuple<string, string>> _redoStack = new Stack<Tuple<string, string>>();
 
         public UndoService()
         {
@@ -14,18 +15,33 @@ namespace TaskManagement.Service
         internal void Push(string before, string after)
         {
             if (before.Equals(after)) return;
-            _stack.Push(new Tuple<string, string>(before, after));
+            _undoStack.Push(new Tuple<string, string>(before, after));
+            _redoStack.Clear();
         }
 
         internal void Undo(WorkItems workItems)
         {
-            if (_stack.Count == 0) return;
-            var p = _stack.Pop();
+            if (_undoStack.Count == 0) return;
+            var p = _undoStack.Pop();
+            _redoStack.Push(p);
             var before = WorkItem.Deserialize(p.Item1);
             var after = WorkItem.Deserialize(p.Item2);
             foreach (var w in workItems)
             {
                 if (w.Equals(after)) w.Apply(before);
+            }
+        }
+
+        internal void Redo(WorkItems workItems)
+        {
+            if (_redoStack.Count == 0) return;
+            var r =_redoStack.Pop();
+            _undoStack.Push(r);
+            var before = WorkItem.Deserialize(r.Item1);
+            var after = WorkItem.Deserialize(r.Item2);
+            foreach (var w in workItems)
+            {
+                if (w.Equals(before)) w.Apply(after);
             }
         }
     }

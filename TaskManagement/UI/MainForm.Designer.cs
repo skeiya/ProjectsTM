@@ -43,6 +43,7 @@ namespace TaskManagement
             this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,7 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
-            this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
@@ -147,7 +148,8 @@ namespace TaskManagement
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemAddWorkItem,
             this.ToolStripMenuItemSearch,
-            this.ToolStripMenuItemUndo});
+            this.ToolStripMenuItemUndo,
+            this.ToolStripMenuItemRedo});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
             this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
@@ -166,6 +168,14 @@ namespace TaskManagement
             this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
+            // 
+            // ToolStripMenuItemUndo
+            // 
+            this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
+            this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemUndo.Text = "Undo";
+            this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
             // 
             // 表示ToolStripMenuItem
             // 
@@ -282,13 +292,13 @@ namespace TaskManagement
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
-            // ToolStripMenuItemUndo
+            // ToolStripMenuItemRedo
             // 
-            this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
-            this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(324, 38);
-            this.ToolStripMenuItemUndo.Text = "Undo";
-            this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
+            this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
+            this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemRedo.Text = "Redo";
+            this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
             // 
             // Form1
             // 
@@ -339,6 +349,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemManageMember;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSaveAsOtherName;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUndo;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
     }
 }
 
