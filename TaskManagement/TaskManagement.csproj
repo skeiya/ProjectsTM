@@ -86,6 +86,7 @@
     <Compile Include="UI\EditWorkItemForm.Designer.cs">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Service\UndoService.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="UI\FilterForm.cs">
       <SubType>Form</SubType>

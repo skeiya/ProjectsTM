@@ -16,6 +16,7 @@ namespace TaskManagement
         private OldFileService _oldFileService = new OldFileService();
         private PrintService _printService;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
+        private UndoService _undoService = new UndoService();
 
         public Form1()
         {
@@ -107,14 +108,14 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
-            _workItemDragService.End();
+            _workItemDragService.End(_undoService, _viewData.Selected);
         }
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
-                _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location));
+                _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
             }
             else
             {
@@ -273,6 +274,12 @@ namespace TaskManagement
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
             _fileIOService.SaveOtherName(_viewData.Original);
+        }
+
+        private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
+        {
+            _undoService.Undo(_viewData.Original.WorkItems);
+            taskDrawArea.Invalidate();
         }
     }
 }

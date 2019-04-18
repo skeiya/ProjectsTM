@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -28,6 +29,15 @@ namespace TaskManagement
         {
             get { return Tags.ToString(); }
             set { Tags = Tags.Parse(value); }
+        }
+
+        internal void Apply(WorkItem before)
+        {
+            this.Project = before.Project;
+            this.Tags = before.Tags;
+            this.Name = before.Name;
+            this.Period = before.Period;
+            this.AssignedMember = before.AssignedMember;
         }
 
         public WorkItem() { }
@@ -88,6 +98,34 @@ namespace TaskManagement
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<Member>.Default.GetHashCode(AssignedMember);
             return hashCode;
+        }
+
+        internal string Serialize()
+        {
+            var x = new XmlSerializer(typeof(WorkItem));
+            using (var s = new MemoryStream())
+            {
+                x.Serialize(s, this);
+                s.Flush();
+                s.Position = 0;
+                using (var r = new StreamReader(s))
+                {
+                    return r.ReadToEnd();
+                }
+            }
+        }
+
+        static internal WorkItem Deserialize(string text)
+        {
+            using (var s = new MemoryStream())
+            using (var w = new StreamWriter(s))
+            {
+                w.Write(text);
+                w.Flush();
+                s.Position = 0;
+                var x = new XmlSerializer(typeof(WorkItem));
+                return (WorkItem)x.Deserialize(s);
+            }
         }
     }
 }

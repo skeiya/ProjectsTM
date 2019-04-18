@@ -56,6 +56,7 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
+            this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
@@ -91,7 +92,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(309, 38);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -99,14 +100,14 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(309, 38);
             this.ToolStripMenuItemSave.Text = "上書き保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
             // ToolStripMenuItemSaveAsOtherName
             // 
             this.ToolStripMenuItemSaveAsOtherName.Name = "ToolStripMenuItemSaveAsOtherName";
-            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(309, 38);
             this.ToolStripMenuItemSaveAsOtherName.Text = "別名保存";
             this.ToolStripMenuItemSaveAsOtherName.Click += new System.EventHandler(this.ToolStripMenuItemSaveAsOtherName_Click);
             // 
@@ -114,7 +115,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(309, 38);
             this.ToolStripMenuItemPrint.Text = "印刷";
             this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
@@ -124,7 +125,7 @@ namespace TaskManagement
             this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(309, 38);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
@@ -145,7 +146,8 @@ namespace TaskManagement
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemAddWorkItem,
-            this.ToolStripMenuItemSearch});
+            this.ToolStripMenuItemSearch,
+            this.ToolStripMenuItemUndo});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
             this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
             this.編集ToolStripMenuItem.Text = "編集";
@@ -153,7 +155,7 @@ namespace TaskManagement
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -161,7 +163,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(324, 38);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -280,6 +282,14 @@ namespace TaskManagement
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
+            // ToolStripMenuItemUndo
+            // 
+            this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
+            this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemUndo.Text = "Undo";
+            this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
@@ -328,6 +338,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemManageMember;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSaveAsOtherName;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUndo;
     }
 }
 
