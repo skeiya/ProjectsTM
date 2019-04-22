@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using TaskManagement.UI;
 
 namespace TaskManagement
 {
@@ -75,10 +76,7 @@ namespace TaskManagement
             var deflate = rect;
             deflate.X += 1;
             deflate.Y += 1;
-            using (var b = new SolidBrush(c))
-            {
-                Graphics.DrawString(s, Font, b, deflate, StringFormat.GenericTypographic);
-            }
+            Graphics.DrawString(s, Font, BrushCache.GetBrush(c), deflate, StringFormat.GenericTypographic);
         }
     }
 }
