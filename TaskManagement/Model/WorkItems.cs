@@ -51,5 +51,10 @@ namespace TaskManagement
         {
             return -566117206 + EqualityComparer<List<WorkItem>>.Default.GetHashCode(_items);
         }
+
+        public void Sort()
+        {
+            _items.Sort();
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace TaskManagement
 {
-    public class WorkItem
+    public class WorkItem : IComparable<WorkItem>
     {
         [XmlIgnore]
         public Project Project { get; set; }
@@ -126,6 +126,16 @@ namespace TaskManagement
                 var x = new XmlSerializer(typeof(WorkItem));
                 return (WorkItem)x.Deserialize(s);
             }
+        }
+
+        public int CompareTo(WorkItem other)
+        {
+            var cmp = this.AssignedMember.CompareTo(other.AssignedMember);
+            if (cmp != 0) return cmp;
+            cmp = this.Period.From.CompareTo(other.Period.From);
+            if (cmp != 0) return cmp;
+            cmp = this.Period.To.CompareTo(other.Period.To);
+            return cmp;
         }
     }
 }
