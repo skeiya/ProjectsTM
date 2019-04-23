@@ -36,9 +36,9 @@ namespace TaskManagement
 
         private void InitializeFilterCombobox()
         {
-            toolStripComboBoxFilter.Items.Add("ALL");
             var filters = Directory.GetFiles("./filters");
             toolStripComboBoxFilter.Items.Clear();
+            toolStripComboBoxFilter.Items.Add("ALL");
             foreach (var f in filters)
             {
                 toolStripComboBoxFilter.Items.Add(f);

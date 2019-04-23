@@ -18,6 +18,7 @@ namespace TaskManagement.UI
         {
             InitializeComponent();
             _appData = appData;
+            listBox1.DisplayMember = "NaturalString";
             UpdateList();
         }
 

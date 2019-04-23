@@ -66,6 +66,8 @@ namespace TaskManagement
             return LastName + "/" + FirstName + "/" + Company;
         }
 
+        public string NaturalString => LastName + " " + FirstName + "(" + Company + ")";
+
         public static Member Parse(string text)
         {
             var words = text.Split('/');
