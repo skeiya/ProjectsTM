@@ -17,6 +17,7 @@ namespace TaskManagement
         private PrintService _printService;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
+        private Cursor _originalCursor;
 
         public Form1()
         {
@@ -90,6 +91,21 @@ namespace TaskManagement
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData);
+            if(_grid.IsWorkItemExpandArea(_viewData, e.Location))
+            {
+                if(this.Cursor != Cursors.SizeNS)
+                {
+                    _originalCursor = this.Cursor;
+                    this.Cursor = Cursors.SizeNS;
+                }
+            }
+            else
+            {
+                if(this.Cursor == Cursors.SizeNS)
+                {
+                    this.Cursor = _originalCursor;
+                }
+            }
             taskDrawArea.Invalidate();
         }
 
@@ -123,7 +139,7 @@ namespace TaskManagement
                 if (wi == null) return;
                 _viewData.Selected = wi;
 
-                _workItemDragService.Start(wi, e.Location, _grid);
+                _workItemDragService.StartDrag(wi, e.Location, _grid);
             }
 
             taskDrawArea.Invalidate();

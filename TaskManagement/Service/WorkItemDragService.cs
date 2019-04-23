@@ -24,13 +24,22 @@ namespace TaskManagement.Service
         {
             var callender = viewData.Original.Callender;
 
-            if (viewData.Selected != null && _expandDirection != 0)
+            if (IsExpanding())
             {
                 UpdateExpand(viewData.Selected, grid, curLocation, callender);
                 return;
             }
 
-            if (!IsDragging()) return;
+            if (IsDragging())
+            {
+                UpdateDragging(grid, curLocation, callender);
+                return;
+            }
+
+        }
+
+        private void UpdateDragging(TaskGrid grid, Point curLocation, Callender callender)
+        {
             var member = grid.GetMemberFromX(curLocation.X);
             if (member == null) return;
             var curDay = grid.GetDayFromY(curLocation.Y);
@@ -53,7 +62,6 @@ namespace TaskManagement.Service
                 var offset = callender.GetOffset(_draggedDay, curDay);
                 _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, callender);
             }
-
         }
 
         private void UpdateExpand(WorkItem selected, TaskGrid grid, Point curLocation, Callender callender)
@@ -98,7 +106,7 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        internal void Start(WorkItem wi, Point location, TaskGrid grid)
+        internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
             _beforeWorkItem = wi.Serialize();
             _draggingWorkItem = wi;
