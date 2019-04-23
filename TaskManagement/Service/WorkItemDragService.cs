@@ -71,13 +71,17 @@ namespace TaskManagement.Service
 
             var draggedDay = _expandDirection > 0 ? selected.Period.From : selected.Period.To;
             var offset = callender.GetOffset(draggedDay, curDay);
-            if(_expandDirection > 0)
+            if (_expandDirection > 0)
             {
-                selected.Period.From = callender.ApplyOffset(selected.Period.From, offset + 1);
+                var d = callender.ApplyOffset(selected.Period.From, offset + 1);
+                if (d == null || callender.GetOffset(d, selected.Period.To) < 0) return;
+                selected.Period.From = d;
             }
-            else if(_expandDirection < 0)
+            else if (_expandDirection < 0)
             {
-                selected.Period.To = callender.ApplyOffset(selected.Period.To, offset - 1);
+                var d = callender.ApplyOffset(selected.Period.To, offset - 1);
+                if (d == null || callender.GetOffset(selected.Period.From, d) < 0) return;
+                selected.Period.To = d;
             }
         }
 
