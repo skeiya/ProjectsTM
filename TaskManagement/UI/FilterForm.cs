@@ -15,6 +15,7 @@ namespace TaskManagement
             InitializeComponent();
 
             _viewData = viewData;
+            checkedListBox1.DisplayMember = "NaturalString";
 
             foreach (var m in _viewData.Original.Members)
             {

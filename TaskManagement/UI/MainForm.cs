@@ -49,6 +49,7 @@ namespace TaskManagement
 
         private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _viewData.Selected = null;
             var path = toolStripComboBoxFilter.SelectedItem.ToString();
             if(path.Equals("ALL"))
             {
