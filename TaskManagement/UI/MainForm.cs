@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using TaskManagement.Service;
 using TaskManagement.UI;
 
@@ -29,6 +31,45 @@ namespace TaskManagement
             panel1.Resize += Panel1_Resize;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
+            InitializeFilterCombobox();
+        }
+
+        private void InitializeFilterCombobox()
+        {
+            toolStripComboBoxFilter.Items.Add("ALL");
+            var filters = Directory.GetFiles("./filters");
+            toolStripComboBoxFilter.Items.Clear();
+            foreach (var f in filters)
+            {
+                toolStripComboBoxFilter.Items.Add(f);
+            }
+            toolStripComboBoxFilter.SelectedIndex = 0;
+            toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+        }
+
+        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var path = toolStripComboBoxFilter.SelectedItem.ToString();
+            if(path.Equals("ALL"))
+            {
+                _viewData.SetFilter(null);
+                taskDrawArea.Invalidate();
+                return;
+            }
+            if (!File.Exists(path)) return;
+            using(var rs = new StreamReader(path))
+            {
+                var x = new XmlSerializer(typeof(Members));
+                var visibleMembers = (Members)x.Deserialize(rs);
+                var hideMembers = new Members();
+                foreach(var m in _viewData.Original.Members)
+                {
+                    if (visibleMembers.Contain(m)) continue;
+                    hideMembers.Add(m);
+                }
+                _viewData.SetFilter(new Filter(null, null, hideMembers));
+            }
+            taskDrawArea.Invalidate();
         }
 
         void InitializeTaskDrawArea()

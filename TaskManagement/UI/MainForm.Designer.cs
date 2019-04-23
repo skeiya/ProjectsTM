@@ -44,6 +44,7 @@ namespace TaskManagement
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,7 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
-            this.ToolStripMenuItemRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBoxFilter = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
@@ -70,10 +71,11 @@ namespace TaskManagement
             this.ToolStripMenuItemFile,
             this.編集ToolStripMenuItem,
             this.表示ToolStripMenuItem,
-            this.管理ToolStripMenuItem});
+            this.管理ToolStripMenuItem,
+            this.toolStripComboBoxFilter});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 42);
+            this.menuStrip1.Size = new System.Drawing.Size(1163, 44);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -86,7 +88,7 @@ namespace TaskManagement
             this.ToolStripMenuItemPrint,
             this.詳細ToolStripMenuItem});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 38);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(95, 40);
             this.ToolStripMenuItemFile.Text = "ファイル";
             // 
             // ToolStripMenuItemOpen
@@ -151,13 +153,13 @@ namespace TaskManagement
             this.ToolStripMenuItemUndo,
             this.ToolStripMenuItemRedo});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
-            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
+            this.編集ToolStripMenuItem.Size = new System.Drawing.Size(75, 40);
             this.編集ToolStripMenuItem.Text = "編集";
             // 
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(278, 38);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -165,7 +167,7 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(278, 38);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -173,9 +175,17 @@ namespace TaskManagement
             // 
             this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
             this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(324, 38);
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(278, 38);
             this.ToolStripMenuItemUndo.Text = "Undo";
             this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
+            // 
+            // ToolStripMenuItemRedo
+            // 
+            this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
+            this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(278, 38);
+            this.ToolStripMenuItemRedo.Text = "Redo";
+            this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
             // 
             // 表示ToolStripMenuItem
             // 
@@ -187,7 +197,7 @@ namespace TaskManagement
             this.ToolStripMenuItemLargeRatio,
             this.ToolStripMenuItemSmallRatio});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
-            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
+            this.表示ToolStripMenuItem.Size = new System.Drawing.Size(75, 40);
             this.表示ToolStripMenuItem.Text = "表示";
             // 
             // ToolStripMenuItemFilter
@@ -246,7 +256,7 @@ namespace TaskManagement
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
-            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 38);
+            this.管理ToolStripMenuItem.Size = new System.Drawing.Size(75, 40);
             this.管理ToolStripMenuItem.Text = "管理";
             // 
             // ToolStripMenuItemWorkingDas
@@ -276,9 +286,9 @@ namespace TaskManagement
             // 
             this.panel1.Controls.Add(this.taskDrawArea);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 42);
+            this.panel1.Location = new System.Drawing.Point(0, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1163, 624);
+            this.panel1.Size = new System.Drawing.Size(1163, 622);
             this.panel1.TabIndex = 12;
             // 
             // taskDrawArea
@@ -292,13 +302,12 @@ namespace TaskManagement
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
-            // ToolStripMenuItemRedo
+            // toolStripComboBoxFilter
             // 
-            this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
-            this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(324, 38);
-            this.ToolStripMenuItemRedo.Text = "Redo";
-            this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
+            this.toolStripComboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolStripComboBoxFilter.DropDownWidth = 150;
+            this.toolStripComboBoxFilter.Name = "toolStripComboBoxFilter";
+            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(121, 40);
             // 
             // Form1
             // 
@@ -350,6 +359,7 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSaveAsOtherName;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUndo;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxFilter;
     }
 }
 

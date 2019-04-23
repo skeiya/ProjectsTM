@@ -54,10 +54,10 @@ namespace TaskManagement
             return Original.Callender.GetPeriodDayCount(Filter.Period);
         }
 
-        public Members GetFilteredMembers()
+        public Members GetVisibleMembers()
         {
             var result = new Members();
-            if (Filter == null || Filter.FilteringMembers == null)
+            if (Filter == null || Filter.HideMembers == null)
             {
                 foreach (var m in this.Original.Members)
                 {
@@ -68,7 +68,7 @@ namespace TaskManagement
 
             foreach (var m in Original.Members)
             {
-                if (Filter.FilteringMembers.Contain(m)) continue;
+                if (Filter.HideMembers.Contain(m)) continue;
                 result.Add(m);
             }
             return result;
@@ -77,7 +77,7 @@ namespace TaskManagement
         public WorkItems GetFilteredWorkItems()
         {
             if (Filter == null) return Original.WorkItems;
-            var filteredMembers = GetFilteredMembers();
+            var filteredMembers = GetVisibleMembers();
             var period = GetFilteredDays();
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)

@@ -24,7 +24,7 @@ namespace TaskManagement
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
             SetRowHeight(pageBounds);
 
-            _grid.ColCount = viewData.GetFilteredMembers().Count + Callender.ColCount;
+            _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
             SetColWidth(g, pageBounds);
 
             _colorConditions = viewData.Original.ColorConditions;
@@ -63,7 +63,7 @@ namespace TaskManagement
         private void UpdateRowColMap(ViewData viewData)
         {
             int c = Callender.ColCount;
-            foreach (var m in viewData.GetFilteredMembers())
+            foreach (var m in viewData.GetVisibleMembers())
             {
                 _colToMember.Add(c, m);
                 _memberToCol.Add(m, c);

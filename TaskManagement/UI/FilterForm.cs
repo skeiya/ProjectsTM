@@ -18,7 +18,7 @@ namespace TaskManagement
 
             foreach (var m in _viewData.Original.Members)
             {
-                var check = _viewData.Filter == null ? true : !_viewData.Filter.FilteringMembers.Contain(m);
+                var check = _viewData.Filter == null ? true : !_viewData.Filter.HideMembers.Contain(m);
                 checkedListBox1.Items.Add(m, check);
             }
 
