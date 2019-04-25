@@ -20,6 +20,7 @@ namespace TaskManagement
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
         private Cursor _originalCursor;
+        private Graphics _graphics;
 
         public Form1()
         {
@@ -29,9 +30,17 @@ namespace TaskManagement
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             panel1.Resize += Panel1_Resize;
+            panel1.Scroll += Panel1_Scroll;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
+            _graphics = CreateGraphics();
+        }
+
+        private void Panel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            taskDrawArea.Invalidate();
+            this.Invalidate();
         }
 
         private void InitializeFilterCombobox()
@@ -131,6 +140,7 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
         {
+            if (_grid == null) return;
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData);
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
@@ -190,7 +200,7 @@ namespace TaskManagement
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
-            _grid.Draw(_viewData);
+            _grid.Draw(_viewData, _graphics, panel1.Location, e.ClipRectangle.Location);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
@@ -315,6 +325,7 @@ namespace TaskManagement
             panel1.AutoScroll = _viewData.IsEnlarged();
             taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.Ratio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.Ratio));
             taskDrawArea.Invalidate();
+            this.Invalidate();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)

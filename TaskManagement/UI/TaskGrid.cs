@@ -162,6 +162,38 @@ namespace TaskManagement
             DrawWorkItems(viewData);
         }
 
+        private void DrawCallenderDays(Graphics g, Point panelLocation, PointF clipLocation)
+        {
+            int y = 0;
+            int m = 0;
+            var dayWidth = _grid.GetCellBounds(0, 2).Width;
+            var monthWidth = _grid.GetCellBounds(0, 1).Width;
+            var yearWidth = _grid.GetCellBounds(0, 0).Width;
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
+            {
+                var year = _rowToDay[r].Year;
+                if (y == year) continue;
+                y = year;
+                var rect = _grid.GetCellBounds(r, 0);
+                rect.Height = rect.Height * 2;//TODO: 適当に広げている
+                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - clipLocation.Y);
+            }
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
+            {
+                var month = _rowToDay[r].Month;
+                if (m == month) continue;
+                m = month;
+                var rect = _grid.GetCellBounds(r, 1);
+                rect.Height = rect.Height * 2;//TODO: 適当に広げている
+                g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - clipLocation.Y);
+            }
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
+            {
+                var rect = _grid.GetCellBounds(r, 2);
+                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - clipLocation.Y);
+            }
+        }
+
         private void DrawCallenderDays()
         {
             int y = 0;
@@ -203,6 +235,31 @@ namespace TaskManagement
                 var rect = _grid.GetCellBounds(1, c);
                 _grid.DrawString(_colToMember[c].DisplayName, rect);
             }
+        }
+
+        private void DrawTeamMembers(Graphics g, Point panelLocation, PointF clipLocation)
+        {
+            var companyHight = _grid.GetCellBounds(0, 0).Height;
+            var nameHeight = _grid.GetCellBounds(1, 0).Height;
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                var rect = _grid.GetCellBounds(0, c);
+                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - clipLocation.X, panelLocation.Y - (companyHight + nameHeight));
+                //_grid.DrawString(_colToMember[c].Company, rect);
+            }
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                var rect = _grid.GetCellBounds(1, c);
+                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - clipLocation.X, panelLocation.Y - nameHeight);
+                //_grid.DrawString(_colToMember[c].DisplayName, rect);
+            }
+        }
+
+        internal void Draw(ViewData viewData, Graphics g, Point panelLocation, Point clipLocation)
+        {
+            DrawCallenderDays(g, panelLocation, clipLocation);
+            DrawTeamMembers(g, panelLocation, clipLocation: clipLocation);
+            DrawWorkItems(viewData);
         }
 
         private void DrawWorkItems(ViewData viewData)
