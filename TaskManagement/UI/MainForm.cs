@@ -51,19 +51,19 @@ namespace TaskManagement
         {
             _viewData.Selected = null;
             var path = toolStripComboBoxFilter.SelectedItem.ToString();
-            if(path.Equals("ALL"))
+            if (path.Equals("ALL"))
             {
                 _viewData.SetFilter(null);
                 taskDrawArea.Invalidate();
                 return;
             }
             if (!File.Exists(path)) return;
-            using(var rs = new StreamReader(path))
+            using (var rs = new StreamReader(path))
             {
                 var x = new XmlSerializer(typeof(Members));
                 var visibleMembers = (Members)x.Deserialize(rs);
                 var hideMembers = new Members();
-                foreach(var m in _viewData.Original.Members)
+                foreach (var m in _viewData.Original.Members)
                 {
                     if (visibleMembers.Contain(m)) continue;
                     hideMembers.Add(m);
@@ -75,7 +75,7 @@ namespace TaskManagement
 
         void InitializeTaskDrawArea()
         {
-            taskDrawArea.Size = panel1.Size;
+            taskDrawArea.Size = new Size(panel1.Width - taskDrawArea.Location.X, panel1.Height - taskDrawArea.Location.Y);
             taskDrawArea.Paint += TaskDrawArea_Paint;
             taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
             taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
@@ -133,9 +133,9 @@ namespace TaskManagement
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData);
-            if(_grid.IsWorkItemExpandArea(_viewData, e.Location))
+            if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
-                if(this.Cursor != Cursors.SizeNS)
+                if (this.Cursor != Cursors.SizeNS)
                 {
                     _originalCursor = this.Cursor;
                     this.Cursor = Cursors.SizeNS;
@@ -143,7 +143,7 @@ namespace TaskManagement
             }
             else
             {
-                if(this.Cursor == Cursors.SizeNS)
+                if (this.Cursor == Cursors.SizeNS)
                 {
                     this.Cursor = _originalCursor;
                 }
@@ -313,7 +313,7 @@ namespace TaskManagement
         private void ApplyViewRatio()
         {
             panel1.AutoScroll = _viewData.IsEnlarged();
-            taskDrawArea.Size = new Size((int)(panel1.Size.Width * _viewData.Ratio), (int)(panel1.Size.Height * _viewData.Ratio));
+            taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.Ratio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.Ratio));
             taskDrawArea.Invalidate();
         }
 
