@@ -162,7 +162,7 @@ namespace TaskManagement
             DrawWorkItems(viewData);
         }
 
-        private void DrawCallenderDays(Graphics g, Point panelLocation, PointF clipLocation)
+        private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
         {
             int y = 0;
             int m = 0;
@@ -176,7 +176,7 @@ namespace TaskManagement
                 y = year;
                 var rect = _grid.GetCellBounds(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - clipLocation.Y);
+                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
@@ -185,12 +185,12 @@ namespace TaskManagement
                 m = month;
                 var rect = _grid.GetCellBounds(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - clipLocation.Y);
+                g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var rect = _grid.GetCellBounds(r, 2);
-                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - clipLocation.Y);
+                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
         }
 
@@ -237,28 +237,26 @@ namespace TaskManagement
             }
         }
 
-        private void DrawTeamMembers(Graphics g, Point panelLocation, PointF clipLocation)
+        private void DrawTeamMembersOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenWidth)
         {
             var companyHight = _grid.GetCellBounds(0, 0).Height;
             var nameHeight = _grid.GetCellBounds(1, 0).Height;
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(0, c);
-                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - clipLocation.X, panelLocation.Y - (companyHight + nameHeight));
-                //_grid.DrawString(_colToMember[c].Company, rect);
+                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - (companyHight + nameHeight));
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(1, c);
-                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - clipLocation.X, panelLocation.Y - nameHeight);
-                //_grid.DrawString(_colToMember[c].DisplayName, rect);
+                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - nameHeight);
             }
         }
 
-        internal void Draw(ViewData viewData, Graphics g, Point panelLocation, Point clipLocation)
+        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation)
         {
-            DrawCallenderDays(g, panelLocation, clipLocation);
-            DrawTeamMembers(g, panelLocation, clipLocation: clipLocation);
+            DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
+            DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
             DrawWorkItems(viewData);
         }
 
