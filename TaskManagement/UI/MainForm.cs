@@ -202,7 +202,7 @@ namespace TaskManagement
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
-            _grid.Draw(_viewData, _graphics, panel1.Location, e.ClipRectangle.Location);
+            _grid.Draw(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y));
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
