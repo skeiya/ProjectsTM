@@ -131,6 +131,8 @@ namespace TaskManagement
         private void Panel1_Resize(object sender, EventArgs e)
         {
             ApplyViewRatio();
+            _graphics.Dispose();
+            _graphics = CreateGraphics();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
