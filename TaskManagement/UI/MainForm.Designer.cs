@@ -59,7 +59,10 @@ namespace TaskManagement
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
+            this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
             this.SuspendLayout();
@@ -284,6 +287,9 @@ namespace TaskManagement
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelSum,
+            this.toolStripStatusLabelSelect});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
@@ -314,6 +320,18 @@ namespace TaskManagement
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
+            // toolStripStatusLabelSum
+            // 
+            this.toolStripStatusLabelSum.Name = "toolStripStatusLabelSum";
+            this.toolStripStatusLabelSum.Size = new System.Drawing.Size(65, 17);
+            this.toolStripStatusLabelSum.Text = "SUM:0人月";
+            // 
+            // toolStripStatusLabelSelect
+            // 
+            this.toolStripStatusLabelSelect.Name = "toolStripStatusLabelSelect";
+            this.toolStripStatusLabelSelect.Size = new System.Drawing.Size(38, 17);
+            this.toolStripStatusLabelSelect.Text = "Select";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -329,6 +347,8 @@ namespace TaskManagement
             this.Text = "日程表ツール";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).EndInit();
             this.ResumeLayout(false);
@@ -365,6 +385,8 @@ namespace TaskManagement
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUndo;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxFilter;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSum;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
     }
 }
 

@@ -8,6 +8,8 @@ namespace TaskManagement.Service
         private Stack<Tuple<string, string>> _undoStack = new Stack<Tuple<string, string>>();
         private Stack<Tuple<string, string>> _redoStack = new Stack<Tuple<string, string>>();
 
+        public event EventHandler Changed;
+
         public UndoService()
         {
         }
@@ -17,6 +19,7 @@ namespace TaskManagement.Service
             if (before.Equals(after)) return;
             _undoStack.Push(new Tuple<string, string>(before, after));
             _redoStack.Clear();
+            Changed(this, null);
         }
 
         internal void Undo(WorkItems workItems)
@@ -30,6 +33,7 @@ namespace TaskManagement.Service
             {
                 if (w.Equals(after)) w.Apply(before);
             }
+            Changed(this, null);
         }
 
         internal void Redo(WorkItems workItems)
@@ -43,6 +47,7 @@ namespace TaskManagement.Service
             {
                 if (w.Equals(before)) w.Apply(after);
             }
+            Changed(this, null);
         }
     }
 }
