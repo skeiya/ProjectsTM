@@ -8,13 +8,24 @@ namespace TaskManagement
     public class ViewData
     {
         public Filter Filter { get; private set; }
-        public AppData Original { get; set; }
+        public AppData Original
+        {
+            get { return _appData; }
+            set
+            {
+                _appData = value;
+                if (AppDataChanged != null) AppDataChanged(this, null);
+            }
+        }
+
+        private AppData _appData;
         private WorkItem _selected;
         private int _fontSize = 6;
         private float _viewRatio = 1.0f;
 
         public event EventHandler FilterChanged;
         public event EventHandler SelectedWorkItemChanged;
+        public event EventHandler AppDataChanged;
 
         public WorkItem Selected
         {

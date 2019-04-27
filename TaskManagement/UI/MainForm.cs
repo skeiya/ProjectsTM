@@ -35,6 +35,28 @@ namespace TaskManagement
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
             _graphics = CreateGraphics();
+            _viewData.AppDataChanged += _viewData_AppDataChanged;
+            _undoService.Changed += _undoService_Changed;
+        }
+
+        private void _undoService_Changed(object sender, EventArgs e)
+        {
+            UpdateDiplayOfSum();
+        }
+
+        private void _viewData_AppDataChanged(object sender, EventArgs e)
+        {
+            UpdateDiplayOfSum();
+        }
+
+        private void UpdateDiplayOfSum()
+        {
+            var sum = 0;
+            foreach (var w in _viewData.GetFilteredWorkItems())
+            {
+                sum += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
+            }
+            toolStripStatusLabelSum.Text = "SUM:" + sum.ToString() + "人日";
         }
 
         private void Panel1_Scroll(object sender, ScrollEventArgs e)
@@ -138,6 +160,7 @@ namespace TaskManagement
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
+            UpdateDiplayOfSum();
         }
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -173,7 +196,7 @@ namespace TaskManagement
             if (_workItemDragService.IsDragging()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
-            statusStrip1.Items[0].Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
+            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
         }
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
