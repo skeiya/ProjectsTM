@@ -26,7 +26,8 @@ namespace TaskManagement
 
         public WorkItem GetWorkItem(Callender callender)
         {
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), GetPeriod(_callender), GetAssignedMember());
+            var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, radioButtonDayCount.Checked);
+            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember());
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -47,7 +48,7 @@ namespace TaskManagement
             if (p == null) return null;
             var w = GetWorkItemName();
             if (w == null) return null;
-            var period = GetPeriod(callender);
+            var period = GetPeriod(callender, textBoxFrom.Text, textBoxTo.Text, radioButtonDayCount.Checked);
             if (period == null) return null;
             var m = GetAssignedMember();
             if (m == null) return null;
@@ -59,14 +60,26 @@ namespace TaskManagement
             return Member.Parse(textBoxMember.Text);
         }
 
-        private Period GetPeriod(Callender callender)
+        private static Period GetPeriod(Callender callender, string fromText, string toText, bool isToCount)
         {
-            var from = CallenderDay.Parse(textBoxFrom.Text);
-            var to = CallenderDay.Parse(textBoxTo.Text);
+            var from = GetDayByDate(fromText);
+            var to = isToCount ? GetDayByCount(toText, from, callender) : GetDayByDate(toText);
             if (from == null || to == null) return null;
             var result = new Period(from, to);
             if (callender.GetPeriodDayCount(result) == 0) return null;
             return result;
+        }
+
+        private static CallenderDay GetDayByDate(string text)
+        {
+            return CallenderDay.Parse(text);
+        }
+
+        private static CallenderDay GetDayByCount(string countText, CallenderDay from, Callender callender)
+        {
+            var dayCount = 0;
+            if (!int.TryParse(countText, out dayCount)) return null;
+            return callender.ApplyOffset(from, dayCount - 1);
         }
 
         private Tags GetTags()
@@ -92,9 +105,23 @@ namespace TaskManagement
             Close();
         }
 
-        private void Button4_Click(object sender, EventArgs e)
+        private void RadioButtonDayCount_CheckedChanged(object sender, EventArgs e)
         {
+            UpdateEndDay();
+        }
 
+        private void UpdateEndDay()
+        {
+            if (radioButtonDayCount.Checked)
+            {
+                var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, false);
+                textBoxTo.Text = period == null ? string.Empty : _callender.GetPeriodDayCount(period).ToString();
+            }
+            else
+            {
+                var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, true);
+                textBoxTo.Text = period == null ? string.Empty : period.To.ToString();
+            }
         }
     }
 }

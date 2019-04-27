@@ -42,6 +42,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxProject = new System.Windows.Forms.TextBox();
             this.textBoxMember = new System.Windows.Forms.TextBox();
+            this.radioButtonDate = new System.Windows.Forms.RadioButton();
+            this.radioButtonDayCount = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -87,11 +89,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 167);
+            this.label5.Location = new System.Drawing.Point(8, 182);
             this.label5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(22, 12);
-            this.label5.TabIndex = 10;
+            this.label5.TabIndex = 12;
             this.label5.Text = "タグ";
             // 
             // textBoxWorkItemName
@@ -102,16 +104,16 @@
             this.textBoxWorkItemName.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxWorkItemName.Name = "textBoxWorkItemName";
             this.textBoxWorkItemName.Size = new System.Drawing.Size(200, 19);
-            this.textBoxWorkItemName.TabIndex = 0;
+            this.textBoxWorkItemName.TabIndex = 1;
             // 
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(193, 235);
+            this.buttonOK.Location = new System.Drawing.Point(193, 274);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(35, 22);
-            this.buttonOK.TabIndex = 6;
+            this.buttonOK.TabIndex = 14;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.Button1_Click);
@@ -120,11 +122,11 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(237, 235);
+            this.buttonCancel.Location = new System.Drawing.Point(237, 274);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(64, 22);
-            this.buttonCancel.TabIndex = 7;
+            this.buttonCancel.TabIndex = 15;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.Button2_Click);
@@ -134,12 +136,12 @@
             this.textBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTags.Location = new System.Drawing.Point(103, 166);
+            this.textBoxTags.Location = new System.Drawing.Point(103, 182);
             this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTags.Multiline = true;
             this.textBoxTags.Name = "textBoxTags";
-            this.textBoxTags.Size = new System.Drawing.Size(200, 65);
-            this.textBoxTags.TabIndex = 5;
+            this.textBoxTags.Size = new System.Drawing.Size(200, 88);
+            this.textBoxTags.TabIndex = 13;
             // 
             // textBoxFrom
             // 
@@ -149,22 +151,22 @@
             this.textBoxFrom.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(200, 19);
-            this.textBoxFrom.TabIndex = 3;
+            this.textBoxFrom.TabIndex = 7;
             // 
             // textBoxTo
             // 
             this.textBoxTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTo.Location = new System.Drawing.Point(103, 137);
+            this.textBoxTo.Location = new System.Drawing.Point(103, 147);
             this.textBoxTo.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(200, 19);
-            this.textBoxTo.TabIndex = 4;
+            this.textBoxTo.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(191, 125);
+            this.label6.Location = new System.Drawing.Point(124, 129);
             this.label6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(23, 12);
@@ -179,7 +181,7 @@
             this.textBoxProject.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxProject.Name = "textBoxProject";
             this.textBoxProject.Size = new System.Drawing.Size(200, 19);
-            this.textBoxProject.TabIndex = 1;
+            this.textBoxProject.TabIndex = 3;
             // 
             // textBoxMember
             // 
@@ -189,7 +191,30 @@
             this.textBoxMember.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxMember.Name = "textBoxMember";
             this.textBoxMember.Size = new System.Drawing.Size(200, 19);
-            this.textBoxMember.TabIndex = 2;
+            this.textBoxMember.TabIndex = 5;
+            // 
+            // radioButtonDate
+            // 
+            this.radioButtonDate.AutoSize = true;
+            this.radioButtonDate.Checked = true;
+            this.radioButtonDate.Location = new System.Drawing.Point(167, 127);
+            this.radioButtonDate.Name = "radioButtonDate";
+            this.radioButtonDate.Size = new System.Drawing.Size(47, 16);
+            this.radioButtonDate.TabIndex = 9;
+            this.radioButtonDate.TabStop = true;
+            this.radioButtonDate.Text = "日付";
+            this.radioButtonDate.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonDayCount
+            // 
+            this.radioButtonDayCount.AutoSize = true;
+            this.radioButtonDayCount.Location = new System.Drawing.Point(220, 127);
+            this.radioButtonDayCount.Name = "radioButtonDayCount";
+            this.radioButtonDayCount.Size = new System.Drawing.Size(47, 16);
+            this.radioButtonDayCount.TabIndex = 10;
+            this.radioButtonDayCount.Text = "人日";
+            this.radioButtonDayCount.UseVisualStyleBackColor = true;
+            this.radioButtonDayCount.CheckedChanged += new System.EventHandler(this.RadioButtonDayCount_CheckedChanged);
             // 
             // EditWorkItemForm
             // 
@@ -197,7 +222,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(310, 267);
+            this.ClientSize = new System.Drawing.Size(310, 306);
+            this.Controls.Add(this.radioButtonDayCount);
+            this.Controls.Add(this.radioButtonDate);
             this.Controls.Add(this.textBoxMember);
             this.Controls.Add(this.textBoxProject);
             this.Controls.Add(this.label6);
@@ -238,5 +265,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxProject;
         private System.Windows.Forms.TextBox textBoxMember;
+        private System.Windows.Forms.RadioButton radioButtonDate;
+        private System.Windows.Forms.RadioButton radioButtonDayCount;
     }
 }
