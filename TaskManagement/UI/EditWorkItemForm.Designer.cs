@@ -47,60 +47,70 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 77);
+            this.label1.Location = new System.Drawing.Point(8, 38);
+            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 24);
+            this.label1.Size = new System.Drawing.Size(56, 12);
             this.label1.TabIndex = 2;
             this.label1.Text = "プロジェクト";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 142);
+            this.label2.Location = new System.Drawing.Point(8, 71);
+            this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(130, 24);
+            this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 4;
             this.label2.Text = "氏/名/所属";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 212);
+            this.label3.Location = new System.Drawing.Point(8, 106);
+            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 24);
+            this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 6;
             this.label3.Text = "期間";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 20);
+            this.label4.Location = new System.Drawing.Point(8, 10);
+            this.label4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(130, 24);
+            this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 0;
             this.label4.Text = "作業項目名";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 334);
+            this.label5.Location = new System.Drawing.Point(10, 167);
+            this.label5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 24);
+            this.label5.Size = new System.Drawing.Size(22, 12);
             this.label5.TabIndex = 10;
             this.label5.Text = "タグ";
             // 
             // textBoxWorkItemName
             // 
-            this.textBoxWorkItemName.Location = new System.Drawing.Point(223, 17);
+            this.textBoxWorkItemName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxWorkItemName.Location = new System.Drawing.Point(103, 8);
+            this.textBoxWorkItemName.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxWorkItemName.Name = "textBoxWorkItemName";
-            this.textBoxWorkItemName.Size = new System.Drawing.Size(329, 31);
+            this.textBoxWorkItemName.Size = new System.Drawing.Size(200, 19);
             this.textBoxWorkItemName.TabIndex = 0;
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(318, 400);
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(193, 235);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 43);
+            this.buttonOK.Size = new System.Drawing.Size(35, 22);
             this.buttonOK.TabIndex = 6;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -108,10 +118,12 @@
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(414, 400);
+            this.buttonCancel.Location = new System.Drawing.Point(237, 235);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(138, 43);
+            this.buttonCancel.Size = new System.Drawing.Size(64, 22);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -119,55 +131,73 @@
             // 
             // textBoxTags
             // 
-            this.textBoxTags.Location = new System.Drawing.Point(223, 331);
+            this.textBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTags.Location = new System.Drawing.Point(103, 166);
+            this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.textBoxTags.Multiline = true;
             this.textBoxTags.Name = "textBoxTags";
-            this.textBoxTags.Size = new System.Drawing.Size(329, 31);
+            this.textBoxTags.Size = new System.Drawing.Size(200, 65);
             this.textBoxTags.TabIndex = 5;
             // 
             // textBoxFrom
             // 
-            this.textBoxFrom.Location = new System.Drawing.Point(223, 209);
+            this.textBoxFrom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxFrom.Location = new System.Drawing.Point(103, 104);
+            this.textBoxFrom.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxFrom.Name = "textBoxFrom";
-            this.textBoxFrom.Size = new System.Drawing.Size(329, 31);
+            this.textBoxFrom.Size = new System.Drawing.Size(200, 19);
             this.textBoxFrom.TabIndex = 3;
             // 
             // textBoxTo
             // 
-            this.textBoxTo.Location = new System.Drawing.Point(223, 272);
+            this.textBoxTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTo.Location = new System.Drawing.Point(103, 137);
+            this.textBoxTo.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTo.Name = "textBoxTo";
-            this.textBoxTo.Size = new System.Drawing.Size(329, 31);
+            this.textBoxTo.Size = new System.Drawing.Size(200, 19);
             this.textBoxTo.TabIndex = 4;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(356, 247);
+            this.label6.Location = new System.Drawing.Point(191, 125);
+            this.label6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 24);
+            this.label6.Size = new System.Drawing.Size(23, 12);
             this.label6.TabIndex = 8;
             this.label6.Text = "から";
             // 
             // textBoxProject
             // 
-            this.textBoxProject.Location = new System.Drawing.Point(223, 74);
+            this.textBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxProject.Location = new System.Drawing.Point(103, 37);
+            this.textBoxProject.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxProject.Name = "textBoxProject";
-            this.textBoxProject.Size = new System.Drawing.Size(329, 31);
+            this.textBoxProject.Size = new System.Drawing.Size(200, 19);
             this.textBoxProject.TabIndex = 1;
             // 
             // textBoxMember
             // 
-            this.textBoxMember.Location = new System.Drawing.Point(223, 139);
+            this.textBoxMember.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxMember.Location = new System.Drawing.Point(103, 70);
+            this.textBoxMember.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxMember.Name = "textBoxMember";
-            this.textBoxMember.Size = new System.Drawing.Size(329, 31);
+            this.textBoxMember.Size = new System.Drawing.Size(200, 19);
             this.textBoxMember.TabIndex = 2;
             // 
             // EditWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(571, 465);
+            this.ClientSize = new System.Drawing.Size(310, 267);
             this.Controls.Add(this.textBoxMember);
             this.Controls.Add(this.textBoxProject);
             this.Controls.Add(this.label6);
@@ -182,7 +212,8 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "EditWorkItemForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "作業項目編集";
