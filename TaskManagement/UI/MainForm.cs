@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Service;
@@ -41,15 +42,15 @@ namespace TaskManagement
 
         private void _undoService_Changed(object sender, EventArgs e)
         {
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
-        private void UpdateDiplayOfSum()
+        private void UpdateDisplayOfSum()
         {
             var sum = 0;
             foreach (var w in _viewData.GetFilteredWorkItems())
@@ -160,7 +161,7 @@ namespace TaskManagement
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -201,7 +202,11 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
+            var copyingItem = _workItemDragService.CopyingItem;
+            var items = _viewData.Original.WorkItems;
+            if (copyingItem != null && !items.Contains(copyingItem)) items.Add(copyingItem);
             _workItemDragService.End(_undoService, _viewData.Selected);
+            UpdateDisplayOfSum();
         }
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
@@ -225,7 +230,7 @@ namespace TaskManagement
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
-            _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y));
+            _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)

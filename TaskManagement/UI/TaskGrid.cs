@@ -159,7 +159,7 @@ namespace TaskManagement
         {
             DrawCallenderDays();
             DrawTeamMembers();
-            DrawWorkItems(viewData);
+            DrawWorkItems(viewData, null);
         }
 
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
@@ -222,7 +222,7 @@ namespace TaskManagement
                 _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
             }
         }
-
+        
         private void DrawTeamMembers()
         {
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
@@ -253,24 +253,20 @@ namespace TaskManagement
             }
         }
 
-        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation)
+        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem)
         {
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
-            DrawWorkItems(viewData);
+            DrawWorkItems(viewData, draggingItem);
         }
 
-        private void DrawWorkItems(ViewData viewData)
+        private void DrawWorkItems(ViewData viewData, WorkItem draggingItem)
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
-                var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
-                var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
-                if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
-                var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
-                _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds, front);
-                _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
+                DrawWorkItem(viewData, wi);
             }
+            if (draggingItem != null) DrawWorkItem(viewData, draggingItem);
 
             if (viewData.Selected != null)
             {
@@ -279,6 +275,16 @@ namespace TaskManagement
                 DrawTopDragBar(bounds);
                 DrawBottomDragBar(bounds);
             }
+        }
+
+        private void DrawWorkItem(ViewData viewData, WorkItem wi)
+        {
+            var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
+            var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
+            if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
+            var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
+            _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds, front);
+            _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
         }
 
         private RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
