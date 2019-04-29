@@ -42,7 +42,7 @@
             this.buttonOK.Location = new System.Drawing.Point(93, 61);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 0;
+            this.buttonOK.TabIndex = 5;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.ButtonOK_Click);
@@ -52,7 +52,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(174, 61);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.TabIndex = 6;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
@@ -63,7 +63,7 @@
             this.labelBefore.Location = new System.Drawing.Point(21, 24);
             this.labelBefore.Name = "labelBefore";
             this.labelBefore.Size = new System.Drawing.Size(39, 12);
-            this.labelBefore.TabIndex = 1;
+            this.labelBefore.TabIndex = 0;
             this.labelBefore.Text = "Before";
             // 
             // label1
@@ -72,7 +72,7 @@
             this.label1.Location = new System.Drawing.Point(91, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(17, 12);
-            this.label1.TabIndex = 2;
+            this.label1.TabIndex = 1;
             this.label1.Text = "→";
             // 
             // textBoxDevided
@@ -80,7 +80,7 @@
             this.textBoxDevided.Location = new System.Drawing.Point(128, 21);
             this.textBoxDevided.Name = "textBoxDevided";
             this.textBoxDevided.Size = new System.Drawing.Size(59, 19);
-            this.textBoxDevided.TabIndex = 3;
+            this.textBoxDevided.TabIndex = 2;
             this.textBoxDevided.TextChanged += new System.EventHandler(this.TextBoxDevided_TextChanged);
             // 
             // label2
@@ -89,7 +89,7 @@
             this.label2.Location = new System.Drawing.Point(193, 24);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 12);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 3;
             this.label2.Text = "+";
             // 
             // labelRemain
@@ -98,7 +98,7 @@
             this.labelRemain.Location = new System.Drawing.Point(210, 24);
             this.labelRemain.Name = "labelRemain";
             this.labelRemain.Size = new System.Drawing.Size(43, 12);
-            this.labelRemain.TabIndex = 2;
+            this.labelRemain.TabIndex = 4;
             this.labelRemain.Text = "Remain";
             // 
             // DevideWorkItemForm

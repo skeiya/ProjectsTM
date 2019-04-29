@@ -55,7 +55,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 1;
+            this.label2.TabIndex = 2;
             this.label2.Text = "日付";
             // 
             // labelColor
@@ -65,7 +65,7 @@
             this.labelColor.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.labelColor.Name = "labelColor";
             this.labelColor.Size = new System.Drawing.Size(17, 12);
-            this.labelColor.TabIndex = 2;
+            this.labelColor.TabIndex = 4;
             this.labelColor.Text = "色";
             // 
             // textBoxName
@@ -74,7 +74,7 @@
             this.textBoxName.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(144, 19);
-            this.textBoxName.TabIndex = 3;
+            this.textBoxName.TabIndex = 1;
             // 
             // textBoxDate
             // 
@@ -82,7 +82,7 @@
             this.textBoxDate.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxDate.Name = "textBoxDate";
             this.textBoxDate.Size = new System.Drawing.Size(144, 19);
-            this.textBoxDate.TabIndex = 4;
+            this.textBoxDate.TabIndex = 3;
             // 
             // buttonOK
             // 
@@ -112,7 +112,7 @@
             this.buttonSelectColor.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonSelectColor.Name = "buttonSelectColor";
             this.buttonSelectColor.Size = new System.Drawing.Size(66, 26);
-            this.buttonSelectColor.TabIndex = 8;
+            this.buttonSelectColor.TabIndex = 5;
             this.buttonSelectColor.Text = "選択...";
             this.buttonSelectColor.UseVisualStyleBackColor = true;
             this.buttonSelectColor.Click += new System.EventHandler(this.ButtonSelectColor_Click);
