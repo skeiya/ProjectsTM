@@ -11,10 +11,14 @@ namespace TaskManagement.UI
 
         public MileStone MileStone => _mileStone;
 
-        public EditMileStoneForm(Callender _callender)
+        public EditMileStoneForm(Callender callender, MileStone m)
         {
             InitializeComponent();
-            this._callender = _callender;
+            this._callender = callender;
+            if (m == null) return;
+            textBoxName.Text = m.Name;
+            textBoxDate.Text = m.Day.ToString();
+            labelColor.BackColor = m.Color;
         }
 
         private void ButtonSelectColor_Click(object sender, EventArgs e)

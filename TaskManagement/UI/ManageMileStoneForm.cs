@@ -21,7 +21,7 @@ namespace TaskManagement.UI
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMileStoneForm(_callender))
+            using (var dlg = new EditMileStoneForm(_callender, null))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _mileStones.Add(dlg.MileStone);
@@ -35,6 +35,7 @@ namespace TaskManagement.UI
             foreach (var m in _mileStones)
             {
                 var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() });
+                item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
             }
@@ -44,6 +45,47 @@ namespace TaskManagement.UI
         {
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Edit();
+        }
+
+        private void Edit()
+        {
+            try
+            {
+                var m = (MileStone)listView1.SelectedItems[0].Tag;
+                using (var dlg = new EditMileStoneForm(_callender, m.Clone()))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    _mileStones.Replace(m, dlg.MileStone);
+                }
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void ButtonEdit_Click(object sender, EventArgs e)
+        {
+            Edit();
+        }
+
+        private void ButtonDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var m = (MileStone)listView1.SelectedItems[0].Tag;
+                _mileStones.Delete(m);
+                UpdateList();
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 }

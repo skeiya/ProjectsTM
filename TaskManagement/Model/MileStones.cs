@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TaskManagement.Model
@@ -30,6 +31,16 @@ namespace TaskManagement.Model
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _list.GetEnumerator();
+        }
+
+        internal void Replace(MileStone before, MileStone after)
+        {
+            _list[_list.FindIndex(ind => ind.Equals(before))] = after;
+        }
+
+        internal void Delete(MileStone m)
+        {
+            _list.Remove(m);
         }
     }
 }
