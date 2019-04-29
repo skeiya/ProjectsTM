@@ -5,9 +5,8 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Model;
 using TaskManagement.Service;
-using TaskManagement.UI;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class MainForm : Form
     {

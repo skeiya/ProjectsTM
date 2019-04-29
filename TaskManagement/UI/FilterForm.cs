@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class FilterForm : Form
     {

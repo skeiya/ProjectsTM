@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class EditWorkItemForm : Form
     {

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.Service;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class SearchWorkitemForm : Form
     {

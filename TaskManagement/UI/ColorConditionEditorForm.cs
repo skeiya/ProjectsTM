@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class ColorConditionEditorForm : Form
     {

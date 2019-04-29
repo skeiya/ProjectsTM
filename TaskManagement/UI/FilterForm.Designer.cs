@@ -1,4 +1,4 @@
-﻿namespace TaskManagement
+﻿namespace TaskManagement.UI
 {
     partial class FilterForm
     {

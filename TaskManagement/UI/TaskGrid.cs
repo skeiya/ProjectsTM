@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using TaskManagement.Model;
 using TaskManagement.Service;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public class TaskGrid
     {

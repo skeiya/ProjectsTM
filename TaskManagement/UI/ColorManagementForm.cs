@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Linq;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     public partial class ColorManagementForm : Form
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using TaskManagement.UI;
 
-namespace TaskManagement
+namespace TaskManagement.UI
 {
     class CommonGrid
     {
