@@ -365,7 +365,7 @@ namespace TaskManagement
 
             if (_searchForm == null || _searchForm.IsDisposed)
             {
-                _searchForm = new SearchWorkitemForm(_viewData, _undoService);
+                _searchForm = new SearchWorkitemForm(_viewData, _editService);
             }
             if (!_searchForm.Visible) _searchForm.Show(this);
         }
@@ -379,14 +379,12 @@ namespace TaskManagement
         {
             var wi = _viewData.Selected;
             if (wi == null) return;
-            using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _undoService.Delete(wi);
-                _undoService.Add(newWi);
-                _undoService.Push();
-                wi.Apply(newWi);
+                _editService.Replace(wi, newWi);
+                _viewData.Selected = newWi;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
             taskDrawArea.Invalidate();

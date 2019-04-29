@@ -31,14 +31,6 @@ namespace TaskManagement.Model
             set { Tags = Tags.Parse(value); }
         }
 
-        internal void Apply(WorkItem before)
-        {
-            this.Project = before.Project;
-            this.Tags = before.Tags;
-            this.Name = before.Name;
-            this.Period = before.Period;
-            this.AssignedMember = before.AssignedMember;
-        }
 
         public WorkItem() { }
 

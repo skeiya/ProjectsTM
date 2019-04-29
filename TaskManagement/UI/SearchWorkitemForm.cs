@@ -11,16 +11,16 @@ namespace TaskManagement
     public partial class SearchWorkitemForm : Form
     {
         private readonly ViewData _viewData;
-        private readonly UndoService _undoService;
+        private readonly WorkItemEditService _editService;
         private System.Timers.Timer _timer = new System.Timers.Timer(100);
         private int _tickCount = 0;
         private List<WorkItem> _list = new List<WorkItem>();
 
-        public SearchWorkitemForm(ViewData viewData, UndoService undoService)
+        public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService)
         {
             InitializeComponent();
             this._viewData = viewData;
-            this._undoService = undoService;
+            this._editService = editService;
             UpdateFilteredList();
             UpdateListBox();
 
@@ -94,14 +94,12 @@ namespace TaskManagement
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var wi = _list[listBox1.SelectedIndex];
-            using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _undoService.Delete(wi);
-                _undoService.Add(newWi);
-                _undoService.Push();
-                wi.Apply(newWi);
+                _editService.Replace(wi, newWi);
+                _viewData.Selected = newWi;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
 

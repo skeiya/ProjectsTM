@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TaskManagement.Model;
 
 namespace TaskManagement.Service
 {
-    class WorkItemEditService
+    public class WorkItemEditService
     {
         private readonly ViewData _viewData;
         private readonly UndoService _undoService;
@@ -50,6 +51,15 @@ namespace TaskManagement.Service
             workItems.Remove(selected);
             workItems.Add(d1);
             workItems.Add(d2);
+        }
+
+        internal void Replace(WorkItem before, WorkItem after)
+        {
+            _viewData.Original.WorkItems.Remove(before);
+            _viewData.Original.WorkItems.Add(after);
+            _undoService.Delete(before);
+            _undoService.Add(after);
+            _undoService.Push();
         }
     }
 }
