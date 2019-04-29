@@ -125,6 +125,7 @@ namespace TaskManagement
             {
                 if (_viewData.Selected == null) return;
                 _viewData.Original.WorkItems.Remove(_viewData.Selected);
+                _undoService.Push(_viewData.Selected.Serialize(), null);
                 _viewData.Selected = null;
                 taskDrawArea.Invalidate();
                 UpdateDisplayOfSum();
@@ -217,7 +218,11 @@ namespace TaskManagement
         {
             var copyingItem = _workItemDragService.CopyingItem;
             var items = _viewData.Original.WorkItems;
-            if (copyingItem != null && !items.Contains(copyingItem)) items.Add(copyingItem);
+            if (copyingItem != null && !items.Contains(copyingItem))
+            {
+                items.Add(copyingItem);
+                _undoService.Push(null, copyingItem.Serialize());
+            }
             _workItemDragService.End(_undoService, _viewData.Selected);
             UpdateDisplayOfSum();
         }
