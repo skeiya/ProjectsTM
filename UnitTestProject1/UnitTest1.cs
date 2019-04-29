@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using TaskManagement;
 using TaskManagement.Logic;
 using TaskManagement.Model;
 
