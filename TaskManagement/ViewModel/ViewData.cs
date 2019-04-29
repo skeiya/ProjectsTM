@@ -27,6 +27,7 @@ namespace TaskManagement.ViewModel
         public event EventHandler FilterChanged;
         public event EventHandler SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
+        public event EventHandler FontChanged;
 
         public WorkItem Selected
         {
@@ -131,12 +132,14 @@ namespace TaskManagement.ViewModel
         internal void IncFont()
         {
             _fontSize++;
+            FontChanged(this, null);
         }
 
         internal void DecFont()
         {
             if (_fontSize <= 1) return;
             _fontSize--;
+            FontChanged(this, null);
         }
 
         internal void DecRatio()

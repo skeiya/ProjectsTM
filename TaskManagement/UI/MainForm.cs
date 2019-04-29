@@ -34,6 +34,7 @@ namespace TaskManagement.UI
             _editService = new WorkItemEditService(_viewData, _undoService);
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            _viewData.FontChanged += _viewData_FontChanged;
             panel1.Resize += Panel1_Resize;
             panel1.Scroll += Panel1_Scroll;
             statusStrip1.Items.Add("");
@@ -42,6 +43,12 @@ namespace TaskManagement.UI
             _graphics = CreateGraphics();
             _viewData.AppDataChanged += _viewData_AppDataChanged;
             _undoService.Changed += _undoService_Changed;
+        }
+
+        private void _viewData_FontChanged(object sender, EventArgs e)
+        {
+            taskDrawArea.Invalidate();
+            Invalidate();
         }
 
         private void _undoService_Changed(object sender, EventArgs e)
@@ -344,13 +351,11 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
         {
             _viewData.IncFont();
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
         {
             _viewData.DecFont();
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
