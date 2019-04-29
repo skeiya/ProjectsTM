@@ -31,7 +31,6 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -39,8 +38,7 @@
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
-            this.columnHeaderDate,
-            this.columnHeaderColor});
+            this.columnHeaderDate});
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -59,10 +57,6 @@
             // 
             this.columnHeaderDate.Text = "日付";
             this.columnHeaderDate.Width = 100;
-            // 
-            // columnHeaderColor
-            // 
-            this.columnHeaderColor.Text = "色";
             // 
             // buttonAdd
             // 
@@ -95,7 +89,6 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
         private System.Windows.Forms.ColumnHeader columnHeaderDate;
-        private System.Windows.Forms.ColumnHeader columnHeaderColor;
         private System.Windows.Forms.Button buttonAdd;
     }
 }
