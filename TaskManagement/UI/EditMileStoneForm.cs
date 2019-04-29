@@ -16,5 +16,14 @@ namespace TaskManagement.UI
         {
             InitializeComponent();
         }
+
+        private void ButtonSelectColor_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ColorDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                labelColor.BackColor = dlg.Color;
+            }
+        }
     }
 }

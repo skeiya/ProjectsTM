@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelColor = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.textBoxDate = new System.Windows.Forms.TextBox();
             this.buttonOK = new System.Windows.Forms.Button();
@@ -41,85 +41,95 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 13);
+            this.label1.Location = new System.Drawing.Point(10, 6);
+            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 24);
+            this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "名前";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 66);
+            this.label2.Location = new System.Drawing.Point(10, 33);
+            this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 24);
+            this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 1;
             this.label2.Text = "日付";
             // 
-            // label3
+            // labelColor
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 122);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 24);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "色";
+            this.labelColor.AutoSize = true;
+            this.labelColor.Location = new System.Drawing.Point(12, 61);
+            this.labelColor.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.labelColor.Name = "labelColor";
+            this.labelColor.Size = new System.Drawing.Size(17, 12);
+            this.labelColor.TabIndex = 2;
+            this.labelColor.Text = "色";
             // 
             // textBoxName
             // 
-            this.textBoxName.Location = new System.Drawing.Point(155, 13);
+            this.textBoxName.Location = new System.Drawing.Point(72, 6);
+            this.textBoxName.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(307, 31);
+            this.textBoxName.Size = new System.Drawing.Size(144, 19);
             this.textBoxName.TabIndex = 3;
             // 
             // textBoxDate
             // 
-            this.textBoxDate.Location = new System.Drawing.Point(155, 63);
+            this.textBoxDate.Location = new System.Drawing.Point(72, 32);
+            this.textBoxDate.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxDate.Name = "textBoxDate";
-            this.textBoxDate.Size = new System.Drawing.Size(307, 31);
+            this.textBoxDate.Size = new System.Drawing.Size(144, 19);
             this.textBoxDate.TabIndex = 4;
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(155, 176);
+            this.buttonOK.Location = new System.Drawing.Point(72, 88);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(143, 52);
+            this.buttonOK.Size = new System.Drawing.Size(66, 26);
             this.buttonOK.TabIndex = 6;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(304, 176);
+            this.buttonCancel.Location = new System.Drawing.Point(140, 88);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(158, 52);
+            this.buttonCancel.Size = new System.Drawing.Size(73, 26);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // buttonSelectColor
             // 
-            this.buttonSelectColor.Location = new System.Drawing.Point(155, 108);
+            this.buttonSelectColor.Location = new System.Drawing.Point(72, 54);
+            this.buttonSelectColor.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonSelectColor.Name = "buttonSelectColor";
-            this.buttonSelectColor.Size = new System.Drawing.Size(143, 52);
+            this.buttonSelectColor.Size = new System.Drawing.Size(66, 26);
             this.buttonSelectColor.TabIndex = 8;
             this.buttonSelectColor.Text = "選択...";
             this.buttonSelectColor.UseVisualStyleBackColor = true;
+            this.buttonSelectColor.Click += new System.EventHandler(this.ButtonSelectColor_Click);
             // 
             // EditMileStoneForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 248);
+            this.ClientSize = new System.Drawing.Size(219, 124);
             this.Controls.Add(this.buttonSelectColor);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBoxDate);
             this.Controls.Add(this.textBoxName);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelColor);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "EditMileStoneForm";
             this.Text = "マイルストーン編集";
             this.ResumeLayout(false);
@@ -131,7 +141,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelColor;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.TextBox textBoxDate;
         private System.Windows.Forms.Button buttonOK;
