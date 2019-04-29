@@ -28,32 +28,13 @@ namespace TaskManagement.Logic
             var colCount = months.Count + 3;
             var csv = new string[rowCount, colCount];
 
-            var r = 0;
-            foreach (var m in members)
-            {
-                foreach (var p in projects)
-                {
-                    csv[r, 0] = m.Company;
-                    csv[r, 1] = m.LastName + " " + m.FirstName;
-                    csv[r, 2] = p.ToString();
-                    r++;
-                }
-            }
-            var c = 0;
-            foreach (var month in months)
-            {
-                r = 0;
-                foreach (var member in members)
-                {
-                    foreach (var project in projects)
-                    {
-                        csv[r, 3 + c] = GetRatio(month.Item1, month.Item2, member, project, appData.Callender, appData.WorkItems);
-                        r++;
-                    }
-                }
-                c++;
-            }
+            var r = MakeMembersAndProjectsTitle(members, projects, csv);
+            MakeMembersAndProjectsValue(appData, members, months, projects, csv, r);
+            return MakeText(rowCount, colCount, csv);
+        }
 
+        private static string MakeText(int rowCount, int colCount, string[,] csv)
+        {
             var result = string.Empty;
             for (int row = 0; row < rowCount; row++)
             {
@@ -65,6 +46,41 @@ namespace TaskManagement.Logic
             }
 
             return result;
+        }
+
+        private static void MakeMembersAndProjectsValue(AppData appData, List<Member> members, List<Tuple<int, int>> months, List<Project> projects, string[,] csv, int r)
+        {
+            var c = 3;
+            foreach (var month in months)
+            {
+                r = 0;
+                foreach (var member in members)
+                {
+                    foreach (var project in projects)
+                    {
+                        csv[r, c] = GetRatio(month.Item1, month.Item2, member, project, appData.Callender, appData.WorkItems);
+                        r++;
+                    }
+                }
+                c++;
+            }
+        }
+
+        private static int MakeMembersAndProjectsTitle(List<Member> members, List<Project> projects, string[,] csv)
+        {
+            var r = 0;
+            foreach (var m in members)
+            {
+                foreach (var p in projects)
+                {
+                    csv[r, 0] = m.Company;
+                    csv[r, 1] = m.LastName + " " + m.FirstName;
+                    csv[r, 2] = p.ToString();
+                    r++;
+                }
+            }
+
+            return r;
         }
 
         private static List<Project> GetProjects(WorkItems workItems)
