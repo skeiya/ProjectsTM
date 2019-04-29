@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Service;
@@ -19,6 +20,7 @@ namespace TaskManagement
         private PrintService _printService;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
+        private WorkItemEditService _editService;
         private Cursor _originalCursor;
         private Graphics _graphics;
 
@@ -27,6 +29,7 @@ namespace TaskManagement
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(this.Font, _viewData);
+            _editService = new WorkItemEditService(_viewData, _undoService);
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             panel1.Resize += Panel1_Resize;
@@ -41,15 +44,15 @@ namespace TaskManagement
 
         private void _undoService_Changed(object sender, EventArgs e)
         {
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
-        private void UpdateDiplayOfSum()
+        private void UpdateDisplayOfSum()
         {
             var sum = 0;
             foreach (var w in _viewData.GetFilteredWorkItems())
@@ -115,6 +118,18 @@ namespace TaskManagement
             taskDrawArea.AllowDrop = true;
             taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+            this.KeyUp += Form1_KeyUp;
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (_viewData.Selected == null) return;
+                _editService.Delete(_viewData.Selected);
+                _viewData.Selected = null;
+                taskDrawArea.Invalidate();
+            }
         }
 
         private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
@@ -160,7 +175,7 @@ namespace TaskManagement
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            UpdateDiplayOfSum();
+            UpdateDisplayOfSum();
         }
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -201,6 +216,8 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
+            var copyingItem = _workItemDragService.CopyingItem;
+            _editService.Add(copyingItem);
             _workItemDragService.End(_undoService, _viewData.Selected);
         }
 
@@ -225,7 +242,7 @@ namespace TaskManagement
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
             _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
-            _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y));
+            _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)

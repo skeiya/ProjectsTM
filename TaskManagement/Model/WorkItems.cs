@@ -56,5 +56,10 @@ namespace TaskManagement
         {
             _items.Sort();
         }
+
+        internal void Remove(WorkItem selected)
+        {
+            _items.Remove(selected);
+        }
     }
 }

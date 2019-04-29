@@ -59,6 +59,7 @@
     <Compile Include="Model\Callender.cs" />
     <Compile Include="Model\CallenderDay.cs" />
     <Compile Include="Model\ColorCondition.cs" />
+    <Compile Include="Service\WorkItemEditService.cs" />
     <Compile Include="UI\BrushCache.cs" />
     <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>

@@ -115,6 +115,11 @@ namespace TaskManagement
             }
         }
 
+        internal WorkItem Clone()
+        {
+            return Deserialize(Serialize());
+        }
+
         static internal WorkItem Deserialize(string text)
         {
             using (var s = new MemoryStream())

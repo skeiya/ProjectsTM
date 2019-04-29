@@ -15,6 +15,8 @@ namespace TaskManagement.Service
         private Member _draggedMember;
         private int _expandDirection = 0;
 
+        public WorkItem CopyingItem => _draggingWorkItem;
+
         public bool IsDragging()
         {
             return _draggingWorkItem != null;
@@ -110,10 +112,15 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
+        private bool IsCtrlDown()
+        {
+            return (Control.ModifierKeys & Keys.Control) == Keys.Control;
+        }
+
         internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
             _beforeWorkItem = wi.Serialize();
-            _draggingWorkItem = wi;
+            _draggingWorkItem = IsCtrlDown() ? wi.Clone() : wi;
             _draggedLocation = location;
             _draggedPeriod = wi.Period.Clone();
             _draggedMember = wi.AssignedMember;
