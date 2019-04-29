@@ -66,8 +66,7 @@ namespace TaskManagement
             if (listView1.SelectedItems.Count != 1) return;
             var index = listView1.SelectedIndices[0];
             var cond = _colorConditions.At(index);
-            var clone = cond.Clone();
-            using (var dlg = new ColorConditionEditorForm(clone))
+            using (var dlg = new ColorConditionEditorForm(cond.Clone()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 cond.Apply(dlg.ColorCondition);
