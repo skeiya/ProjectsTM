@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Service;
 using TaskManagement.UI;
+using TaskManagement.Model;
 
 namespace TaskManagement
 {
@@ -400,6 +401,11 @@ namespace TaskManagement
         {
             _undoService.Redo(_viewData.Original.WorkItems);
             taskDrawArea.Invalidate();
+        }
+
+        private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

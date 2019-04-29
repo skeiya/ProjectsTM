@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\MileStone.cs" />
+    <Compile Include="Model\MileStones.cs" />
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\OldFileService.cs" />

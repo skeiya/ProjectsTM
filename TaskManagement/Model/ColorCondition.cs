@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Xml.Serialization;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class ColorCondition
     {

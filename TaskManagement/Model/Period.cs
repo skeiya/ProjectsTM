@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class Period
     {

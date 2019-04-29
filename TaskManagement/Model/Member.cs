@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class Member : IComparable<Member>
     {

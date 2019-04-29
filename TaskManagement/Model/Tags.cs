@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class Tags
     {

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaskManagement;
+using TaskManagement.Model;
 
 namespace UnitTestProject1
 {

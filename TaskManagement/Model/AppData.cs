@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskManagement.Model;
 
 namespace TaskManagement
 {
@@ -8,6 +9,7 @@ namespace TaskManagement
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
         public ColorConditions ColorConditions = new ColorConditions();
+        public MileStones MileStones = new MileStones();
 
         public AppData()
         {
