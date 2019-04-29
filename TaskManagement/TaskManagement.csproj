@@ -52,6 +52,9 @@
     <Compile Include="Logic\ColorSerializer.cs" />
     <Compile Include="Model\MileStone.cs" />
     <Compile Include="Model\MileStones.cs" />
+    <Compile Include="Service\AtomicAction.cs" />
+    <Compile Include="Service\EditAction.cs" />
+    <Compile Include="Service\EditActionType.cs" />
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\OldFileService.cs" />
@@ -79,6 +82,12 @@
     </Compile>
     <Compile Include="UI\CommonGrid.cs" />
     <Compile Include="Logic\CsvReader.cs" />
+    <Compile Include="UI\DevideWorkItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DevideWorkItemForm.Designer.cs">
+      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\EditMemberForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ColorManagementForm.resx">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DevideWorkItemForm.resx">
+      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\EditMemberForm.resx">
       <DependentUpon>EditMemberForm.cs</DependentUpon>

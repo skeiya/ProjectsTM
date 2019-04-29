@@ -6,8 +6,8 @@ namespace TaskManagement.Service
 {
     public class UndoService
     {
-        private Stack<Tuple<string, string>> _undoStack = new Stack<Tuple<string, string>>();
-        private Stack<Tuple<string, string>> _redoStack = new Stack<Tuple<string, string>>();
+        private Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
+        private Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
 
         public event EventHandler Changed;
 
@@ -15,19 +15,24 @@ namespace TaskManagement.Service
         {
         }
 
-        internal void Push(string before, string after)
+        private AtomicAction _atomicAction = new AtomicAction();
+
+        internal void Delete(WorkItem w)
         {
-            if (IsSame(before, after)) return;
-            _undoStack.Push(new Tuple<string, string>(before, after));
-            _redoStack.Clear();
-            Changed(this, null);
+            _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize()));
         }
 
-        private static bool IsSame(string before, string after)
+        internal void Add(WorkItem w)
         {
-            if (before == null && after == null) return true;
-            if (before == null && after != null) return false;
-            return before.Equals(after);
+            _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize()));
+        }
+
+        internal void Push()
+        {
+            _undoStack.Push(_atomicAction.Clone());
+            _atomicAction.Clear();
+            _redoStack.Clear();
+            Changed(this, null);
         }
 
         internal void Undo(WorkItems workItems)
@@ -35,21 +40,16 @@ namespace TaskManagement.Service
             if (_undoStack.Count == 0) return;
             var p = _undoStack.Pop();
             _redoStack.Push(p);
-            var before = p.Item1 == null ? null : WorkItem.Deserialize(p.Item1);
-            var after = p.Item2 == null ? null : WorkItem.Deserialize(p.Item2);
-            if (after == null) // 削除のundo
+            foreach (var a in p)
             {
-                workItems.Add(before);
-            }
-            else if (before == null) // 追加のundo
-            {
-                workItems.Remove(after);
-            }
-            else // 編集のundo
-            {
-                foreach (var w in workItems)
+                var w = WorkItem.Deserialize(a.WorkItemText);
+                if (a.Action == EditActionType.Add)
                 {
-                    if (w.Equals(after)) w.Apply(before);
+                    workItems.Remove(w);
+                }
+                else if (a.Action == EditActionType.Delete)
+                {
+                    workItems.Add(w);
                 }
             }
             Changed(this, null);
@@ -60,21 +60,16 @@ namespace TaskManagement.Service
             if (_redoStack.Count == 0) return;
             var r = _redoStack.Pop();
             _undoStack.Push(r);
-            var before = r.Item1 == null ? null : WorkItem.Deserialize(r.Item1);
-            var after = r.Item2 == null ? null : WorkItem.Deserialize(r.Item2);
-            if (before == null)
+            foreach (var a in r)
             {
-                workItems.Add(after);
-            }
-            else if (after == null)
-            {
-                workItems.Remove(before);
-            }
-            else
-            {
-                foreach (var w in workItems)
+                var w = WorkItem.Deserialize(a.WorkItemText);
+                if (a.Action == EditActionType.Add)
                 {
-                    if (w.Equals(before)) w.Apply(after);
+                    workItems.Add(w);
+                }
+                else if (a.Action == EditActionType.Delete)
+                {
+                    workItems.Remove(w);
                 }
             }
             Changed(this, null);

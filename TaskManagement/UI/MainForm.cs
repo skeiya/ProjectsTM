@@ -119,7 +119,44 @@ namespace TaskManagement
             taskDrawArea.AllowDrop = true;
             taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+            taskDrawArea.ContextMenu = new ContextMenu();
+            taskDrawArea.ContextMenu.Popup += ContextMenu_Popup;
             this.KeyUp += Form1_KeyUp;
+        }
+
+        private void ContextMenu_Popup(object sender, EventArgs e)
+        {
+            taskDrawArea.ContextMenu.MenuItems.Clear();
+            var editMenu = new MenuItem("編集...");
+            editMenu.Click += EditMenu_Click;
+            taskDrawArea.ContextMenu.MenuItems.Add(editMenu);
+            var devideMenu = new MenuItem("分割...");
+            devideMenu.Click += DevideMenu_Click;
+            taskDrawArea.ContextMenu.MenuItems.Add(devideMenu);
+        }
+
+        private void DevideMenu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selected = _viewData.Selected;
+                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+                using (var dlg = new DevideWorkItemForm(count))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    _editService.Devide(selected, dlg.Devided, dlg.Remain);
+                    taskDrawArea.Invalidate();
+                }
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void EditMenu_Click(object sender, EventArgs e)
+        {
+            EditSelectedWorkItem();
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -224,6 +261,7 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
                 _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
@@ -335,13 +373,20 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var wi = _grid.PickFromPoint(e.Location, _viewData);
+            EditSelectedWorkItem();
+        }
+
+        private void EditSelectedWorkItem()
+        {
+            var wi = _viewData.Selected;
             if (wi == null) return;
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _undoService.Push(wi.Serialize(), newWi.Serialize());
+                _undoService.Delete(wi);
+                _undoService.Add(newWi);
+                _undoService.Push();
                 wi.Apply(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
