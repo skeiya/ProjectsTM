@@ -436,13 +436,13 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
         {
-            _undoService.Undo(_viewData.Original.WorkItems);
+            _undoService.Undo(_viewData);
             taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
-            _undoService.Redo(_viewData.Original.WorkItems);
+            _undoService.Redo(_viewData);
             taskDrawArea.Invalidate();
         }
 

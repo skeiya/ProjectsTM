@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskManagement.Model;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {
@@ -35,7 +36,7 @@ namespace TaskManagement.Service
             Changed(this, null);
         }
 
-        internal void Undo(WorkItems workItems)
+        internal void Undo(ViewData viewData)
         {
             if (_undoStack.Count == 0) return;
             var p = _undoStack.Pop();
@@ -45,17 +46,18 @@ namespace TaskManagement.Service
                 var w = WorkItem.Deserialize(a.WorkItemText);
                 if (a.Action == EditActionType.Add)
                 {
-                    workItems.Remove(w);
+                    viewData.Original.WorkItems.Remove(w);
                 }
                 else if (a.Action == EditActionType.Delete)
                 {
-                    workItems.Add(w);
+                    viewData.Original.WorkItems.Add(w);
+                    viewData.Selected = w;
                 }
             }
             Changed(this, null);
         }
 
-        internal void Redo(WorkItems workItems)
+        internal void Redo(ViewData viewData)
         {
             if (_redoStack.Count == 0) return;
             var r = _redoStack.Pop();
@@ -65,11 +67,12 @@ namespace TaskManagement.Service
                 var w = WorkItem.Deserialize(a.WorkItemText);
                 if (a.Action == EditActionType.Add)
                 {
-                    workItems.Add(w);
+                    viewData.Original.WorkItems.Add(w);
+                    viewData.Selected = w;
                 }
                 else if (a.Action == EditActionType.Delete)
                 {
-                    workItems.Remove(w);
+                    viewData.Original.WorkItems.Remove(w);
                 }
             }
             Changed(this, null);
