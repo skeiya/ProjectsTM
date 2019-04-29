@@ -130,6 +130,28 @@ namespace TaskManagement
             var editMenu = new MenuItem("編集...");
             editMenu.Click += EditMenu_Click;
             taskDrawArea.ContextMenu.MenuItems.Add(editMenu);
+            var devideMenu = new MenuItem("分割...");
+            devideMenu.Click += DevideMenu_Click;
+            taskDrawArea.ContextMenu.MenuItems.Add(devideMenu);
+        }
+
+        private void DevideMenu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var selected = _viewData.Selected;
+                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+                using (var dlg = new DevideWorkItemForm(count))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    _editService.Devide(selected, dlg.Devided, dlg.Remain);
+                    taskDrawArea.Invalidate();
+                }
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void EditMenu_Click(object sender, EventArgs e)

@@ -29,5 +29,20 @@ namespace TaskManagement.Service
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
             _undoService.Push(_viewData.Selected.Serialize(), null);
         }
+
+        internal void Devide(WorkItem selected, int devided, int remain)
+        {
+            var d1 = selected.Clone();
+            var d2 = selected.Clone();
+
+            d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
+            d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, devided);
+
+            var workItems = _viewData.Original.WorkItems;
+            _viewData.Selected = null;
+            workItems.Remove(selected);
+            workItems.Add(d1);
+            workItems.Add(d2);
+        }
     }
 }
