@@ -176,20 +176,26 @@ namespace TaskManagement.UI
 
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
         {
-            int y = 0;
-            int m = 0;
             var dayWidth = _grid.GetCellBounds(0, 2).Width;
             var monthWidth = _grid.GetCellBounds(0, 1).Width;
             var yearWidth = _grid.GetCellBounds(0, 0).Width;
+            DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth);
+            DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth);
+            DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth);
+        }
+
+        private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
+        {
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var year = _rowToDay[r].Year;
-                if (y == year) continue;
-                y = year;
-                var rect = _grid.GetCellBounds(r, 0);
-                rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
+                var rect = _grid.GetCellBounds(r, 2);
+                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
+        }
+
+        private void DrawMonth(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth)
+        {
+            int m = 0;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var month = _rowToDay[r].Month;
@@ -199,10 +205,19 @@ namespace TaskManagement.UI
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
+        }
+
+        private void DrawYear(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth, float yearWidth)
+        {
+            int y = 0;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var rect = _grid.GetCellBounds(r, 2);
-                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
+                var year = _rowToDay[r].Year;
+                if (y == year) continue;
+                y = year;
+                var rect = _grid.GetCellBounds(r, 0);
+                rect.Height = rect.Height * 2;//TODO: 適当に広げている
+                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
         }
 
