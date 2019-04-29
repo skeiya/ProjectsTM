@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Service;
 using TaskManagement.UI;
+using TaskManagement.Model;
 
 namespace TaskManagement
 {
@@ -399,6 +400,16 @@ namespace TaskManagement
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
             _undoService.Redo(_viewData.Original.WorkItems);
+            taskDrawArea.Invalidate();
+        }
+
+        private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Original.MileStones = dlg.MileStones;
+            }
             taskDrawArea.Invalidate();
         }
     }

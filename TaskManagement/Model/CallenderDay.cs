@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class CallenderDay : IComparable<CallenderDay>
     {

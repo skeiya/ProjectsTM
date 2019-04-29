@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class WorkItem : IComparable<WorkItem>
     {

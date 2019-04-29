@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using TaskManagement.Logic;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class ColorCondition
     {
@@ -25,20 +27,12 @@ namespace TaskManagement
         [XmlElement]
         public string ColorText
         {
-            get { return BackColor.R.ToString() + "/" + BackColor.G.ToString() + "/" + BackColor.B.ToString() + "/"+ ForeColor.R.ToString() + "/" + ForeColor.G.ToString() + "/" + ForeColor.B.ToString(); }
+            get { return ColorSerializer.Serialize(BackColor) + "/" + ColorSerializer.Serialize(ForeColor); }
             set
             {
-                var words = value.Split('/');
-                var r = int.Parse(words[0]);
-                var g = int.Parse(words[1]);
-                var b = int.Parse(words[2]);
-                BackColor = Color.FromArgb(r, g, b);
-
-                if (words.Length <= 3) return;
-                var rf = int.Parse(words[3]);
-                var gf = int.Parse(words[4]);
-                var bf = int.Parse(words[5]);
-                ForeColor = Color.FromArgb(rf, gf, bf);
+                var m = Regex.Match(value, "(.+/.+/.+)/(.+/.+/.+)");
+                BackColor = ColorSerializer.Deserialize(m.Groups[1].Value);
+                ForeColor = ColorSerializer.Deserialize(m.Groups[2].Value);
             }
         }
 

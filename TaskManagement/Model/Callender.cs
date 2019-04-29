@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class Callender
     {

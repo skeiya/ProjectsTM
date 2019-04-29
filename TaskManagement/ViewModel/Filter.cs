@@ -1,4 +1,6 @@
-﻿namespace TaskManagement
+﻿using TaskManagement.Model;
+
+namespace TaskManagement
 {
     public class Filter
     {

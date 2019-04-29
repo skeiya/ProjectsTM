@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class ColorConditions : IEnumerable<ColorCondition>
     {

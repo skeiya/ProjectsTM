@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class WorkItems : IEnumerable<WorkItem>
     {
