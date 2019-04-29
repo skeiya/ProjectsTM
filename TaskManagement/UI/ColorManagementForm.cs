@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Linq;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 
 namespace TaskManagement.UI

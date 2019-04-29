@@ -88,59 +88,55 @@ namespace TaskManagement.Logic
         public static Members ReadMembers(string fileName)
         {
             var result = new Members();
-            var isFirstLine = true;
             using (var r = new StreamReader(fileName))
             {
+                r.ReadLine(); //タイトル行を読み捨てる
                 while (true)
                 {
                     var line = r.ReadLine();
                     if (string.IsNullOrEmpty(line)) return result;
-                    if (isFirstLine)
-                    {
-                        isFirstLine = false;
-                        continue;
-                    }
-
-                    var words = line.Split(',');
-                    var member = ParseMember(words[0]);
-                    result.Add(member);
+                    result.Add(ReadMemberLine(line));
                 }
             }
+        }
+
+        private static Member ReadMemberLine(string text)
+        {
+            var words = text.Split(',');
+            return ParseMember(words[0]);
         }
 
         public static WorkItems ReadWorkItems(string fileName)
         {
             var result = new WorkItems();
-            var isFirstLine = true;
             using (var r = new StreamReader(fileName))
             {
-                var lineNo = 0;
+                r.ReadLine(); //タイトル行を読み捨てる
+                var lineNo = 1;
                 while (true)
                 {
                     var line = r.ReadLine();
                     lineNo++;
                     if (string.IsNullOrEmpty(line)) return result;
-                    if (isFirstLine)
-                    {
-                        isFirstLine = false;
-                        continue;
-                    }
-
-                    var words = line.Split(',');
-                    if (words.Length != 10) {
-
-                        throw new System.Exception(String.Format("{0}行目の区切り数が異常です。", lineNo));
-                    }
-
-                    var project = ParseProject(words[5], words[3]);
-                    var tags = ParseTags(words[5]);
-                    var taskName = words[3];
-                    var period = ParsePeriod(words[1], words[2]);
-                    var member = ParseMember(words[0]);
-
-                    result.Add(new WorkItem(project, taskName, tags, period, member));
+                    result.Add(ReadWorkItemLine(line, lineNo));
                 }
             }
+        }
+
+        private  static WorkItem ReadWorkItemLine(string text, int lineNo)
+        {
+            var words = text.Split(',');
+            if (words.Length != 10)
+            {
+                throw new System.Exception(String.Format("{0}行目の区切り数が異常です。", lineNo));
+            }
+
+            var project = ParseProject(words[5], words[3]);
+            var tags = ParseTags(words[5]);
+            var taskName = words[3];
+            var period = ParsePeriod(words[1], words[2]);
+            var member = ParseMember(words[0]);
+            return new WorkItem(project, taskName, tags, period, member);
         }
     }
 }
