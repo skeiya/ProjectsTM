@@ -119,7 +119,22 @@ namespace TaskManagement
             taskDrawArea.AllowDrop = true;
             taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+            taskDrawArea.ContextMenu = new ContextMenu();
+            taskDrawArea.ContextMenu.Popup += ContextMenu_Popup;
             this.KeyUp += Form1_KeyUp;
+        }
+
+        private void ContextMenu_Popup(object sender, EventArgs e)
+        {
+            taskDrawArea.ContextMenu.MenuItems.Clear();
+            var editMenu = new MenuItem("編集...");
+            editMenu.Click += EditMenu_Click;
+            taskDrawArea.ContextMenu.MenuItems.Add(editMenu);
+        }
+
+        private void EditMenu_Click(object sender, EventArgs e)
+        {
+            EditSelectedWorkItem();
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -335,7 +350,12 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var wi = _grid.PickFromPoint(e.Location, _viewData);
+            EditSelectedWorkItem();
+        }
+
+        private void EditSelectedWorkItem()
+        {
+            var wi = _viewData.Selected;
             if (wi == null) return;
             using (var dlg = new EditWorkItemForm(wi, _viewData.Original.Callender))
             {
