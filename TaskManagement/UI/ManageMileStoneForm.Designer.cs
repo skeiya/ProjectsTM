@@ -37,6 +37,9 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
             this.columnHeaderDate});
@@ -44,7 +47,7 @@
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(266, 214);
+            this.listView1.Size = new System.Drawing.Size(240, 205);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -61,7 +64,8 @@
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Location = new System.Drawing.Point(287, 6);
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAdd.Location = new System.Drawing.Point(252, 6);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(60, 25);
@@ -72,7 +76,8 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(287, 195);
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(250, 186);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(60, 25);
             this.buttonOK.TabIndex = 2;
@@ -84,13 +89,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(369, 225);
+            this.ClientSize = new System.Drawing.Size(322, 216);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.listView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "ManageMileStoneForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "マイルストーンの管理";
             this.ResumeLayout(false);
 

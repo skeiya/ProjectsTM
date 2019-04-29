@@ -40,5 +40,11 @@ namespace TaskManagement.UI
             if (!_callender.Days.Contains(day)) return null;
             return new MileStone(textBoxName.Text, day, labelColor.BackColor);
         }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
     }
 }

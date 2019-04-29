@@ -104,6 +104,7 @@
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // buttonSelectColor
             // 
@@ -132,6 +133,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "EditMileStoneForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "マイルストーン編集";
             this.ResumeLayout(false);
             this.PerformLayout();
