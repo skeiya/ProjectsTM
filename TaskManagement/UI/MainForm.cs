@@ -116,6 +116,19 @@ namespace TaskManagement
             taskDrawArea.AllowDrop = true;
             taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+            this.KeyUp += Form1_KeyUp;
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (_viewData.Selected == null) return;
+                _viewData.Original.WorkItems.Remove(_viewData.Selected);
+                _viewData.Selected = null;
+                taskDrawArea.Invalidate();
+                UpdateDisplayOfSum();
+            }
         }
 
         private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
