@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Model;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.UI
 {

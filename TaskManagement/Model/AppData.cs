@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.Model
 {
     public class AppData
     {

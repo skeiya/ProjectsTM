@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.Logic
 {
     public class RSFileExporter
     {

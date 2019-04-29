@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.ViewModel
 {
     public class ViewData
     {

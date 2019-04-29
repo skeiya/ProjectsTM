@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.IO;
 using System.Xml.Serialization;
+using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.Logic
 {
     public class AppDataSerializer
     {

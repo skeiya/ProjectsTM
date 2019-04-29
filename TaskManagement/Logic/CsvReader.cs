@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.Logic
 {
     class CsvReader
     {

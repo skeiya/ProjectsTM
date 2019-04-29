@@ -3,8 +3,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.UI
 {

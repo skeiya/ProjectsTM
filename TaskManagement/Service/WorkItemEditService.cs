@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using TaskManagement.Model;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {

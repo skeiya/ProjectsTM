@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 
 namespace TaskManagement.UI

@@ -1,6 +1,6 @@
 ﻿using TaskManagement.Model;
 
-namespace TaskManagement
+namespace TaskManagement.ViewModel
 {
     public class Filter
     {
