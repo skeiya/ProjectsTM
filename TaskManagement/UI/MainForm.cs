@@ -405,7 +405,10 @@ namespace TaskManagement
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
         {
-
+            using(var dlg = new ManageMileStoneForm())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+            }
         }
     }
 }

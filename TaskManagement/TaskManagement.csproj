@@ -84,6 +84,12 @@
     <Compile Include="UI\EditMemberForm.Designer.cs">
       <DependentUpon>EditMemberForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\EditMileStoneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EditMileStoneForm.Designer.cs">
+      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,12 @@
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\UndoService.cs" />
+    <Compile Include="UI\ManageMileStoneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ManageMileStoneForm.Designer.cs">
+      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="UI\FilterForm.cs">
       <SubType>Form</SubType>
@@ -143,6 +155,9 @@
     <EmbeddedResource Include="UI\EditMemberForm.resx">
       <DependentUpon>EditMemberForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\EditMileStoneForm.resx">
+      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\EditWorkItemForm.resx">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ManagementWokingDaysForm.resx">
       <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ManageMileStoneForm.resx">
+      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
