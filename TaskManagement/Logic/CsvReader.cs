@@ -25,12 +25,12 @@ namespace TaskManagement.Logic
         {
             foreach (var w in tag.Split('|'))
             {
-                foreach(var p in _existingProjects)
+                foreach (var p in _existingProjects)
                 {
                     if (w.Contains(p)) return new Project(p);
                 }
             }
-            foreach(var p in _existingProjects)
+            foreach (var p in _existingProjects)
             {
                 if (workitem.Contains(p)) return new Project(p);
             }
@@ -39,28 +39,17 @@ namespace TaskManagement.Logic
 
         private static Member ParseMember(string str)
         {
-            string lastName = "";
-            string firstName = "";
-            string company = "";
-
-            var match = Regex.Match(str, "([a-zA-Z]+)(.*)");
-            var groups = match.Groups;
+            var groups = Regex.Match(str, "([a-zA-Z]+)(.*)").Groups;
             switch (groups.Count)
             {
-                case 0:
-                case 1:
-                    break;
                 case 2:
-                    lastName = groups[1].Value;
-                    break;
+                    return new Member(groups[1].Value, "", "");
                 case 3:
-                    company = groups[1].Value;
-                    lastName = groups[2].Value;
-                    break;
+                    return new Member(groups[2].Value, "", groups[1].Value);
                 default:
                     break;
             }
-            return new Member(lastName, firstName, company);
+            return new Member("", "", "");
         }
 
         private static Period ParsePeriod(string from, string to)
@@ -123,7 +112,7 @@ namespace TaskManagement.Logic
             }
         }
 
-        private  static WorkItem ReadWorkItemLine(string text, int lineNo)
+        private static WorkItem ReadWorkItemLine(string text, int lineNo)
         {
             var words = text.Split(',');
             if (words.Length != 10)
