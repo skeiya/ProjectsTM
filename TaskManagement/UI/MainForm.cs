@@ -261,9 +261,9 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
+                if (e.Button != MouseButtons.Left) return;
                 _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
             }
             else
@@ -448,7 +448,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
         {
-            using(var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender))
+            using (var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
