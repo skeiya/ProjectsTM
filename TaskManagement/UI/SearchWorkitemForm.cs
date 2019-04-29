@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows.Forms;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
@@ -120,19 +121,8 @@ namespace TaskManagement.UI
 
             textBoxPattern.Text = string.Empty;
             _tickCount = 0;
-            _timer.Enabled = false; _list.Clear();
-            foreach (var src in _viewData.Original.WorkItems)
-            {
-                foreach (var dst in _viewData.Original.WorkItems)
-                {
-                    if (src.Equals(dst))
-                    {
-                        continue;
-                    }
-                    if (!src.AssignedMember.Equals(dst.AssignedMember)) continue;
-                    if (src.Period.HasInterSection(dst.Period)) _list.Add(src);
-                }
-            }
+            _timer.Enabled = false;
+            _list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems);
 
             listBox1.Items.Clear();
             foreach (var l in _list)
@@ -140,5 +130,6 @@ namespace TaskManagement.UI
                 listBox1.Items.Add(l.ToString(_viewData.Original.Callender));
             }
         }
+
     }
 }

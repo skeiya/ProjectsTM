@@ -186,6 +186,8 @@ namespace TaskManagement.UI
             var appData = _fileIOService.OpenFile(fileName);
             if (appData == null) return;
             _viewData.Original = appData;
+            _viewData.Selected = null;
+            taskDrawArea.Invalidate();
         }
 
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
@@ -316,6 +318,7 @@ namespace TaskManagement.UI
             var appData = _fileIOService.Open();
             if (appData == null) return;
             _viewData.Original = appData;
+            _viewData.Selected = null;
             taskDrawArea.Invalidate();
         }
 
