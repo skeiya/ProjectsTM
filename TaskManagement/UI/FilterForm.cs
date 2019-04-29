@@ -15,35 +15,39 @@ namespace TaskManagement.UI
         public FilterForm(ViewData viewData)
         {
             InitializeComponent();
-
             _viewData = viewData;
-            checkedListBox1.DisplayMember = "NaturalString";
+            UpdateMembersCheck();
+            UpdatePeriodText();
+            UpdateWorkItemText();
+        }
 
+        private void UpdateMembersCheck()
+        {
+            checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _viewData.Original.Members)
             {
                 var check = _viewData.Filter == null ? true : !_viewData.Filter.HideMembers.Contain(m);
                 checkedListBox1.Items.Add(m, check);
             }
+        }
 
-            if (viewData.Filter == null || viewData.Filter.Period == null)
-            {
-                ClearPeriodFilter();
-            }
-            else
-            {
-                textBoxFrom.Text = viewData.Filter.Period.From.ToString();
-                textBoxTo.Text = viewData.Filter.Period.To.ToString();
-            }
+        private void UpdateWorkItemText()
+        {
+            if (_viewData.Filter == null) return;
+            if (string.IsNullOrEmpty(_viewData.Filter.WorkItem)) return;
+            textBoxWorkItem.Text = _viewData.Filter.WorkItem;
+        }
 
-            if (viewData.Filter != null && !string.IsNullOrEmpty(viewData.Filter.WorkItem))
-            {
-                textBoxWorkItem.Text = viewData.Filter.WorkItem;
-            }
+        private void UpdatePeriodText()
+        {
+            if (_viewData.Filter == null || _viewData.Filter.Period == null) return;
+            textBoxFrom.Text = _viewData.Filter.Period.From.ToString();
+            textBoxTo.Text = _viewData.Filter.Period.To.ToString();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if(!IsValid()) return;
+            if (!IsValid()) return;
             _viewData.SetFilter(GetFilter());
             Close();
         }
@@ -134,7 +138,7 @@ namespace TaskManagement.UI
 
         private void buttonImport_Click(object sender, EventArgs e)
         {
-            using(var dlg = new OpenFileDialog())
+            using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var reader = new StreamReader(dlg.FileName))
@@ -142,7 +146,7 @@ namespace TaskManagement.UI
                     var s = new XmlSerializer(typeof(Members));
                     var remain = (Members)s.Deserialize(reader);
 
-                    for(var index = 0; index < checkedListBox1.Items.Count; index++)
+                    for (var index = 0; index < checkedListBox1.Items.Count; index++)
                     {
                         var m = checkedListBox1.Items[index] as Member;
                         checkedListBox1.SetItemChecked(index, remain.Contain(m));
@@ -153,7 +157,7 @@ namespace TaskManagement.UI
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
-            using(var dlg = new SaveFileDialog())
+            using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var writer = new StreamWriter(dlg.FileName))
