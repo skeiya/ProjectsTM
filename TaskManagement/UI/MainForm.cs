@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.UI;
-using TaskManagement.Model;
 
 namespace TaskManagement
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm _searchForm;
@@ -25,7 +24,7 @@ namespace TaskManagement
         private Cursor _originalCursor;
         private Graphics _graphics;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
@@ -121,7 +120,7 @@ namespace TaskManagement
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
             taskDrawArea.ContextMenu = new ContextMenu();
             taskDrawArea.ContextMenu.Popup += ContextMenu_Popup;
-            this.KeyUp += Form1_KeyUp;
+            this.KeyUp += MainForm_KeyUp;
         }
 
         private void ContextMenu_Popup(object sender, EventArgs e)
@@ -159,7 +158,7 @@ namespace TaskManagement
             EditSelectedWorkItem();
         }
 
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
