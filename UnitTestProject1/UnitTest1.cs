@@ -106,6 +106,8 @@ namespace UnitTestProject1
                 gozzila));
 
             orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue, Color.Black));
+
+            orgApp.MileStones.Add(new MileStone("all star", new CallenderDay(2018, 6, 3), Color.AliceBlue));
             return orgApp;
         }
 

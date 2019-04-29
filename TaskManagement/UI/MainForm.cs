@@ -408,7 +408,9 @@ namespace TaskManagement
             using(var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Original.MileStones = dlg.MileStones;
             }
+            taskDrawArea.Invalidate();
         }
     }
 }

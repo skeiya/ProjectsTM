@@ -17,7 +17,7 @@ namespace TaskManagement.Model
             return result;
         }
 
-        internal void Add(MileStone m)
+        public void Add(MileStone m)
         {
             _list.Add(m);
         }

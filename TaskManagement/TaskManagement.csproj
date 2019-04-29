@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\ColorSerializer.cs" />
     <Compile Include="Model\MileStone.cs" />
     <Compile Include="Model\MileStones.cs" />
     <Compile Include="Service\FileDragService.cs" />

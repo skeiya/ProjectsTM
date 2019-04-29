@@ -14,7 +14,10 @@ namespace TaskManagement.UI
             InitializeComponent();
             this._mileStones = mileStones;
             this._callender = callender;
+            UpdateList();
         }
+
+        public MileStones MileStones => _mileStones;
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
@@ -35,6 +38,12 @@ namespace TaskManagement.UI
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
             }
+        }
+
+        private void ButtonOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

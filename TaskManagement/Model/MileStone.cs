@@ -1,27 +1,34 @@
 ﻿using System.Drawing;
+using System.Xml.Serialization;
+using TaskManagement.Logic;
 
 namespace TaskManagement.Model
 {
     public class MileStone
     {
-        private string _name;
-        private CallenderDay _day;
-        private Color _color;
+        public MileStone() { }
 
         public MileStone(string name, CallenderDay day, Color color)
         {
-            this._name = name;
-            this._day = day;
-            this._color = color;
+            Name = name;
+            Day = day;
+            Color = color;
         }
 
-        public string Name => _name;
-        public CallenderDay Day => _day;
-        public Color Color => _color;
+        public string Name { set; get; }
+        public CallenderDay Day { set; get; }
+        [XmlIgnore]
+        public Color Color { set; get; }
+        [XmlElement]
+        public string ColorText
+        {
+            get { return ColorSerializer.Serialize(Color); }
+            set { Color = ColorSerializer.Deserialize(value); }
+        }
 
         internal MileStone Clone()
         {
-            return new MileStone(_name, _day, _color);
+            return new MileStone(Name, Day, Color);
         }
     }
 }
