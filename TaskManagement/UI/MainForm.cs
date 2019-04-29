@@ -20,6 +20,7 @@ namespace TaskManagement
         private PrintService _printService;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
+        private WorkItemEditService _editService;
         private Cursor _originalCursor;
         private Graphics _graphics;
 
@@ -28,6 +29,7 @@ namespace TaskManagement
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(this.Font, _viewData);
+            _editService = new WorkItemEditService(_viewData, _undoService);
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             panel1.Resize += Panel1_Resize;
@@ -124,11 +126,9 @@ namespace TaskManagement
             if (e.KeyCode == Keys.Delete)
             {
                 if (_viewData.Selected == null) return;
-                _viewData.Original.WorkItems.Remove(_viewData.Selected);
-                _undoService.Push(_viewData.Selected.Serialize(), null);
+                _editService.Delete(_viewData.Selected);
                 _viewData.Selected = null;
                 taskDrawArea.Invalidate();
-                UpdateDisplayOfSum();
             }
         }
 
@@ -217,14 +217,8 @@ namespace TaskManagement
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
             var copyingItem = _workItemDragService.CopyingItem;
-            var items = _viewData.Original.WorkItems;
-            if (copyingItem != null && !items.Contains(copyingItem))
-            {
-                items.Add(copyingItem);
-                _undoService.Push(null, copyingItem.Serialize());
-            }
+            _editService.Add(copyingItem);
             _workItemDragService.End(_undoService, _viewData.Selected);
-            UpdateDisplayOfSum();
         }
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
