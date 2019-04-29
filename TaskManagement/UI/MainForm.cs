@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -442,6 +443,11 @@ namespace TaskManagement.UI
                 _viewData.Original.MileStones = dlg.MileStones;
             }
             taskDrawArea.Invalidate();
+        }
+
+        private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
+        {
+            Process.Start(@".\Help\help.html");
         }
     }
 }

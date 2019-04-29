@@ -62,6 +62,7 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
+            this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -76,7 +77,8 @@ namespace TaskManagement.UI
             this.編集ToolStripMenuItem,
             this.表示ToolStripMenuItem,
             this.管理ToolStripMenuItem,
-            this.toolStripComboBoxFilter});
+            this.toolStripComboBoxFilter,
+            this.ToolStripMenuItemHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
@@ -341,7 +343,14 @@ namespace TaskManagement.UI
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
-            // Form1
+            // ToolStripMenuItemHelp
+            // 
+            this.ToolStripMenuItemHelp.Name = "ToolStripMenuItemHelp";
+            this.ToolStripMenuItemHelp.Size = new System.Drawing.Size(48, 23);
+            this.ToolStripMenuItemHelp.Text = "ヘルプ";
+            this.ToolStripMenuItemHelp.Click += new System.EventHandler(this.ToolStripMenuItemHelp_Click_1);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -352,7 +361,7 @@ namespace TaskManagement.UI
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "日程表ツール";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -397,6 +406,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSum;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
     }
 }
 
