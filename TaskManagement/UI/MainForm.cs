@@ -46,6 +46,7 @@ namespace TaskManagement.UI
         private void _undoService_Changed(object sender, EventArgs e)
         {
             UpdateDisplayOfSum();
+            taskDrawArea.Invalidate();
         }
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
@@ -65,7 +66,6 @@ namespace TaskManagement.UI
 
         private void Panel1_Scroll(object sender, ScrollEventArgs e)
         {
-            taskDrawArea.Invalidate();
             this.Invalidate();
         }
 
@@ -89,7 +89,6 @@ namespace TaskManagement.UI
             if (path.Equals("ALL"))
             {
                 _viewData.SetFilter(null);
-                taskDrawArea.Invalidate();
                 return;
             }
             if (!File.Exists(path)) return;
@@ -105,7 +104,6 @@ namespace TaskManagement.UI
                 }
                 _viewData.SetFilter(new Filter(null, null, hideMembers));
             }
-            taskDrawArea.Invalidate();
         }
 
         void InitializeTaskDrawArea()
@@ -145,7 +143,6 @@ namespace TaskManagement.UI
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _editService.Devide(selected, dlg.Devided, dlg.Remain);
-                    taskDrawArea.Invalidate();
                 }
             }
             catch
@@ -166,7 +163,6 @@ namespace TaskManagement.UI
                 if (_viewData.Selected == null) return;
                 _editService.Delete(_viewData.Selected);
                 _viewData.Selected = null;
-                taskDrawArea.Invalidate();
             }
         }
 
@@ -190,7 +186,6 @@ namespace TaskManagement.UI
             var appData = _fileIOService.OpenFile(fileName);
             if (appData == null) return;
             _viewData.Original = appData;
-            taskDrawArea.Invalidate();
         }
 
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
@@ -274,8 +269,6 @@ namespace TaskManagement.UI
 
                 _workItemDragService.StartDrag(wi, e.Location, _grid);
             }
-
-            taskDrawArea.Invalidate();
         }
 
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
@@ -307,10 +300,10 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _viewData.Original.WorkItems.Add(wi);
                 _viewData.UpdateCallenderAndMembers(wi);
+                _editService.Add(wi);
+                _undoService.Push();
             }
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -333,11 +326,6 @@ namespace TaskManagement.UI
             {
                 dlg.ShowDialog(this);
             }
-        }
-
-        private void OnApplyFilter()
-        {
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
@@ -384,11 +372,10 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = newWi;
-                _viewData.UpdateCallenderAndMembers(wi);
             }
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -437,13 +424,11 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
         {
             _undoService.Undo(_viewData);
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
             _undoService.Redo(_viewData);
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
