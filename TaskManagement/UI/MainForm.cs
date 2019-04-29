@@ -261,6 +261,7 @@ namespace TaskManagement
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left) return;
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
                 _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
@@ -383,7 +384,9 @@ namespace TaskManagement
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _undoService.Push(wi.Serialize(), newWi.Serialize());
+                _undoService.Delete(wi);
+                _undoService.Add(newWi);
+                _undoService.Push();
                 wi.Apply(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }

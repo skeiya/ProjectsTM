@@ -8,7 +8,7 @@ namespace TaskManagement.Service
 {
     class WorkItemDragService
     {
-        private string _beforeWorkItem;
+        private WorkItem _beforeWorkItem;
         WorkItem _draggingWorkItem = null;
         private Point _draggedLocation;
         CallenderDay _draggedDay = null;
@@ -120,7 +120,7 @@ namespace TaskManagement.Service
 
         internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
-            _beforeWorkItem = wi.Serialize();
+            _beforeWorkItem = wi.Clone();
             _draggingWorkItem = IsCtrlDown() ? wi.Clone() : wi;
             _draggedLocation = location;
             _draggedPeriod = wi.Period.Clone();
@@ -130,10 +130,19 @@ namespace TaskManagement.Service
 
         internal void End(UndoService undo, WorkItem selected)
         {
-            if (!IsDragging() && !IsExpanding()) return;
-            undo.Push(_beforeWorkItem, selected.Serialize());
-            _draggingWorkItem = null;
-            _expandDirection = 0;
+            try
+            {
+                if (!IsDragging() && !IsExpanding()) return;
+                if (_beforeWorkItem.Equals(selected)) return;
+                undo.Delete(_beforeWorkItem);
+                undo.Add(selected);
+                undo.Push();
+            }
+            finally
+            {
+                _draggingWorkItem = null;
+                _expandDirection = 0;
+            }
         }
 
         private bool IsExpanding()
@@ -173,7 +182,7 @@ namespace TaskManagement.Service
 
         internal void StartExpand(int direction, WorkItem selected)
         {
-            _beforeWorkItem = selected.Serialize();
+            _beforeWorkItem = selected.Clone();
             _expandDirection = direction;
         }
     }

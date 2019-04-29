@@ -20,14 +20,16 @@ namespace TaskManagement.Service
             if (item != null && !items.Contains(item))
             {
                 items.Add(item);
-                _undoService.Push(null, item.Serialize());
+                _undoService.Add(item);
+                _undoService.Push();
             }
         }
 
         internal void Delete(WorkItem selected)
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
-            _undoService.Push(_viewData.Selected.Serialize(), null);
+            _undoService.Delete(_viewData.Selected);
+            _undoService.Push();
         }
 
         internal void Devide(WorkItem selected, int devided, int remain)
@@ -37,6 +39,11 @@ namespace TaskManagement.Service
 
             d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
             d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, devided);
+
+            _undoService.Delete(selected);
+            _undoService.Add(d1);
+            _undoService.Add(d2);
+            _undoService.Push();
 
             var workItems = _viewData.Original.WorkItems;
             _viewData.Selected = null;
