@@ -43,9 +43,19 @@ namespace TaskManagement.UI
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (GetPeriodFilter() == null) return;
+            if(!IsValid()) return;
             _viewData.SetFilter(GetFilter());
             Close();
+        }
+
+        private bool IsValid()
+        {
+            var from = textBoxFrom.Text;
+            var to = textBoxTo.Text;
+            if (string.IsNullOrEmpty(from) && string.IsNullOrEmpty(to)) return true;
+            var fromDay = CallenderDay.Parse(textBoxFrom.Text);
+            var toDay = CallenderDay.Parse(textBoxTo.Text);
+            return fromDay != null && toDay != null;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
