@@ -312,7 +312,7 @@ namespace TaskManagement.UI
             // 
             this.toolStripStatusLabelSum.Name = "toolStripStatusLabelSum";
             this.toolStripStatusLabelSum.Size = new System.Drawing.Size(65, 17);
-            this.toolStripStatusLabelSum.Text = "SUM:0人月";
+            this.toolStripStatusLabelSum.Text = "SUM:0人日(0人月)";
             // 
             // toolStripStatusLabelSelect
             // 

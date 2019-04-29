@@ -62,7 +62,7 @@ namespace TaskManagement.UI
             {
                 sum += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
             }
-            toolStripStatusLabelSum.Text = "SUM:" + sum.ToString() + "人日";
+            toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
         private void Panel1_Scroll(object sender, ScrollEventArgs e)
