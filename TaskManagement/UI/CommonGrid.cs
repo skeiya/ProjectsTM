@@ -78,5 +78,27 @@ namespace TaskManagement
             deflate.Y += 1;
             Graphics.DrawString(s, Font, BrushCache.GetBrush(c), deflate, StringFormat.GenericTypographic);
         }
+
+        internal void DrawMileStoneLine(float bottom, Color color)
+        {
+            using (var brush = new SolidBrush(color))
+            {
+                var height = 5f;
+                var width = GetFullWidth();
+                var x = 0f;
+                var y = bottom - height;
+                Graphics.FillRectangle(brush, x, y, width, height);
+            }
+        }
+
+        private float GetFullWidth()
+        {
+            var result = 0f;
+            for (var c = 0; c < ColCount; c++)
+            {
+                result += ColWidth(c);
+            }
+            return result;
+        }
     }
 }

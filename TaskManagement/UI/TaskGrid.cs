@@ -156,11 +156,22 @@ namespace TaskManagement
             return IsTopBar(bounds, location) || IsBottomBar(bounds, location);
         }
 
-        public void Draw(ViewData viewData)
+        public void DrawPrint(ViewData viewData)
         {
             DrawCallenderDays();
             DrawTeamMembers();
             DrawWorkItems(viewData, null);
+            DrawMileStones(viewData);
+        }
+
+        private void DrawMileStones(ViewData viewData)
+        {
+            foreach (var m in viewData.Original.MileStones)
+            {
+                var r = _dayToRow[m.Day];
+                var bottom = _grid.GetCellBounds(r, 0).Bottom;
+                _grid.DrawMileStoneLine(bottom, m.Color);
+            }
         }
 
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
@@ -223,7 +234,7 @@ namespace TaskManagement
                 _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
             }
         }
-        
+
         private void DrawTeamMembers()
         {
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
@@ -259,6 +270,7 @@ namespace TaskManagement
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
             DrawWorkItems(viewData, draggingItem);
+            DrawMileStones(viewData);
         }
 
         private void DrawWorkItems(ViewData viewData, WorkItem draggingItem)
