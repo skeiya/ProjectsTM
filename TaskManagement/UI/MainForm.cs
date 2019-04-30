@@ -294,7 +294,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panel2.Font);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panel2.Font, false);
             _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem);
         }
 

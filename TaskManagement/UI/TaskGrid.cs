@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using TaskManagement.Model;
 using TaskManagement.Service;
@@ -15,7 +16,7 @@ namespace TaskManagement.UI
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
         private ColorConditions _colorConditions;
 
-        public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font)
+        public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font, bool isPrint)
         {
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             _grid = new CommonGrid(g, viewData.CreateFont(font));
@@ -23,19 +24,19 @@ namespace TaskManagement.UI
             UpdateRowColMap(viewData);
 
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
-            SetRowHeight(pageBounds);
+            SetRowHeight(pageBounds, isPrint);
 
             _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
-            SetColWidth(g, pageBounds);
+            SetColWidth(g, pageBounds, isPrint);
 
             _colorConditions = viewData.Original.ColorConditions;
         }
 
-        private void SetColWidth(Graphics g, Rectangle pageBounds)
+        private void SetColWidth(Graphics g, Rectangle pageBounds, bool isPrint)
         {
-            var year = _grid.MeasureString("0000/").Width;
-            var month = _grid.MeasureString("00/").Width;
-            var day = _grid.MeasureString("00").Width;
+            var year = isPrint ? _grid.MeasureString("0000/").Width : 0;
+            var month = isPrint ? _grid.MeasureString("00/").Width : 0;
+            var day = isPrint ? _grid.MeasureString("00").Width : 0;
             _grid.SetColWidth(0, year);
             _grid.SetColWidth(1, month);
             _grid.SetColWidth(2, day);
@@ -54,13 +55,13 @@ namespace TaskManagement.UI
 
         internal static float GetFixedRowHight(Graphics g, ViewData viewData, Font font)
         {
-            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2;
+            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2.5f;
         }
 
-        private void SetRowHeight(Rectangle pageBounds)
+        private void SetRowHeight(Rectangle pageBounds, bool isPrint)
         {
-            var company = _grid.MeasureString("K").Height;
-            var name = _grid.MeasureString("下村HF").Height;
+            var company = isPrint ? GetCompanyHeight() : 0;
+            var name = isPrint ? GetNameHeight() : 0;
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
             var height = ((float)pageBounds.Height - name) / (_grid.RowCount - Members.RowCount);
@@ -186,12 +187,27 @@ namespace TaskManagement.UI
 
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
         {
-            var dayWidth = _grid.GetCellBounds(0, 2).Width;
-            var monthWidth = _grid.GetCellBounds(0, 1).Width;
-            var yearWidth = _grid.GetCellBounds(0, 0).Width;
+            var dayWidth = GetDayWidth();
+            var monthWidth = GetMonthWidth();
+            var yearWidth = GetYearWidth();
             DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth);
             DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth);
             DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth);
+        }
+
+        private float GetYearWidth()
+        {
+            return _grid.MeasureString("0000/").Width;
+        }
+
+        private float GetMonthWidth()
+        {
+            return _grid.MeasureString("00/").Width;
+        }
+
+        private float GetDayWidth()
+        {
+            return _grid.MeasureString("00").Width;
         }
 
         private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
@@ -276,8 +292,8 @@ namespace TaskManagement.UI
 
         private void DrawTeamMembersOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenWidth)
         {
-            var companyHight = _grid.GetCellBounds(0, 0).Height;
-            var nameHeight = _grid.GetCellBounds(1, 0).Height;
+            var companyHight = GetCompanyHeight();
+            var nameHeight = GetNameHeight();
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _grid.GetCellBounds(0, c);
@@ -288,6 +304,16 @@ namespace TaskManagement.UI
                 var rect = _grid.GetCellBounds(1, c);
                 g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - nameHeight);
             }
+        }
+
+        private float GetNameHeight()
+        {
+            return _grid.MeasureString("下村HF").Height * 1.5f;
+        }
+
+        private float GetCompanyHeight()
+        {
+            return _grid.MeasureString("K").Height;
         }
 
         internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem)
