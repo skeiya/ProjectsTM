@@ -32,18 +32,60 @@ namespace TaskManagement.UI
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(this.Font, _viewData);
             _editService = new WorkItemEditService(_viewData, _undoService);
-            _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-            _viewData.FontChanged += _viewData_FontChanged;
+            _undoService.Changed += _undoService_Changed;
             panel1.Resize += Panel1_Resize;
             panel1.Scroll += Panel1_Scroll;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
             _graphics = panel2.CreateGraphics();
-            _viewData.AppDataChanged += _viewData_AppDataChanged;
-            _undoService.Changed += _undoService_Changed;
             UpdatePanelLayout();
+            InitializeViewData();
+            this.FormClosed += MainForm_FormClosed;
+            LoadUserSetting();
+        }
+
+        private void LoadUserSetting()
+        {
+            try
+            {
+                var setting = UserSettingUIService.Load(UserSettingPath);
+                toolStripComboBoxFilter.Text = setting.FilterName;
+                _viewData.ViewRatio = setting.Ratio;
+                ApplyViewRatio();
+                _viewData.FontSize = setting.FontSize;
+                var appData = _fileIOService.OpenFile(setting.FilePath);
+                if (appData == null) return;
+                _viewData.Original = appData;
+                _viewData.Selected = null;
+                taskDrawArea.Invalidate();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TaskManagementTool", "UserSetting.xml");
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var setting = new UserSetting
+            {
+                FilterName = toolStripComboBoxFilter.Text,
+                FontSize = _viewData.FontSize,
+                Ratio = _viewData.ViewRatio,
+                FilePath = _fileIOService.FilePath
+            };
+            UserSettingUIService.Save(UserSettingPath, setting);
+        }
+
+        private void InitializeViewData()
+        {
+            _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            _viewData.FontChanged += _viewData_FontChanged;
+            _viewData.AppDataChanged += _viewData_AppDataChanged;
         }
 
         private void _viewData_FontChanged(object sender, EventArgs e)
@@ -114,13 +156,7 @@ namespace TaskManagement.UI
             using (var rs = new StreamReader(path))
             {
                 var x = new XmlSerializer(typeof(Members));
-                var visibleMembers = (Members)x.Deserialize(rs);
-                var hideMembers = new Members();
-                foreach (var m in _viewData.Original.Members)
-                {
-                    if (visibleMembers.Contain(m)) continue;
-                    hideMembers.Add(m);
-                }
+                var hideMembers = (Members)x.Deserialize(rs);
                 _viewData.SetFilter(new Filter(null, null, hideMembers));
             }
         }
@@ -229,6 +265,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
+            panel2.Invalidate();
             UpdateDisplayOfSum();
         }
 
@@ -416,7 +453,7 @@ namespace TaskManagement.UI
         private void ApplyViewRatio()
         {
             panel1.AutoScroll = _viewData.IsEnlarged();
-            taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.Ratio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.Ratio));
+            taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
             taskDrawArea.Invalidate();
             panel2.Invalidate();
         }

@@ -69,7 +69,7 @@ namespace TaskManagement.UI
 
         private Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetMembersFilter());
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers());
         }
 
         private string GetWorkItemFilter()
@@ -88,25 +88,21 @@ namespace TaskManagement.UI
             return new Period(from, to);
         }
 
-        private Members GetMembersFilter()
+        private Members GetHiddenMembers()
         {
             var result = new Members();
-            var remains = GetRemainingMemger();
-            foreach (var m in _viewData.Original.Members)
+            foreach (var c in checkedListBox1.Items)
             {
-                if (remains.Contain(m)) continue;
-                result.Add(m);
+                var m = (Member)c;
+                if (!GetCheckedMembers().Contains(m)) result.Add(m);
             }
             return result;
         }
 
-        private Members GetRemainingMemger()
+        private Members GetCheckedMembers()
         {
             var result = new Members();
-            foreach (var c in checkedListBox1.CheckedItems)
-            {
-                if (c is Member m) result.Add(m);
-            }
+            foreach (var c in checkedListBox1.CheckedItems) result.Add((Member)c);
             return result;
         }
 
@@ -163,7 +159,7 @@ namespace TaskManagement.UI
                 using (var writer = new StreamWriter(dlg.FileName))
                 {
                     var s = new XmlSerializer(typeof(Members));
-                    s.Serialize(writer, GetRemainingMemger());
+                    s.Serialize(writer, GetHiddenMembers());
                 }
             }
         }

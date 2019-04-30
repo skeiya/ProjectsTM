@@ -7,6 +7,7 @@ namespace TaskManagement.Service
     class AppDataFileIOService
     {
         private string _previousFileName;
+        public string FilePath => _previousFileName;
 
         internal void Save(AppData appData)
         {
@@ -50,6 +51,7 @@ namespace TaskManagement.Service
 
         public AppData OpenFile(string fileName)
         {
+            _previousFileName = fileName;
             return AppDataSerializer.Deserialize(fileName);
         }
     }
