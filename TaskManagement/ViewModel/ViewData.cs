@@ -21,13 +21,14 @@ namespace TaskManagement.ViewModel
 
         private AppData _appData;
         private WorkItem _selected;
-        private int _fontSize = 6;
-        private float _viewRatio = 1.0f;
 
         public event EventHandler FilterChanged;
         public event EventHandler SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
         public event EventHandler FontChanged;
+
+        public int FontSize { set; get; } = 6;
+        public float ViewRatio { set; get; } = 1.0f;
 
         public WorkItem Selected
         {
@@ -43,11 +44,10 @@ namespace TaskManagement.ViewModel
             }
         }
 
-        public float Ratio => _viewRatio;
 
         internal Font CreateFont(Font font)
         {
-            return new Font(font.FontFamily, _fontSize);
+            return new Font(font.FontFamily, FontSize);
         }
 
         public ViewData(AppData appData)
@@ -131,31 +131,31 @@ namespace TaskManagement.ViewModel
 
         internal void IncFont()
         {
-            _fontSize++;
+            FontSize++;
             FontChanged(this, null);
         }
 
         internal void DecFont()
         {
-            if (_fontSize <= 1) return;
-            _fontSize--;
+            if (FontSize <= 1) return;
+            FontSize--;
             FontChanged(this, null);
         }
 
         internal void DecRatio()
         {
-            if (_viewRatio <= 0.2) return;
-            _viewRatio -= 0.1f;
+            if (ViewRatio <= 0.2) return;
+            ViewRatio -= 0.1f;
         }
 
         internal void IncRatio()
         {
-            _viewRatio += 0.1f;
+            ViewRatio += 0.1f;
         }
 
         internal bool IsEnlarged()
         {
-            return _viewRatio > 1;
+            return ViewRatio > 1;
         }
     }
 }
