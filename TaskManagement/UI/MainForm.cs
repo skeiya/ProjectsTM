@@ -39,10 +39,10 @@ namespace TaskManagement.UI
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
             _graphics = panel2.CreateGraphics();
-            UpdatePanelLayout();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             LoadUserSetting();
+            UpdatePanelLayout();
         }
 
         private void LoadUserSetting()
