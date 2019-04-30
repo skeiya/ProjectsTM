@@ -47,10 +47,20 @@ namespace TaskManagement.UI
 
         }
 
+        internal static float GetFixedColWidth(Graphics g, ViewData viewData, Font font)
+        {
+            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Width;
+        }
+
+        internal static float GetFixedRowHight(Graphics g, ViewData viewData, Font font)
+        {
+            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2;
+        }
+
         private void SetRowHeight(Rectangle pageBounds)
         {
             var company = _grid.MeasureString("K").Height;
-            var name = _grid.MeasureString("下村HF").Height * 1.5f;
+            var name = _grid.MeasureString("下村HF").Height;
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
             var height = ((float)pageBounds.Height - name) / (_grid.RowCount - Members.RowCount);
@@ -282,6 +292,7 @@ namespace TaskManagement.UI
 
         internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem)
         {
+            panelLocation.Offset(-3, 0);
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
             DrawWorkItems(viewData, draggingItem);

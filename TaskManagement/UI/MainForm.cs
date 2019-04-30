@@ -34,14 +34,31 @@ namespace TaskManagement.UI
             _editService = new WorkItemEditService(_viewData, _undoService);
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            _viewData.FontChanged += _viewData_FontChanged;
             panel1.Resize += Panel1_Resize;
             panel1.Scroll += Panel1_Scroll;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
-            _graphics = CreateGraphics();
+            _graphics = panel2.CreateGraphics();
             _viewData.AppDataChanged += _viewData_AppDataChanged;
             _undoService.Changed += _undoService_Changed;
+            UpdatePanelLayout();
+        }
+
+        private void _viewData_FontChanged(object sender, EventArgs e)
+        {
+            UpdatePanelLayout();
+            taskDrawArea.Invalidate();
+            panel2.Invalidate();
+        }
+
+        private void UpdatePanelLayout()
+        {
+            var width = (int)TaskGrid.GetFixedColWidth(_graphics, _viewData, Font) + 1;
+            var hight = (int)TaskGrid.GetFixedRowHight(_graphics, _viewData, Font) + 1;
+            panel1.Location = new Point(width, hight);
+            panel1.Size = new Size(panel2.Width - width, panel2.Height - hight);
         }
 
         private void _undoService_Changed(object sender, EventArgs e)
@@ -67,7 +84,8 @@ namespace TaskManagement.UI
 
         private void Panel1_Scroll(object sender, ScrollEventArgs e)
         {
-            this.Invalidate();
+            taskDrawArea.Invalidate();
+            panel2.Invalidate();
         }
 
         private void InitializeFilterCombobox()
@@ -205,7 +223,7 @@ namespace TaskManagement.UI
         {
             ApplyViewRatio();
             _graphics.Dispose();
-            _graphics = CreateGraphics();
+            _graphics = panel2.CreateGraphics();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
@@ -276,7 +294,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, this.Font);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panel2.Font);
             _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem);
         }
 
@@ -344,13 +362,11 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
         {
             _viewData.IncFont();
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
         {
             _viewData.DecFont();
-            taskDrawArea.Invalidate();
         }
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
@@ -402,7 +418,7 @@ namespace TaskManagement.UI
             panel1.AutoScroll = _viewData.IsEnlarged();
             taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.Ratio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.Ratio));
             taskDrawArea.Invalidate();
-            this.Invalidate();
+            panel2.Invalidate();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
