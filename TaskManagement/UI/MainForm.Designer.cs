@@ -61,14 +61,14 @@ namespace TaskManagement.UI
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelTaskGrid = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelFullView = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.panelTaskGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).BeginInit();
-            this.panel2.SuspendLayout();
+            this.panelFullView.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -84,7 +84,7 @@ namespace TaskManagement.UI
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(537, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(626, 25);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -295,7 +295,7 @@ namespace TaskManagement.UI
             this.toolStripComboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toolStripComboBoxFilter.DropDownWidth = 150;
             this.toolStripComboBoxFilter.Name = "toolStripComboBoxFilter";
-            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(75, 23);
+            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(87, 23);
             // 
             // ToolStripMenuItemHelp
             // 
@@ -312,8 +312,8 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelSelect});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(537, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 7, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(626, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -329,17 +329,17 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelSelect.Size = new System.Drawing.Size(38, 17);
             this.toolStripStatusLabelSelect.Text = "Select";
             // 
-            // panel1
+            // panelTaskGrid
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelTaskGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.taskDrawArea);
-            this.panel1.Location = new System.Drawing.Point(45, 43);
-            this.panel1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(491, 252);
-            this.panel1.TabIndex = 12;
+            this.panelTaskGrid.Controls.Add(this.taskDrawArea);
+            this.panelTaskGrid.Location = new System.Drawing.Point(52, 43);
+            this.panelTaskGrid.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.panelTaskGrid.Name = "panelTaskGrid";
+            this.panelTaskGrid.Size = new System.Drawing.Size(573, 252);
+            this.panelTaskGrid.TabIndex = 12;
             // 
             // taskDrawArea
             // 
@@ -347,26 +347,26 @@ namespace TaskManagement.UI
             this.taskDrawArea.Location = new System.Drawing.Point(0, 0);
             this.taskDrawArea.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.taskDrawArea.Name = "taskDrawArea";
-            this.taskDrawArea.Size = new System.Drawing.Size(490, 250);
+            this.taskDrawArea.Size = new System.Drawing.Size(572, 250);
             this.taskDrawArea.TabIndex = 1;
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
             // 
-            // panel2
+            // panelFullView
             // 
-            this.panel2.Controls.Add(this.panel1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 25);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(537, 297);
-            this.panel2.TabIndex = 13;
+            this.panelFullView.Controls.Add(this.panelTaskGrid);
+            this.panelFullView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelFullView.Location = new System.Drawing.Point(0, 25);
+            this.panelFullView.Name = "panelFullView";
+            this.panelFullView.Size = new System.Drawing.Size(626, 297);
+            this.panelFullView.TabIndex = 13;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 344);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(626, 344);
+            this.Controls.Add(this.panelFullView);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -378,9 +378,9 @@ namespace TaskManagement.UI
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.panelTaskGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.taskDrawArea)).EndInit();
-            this.panel2.ResumeLayout(false);
+            this.panelFullView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -407,7 +407,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemImportOldFile;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemWorkingDas;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelTaskGrid;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargeRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemManageMember;
@@ -419,7 +419,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelFullView;
     }
 }
 

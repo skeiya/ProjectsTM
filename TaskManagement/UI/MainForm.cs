@@ -33,12 +33,12 @@ namespace TaskManagement.UI
             _printService = new PrintService(this.Font, _viewData);
             _editService = new WorkItemEditService(_viewData, _undoService);
             _undoService.Changed += _undoService_Changed;
-            panel1.Resize += Panel1_Resize;
-            panel1.Scroll += Panel1_Scroll;
+            panelTaskGrid.Resize += Panel1_Resize;
+            panelTaskGrid.Scroll += Panel1_Scroll;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
-            _graphics = panel2.CreateGraphics();
+            _graphics = panelFullView.CreateGraphics();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             LoadUserSetting();
@@ -92,15 +92,15 @@ namespace TaskManagement.UI
         {
             UpdatePanelLayout();
             taskDrawArea.Invalidate();
-            panel2.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void UpdatePanelLayout()
         {
             var width = (int)TaskGrid.GetFixedColWidth(_graphics, _viewData, Font) + 1;
             var hight = (int)TaskGrid.GetFixedRowHight(_graphics, _viewData, Font) + 1;
-            panel1.Location = new Point(width, hight);
-            panel1.Size = new Size(panel2.Width - width, panel2.Height - hight);
+            panelTaskGrid.Location = new Point(width, hight);
+            panelTaskGrid.Size = new Size(panelFullView.Width - width, panelFullView.Height - hight);
         }
 
         private void _undoService_Changed(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace TaskManagement.UI
         private void Panel1_Scroll(object sender, ScrollEventArgs e)
         {
             taskDrawArea.Invalidate();
-            panel2.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void InitializeFilterCombobox()
@@ -172,7 +172,7 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-            taskDrawArea.Size = new Size(panel1.Width - taskDrawArea.Location.X, panel1.Height - taskDrawArea.Location.Y);
+            taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
             taskDrawArea.Paint += TaskDrawArea_Paint;
             taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
             taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
@@ -193,7 +193,7 @@ namespace TaskManagement.UI
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems);
             }
-            if(e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
             {
                 _workItemDragService.End(_editService, _viewData, true);
             }
@@ -280,20 +280,31 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
+            using (var c = new Control())
+            {
+                var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
+                bounds.X += taskDrawArea.Location.X;
+                bounds.Y += taskDrawArea.Location.Y;
+                c.Bounds = Rectangle.Round(bounds);
+                panelTaskGrid.Controls.Add(c);
+                panelTaskGrid.ScrollControlIntoView(c);
+                panelTaskGrid.Controls.Remove(c);
+            }
             taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void Panel1_Resize(object sender, EventArgs e)
         {
             ApplyViewRatio();
             _graphics.Dispose();
-            _graphics = panel2.CreateGraphics();
+            _graphics = panelFullView.CreateGraphics();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            panel2.Invalidate();
+            panelFullView.Invalidate();
             UpdateDisplayOfSum();
         }
 
@@ -357,8 +368,8 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panel2.Font, false);
-            _grid.DrawAlwaysFrame(_viewData, _graphics, panel1.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
+            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panelFullView.Font, false);
+            _grid.DrawAlwaysFrame(_viewData, _graphics, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
@@ -480,10 +491,10 @@ namespace TaskManagement.UI
 
         private void ApplyViewRatio()
         {
-            panel1.AutoScroll = _viewData.IsEnlarged();
-            taskDrawArea.Size = new Size((int)((panel1.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panel1.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
+            panelTaskGrid.AutoScroll = _viewData.IsEnlarged();
+            taskDrawArea.Size = new Size((int)((panelTaskGrid.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panelTaskGrid.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
             taskDrawArea.Invalidate();
-            panel2.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)

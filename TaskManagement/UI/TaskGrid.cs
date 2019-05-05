@@ -374,7 +374,7 @@ namespace TaskManagement.UI
             _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
         }
 
-        private RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
+        public RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
         {
             var period = GetVisiblePeriod(filter, w);
             var col = _memberToCol[w.AssignedMember];
