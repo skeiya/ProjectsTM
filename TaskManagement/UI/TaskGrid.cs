@@ -200,8 +200,11 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var bottom = _grid.GetCellBounds(r, 0).Bottom;
+                var rect = _grid.GetCellBounds(r, 0);
+                var bottom = rect.Bottom;
                 _grid.DrawMileStoneLine(bottom, m.Color);
+                rect.Offset(0, rect.Height / 2);
+                _grid.DrawString(m.Name, rect, m.Color);
             }
         }
 
