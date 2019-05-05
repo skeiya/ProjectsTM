@@ -20,8 +20,8 @@ namespace TaskManagement.ViewModel
         internal Filter Clone()
         {
             var result = new Filter();
-            result.HideMembers = this.HideMembers.Clone();
-            result.WorkItem = (string)this.WorkItem.Clone();
+            if (this.HideMembers != null) result.HideMembers = this.HideMembers.Clone();
+            if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
             if (this.Period != null) result.Period = this.Period.Clone();
             return result;
         }
