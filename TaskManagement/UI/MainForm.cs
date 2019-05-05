@@ -331,9 +331,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
-            var copyingItem = _workItemDragService.CopyingItem;
-            _editService.Add(copyingItem);
-            _workItemDragService.End(_undoService, _viewData.Selected);
+            _workItemDragService.End(_editService, _viewData);
         }
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)

@@ -58,7 +58,10 @@ namespace TaskManagement.Model
 
         internal void Remove(WorkItem selected)
         {
-            _items.Remove(selected);
+            if(!_items.Remove(selected))
+            {
+                throw new System.Exception();
+            }
         }
     }
 }

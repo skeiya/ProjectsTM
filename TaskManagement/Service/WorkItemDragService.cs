@@ -80,12 +80,14 @@ namespace TaskManagement.Service
             {
                 var d = callender.ApplyOffset(selected.Period.From, offset + 1);
                 if (d == null || callender.GetOffset(d, selected.Period.To) < 0) return;
+                if (selected.Period.From.Equals(d)) return;
                 selected.Period.From = d;
             }
             else if (_expandDirection < 0)
             {
                 var d = callender.ApplyOffset(selected.Period.To, offset - 1);
                 if (d == null || callender.GetOffset(selected.Period.From, d) < 0) return;
+                if (selected.Period.To.Equals(d)) return;
                 selected.Period.To = d;
             }
         }
@@ -137,19 +139,30 @@ namespace TaskManagement.Service
             return false;
         }
 
-        internal void End(UndoService undo, WorkItem selected)
+        internal void End(WorkItemEditService editService, ViewData viewData)
         {
+            var edit = viewData.Selected.Clone();
             try
             {
                 if (!IsActive()) return;
-                if (_beforeWorkItem.Equals(selected)) return;
-                if (!_isCopying) undo.Delete(_beforeWorkItem);
-                undo.Add(selected);
-                undo.Push();
-                _isCopying = false;
+                if (_beforeWorkItem.Equals(viewData.Selected)) return;
+                //まず元に戻す
+                viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
+                viewData.Selected.Period = _beforeWorkItem.Period;
+                if (IsExpanding() || !_isCopying)
+                {
+                    editService.Replace(viewData.Selected, edit);
+                }
+                else
+                {
+                    editService.Add(edit);
+
+                }
             }
             finally
             {
+                _isCopying = false;
+                viewData.Selected = edit;
                 _draggingWorkItem = null;
                 _expandDirection = 0;
             }
@@ -198,6 +211,7 @@ namespace TaskManagement.Service
 
         internal void ToCopyMode(WorkItems workItems)
         {
+            if (IsExpanding()) return;
             if (!IsActive()) return;
             if (_isCopying) return;
             _isCopying = true;

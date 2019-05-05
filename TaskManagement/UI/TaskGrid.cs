@@ -355,6 +355,7 @@ namespace TaskManagement.UI
 
             if (viewData.Selected != null)
             {
+                DrawWorkItem(viewData, viewData.Selected, clip);
                 var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
                 _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
                 DrawTopDragBar(bounds);
