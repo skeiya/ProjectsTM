@@ -251,7 +251,11 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (!IsControlDown()) return;
+            if (!IsControlDown())
+            {
+                Panel1_Scroll(null, null);
+                return;
+            }
             if (e.Delta > 0)
             {
                 ToolStripMenuItemLargeRatio_Click(sender, e);
