@@ -196,6 +196,7 @@ namespace TaskManagement.UI
             if (e.KeyCode == Keys.Escape)
             {
                 _workItemDragService.End(_editService, _viewData, true);
+                _viewData.Selected = null;
             }
             taskDrawArea.Invalidate();
         }
@@ -284,18 +285,25 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            using (var c = new Control())
+            try
             {
-                var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
-                bounds.X += taskDrawArea.Location.X;
-                bounds.Y += taskDrawArea.Location.Y;
-                c.Bounds = Rectangle.Round(bounds);
-                panelTaskGrid.Controls.Add(c);
-                panelTaskGrid.ScrollControlIntoView(c);
-                panelTaskGrid.Controls.Remove(c);
+                using (var c = new Control())
+                {
+                    if (_viewData.Selected == null) return;
+                    var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
+                    bounds.X += taskDrawArea.Location.X;
+                    bounds.Y += taskDrawArea.Location.Y;
+                    c.Bounds = Rectangle.Round(bounds);
+                    panelTaskGrid.Controls.Add(c);
+                    panelTaskGrid.ScrollControlIntoView(c);
+                    panelTaskGrid.Controls.Remove(c);
+                }
             }
-            taskDrawArea.Invalidate();
-            panelFullView.Invalidate();
+            finally
+            {
+                taskDrawArea.Invalidate();
+                panelFullView.Invalidate();
+            }
         }
 
         private void Panel1_Resize(object sender, EventArgs e)

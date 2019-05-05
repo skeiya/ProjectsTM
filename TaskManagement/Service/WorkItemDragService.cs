@@ -147,6 +147,7 @@ namespace TaskManagement.Service
                 if (_beforeWorkItem.Equals(viewData.Selected)) return;
                 var edit = viewData.Selected.Clone();
                 //まず元に戻す
+                if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
                 viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
                 viewData.Selected.Period = _beforeWorkItem.Period;
                 if (isCancel) return;
@@ -157,7 +158,6 @@ namespace TaskManagement.Service
                 else
                 {
                     editService.Add(edit);
-
                 }
                 viewData.Selected = edit;
             }
