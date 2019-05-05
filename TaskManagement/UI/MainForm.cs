@@ -155,9 +155,9 @@ namespace TaskManagement.UI
             if (!File.Exists(path)) return;
             using (var rs = new StreamReader(path))
             {
-                var x = new XmlSerializer(typeof(Members));
-                var hideMembers = (Members)x.Deserialize(rs);
-                _viewData.SetFilter(new Filter(null, null, hideMembers));
+                var x = new XmlSerializer(typeof(Filter));
+                var filter = (Filter)x.Deserialize(rs);
+                _viewData.SetFilter(filter);
             }
         }
 
@@ -381,9 +381,11 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender))
             {
-                dlg.ShowDialog(this);
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                _viewData.SetFilter(dlg.GetFilter());
+                taskDrawArea.Invalidate();
             }
         }
 

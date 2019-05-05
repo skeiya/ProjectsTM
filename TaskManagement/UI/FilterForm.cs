@@ -10,12 +10,21 @@ namespace TaskManagement.UI
 {
     public partial class FilterForm : Form
     {
-        private ViewData _viewData;
+        private Members _members;
+        private Filter _filter;
+        private Callender _callender;
 
-        public FilterForm(ViewData viewData)
+        public FilterForm(Members members, Filter filter, Callender callender)
         {
             InitializeComponent();
-            _viewData = viewData;
+            _members = members;
+            _filter = filter;
+            _callender = callender;
+            UpdateAllField();
+        }
+
+        private void UpdateAllField()
+        {
             UpdateMembersCheck();
             UpdatePeriodText();
             UpdateWorkItemText();
@@ -23,32 +32,30 @@ namespace TaskManagement.UI
 
         private void UpdateMembersCheck()
         {
+            checkedListBox1.Items.Clear();
             checkedListBox1.DisplayMember = "NaturalString";
-            foreach (var m in _viewData.Original.Members)
+            foreach (var m in _members)
             {
-                var check = _viewData.Filter == null ? true : !_viewData.Filter.HideMembers.Contain(m);
+                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contain(m);
                 checkedListBox1.Items.Add(m, check);
             }
         }
 
         private void UpdateWorkItemText()
         {
-            if (_viewData.Filter == null) return;
-            if (string.IsNullOrEmpty(_viewData.Filter.WorkItem)) return;
-            textBoxWorkItem.Text = _viewData.Filter.WorkItem;
+            textBoxWorkItem.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
         }
 
         private void UpdatePeriodText()
         {
-            if (_viewData.Filter == null || _viewData.Filter.Period == null) return;
-            textBoxFrom.Text = _viewData.Filter.Period.From.ToString();
-            textBoxTo.Text = _viewData.Filter.Period.To.ToString();
+            textBoxFrom.Text = _filter.Period == null ? string.Empty : _filter.Period.From.ToString();
+            textBoxTo.Text = _filter.Period == null ? string.Empty : _filter.Period.To.ToString();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
             if (!IsValid()) return;
-            _viewData.SetFilter(GetFilter());
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -59,15 +66,19 @@ namespace TaskManagement.UI
             if (string.IsNullOrEmpty(from) && string.IsNullOrEmpty(to)) return true;
             var fromDay = CallenderDay.Parse(textBoxFrom.Text);
             var toDay = CallenderDay.Parse(textBoxTo.Text);
-            return fromDay != null && toDay != null;
+            if (fromDay == null || toDay == null) return false;
+            if (!_callender.Days.Contains(fromDay)) return false;
+            if (!_callender.Days.Contains(toDay)) return false;
+            return true;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        private Filter GetFilter()
+        public Filter GetFilter()
         {
             return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers());
         }
@@ -83,8 +94,6 @@ namespace TaskManagement.UI
             var from = CallenderDay.Parse(textBoxFrom.Text);
             var to = CallenderDay.Parse(textBoxTo.Text);
             if (from == null || to == null) return null;
-            if (!_viewData.Original.Callender.Days.Contains(from)) return null;
-            if (!_viewData.Original.Callender.Days.Contains(to)) return null;
             return new Period(from, to);
         }
 
@@ -118,7 +127,7 @@ namespace TaskManagement.UI
 
         private void ClearPeriodFilter()
         {
-            var days = _viewData.Original.Callender.Days;
+            var days = _callender.Days;
             if (days.Count == 0) return;
             textBoxFrom.Text = days.First().ToString();
             textBoxTo.Text = days.Last().ToString();
@@ -139,27 +148,28 @@ namespace TaskManagement.UI
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var reader = new StreamReader(dlg.FileName))
                 {
-                    var s = new XmlSerializer(typeof(Members));
-                    var remain = (Members)s.Deserialize(reader);
-
-                    for (var index = 0; index < checkedListBox1.Items.Count; index++)
-                    {
-                        var m = checkedListBox1.Items[index] as Member;
-                        checkedListBox1.SetItemChecked(index, remain.Contain(m));
-                    }
+                    var s = new XmlSerializer(typeof(Filter));
+                    _filter = (Filter)s.Deserialize(reader);
+                    UpdateAllField();
                 }
             }
         }
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
+            if(!IsValid())
+            {
+                MessageBox.Show("invalid value");
+                return;
+            }
+            _filter = GetFilter();
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var writer = new StreamWriter(dlg.FileName))
                 {
-                    var s = new XmlSerializer(typeof(Members));
-                    s.Serialize(writer, GetHiddenMembers());
+                    var s = new XmlSerializer(typeof(Filter));
+                    s.Serialize(writer, _filter);
                 }
             }
         }

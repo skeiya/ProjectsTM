@@ -26,6 +26,13 @@ namespace TaskManagement.Model
             return _members.GetEnumerator();
         }
 
+        internal Members Clone()
+        {
+            var result = new Members();
+            foreach (var m in _members) result.Add(m.Clone());
+            return result;
+        }
+
         public static int RowCount => 2;
 
         internal void Up(Member m)

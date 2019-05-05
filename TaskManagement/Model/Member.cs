@@ -26,6 +26,11 @@ namespace TaskManagement.Model
             }
         }
 
+        internal Member Clone()
+        {
+            return Member.Parse(ToSerializeString());
+        }
+
         /// <summary>
         /// XMLシリアライズ用
         /// </summary>
