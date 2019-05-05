@@ -214,6 +214,11 @@ namespace TaskManagement.UI
 
         private void DevideMenu_Click(object sender, EventArgs e)
         {
+            Devide();
+        }
+
+        private void Devide()
+        {
             try
             {
                 var selected = _viewData.Selected;
@@ -552,6 +557,11 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
         {
             Process.Start(@".\Help\help.html");
+        }
+
+        private void ToolStripMenuItemDevide_Click(object sender, EventArgs e)
+        {
+            Devide();
         }
     }
 }

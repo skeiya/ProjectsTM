@@ -64,6 +64,7 @@ namespace TaskManagement.UI
             this.panelTaskGrid = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
             this.panelFullView = new System.Windows.Forms.Panel();
+            this.ToolStripMenuItemDevide = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelTaskGrid.SuspendLayout();
@@ -158,6 +159,7 @@ namespace TaskManagement.UI
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemAddWorkItem,
+            this.ToolStripMenuItemDevide,
             this.ToolStripMenuItemSearch,
             this.ToolStripMenuItemUndo,
             this.ToolStripMenuItemRedo});
@@ -168,7 +170,7 @@ namespace TaskManagement.UI
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
@@ -176,7 +178,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -184,7 +186,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
             this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemUndo.Text = "Undo";
             this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
             // 
@@ -192,7 +194,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
             this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemRedo.Text = "Redo";
             this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
             // 
@@ -361,6 +363,13 @@ namespace TaskManagement.UI
             this.panelFullView.Size = new System.Drawing.Size(626, 297);
             this.panelFullView.TabIndex = 13;
             // 
+            // ToolStripMenuItemDevide
+            // 
+            this.ToolStripMenuItemDevide.Name = "ToolStripMenuItemDevide";
+            this.ToolStripMenuItemDevide.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDevide.Text = "作業項目の分割";
+            this.ToolStripMenuItemDevide.Click += new System.EventHandler(this.ToolStripMenuItemDevide_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -420,6 +429,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
         private System.Windows.Forms.Panel panelFullView;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDevide;
     }
 }
 
