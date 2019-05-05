@@ -171,7 +171,7 @@ namespace TaskManagement.UI
         {
             DrawCallenderDays();
             DrawTeamMembers();
-            DrawWorkItems(viewData, null);
+            DrawWorkItems(viewData, null, null);
             DrawMileStones(viewData.Original.MileStones);
         }
 
@@ -336,22 +336,22 @@ namespace TaskManagement.UI
             return _grid.MeasureString("K").Height;
         }
 
-        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem)
+        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
             panelLocation.Offset(-3, 0);
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
-            DrawWorkItems(viewData, draggingItem);
+            DrawWorkItems(viewData, draggingItem, clip);
             DrawMileStonesOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
-        private void DrawWorkItems(ViewData viewData, WorkItem draggingItem)
+        private void DrawWorkItems(ViewData viewData, WorkItem draggingItem, RectangleF? clip)
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
-                DrawWorkItem(viewData, wi);
+                DrawWorkItem(viewData, wi, clip);
             }
-            if (draggingItem != null) DrawWorkItem(viewData, draggingItem);
+            if (draggingItem != null) DrawWorkItem(viewData, draggingItem, clip);
 
             if (viewData.Selected != null)
             {
@@ -362,9 +362,10 @@ namespace TaskManagement.UI
             }
         }
 
-        private void DrawWorkItem(ViewData viewData, WorkItem wi)
+        private void DrawWorkItem(ViewData viewData, WorkItem wi, RectangleF? clip)
         {
             var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
+            if (clip.HasValue && !clip.Value.IntersectsWith(bounds)) return;
             var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
             if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
             var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
