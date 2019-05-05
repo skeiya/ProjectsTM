@@ -47,6 +47,7 @@ namespace TaskManagement.Service
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Remove(w);
+                    viewData.Selected = null;
                 }
                 else if (a.Action == EditActionType.Delete)
                 {

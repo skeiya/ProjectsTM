@@ -184,6 +184,16 @@ namespace TaskManagement.UI
             taskDrawArea.ContextMenu = new ContextMenu();
             taskDrawArea.ContextMenu.Popup += ContextMenu_Popup;
             this.KeyUp += MainForm_KeyUp;
+            this.KeyDown += MainForm_KeyDown;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                _workItemDragService.ToCopyMode(_viewData.Original.WorkItems);
+            }
+            taskDrawArea.Invalidate();
         }
 
         private void ContextMenu_Popup(object sender, EventArgs e)
@@ -228,6 +238,11 @@ namespace TaskManagement.UI
                 _editService.Delete(_viewData.Selected);
                 _viewData.Selected = null;
             }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
+            }
+            taskDrawArea.Invalidate();
         }
 
         private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)

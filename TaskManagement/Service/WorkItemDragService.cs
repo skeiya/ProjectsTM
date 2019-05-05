@@ -16,8 +16,9 @@ namespace TaskManagement.Service
         Period _draggedPeriod = null;
         private Member _draggedMember;
         private int _expandDirection = 0;
+        bool _isCopying = false;
 
-        public WorkItem CopyingItem => _draggingWorkItem;
+        public WorkItem CopyingItem => _isCopying ? _draggingWorkItem : null;
 
         public bool IsDragging()
         {
@@ -122,22 +123,30 @@ namespace TaskManagement.Service
         internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
             _beforeWorkItem = wi.Clone();
-            _draggingWorkItem = IsCtrlDown() ? wi.Clone() : wi;
+            _draggingWorkItem = wi;
             _draggedLocation = location;
             _draggedPeriod = wi.Period.Clone();
             _draggedMember = wi.AssignedMember;
             _draggedDay = grid.GetDayFromY(location.Y);
         }
 
+        private bool IsActive()
+        {
+            if (IsDragging()) return true;
+            if (IsExpanding()) return true;
+            return false;
+        }
+
         internal void End(UndoService undo, WorkItem selected)
         {
             try
             {
-                if (!IsDragging() && !IsExpanding()) return;
+                if (!IsActive()) return;
                 if (_beforeWorkItem.Equals(selected)) return;
-                undo.Delete(_beforeWorkItem);
+                if (!_isCopying) undo.Delete(_beforeWorkItem);
                 undo.Add(selected);
                 undo.Push();
+                _isCopying = false;
             }
             finally
             {
@@ -185,6 +194,22 @@ namespace TaskManagement.Service
         {
             _beforeWorkItem = selected.Clone();
             _expandDirection = direction;
+        }
+
+        internal void ToCopyMode(WorkItems workItems)
+        {
+            if (!IsActive()) return;
+            if (_isCopying) return;
+            _isCopying = true;
+            workItems.Add(_beforeWorkItem);
+        }
+
+        internal void ToMoveMode(WorkItems workItems)
+        {
+            if (!IsActive()) return;
+            if (!_isCopying) return;
+            _isCopying = false;
+            workItems.Remove(_beforeWorkItem);
         }
     }
 }
