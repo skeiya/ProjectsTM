@@ -132,15 +132,24 @@ namespace TaskManagement.UI
 
         private void InitializeFilterCombobox()
         {
-            var filters = Directory.GetFiles("./filters");
             toolStripComboBoxFilter.Items.Clear();
             toolStripComboBoxFilter.Items.Add("ALL");
-            foreach (var f in filters)
+            try
             {
-                toolStripComboBoxFilter.Items.Add(f);
+                var filters = Directory.GetFiles("./filters");
+                foreach (var f in filters)
+                {
+                    toolStripComboBoxFilter.Items.Add(f);
+                }
             }
-            toolStripComboBoxFilter.SelectedIndex = 0;
-            toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+            catch
+            {
+            }
+            finally
+            {
+                toolStripComboBoxFilter.SelectedIndex = 0;
+                toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+            }
         }
 
         private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)

@@ -172,12 +172,32 @@ namespace TaskManagement.UI
             DrawCallenderDays();
             DrawTeamMembers();
             DrawWorkItems(viewData, null);
-            DrawMileStones(viewData);
+            DrawMileStones(viewData.Original.MileStones);
         }
 
-        private void DrawMileStones(ViewData viewData)
+        private void DrawMileStonesOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
         {
-            foreach (var m in viewData.Original.MileStones)
+            if (mileStones.IsEmpty()) return;
+            var dayWidth = GetDayWidth();
+            var monthWidth = GetMonthWidth();
+            var yearWidth = GetYearWidth();
+            var height = _grid.RowHeight(2);
+
+            foreach (var m in mileStones)
+            {
+                var r = _dayToRow[m.Day];
+                var bottom = _grid.GetCellBounds(r, 0).Bottom;
+                using (var b = new SolidBrush(m.Color))
+                {
+                    g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + bottom - offsetFromHiddenHight - height / 2);
+                }
+                _grid.DrawMileStoneLine(bottom, m.Color);
+            }
+        }
+
+        private void DrawMileStones(MileStones mileStones)
+        {
+            foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
                 var bottom = _grid.GetCellBounds(r, 0).Bottom;
@@ -322,7 +342,7 @@ namespace TaskManagement.UI
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
             DrawWorkItems(viewData, draggingItem);
-            DrawMileStones(viewData);
+            DrawMileStonesOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
         private void DrawWorkItems(ViewData viewData, WorkItem draggingItem)

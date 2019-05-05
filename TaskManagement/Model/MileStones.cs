@@ -42,5 +42,10 @@ namespace TaskManagement.Model
         {
             _list.Remove(m);
         }
+
+        internal bool IsEmpty()
+        {
+            return _list.Count == 0;
+        }
     }
 }
