@@ -193,6 +193,10 @@ namespace TaskManagement.UI
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems);
             }
+            if(e.KeyCode == Keys.Escape)
+            {
+                _workItemDragService.End(_editService, _viewData, true);
+            }
             taskDrawArea.Invalidate();
         }
 
@@ -331,7 +335,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
         {
-            _workItemDragService.End(_editService, _viewData);
+            _workItemDragService.End(_editService, _viewData, false);
         }
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)

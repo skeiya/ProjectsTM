@@ -139,16 +139,17 @@ namespace TaskManagement.Service
             return false;
         }
 
-        internal void End(WorkItemEditService editService, ViewData viewData)
+        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel)
         {
-            var edit = viewData.Selected.Clone();
             try
             {
                 if (!IsActive()) return;
                 if (_beforeWorkItem.Equals(viewData.Selected)) return;
+                var edit = viewData.Selected.Clone();
                 //まず元に戻す
                 viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
                 viewData.Selected.Period = _beforeWorkItem.Period;
+                if (isCancel) return;
                 if (IsExpanding() || !_isCopying)
                 {
                     editService.Replace(viewData.Selected, edit);
@@ -158,11 +159,11 @@ namespace TaskManagement.Service
                     editService.Add(edit);
 
                 }
+                viewData.Selected = edit;
             }
             finally
             {
                 _isCopying = false;
-                viewData.Selected = edit;
                 _draggingWorkItem = null;
                 _expandDirection = 0;
             }
