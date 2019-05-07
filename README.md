@@ -18,3 +18,7 @@ If you want to learn more about creating good readme files then refer the follow
 - [ASP.NET Core](https://github.com/aspnet/Home)
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
 - [Chakra Core](https://github.com/Microsoft/ChakraCore)
+
+
+            var c = new Line.Messaging.LineMessagingClient(@"pWy358GIh3HJM4in9PXNa7f6aStHiOJGkXchKxcbbvguPf5jmz68+bvpaD9m2w/kU+h1jBbB58tHDpMIV/ML1M2Y5OVxa+J9JqYnfvKxJkEP3V8L4qhZOJm+Xm5SiOHr/aonRXD1TW23xZxe78iWxQdB04t89/1O/w1cDnyilFU=");
+            c.PushMessageAsync("Ue92ae2f110be09c5b11167802c1c56dc", "foo").Wait();
