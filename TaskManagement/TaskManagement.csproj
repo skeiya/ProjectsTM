@@ -55,6 +55,7 @@
     <Compile Include="Model\MileStones.cs" />
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
+    <Compile Include="Service\DummyDataService.cs" />
     <Compile Include="Service\EditAction.cs" />
     <Compile Include="Service\EditActionType.cs" />
     <Compile Include="Service\FileDragService.cs" />

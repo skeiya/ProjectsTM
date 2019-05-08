@@ -563,5 +563,14 @@ namespace TaskManagement.UI
         {
             Devide();
         }
+
+        private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                DummyDataService.Save(dlg.FileName);
+            }
+        }
     }
 }
