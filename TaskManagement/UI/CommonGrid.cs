@@ -22,25 +22,6 @@ namespace TaskManagement.UI
 
         public Font Font { get; }
 
-        public RectangleF GetCellBounds(int row, int col)
-        {
-            var result = new RectangleF();
-
-            for (int r = 0; r < row; r++)
-            {
-                result.Y += RowHeight(r);
-            }
-            result.Height = RowHeight(row);
-
-            for (int c = 0; c < col; c++)
-            {
-                result.X += ColWidth(c);
-            }
-            result.Width = ColWidth(col);
-
-            return result;
-        }
-
         public float RowHeight(int row)
         {
             return _rowToHeight[row];

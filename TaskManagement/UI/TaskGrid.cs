@@ -15,6 +15,7 @@ namespace TaskManagement.UI
         private Dictionary<CallenderDay, int> _dayToRow = new Dictionary<CallenderDay, int>();
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
         private ColorConditions _colorConditions;
+        private Dictionary<Tuple<int, int>, RectangleF> _cellBoundsCache = new Dictionary<Tuple<int, int>, RectangleF>();
 
         public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font, bool isPrint)
         {
@@ -24,15 +25,33 @@ namespace TaskManagement.UI
             UpdateRowColMap(viewData);
 
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
-            SetRowHeight(pageBounds, isPrint);
+            SetRowHeights(pageBounds, isPrint);
 
             _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
-            SetColWidth(g, pageBounds, isPrint);
+            SetColWidths(g, pageBounds, isPrint);
 
+            CreateCellBoundsCache();
             _colorConditions = viewData.Original.ColorConditions;
         }
 
-        private void SetColWidth(Graphics g, Rectangle pageBounds, bool isPrint)
+        private void CreateCellBoundsCache()
+        {
+            var top = 0f;
+            for (var r = 0; r < _grid.RowCount; r++)
+            {
+                var left = 0f;
+                var height = _grid.RowHeight(r);
+                for (var c = 0; c < _grid.ColCount; c++)
+                {
+                    var width = _grid.ColWidth(c);
+                    _cellBoundsCache[new Tuple<int, int>(r, c)] = new RectangleF(left, top, width, height);
+                    left += width;
+                }
+                top += height;
+            }
+        }
+
+        private void SetColWidths(Graphics g, Rectangle pageBounds, bool isPrint)
         {
             var year = isPrint ? _grid.MeasureString("0000/").Width : 0;
             var month = isPrint ? _grid.MeasureString("00/").Width : 0;
@@ -58,7 +77,7 @@ namespace TaskManagement.UI
             return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2.5f;
         }
 
-        private void SetRowHeight(Rectangle pageBounds, bool isPrint)
+        private void SetRowHeights(Rectangle pageBounds, bool isPrint)
         {
             var company = isPrint ? GetCompanyHeight() : 0;
             var name = isPrint ? GetNameHeight() : 0;
@@ -186,7 +205,7 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var bottom = _grid.GetCellBounds(r, 0).Bottom;
+                var bottom = _cellBoundsCache[new Tuple<int,int>(r, 0)].Bottom;
                 using (var b = new SolidBrush(m.Color))
                 {
                     g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + bottom - offsetFromHiddenHight - height / 2);
@@ -200,7 +219,7 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var rect = _grid.GetCellBounds(r, 0);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
                 var bottom = rect.Bottom;
                 _grid.DrawMileStoneLine(bottom, m.Color);
                 rect.Offset(0, rect.Height / 2);
@@ -237,7 +256,7 @@ namespace TaskManagement.UI
         {
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var rect = _grid.GetCellBounds(r, 2);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 2)];
                 g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
         }
@@ -250,7 +269,7 @@ namespace TaskManagement.UI
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
                 m = month;
-                var rect = _grid.GetCellBounds(r, 1);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 1)];
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
@@ -264,7 +283,7 @@ namespace TaskManagement.UI
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
                 y = year;
-                var rect = _grid.GetCellBounds(r, 0);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
@@ -279,7 +298,7 @@ namespace TaskManagement.UI
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
                 y = year;
-                var rect = _grid.GetCellBounds(r, 0);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 _grid.DrawString(year.ToString() + "/", rect);
             }
@@ -288,13 +307,13 @@ namespace TaskManagement.UI
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
                 m = month;
-                var rect = _grid.GetCellBounds(r, 1);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 1)];
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 _grid.DrawString(month.ToString() + "/", rect);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var rect = _grid.GetCellBounds(r, 2);
+                var rect = _cellBoundsCache[new Tuple<int, int>(r, 2)];
                 _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
             }
         }
@@ -303,12 +322,12 @@ namespace TaskManagement.UI
         {
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _grid.GetCellBounds(0, c);
+                var rect = _cellBoundsCache[new Tuple<int, int>(0, c)];
                 _grid.DrawString(_colToMember[c].Company, rect);
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _grid.GetCellBounds(1, c);
+                var rect = _cellBoundsCache[new Tuple<int, int>(1, c)];
                 _grid.DrawString(_colToMember[c].DisplayName, rect);
             }
         }
@@ -319,12 +338,12 @@ namespace TaskManagement.UI
             var nameHeight = GetNameHeight();
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _grid.GetCellBounds(0, c);
+                var rect = _cellBoundsCache[new Tuple<int, int>(0, c)];
                 g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - (companyHight + nameHeight));
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _grid.GetCellBounds(1, c);
+                var rect = _cellBoundsCache[new Tuple<int, int>(1, c)];
                 g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - nameHeight);
             }
         }
@@ -383,8 +402,8 @@ namespace TaskManagement.UI
             var col = _memberToCol[w.AssignedMember];
             var rowTop = _dayToRow[period.From];
             var rowBottom = _dayToRow[period.To];
-            var top = _grid.GetCellBounds(rowTop, col);
-            var bottom = _grid.GetCellBounds(rowBottom, col);
+            var top = _cellBoundsCache[new Tuple<int, int>(rowTop, col)];
+            var bottom = _cellBoundsCache[new Tuple<int, int>(rowBottom, col)];
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
