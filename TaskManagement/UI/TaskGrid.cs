@@ -15,7 +15,7 @@ namespace TaskManagement.UI
         private Dictionary<CallenderDay, int> _dayToRow = new Dictionary<CallenderDay, int>();
         private Dictionary<int, CallenderDay> _rowToDay = new Dictionary<int, CallenderDay>();
         private ColorConditions _colorConditions;
-        private Dictionary<Tuple<int, int>, RectangleF> _cellBoundsCache = new Dictionary<Tuple<int, int>, RectangleF>();
+        private CellBoundsCache _cellBoundsCache = new CellBoundsCache();
 
         public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font, bool isPrint)
         {
@@ -44,7 +44,7 @@ namespace TaskManagement.UI
                 for (var c = 0; c < _grid.ColCount; c++)
                 {
                     var width = _grid.ColWidth(c);
-                    _cellBoundsCache[new Tuple<int, int>(r, c)] = new RectangleF(left, top, width, height);
+                    _cellBoundsCache.Set(r, c, new RectangleF(left, top, width, height));
                     left += width;
                 }
                 top += height;
@@ -205,7 +205,7 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var bottom = _cellBoundsCache[new Tuple<int,int>(r, 0)].Bottom;
+                var bottom = _cellBoundsCache.Get(r, 0).Bottom;
                 using (var b = new SolidBrush(m.Color))
                 {
                     g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + bottom - offsetFromHiddenHight - height / 2);
@@ -219,7 +219,7 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
+                var rect = _cellBoundsCache.Get(r, 0);
                 var bottom = rect.Bottom;
                 _grid.DrawMileStoneLine(bottom, m.Color);
                 rect.Offset(0, rect.Height / 2);
@@ -256,7 +256,7 @@ namespace TaskManagement.UI
         {
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 2)];
+                var rect = _cellBoundsCache.Get(r, 2);
                 g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
         }
@@ -269,7 +269,7 @@ namespace TaskManagement.UI
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
                 m = month;
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 1)];
+                var rect = _cellBoundsCache.Get(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
@@ -283,7 +283,7 @@ namespace TaskManagement.UI
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
                 y = year;
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
+                var rect = _cellBoundsCache.Get(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
             }
@@ -298,7 +298,7 @@ namespace TaskManagement.UI
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
                 y = year;
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 0)];
+                var rect = _cellBoundsCache.Get(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 _grid.DrawString(year.ToString() + "/", rect);
             }
@@ -307,13 +307,13 @@ namespace TaskManagement.UI
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
                 m = month;
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 1)];
+                var rect = _cellBoundsCache.Get(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
                 _grid.DrawString(month.ToString() + "/", rect);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(r, 2)];
+                var rect = _cellBoundsCache.Get(r, 2);
                 _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
             }
         }
@@ -322,12 +322,12 @@ namespace TaskManagement.UI
         {
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(0, c)];
+                var rect = _cellBoundsCache.Get(0, c);
                 _grid.DrawString(_colToMember[c].Company, rect);
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(1, c)];
+                var rect = _cellBoundsCache.Get(1, c);
                 _grid.DrawString(_colToMember[c].DisplayName, rect);
             }
         }
@@ -338,12 +338,12 @@ namespace TaskManagement.UI
             var nameHeight = GetNameHeight();
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(0, c)];
+                var rect = _cellBoundsCache.Get(0, c);
                 g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - (companyHight + nameHeight));
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                var rect = _cellBoundsCache[new Tuple<int, int>(1, c)];
+                var rect = _cellBoundsCache.Get(1, c);
                 g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - nameHeight);
             }
         }
@@ -402,8 +402,8 @@ namespace TaskManagement.UI
             var col = _memberToCol[w.AssignedMember];
             var rowTop = _dayToRow[period.From];
             var rowBottom = _dayToRow[period.To];
-            var top = _cellBoundsCache[new Tuple<int, int>(rowTop, col)];
-            var bottom = _cellBoundsCache[new Tuple<int, int>(rowBottom, col)];
+            var top = _cellBoundsCache.Get(rowTop, col);
+            var bottom = _cellBoundsCache.Get(rowBottom, col);
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
