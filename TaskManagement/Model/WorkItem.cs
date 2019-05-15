@@ -45,20 +45,12 @@ namespace TaskManagement.Model
 
         public string ToDrawString(Callender callender)
         {
-            var result = new StringBuilder();
-            result.Append(Name);
-            result.Append(Environment.NewLine);
-            result.Append(Project.ToString());
-            result.Append(Environment.NewLine);
-            result.Append(Tags.ToDrawString());
-            result.Append(Environment.NewLine);
-            result.Append(callender.GetPeriodDayCount(Period).ToString() + "d");
-            return result.ToString();
+            return ToString() + "[" + callender.GetPeriodDayCount(Period).ToString() + "d]";
         }
 
-        public string ToString(Callender callender)
+        public override string ToString()
         {
-            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + callender.GetPeriodDayCount(Period).ToString() + "d]";
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "]";
         }
 
         public void Edit(Project project, string v, Period period, Member member, Tags tags)

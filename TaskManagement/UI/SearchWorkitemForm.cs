@@ -33,10 +33,7 @@ namespace TaskManagement.UI
         private void UpdateListBox()
         {
             listBox1.Items.Clear();
-            foreach (var l in _list)
-            {
-                listBox1.Items.Add(l.ToString(_viewData.Original.Callender));
-            }
+            listBox1.Items.AddRange(_list.ToArray());
         }
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -79,7 +76,7 @@ namespace TaskManagement.UI
                 {
                     foreach (var wi in _viewData.GetFilteredWorkItems())
                     {
-                        if (!Regex.IsMatch(wi.ToString(_viewData.Original.Callender), textBoxPattern.Text)) continue;
+                        if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text)) continue;
                         _list.Add(wi);
                     }
                 }
@@ -127,7 +124,7 @@ namespace TaskManagement.UI
             listBox1.Items.Clear();
             foreach (var l in _list)
             {
-                listBox1.Items.Add(l.ToString(_viewData.Original.Callender));
+                listBox1.Items.Add(l.ToString());
             }
         }
 

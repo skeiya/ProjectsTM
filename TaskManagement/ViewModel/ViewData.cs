@@ -98,7 +98,7 @@ namespace TaskManagement.ViewModel
                 if (!filteredMembers.Contain(w.AssignedMember)) continue;
                 if (!string.IsNullOrEmpty(Filter.WorkItem))
                 {
-                    if (!Regex.IsMatch(w.ToString(Original.Callender), Filter.WorkItem)) continue;
+                    if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
                 }
                 result.Add(w);
             }

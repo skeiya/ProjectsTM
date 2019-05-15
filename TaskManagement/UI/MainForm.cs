@@ -24,7 +24,6 @@ namespace TaskManagement.UI
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
-        private Graphics _graphics;
 
         public MainForm()
         {
@@ -35,14 +34,26 @@ namespace TaskManagement.UI
             _undoService.Changed += _undoService_Changed;
             panelTaskGrid.Resize += Panel1_Resize;
             panelTaskGrid.Scroll += Panel1_Scroll;
+            panelFullView.Paint += PanelTaskGrid_Paint;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
-            _graphics = panelFullView.CreateGraphics();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             LoadUserSetting();
-            UpdatePanelLayout();
+            UpdateGrid();
+        }
+
+        private void UpdateGrid()
+        {
+            _grid = new TaskGrid(_viewData, this.taskDrawArea.Bounds, panelFullView.Font, false);
+            _grid.OnResize(taskDrawArea.Size, false);
+        }
+
+        private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
+        {
+            UpdatePanelLayout(e.Graphics);
+            _grid.DrawAlwaysFrameOnly(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void LoadUserSetting()
@@ -90,15 +101,14 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
-            UpdatePanelLayout();
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
 
-        private void UpdatePanelLayout()
+        private void UpdatePanelLayout(Graphics g)
         {
-            var width = (int)TaskGrid.GetFixedColWidth(_graphics, _viewData, Font) + 1;
-            var hight = (int)TaskGrid.GetFixedRowHight(_graphics, _viewData, Font) + 1;
+            var width = (int)TaskGrid.GetFixedColWidth(g, _viewData, Font) + 1;
+            var hight = (int)TaskGrid.GetFixedRowHight(g, _viewData, Font) + 1;
             panelTaskGrid.Location = new Point(width, hight);
             panelTaskGrid.Size = new Size(panelFullView.Width - width, panelFullView.Height - hight);
         }
@@ -307,15 +317,13 @@ namespace TaskManagement.UI
             finally
             {
                 taskDrawArea.Invalidate();
-                panelFullView.Invalidate();
             }
         }
 
         private void Panel1_Resize(object sender, EventArgs e)
         {
             ApplyViewRatio();
-            _graphics.Dispose();
-            _graphics = panelFullView.CreateGraphics();
+            _grid.OnResize(taskDrawArea.Size, false);
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
@@ -358,7 +366,7 @@ namespace TaskManagement.UI
             if (_workItemDragService.IsDragging()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
-            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToString(_viewData.Original.Callender);
+            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToDrawString(_viewData.Original.Callender);
         }
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
@@ -385,8 +393,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
         {
-            _grid = new TaskGrid(_viewData, e.Graphics, this.taskDrawArea.Bounds, panelFullView.Font, false);
-            _grid.DrawAlwaysFrame(_viewData, _graphics, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
+            _grid.DrawAlwaysFrame(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
@@ -429,6 +436,7 @@ namespace TaskManagement.UI
             if (appData == null) return;
             _viewData.Original = appData;
             _viewData.Selected = null;
+            UpdateGrid();
             taskDrawArea.Invalidate();
         }
 
@@ -566,7 +574,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)
         {
-            using(var dlg = new SaveFileDialog())
+            using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 DummyDataService.Save(dlg.FileName);

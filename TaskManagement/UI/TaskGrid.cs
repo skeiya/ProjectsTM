@@ -17,21 +17,20 @@ namespace TaskManagement.UI
         private ColorConditions _colorConditions;
         private CellBoundsCache _cellBoundsCache = new CellBoundsCache();
 
-        public TaskGrid(ViewData viewData, Graphics g, Rectangle pageBounds, Font font, bool isPrint)
+        public TaskGrid(ViewData viewData, Rectangle pageBounds, Font font, bool isPrint)
         {
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            _grid = new CommonGrid(g, viewData.CreateFont(font));
-
+            _grid = new CommonGrid(viewData.CreateFont(font));
             UpdateRowColMap(viewData);
-
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
-            SetRowHeights(pageBounds, isPrint);
-
             _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
-            SetColWidths(g, pageBounds, isPrint);
-
-            CreateCellBoundsCache();
             _colorConditions = viewData.Original.ColorConditions;
+        }
+
+        public void OnResize(Size s, bool isPrint)
+        {
+            SetRowHeights(s, isPrint);
+            SetColWidths(s, isPrint);
+            CreateCellBoundsCache();
         }
 
         private void CreateCellBoundsCache()
@@ -51,15 +50,15 @@ namespace TaskManagement.UI
             }
         }
 
-        private void SetColWidths(Graphics g, Rectangle pageBounds, bool isPrint)
+        private void SetColWidths(Size s, bool isPrint)
         {
-            var year = isPrint ? _grid.MeasureString("0000/").Width : 0;
-            var month = isPrint ? _grid.MeasureString("00/").Width : 0;
-            var day = isPrint ? _grid.MeasureString("00").Width : 0;
+            var year = isPrint ? 40 : 0;
+            var month = isPrint ? 20 : 0;
+            var day = isPrint ? 20 : 0;
             _grid.SetColWidth(0, year);
             _grid.SetColWidth(1, month);
             _grid.SetColWidth(2, day);
-            var member = ((float)(pageBounds.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount);
+            var member = ((float)(s.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount);
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 _grid.SetColWidth(c, member);
@@ -77,13 +76,13 @@ namespace TaskManagement.UI
             return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2.5f;
         }
 
-        private void SetRowHeights(Rectangle pageBounds, bool isPrint)
+        private void SetRowHeights(Size s, bool isPrint)
         {
-            var company = isPrint ? GetCompanyHeight() : 0;
-            var name = isPrint ? GetNameHeight() : 0;
+            var company = isPrint ? 20 : 0;// GetCompanyHeight();
+            var name = isPrint ? 20 : 0;//GetNameHeight();
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
-            var height = ((float)pageBounds.Height - name) / (_grid.RowCount - Members.RowCount);
+            var height = ((float)s.Height - name) / (_grid.RowCount - Members.RowCount);
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
@@ -186,20 +185,20 @@ namespace TaskManagement.UI
             return IsTopBar(bounds, location) || IsBottomBar(bounds, location);
         }
 
-        public void DrawPrint(ViewData viewData)
+        public void DrawPrint(Graphics g, ViewData viewData)
         {
-            DrawCallenderDays();
-            DrawTeamMembers();
-            DrawWorkItems(viewData, null, null);
-            DrawMileStones(viewData.Original.MileStones);
+            DrawCallenderDays(g);
+            DrawTeamMembers(g);
+            DrawWorkItems(g, viewData, null, null);
+            DrawMileStones(g, viewData.Original.MileStones);
         }
 
         private void DrawMileStonesOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
         {
             if (mileStones.IsEmpty()) return;
-            var dayWidth = GetDayWidth();
-            var monthWidth = GetMonthWidth();
-            var yearWidth = GetYearWidth();
+            var dayWidth = GetDayWidth(g);
+            var monthWidth = GetMonthWidth(g);
+            var yearWidth = GetYearWidth(g);
             var height = _grid.RowHeight(2);
 
             foreach (var m in mileStones)
@@ -210,46 +209,46 @@ namespace TaskManagement.UI
                 {
                     g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + bottom - offsetFromHiddenHight - height / 2);
                 }
-                _grid.DrawMileStoneLine(bottom, m.Color);
+                _grid.DrawMileStoneLine(g, bottom, m.Color);
             }
         }
 
-        private void DrawMileStones(MileStones mileStones)
+        private void DrawMileStones(Graphics g, MileStones mileStones)
         {
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
                 var rect = _cellBoundsCache.Get(r, 0);
                 var bottom = rect.Bottom;
-                _grid.DrawMileStoneLine(bottom, m.Color);
+                _grid.DrawMileStoneLine(g, bottom, m.Color);
                 rect.Offset(0, rect.Height / 2);
-                _grid.DrawString(m.Name, rect, m.Color);
+                _grid.DrawString(g, m.Name, rect, m.Color);
             }
         }
 
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
         {
-            var dayWidth = GetDayWidth();
-            var monthWidth = GetMonthWidth();
-            var yearWidth = GetYearWidth();
+            var dayWidth = GetDayWidth(g);
+            var monthWidth = GetMonthWidth(g);
+            var yearWidth = GetYearWidth(g);
             DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth);
             DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth);
             DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth);
         }
 
-        private float GetYearWidth()
+        private float GetYearWidth(Graphics g)
         {
-            return _grid.MeasureString("0000/").Width;
+            return _grid.MeasureString(g, "0000/").Width;
         }
 
-        private float GetMonthWidth()
+        private float GetMonthWidth(Graphics g)
         {
-            return _grid.MeasureString("00/").Width;
+            return _grid.MeasureString(g, "00/").Width;
         }
 
-        private float GetDayWidth()
+        private float GetDayWidth(Graphics g)
         {
-            return _grid.MeasureString("00").Width;
+            return _grid.MeasureString(g, "00").Width;
         }
 
         private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
@@ -289,7 +288,7 @@ namespace TaskManagement.UI
             }
         }
 
-        private void DrawCallenderDays()
+        private void DrawCallenderDays(Graphics g)
         {
             int y = 0;
             int m = 0;
@@ -300,7 +299,7 @@ namespace TaskManagement.UI
                 y = year;
                 var rect = _cellBoundsCache.Get(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.DrawString(year.ToString() + "/", rect);
+                _grid.DrawString(g, year.ToString() + "/", rect);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
@@ -309,26 +308,26 @@ namespace TaskManagement.UI
                 m = month;
                 var rect = _cellBoundsCache.Get(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                _grid.DrawString(month.ToString() + "/", rect);
+                _grid.DrawString(g, month.ToString() + "/", rect);
             }
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var rect = _cellBoundsCache.Get(r, 2);
-                _grid.DrawString(_rowToDay[r].Day.ToString(), rect);
+                _grid.DrawString(g, _rowToDay[r].Day.ToString(), rect);
             }
         }
 
-        private void DrawTeamMembers()
+        private void DrawTeamMembers(Graphics g)
         {
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(0, c);
-                _grid.DrawString(_colToMember[c].Company, rect);
+                _grid.DrawString(g, _colToMember[c].Company, rect);
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(1, c);
-                _grid.DrawString(_colToMember[c].DisplayName, rect);
+                _grid.DrawString(g, _colToMember[c].DisplayName, rect);
             }
         }
 
@@ -350,50 +349,54 @@ namespace TaskManagement.UI
 
         private float GetNameHeight()
         {
-            return _grid.MeasureString("下村HF").Height * 1.5f;
+            return 20;
         }
 
         private float GetCompanyHeight()
         {
-            return _grid.MeasureString("K").Height;
+            return 10;
         }
 
-        internal void DrawAlwaysFrame(ViewData viewData, Graphics g, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
+        internal void DrawAlwaysFrame(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
             panelLocation.Offset(-3, 0);
+            DrawWorkItems(g, viewData, draggingItem, clip);
+        }
+
+        internal void DrawAlwaysFrameOnly(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
+        {
             DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
-            DrawWorkItems(viewData, draggingItem, clip);
             DrawMileStonesOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
-        private void DrawWorkItems(ViewData viewData, WorkItem draggingItem, RectangleF? clip)
+        private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip)
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
-                DrawWorkItem(viewData, wi, clip);
+                DrawWorkItem(g, viewData, wi, clip);
             }
-            if (draggingItem != null) DrawWorkItem(viewData, draggingItem, clip);
+            if (draggingItem != null) DrawWorkItem(g, viewData, draggingItem, clip);
 
             if (viewData.Selected != null)
             {
-                DrawWorkItem(viewData, viewData.Selected, clip);
+                DrawWorkItem(g, viewData, viewData.Selected, clip);
                 var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
-                _grid.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
-                DrawTopDragBar(bounds);
-                DrawBottomDragBar(bounds);
+                g.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
+                DrawTopDragBar(g, bounds);
+                DrawBottomDragBar(g, bounds);
             }
         }
 
-        private void DrawWorkItem(ViewData viewData, WorkItem wi, RectangleF? clip)
+        private void DrawWorkItem(Graphics g, ViewData viewData, WorkItem wi, RectangleF? clip)
         {
             var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
             if (clip.HasValue && !clip.Value.IntersectsWith(bounds)) return;
-            var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString(viewData.Original.Callender));
-            if (colorContidion != null) _grid.Graphics.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
+            var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString());
+            if (colorContidion != null) g.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
             var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
-            _grid.DrawString(wi.ToDrawString(viewData.Original.Callender), bounds, front);
-            _grid.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
+            _grid.DrawString(g, wi.ToDrawString(viewData.Original.Callender), bounds, front);
+            g.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
         }
 
         public RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
@@ -407,20 +410,20 @@ namespace TaskManagement.UI
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
         }
 
-        private void DrawBottomDragBar(RectangleF bounds)
+        private void DrawBottomDragBar(Graphics g, RectangleF bounds)
         {
             var rect = WorkItemDragService.GetBottomBarRect(bounds, _grid.RowHeight(2));// TODO (2)はやめる
             var points = WorkItemDragService.GetBottomBarLine(bounds, _grid.RowHeight(2));
-            _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
-            _grid.Graphics.DrawLine(Pens.White, points.Item1, points.Item2);
+            g.FillRectangle(Brushes.DarkBlue, rect);
+            g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        private void DrawTopDragBar(RectangleF bounds)
+        private void DrawTopDragBar(Graphics g, RectangleF bounds)
         {
             var rect = WorkItemDragService.GetTopBarRect(bounds, _grid.RowHeight(2));
             var points = WorkItemDragService.GetTopBarLine(bounds, _grid.RowHeight(2));
-            _grid.Graphics.FillRectangle(Brushes.DarkBlue, rect);
-            _grid.Graphics.DrawLine(Pens.White, points.Item1, points.Item2);
+            g.FillRectangle(Brushes.DarkBlue, rect);
+            g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
         private static Period GetVisiblePeriod(Filter filter, WorkItem wi)
