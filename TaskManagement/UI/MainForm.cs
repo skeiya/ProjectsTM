@@ -366,7 +366,7 @@ namespace TaskManagement.UI
             if (_workItemDragService.IsDragging()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
-            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToDrawString(_viewData.Original.Callender);
+            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToString();
         }
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)

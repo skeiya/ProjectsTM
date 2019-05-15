@@ -45,7 +45,15 @@ namespace TaskManagement.Model
 
         public string ToDrawString(Callender callender)
         {
-            return ToString() + "[" + callender.GetPeriodDayCount(Period).ToString() + "d]";
+            var result = new StringBuilder();
+            result.Append(Name);
+            result.Append(Environment.NewLine);
+            result.Append(Project.ToString());
+            result.Append(Environment.NewLine);
+            result.Append(Tags.ToDrawString());
+            result.Append(Environment.NewLine);
+            result.Append(callender.GetPeriodDayCount(Period).ToString() + "d");
+            return result.ToString();
         }
 
         public override string ToString()
