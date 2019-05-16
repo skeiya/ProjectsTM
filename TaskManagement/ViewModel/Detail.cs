@@ -8,8 +8,8 @@ namespace TaskManagement.ViewModel
 {
     public class Detail
     {
-        public int CompanyHeight { set; get; } = 10;
-        public int NameHeight { set; get; } = 10;
+        public int CompanyHeight { set; get; } = 20;
+        public int NameHeight { set; get; } = 20;
         public int RowHeight { set; get; } = 10;
         public int DateWidth { set; get; } = 60;
         public int ColWidth { set; get; } = 20;

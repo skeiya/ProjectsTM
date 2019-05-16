@@ -43,6 +43,7 @@ namespace TaskManagement.UI
             this.FormClosed += MainForm_FormClosed;
             LoadUserSetting();
             UpdateGrid();
+            UpdatePanelLayout(_viewData.Detail);
         }
 
         private void UpdateGrid()
@@ -107,10 +108,10 @@ namespace TaskManagement.UI
             panelFullView.Invalidate();
         }
 
-        private void UpdatePanelLayout(Graphics g)
+        private void UpdatePanelLayout(Detail detail)
         {
-            var width = (int)TaskGrid.GetFixedColWidth(g, _viewData, Font) + 1;
-            var hight = (int)TaskGrid.GetFixedRowHight(g, _viewData, Font) + 1;
+            var width = detail.DateWidth;
+            var hight = detail.CompanyHeight + detail.NameHeight;
             panelTaskGrid.Location = new Point(width, hight);
             panelTaskGrid.Size = new Size(panelFullView.Width - width, panelFullView.Height - hight);
         }
@@ -324,8 +325,6 @@ namespace TaskManagement.UI
 
         private void Panel1_Resize(object sender, EventArgs e)
         {
-            ApplyViewRatio();
-            //_grid.OnResize(taskDrawArea.Size, false);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -333,7 +332,6 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            //panelFullView.Invalidate();
             UpdateDisplayOfSum();
         }
 
@@ -515,21 +513,13 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
             _viewData.DecRatio();
-            ApplyViewRatio();
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
-        }
-
-        private void ApplyViewRatio()
-        {
-            //taskDrawArea.Size = new Size((int)((panelTaskGrid.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panelTaskGrid.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
-
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
             _viewData.IncRatio();
-            ApplyViewRatio();
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -593,6 +583,7 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Detail = dlg.Detail;
+                UpdatePanelLayout(_viewData.Detail);
                 _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
                 panelFullView.Invalidate();
             }
