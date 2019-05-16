@@ -10,7 +10,7 @@ namespace TaskManagement.UI
         private Dictionary<int, float> _rowToHeight = new Dictionary<int, float>();
         private Dictionary<int, float> _colToWidth = new Dictionary<int, float>();
 
-        public CommonGrid( Font font)
+        public CommonGrid(Font font)
         {
             Font = font;
         }

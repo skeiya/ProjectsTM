@@ -395,7 +395,10 @@ namespace TaskManagement.UI
             var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString());
             if (colorContidion != null) g.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
             var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
-            _grid.DrawString(g, wi.ToDrawString(viewData.Original.Callender), bounds, front);
+            if (bounds.Width > 5 && bounds.Height > 5)
+            {
+                _grid.DrawString(g, wi.ToDrawString(viewData.Original.Callender), bounds, front);
+            }
             g.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
         }
 
