@@ -44,7 +44,7 @@ namespace UnitTestProject1
             callender.Add(new CallenderDay(2019, 3, 20));
             callender.Add(new CallenderDay(2019, 3, 21));
             callender.Add(new CallenderDay(2019, 3, 22));
-            Assert.AreEqual<string>("[仕様検討][Z123][AB(C)][a|b][3d]", wi.ToDrawString(callender));
+            Assert.AreEqual<string>("[仕様検討][Z123][AB(C)][a|b]", wi.ToString());
         }
 
         [TestMethod]
