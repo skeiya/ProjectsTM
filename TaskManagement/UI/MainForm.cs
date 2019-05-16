@@ -52,7 +52,6 @@ namespace TaskManagement.UI
 
         private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
         {
-            UpdatePanelLayout(e.Graphics);
             _grid.DrawAlwaysFrameOnly(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
@@ -63,7 +62,6 @@ namespace TaskManagement.UI
                 var setting = UserSettingUIService.Load(UserSettingPath);
                 toolStripComboBoxFilter.Text = setting.FilterName;
                 _viewData.ViewRatio = setting.Ratio;
-                ApplyViewRatio();
                 _viewData.FontSize = setting.FontSize;
                 var appData = _fileIOService.OpenFile(setting.FilePath);
                 if (appData == null) return;
@@ -324,12 +322,14 @@ namespace TaskManagement.UI
         {
             ApplyViewRatio();
             _grid.OnResize(taskDrawArea.Size, false);
+            taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            panelFullView.Invalidate();
+            //panelFullView.Invalidate();
             UpdateDisplayOfSum();
         }
 
@@ -512,20 +512,23 @@ namespace TaskManagement.UI
         {
             _viewData.DecRatio();
             ApplyViewRatio();
+            taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ApplyViewRatio()
         {
-            panelTaskGrid.AutoScroll = _viewData.IsEnlarged();
+            panelTaskGrid.AutoScroll = true;// _viewData.IsEnlarged();
             taskDrawArea.Size = new Size((int)((panelTaskGrid.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panelTaskGrid.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
-            taskDrawArea.Invalidate();
-            panelFullView.Invalidate();
+
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
             _viewData.IncRatio();
             ApplyViewRatio();
+            taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
