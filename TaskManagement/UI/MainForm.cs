@@ -34,6 +34,7 @@ namespace TaskManagement.UI
             _undoService.Changed += _undoService_Changed;
             panelTaskGrid.Resize += Panel1_Resize;
             panelTaskGrid.Scroll += Panel1_Scroll;
+            panelTaskGrid.AutoScroll = true;// _viewData.IsEnlarged();
             panelFullView.Paint += PanelTaskGrid_Paint;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
@@ -48,6 +49,7 @@ namespace TaskManagement.UI
         {
             _grid = new TaskGrid(_viewData, this.taskDrawArea.Bounds, panelFullView.Font, false);
             _grid.OnResize(taskDrawArea.Size, false);
+            taskDrawArea.Size = _grid.Size;
         }
 
         private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
@@ -180,7 +182,7 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-            taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
+    //        taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
             taskDrawArea.Paint += TaskDrawArea_Paint;
             taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
             taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
@@ -321,7 +323,7 @@ namespace TaskManagement.UI
         private void Panel1_Resize(object sender, EventArgs e)
         {
             ApplyViewRatio();
-            _grid.OnResize(taskDrawArea.Size, false);
+            //_grid.OnResize(taskDrawArea.Size, false);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -518,8 +520,7 @@ namespace TaskManagement.UI
 
         private void ApplyViewRatio()
         {
-            panelTaskGrid.AutoScroll = true;// _viewData.IsEnlarged();
-            taskDrawArea.Size = new Size((int)((panelTaskGrid.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panelTaskGrid.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
+            //taskDrawArea.Size = new Size((int)((panelTaskGrid.Size.Width - taskDrawArea.Location.X) * _viewData.ViewRatio), (int)((panelTaskGrid.Size.Height - taskDrawArea.Location.Y) * _viewData.ViewRatio));
 
         }
 

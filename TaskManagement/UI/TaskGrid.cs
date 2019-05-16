@@ -17,6 +17,8 @@ namespace TaskManagement.UI
         private ColorConditions _colorConditions;
         private CellBoundsCache _cellBoundsCache = new CellBoundsCache();
 
+        public Size Size => _grid.Size;
+
         public TaskGrid(ViewData viewData, Rectangle pageBounds, Font font, bool isPrint)
         {
             _grid = new CommonGrid(viewData.CreateFont(font));
@@ -50,6 +52,20 @@ namespace TaskManagement.UI
             }
         }
 
+        private void SetRowHeights(Size s, bool isPrint)
+        {
+            var company = isPrint ? 20 : 0;// GetCompanyHeight();
+            var name = isPrint ? 20 : 0;//GetNameHeight();
+            _grid.SetRowHeight(0, company);
+            _grid.SetRowHeight(1, name);
+            var height = isPrint ? ((float)s.Height - name) / (_grid.RowCount - Members.RowCount) : 10;
+            for (int r = Members.RowCount; r < _grid.RowCount; r++)
+            {
+                _grid.SetRowHeight(r, height);
+            }
+
+        }
+
         private void SetColWidths(Size s, bool isPrint)
         {
             var year = isPrint ? 40 : 0;
@@ -58,10 +74,10 @@ namespace TaskManagement.UI
             _grid.SetColWidth(0, year);
             _grid.SetColWidth(1, month);
             _grid.SetColWidth(2, day);
-            var member = ((float)(s.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount);
+            var width = isPrint ? ((float)(s.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount) : 20;
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
-                _grid.SetColWidth(c, member);
+                _grid.SetColWidth(c, width);
             }
 
         }
@@ -74,20 +90,6 @@ namespace TaskManagement.UI
         internal static float GetFixedRowHight(Graphics g, ViewData viewData, Font font)
         {
             return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2.5f;
-        }
-
-        private void SetRowHeights(Size s, bool isPrint)
-        {
-            var company = isPrint ? 20 : 0;// GetCompanyHeight();
-            var name = isPrint ? 20 : 0;//GetNameHeight();
-            _grid.SetRowHeight(0, company);
-            _grid.SetRowHeight(1, name);
-            var height = ((float)s.Height - name) / (_grid.RowCount - Members.RowCount);
-            for (int r = Members.RowCount; r < _grid.RowCount; r++)
-            {
-                _grid.SetRowHeight(r, height);
-            }
-
         }
 
         private void UpdateRowColMap(ViewData viewData)

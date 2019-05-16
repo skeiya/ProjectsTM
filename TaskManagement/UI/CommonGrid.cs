@@ -19,6 +19,23 @@ namespace TaskManagement.UI
         public int ColCount { set; get; }
 
         public Font Font { get; }
+        public Size Size
+        {
+            get
+            {
+                var width = 0f;
+                foreach(var w in _colToWidth)
+                {
+                    width += w.Value;
+                }
+                var height = 0f;
+                foreach(var h in _rowToHeight)
+                {
+                    height += h.Value;
+                }
+                return new Size((int)width, (int)height);
+            }
+        }
 
         public float RowHeight(int row)
         {
