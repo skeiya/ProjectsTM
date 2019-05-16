@@ -31,7 +31,7 @@ namespace TaskManagement.Service
         private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             var grid = new TaskGrid(_viewData, e.PageBounds, _font, true);
-            grid.OnResize(e.PageBounds.Size, true);
+            grid.OnResize(e.PageBounds.Size, null, true);
             grid.DrawPrint(e.Graphics, _viewData);
         }
 

@@ -48,7 +48,7 @@ namespace TaskManagement.UI
         private void UpdateGrid()
         {
             _grid = new TaskGrid(_viewData, this.taskDrawArea.Bounds, panelFullView.Font, false);
-            _grid.OnResize(taskDrawArea.Size, false);
+            _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
             taskDrawArea.Size = _grid.Size;
             _grid.UpdateFont(_viewData.FontSize);
         }
@@ -584,6 +584,17 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 DummyDataService.Save(dlg.FileName);
+            }
+        }
+
+        private void ToolStripMenuItemDetail_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new ViewDetailSettingForm(_viewData.Detail.Clone()))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                _viewData.Detail = dlg.Detail;
+                _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
+                panelFullView.Invalidate();
             }
         }
     }

@@ -28,10 +28,10 @@ namespace TaskManagement.UI
             _colorConditions = viewData.Original.ColorConditions;
         }
 
-        public void OnResize(Size s, bool isPrint)
+        public void OnResize(Size s, Detail detail, bool isPrint)
         {
-            SetRowHeights(s, isPrint);
-            SetColWidths(s, isPrint);
+            SetRowHeights(s, detail, isPrint);
+            SetColWidths(s, detail, isPrint);
             CreateCellBoundsCache();
         }
 
@@ -52,13 +52,13 @@ namespace TaskManagement.UI
             }
         }
 
-        private void SetRowHeights(Size s, bool isPrint)
+        private void SetRowHeights(Size s, Detail detail, bool isPrint)
         {
             var company = isPrint ? 20 : 0;// GetCompanyHeight();
             var name = isPrint ? 20 : 0;//GetNameHeight();
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
-            var height = isPrint ? ((float)s.Height - name) / (_grid.RowCount - Members.RowCount) : 10;
+            var height = isPrint ? ((float)s.Height - name) / (_grid.RowCount - Members.RowCount) : detail.RowHeight;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 _grid.SetRowHeight(r, height);
@@ -66,7 +66,7 @@ namespace TaskManagement.UI
 
         }
 
-        private void SetColWidths(Size s, bool isPrint)
+        private void SetColWidths(Size s, Detail detail, bool isPrint)
         {
             var year = isPrint ? 40 : 0;
             var month = isPrint ? 20 : 0;
@@ -74,7 +74,7 @@ namespace TaskManagement.UI
             _grid.SetColWidth(0, year);
             _grid.SetColWidth(1, month);
             _grid.SetColWidth(2, day);
-            var width = isPrint ? ((float)(s.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount) : 20;
+            var width = isPrint ? ((float)(s.Width) - year - month - day) / (_grid.ColCount - Callender.ColCount) : detail.ColWidth;
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 _grid.SetColWidth(c, width);

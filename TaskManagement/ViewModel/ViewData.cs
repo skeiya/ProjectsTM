@@ -9,6 +9,8 @@ namespace TaskManagement.ViewModel
     public class ViewData
     {
         public Filter Filter { get; private set; }
+        public Detail Detail { get; set; } = new Detail();
+
         public AppData Original
         {
             get { return _appData; }
@@ -43,7 +45,6 @@ namespace TaskManagement.ViewModel
                 }
             }
         }
-
 
         internal Font CreateFont(Font font)
         {
