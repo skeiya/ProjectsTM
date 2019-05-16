@@ -21,7 +21,7 @@ namespace TaskManagement.UI
 
         public TaskGrid(ViewData viewData, Rectangle pageBounds, Font font, bool isPrint)
         {
-            _grid = new CommonGrid(viewData.CreateFont(font));
+            _grid = new CommonGrid(font);
             UpdateRowColMap(viewData);
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
             _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
@@ -109,6 +109,15 @@ namespace TaskManagement.UI
                 _rowToDay.Add(r, d);
                 r++;
             }
+        }
+
+        internal void UpdateFont(int size)
+        {
+            if (_grid.Font != null)
+            {
+                _grid.Font.Dispose();
+            }
+            _grid.Font = new Font(_grid.Font.FontFamily, size);
         }
 
         public WorkItem PickFromPoint(PointF point, ViewData viewData)

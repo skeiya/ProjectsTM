@@ -50,6 +50,7 @@ namespace TaskManagement.UI
             _grid = new TaskGrid(_viewData, this.taskDrawArea.Bounds, panelFullView.Font, false);
             _grid.OnResize(taskDrawArea.Size, false);
             taskDrawArea.Size = _grid.Size;
+            _grid.UpdateFont(_viewData.FontSize);
         }
 
         private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
@@ -101,6 +102,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
+            _grid.UpdateFont(_viewData.FontSize);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }

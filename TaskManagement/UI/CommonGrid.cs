@@ -12,13 +12,13 @@ namespace TaskManagement.UI
 
         public CommonGrid(Font font)
         {
-            Font = font;
+            Font = new Font(font.FontFamily, font.Size);
         }
 
         public int RowCount { set; get; }
         public int ColCount { set; get; }
 
-        public Font Font { get; }
+        public Font Font { set;  get; }
         public Size Size
         {
             get
