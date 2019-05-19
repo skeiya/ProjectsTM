@@ -9,6 +9,8 @@ namespace TaskManagement.ViewModel
     public class ViewData
     {
         public Filter Filter { get; private set; }
+        public Detail Detail { get; set; } = new Detail();
+
         public AppData Original
         {
             get { return _appData; }
@@ -28,7 +30,6 @@ namespace TaskManagement.ViewModel
         public event EventHandler FontChanged;
 
         public int FontSize { set; get; } = 6;
-        public float ViewRatio { set; get; } = 1.0f;
 
         public WorkItem Selected
         {
@@ -43,7 +44,6 @@ namespace TaskManagement.ViewModel
                 }
             }
         }
-
 
         internal Font CreateFont(Font font)
         {
@@ -98,7 +98,7 @@ namespace TaskManagement.ViewModel
                 if (!filteredMembers.Contain(w.AssignedMember)) continue;
                 if (!string.IsNullOrEmpty(Filter.WorkItem))
                 {
-                    if (!Regex.IsMatch(w.ToString(Original.Callender), Filter.WorkItem)) continue;
+                    if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
                 }
                 result.Add(w);
             }
@@ -144,18 +144,13 @@ namespace TaskManagement.ViewModel
 
         internal void DecRatio()
         {
-            if (ViewRatio <= 0.2) return;
-            ViewRatio -= 0.1f;
+            if (Detail.ViewRatio <= 0.2) return;
+            Detail.ViewRatio -= 0.1f;
         }
 
         internal void IncRatio()
         {
-            ViewRatio += 0.1f;
-        }
-
-        internal bool IsEnlarged()
-        {
-            return ViewRatio > 1;
+            Detail.ViewRatio += 0.1f;
         }
     }
 }

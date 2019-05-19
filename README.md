@@ -27,3 +27,7 @@ Permition Scopeを設定。
 インストール。→トークン(xoxp-xxxx)をメモ。
 トークンとチャネルを指定して↓これで投稿。
 https://slack.com/api/chat.postMessage?token=xoxp-xxxx&channel=aa&text=%22Hello%22
+
+https://slack.com/api/chat.postMessage?token=xoxp-427935500258-429278393766-628991580148-1e77c82043c4a4e851749c7ead55df8a&channel=aa&text=%22Hello%22
+
+Invoke-WebRequest -Method Post -Body @{token="xoxp-427935500258-429278393766-628991580148-1e77c82043c4a4e851749c7ead55df8a"; channel="aa"; text="Good night."} https://slack.com/api/chat.postMessage

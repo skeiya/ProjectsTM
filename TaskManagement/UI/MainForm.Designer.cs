@@ -40,6 +40,7 @@ namespace TaskManagement.UI
             this.詳細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemGenerateDummyData = new System.Windows.Forms.ToolStripMenuItem();
             this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemDevide = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +54,7 @@ namespace TaskManagement.UI
             this.フォント小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargeRatio = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSmallRatio = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemDetail = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +67,7 @@ namespace TaskManagement.UI
             this.panelTaskGrid = new System.Windows.Forms.Panel();
             this.taskDrawArea = new System.Windows.Forms.PictureBox();
             this.panelFullView = new System.Windows.Forms.Panel();
-            this.ToolStripMenuItemGenerateDummyData = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelTaskGrid.SuspendLayout();
@@ -86,7 +88,7 @@ namespace TaskManagement.UI
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(626, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(537, 25);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -106,7 +108,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
             this.ToolStripMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(170, 22);
             this.ToolStripMenuItemOpen.Text = "開く";
             this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
             // 
@@ -114,14 +116,14 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemSave.Name = "ToolStripMenuItemSave";
             this.ToolStripMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemSave.Size = new System.Drawing.Size(170, 22);
             this.ToolStripMenuItemSave.Text = "上書き保存";
             this.ToolStripMenuItemSave.Click += new System.EventHandler(this.ToolStripMenuItemSave_Click);
             // 
             // ToolStripMenuItemSaveAsOtherName
             // 
             this.ToolStripMenuItemSaveAsOtherName.Name = "ToolStripMenuItemSaveAsOtherName";
-            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemSaveAsOtherName.Size = new System.Drawing.Size(170, 22);
             this.ToolStripMenuItemSaveAsOtherName.Text = "別名保存";
             this.ToolStripMenuItemSaveAsOtherName.Click += new System.EventHandler(this.ToolStripMenuItemSaveAsOtherName_Click);
             // 
@@ -129,7 +131,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemPrint.Image = global::TaskManagement.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
-            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(170, 22);
             this.ToolStripMenuItemPrint.Text = "印刷";
             this.ToolStripMenuItemPrint.Click += new System.EventHandler(this.ToolStripMenuItemPrint_Click);
             // 
@@ -140,7 +142,7 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemExportRS,
             this.ToolStripMenuItemGenerateDummyData});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
-            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.詳細ToolStripMenuItem.Text = "詳細";
             // 
             // ToolStripMenuItemImportOldFile
@@ -156,6 +158,13 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemExportRS.Size = new System.Drawing.Size(183, 22);
             this.ToolStripMenuItemExportRS.Text = "RSファイルをエクスポート";
             this.ToolStripMenuItemExportRS.Click += new System.EventHandler(this.ToolStripMenuItemExportRS_Click);
+            // 
+            // ToolStripMenuItemGenerateDummyData
+            // 
+            this.ToolStripMenuItemGenerateDummyData.Name = "ToolStripMenuItemGenerateDummyData";
+            this.ToolStripMenuItemGenerateDummyData.Size = new System.Drawing.Size(183, 22);
+            this.ToolStripMenuItemGenerateDummyData.Text = "ダミーデータ生成";
+            this.ToolStripMenuItemGenerateDummyData.Click += new System.EventHandler(this.ToolStripMenuItemGenerateDummyData_Click);
             // 
             // 編集ToolStripMenuItem
             // 
@@ -215,7 +224,8 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemLargerFont,
             this.フォント小ToolStripMenuItem,
             this.ToolStripMenuItemLargeRatio,
-            this.ToolStripMenuItemSmallRatio});
+            this.ToolStripMenuItemSmallRatio,
+            this.ToolStripMenuItemDetail});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
             this.表示ToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
             this.表示ToolStripMenuItem.Text = "表示";
@@ -270,6 +280,13 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
             this.ToolStripMenuItemSmallRatio.Click += new System.EventHandler(this.ToolStripMenuItemSmallRatio_Click);
             // 
+            // ToolStripMenuItemDetail
+            // 
+            this.ToolStripMenuItemDetail.Name = "ToolStripMenuItemDetail";
+            this.ToolStripMenuItemDetail.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDetail.Text = "詳細...";
+            this.ToolStripMenuItemDetail.Click += new System.EventHandler(this.ToolStripMenuItemDetail_Click);
+            // 
             // 管理ToolStripMenuItem
             // 
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -306,7 +323,7 @@ namespace TaskManagement.UI
             this.toolStripComboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toolStripComboBoxFilter.DropDownWidth = 150;
             this.toolStripComboBoxFilter.Name = "toolStripComboBoxFilter";
-            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(87, 23);
+            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(75, 23);
             // 
             // ToolStripMenuItemHelp
             // 
@@ -320,11 +337,12 @@ namespace TaskManagement.UI
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSum,
-            this.toolStripStatusLabelSelect});
+            this.toolStripStatusLabelSelect,
+            this.toolStripStatusLabelViewRatio});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 7, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(626, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(537, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -346,10 +364,10 @@ namespace TaskManagement.UI
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelTaskGrid.Controls.Add(this.taskDrawArea);
-            this.panelTaskGrid.Location = new System.Drawing.Point(52, 43);
+            this.panelTaskGrid.Location = new System.Drawing.Point(45, 43);
             this.panelTaskGrid.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.panelTaskGrid.Name = "panelTaskGrid";
-            this.panelTaskGrid.Size = new System.Drawing.Size(573, 252);
+            this.panelTaskGrid.Size = new System.Drawing.Size(491, 252);
             this.panelTaskGrid.TabIndex = 12;
             // 
             // taskDrawArea
@@ -358,7 +376,7 @@ namespace TaskManagement.UI
             this.taskDrawArea.Location = new System.Drawing.Point(0, 0);
             this.taskDrawArea.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.taskDrawArea.Name = "taskDrawArea";
-            this.taskDrawArea.Size = new System.Drawing.Size(572, 250);
+            this.taskDrawArea.Size = new System.Drawing.Size(490, 250);
             this.taskDrawArea.TabIndex = 1;
             this.taskDrawArea.TabStop = false;
             this.taskDrawArea.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TaskDrawArea_MouseDoubleClick);
@@ -369,21 +387,20 @@ namespace TaskManagement.UI
             this.panelFullView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelFullView.Location = new System.Drawing.Point(0, 25);
             this.panelFullView.Name = "panelFullView";
-            this.panelFullView.Size = new System.Drawing.Size(626, 297);
+            this.panelFullView.Size = new System.Drawing.Size(537, 297);
             this.panelFullView.TabIndex = 13;
             // 
-            // ToolStripMenuItemGenerateDummyData
+            // toolStripStatusLabelViewRatio
             // 
-            this.ToolStripMenuItemGenerateDummyData.Name = "ToolStripMenuItemGenerateDummyData";
-            this.ToolStripMenuItemGenerateDummyData.Size = new System.Drawing.Size(183, 22);
-            this.ToolStripMenuItemGenerateDummyData.Text = "ダミーデータ生成";
-            this.ToolStripMenuItemGenerateDummyData.Click += new System.EventHandler(this.ToolStripMenuItemGenerateDummyData_Click);
+            this.toolStripStatusLabelViewRatio.Name = "toolStripStatusLabelViewRatio";
+            this.toolStripStatusLabelViewRatio.Size = new System.Drawing.Size(43, 17);
+            this.toolStripStatusLabelViewRatio.Text = "拡大率";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 344);
+            this.ClientSize = new System.Drawing.Size(537, 344);
             this.Controls.Add(this.panelFullView);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -440,6 +457,8 @@ namespace TaskManagement.UI
         private System.Windows.Forms.Panel panelFullView;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDevide;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGenerateDummyData;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDetail;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
     }
 }
 

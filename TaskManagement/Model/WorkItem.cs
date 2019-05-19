@@ -56,9 +56,9 @@ namespace TaskManagement.Model
             return result.ToString();
         }
 
-        public string ToString(Callender callender)
+        public override string ToString()
         {
-            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + callender.GetPeriodDayCount(Period).ToString() + "d]";
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "]";
         }
 
         public void Edit(Project project, string v, Period period, Member member, Tags tags)

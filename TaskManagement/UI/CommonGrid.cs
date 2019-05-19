@@ -10,17 +10,32 @@ namespace TaskManagement.UI
         private Dictionary<int, float> _rowToHeight = new Dictionary<int, float>();
         private Dictionary<int, float> _colToWidth = new Dictionary<int, float>();
 
-        public CommonGrid(Graphics g, Font font)
+        public CommonGrid(Font font)
         {
-            Graphics = g;
-            Font = font;
+            Font = new Font(font.FontFamily, font.Size);
         }
 
         public int RowCount { set; get; }
         public int ColCount { set; get; }
-        public Graphics Graphics { get; }
 
-        public Font Font { get; }
+        public Font Font { set;  get; }
+        public Size Size
+        {
+            get
+            {
+                var width = 0f;
+                foreach(var w in _colToWidth)
+                {
+                    width += w.Value;
+                }
+                var height = 0f;
+                foreach(var h in _rowToHeight)
+                {
+                    height += h.Value;
+                }
+                return new Size((int)width, (int)height);
+            }
+        }
 
         public float RowHeight(int row)
         {
@@ -42,25 +57,25 @@ namespace TaskManagement.UI
             _colToWidth[c] = width;
         }
 
-        public SizeF MeasureString(string s)
+        public SizeF MeasureString(Graphics g, string s)
         {
-            return Graphics.MeasureString(s, Font, 100, StringFormat.GenericTypographic);
+            return g.MeasureString(s, Font, 100, StringFormat.GenericTypographic);
         }
 
-        public void DrawString(string s, RectangleF rect)
+        public void DrawString(Graphics g, string s, RectangleF rect)
         {
-            DrawString(s, rect, Color.Black);
+            DrawString(g, s, rect, Color.Black);
         }
 
-        internal void DrawString(string s, RectangleF rect, Color c)
+        internal void DrawString(Graphics g, string s, RectangleF rect, Color c)
         {
             var deflate = rect;
             deflate.X += 1;
             deflate.Y += 1;
-            Graphics.DrawString(s, Font, BrushCache.GetBrush(c), deflate, StringFormat.GenericTypographic);
+            g.DrawString(s, Font, BrushCache.GetBrush(c), deflate, StringFormat.GenericTypographic);
         }
 
-        internal void DrawMileStoneLine(float bottom, Color color)
+        internal void DrawMileStoneLine(Graphics g, float bottom, Color color)
         {
             using (var brush = new SolidBrush(color))
             {
@@ -68,7 +83,7 @@ namespace TaskManagement.UI
                 var width = GetFullWidth();
                 var x = 0f;
                 var y = bottom - height;
-                Graphics.FillRectangle(brush, x, y, width, height);
+                g.FillRectangle(brush, x, y, width, height);
             }
         }
 

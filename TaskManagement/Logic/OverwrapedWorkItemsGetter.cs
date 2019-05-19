@@ -12,12 +12,10 @@ namespace TaskManagement.Logic
             {
                 foreach (var dst in workItems)
                 {
-                    if (src.Equals(dst))
-                    {
-                        continue;
-                    }
                     if (!src.AssignedMember.Equals(dst.AssignedMember)) continue;
-                    if (src.Period.HasInterSection(dst.Period)) result.Add(src);
+                    if (!src.Period.HasInterSection(dst.Period)) continue;
+                    if (src.Equals(dst)) continue;
+                    result.Add(src);
                 }
             }
             return result;
