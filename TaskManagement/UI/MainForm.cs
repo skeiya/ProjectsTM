@@ -56,7 +56,7 @@ namespace TaskManagement.UI
 
         private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
         {
-            _grid.DrawAlwaysFrameOnly(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
+            _grid.DrawTaskAreaOnPain(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void LoadUserSetting()

@@ -204,12 +204,12 @@ namespace TaskManagement.UI
             DrawMileStones(g, viewData.Original.MileStones);
         }
 
-        private void DrawMileStonesOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
+        private void DrawMileStonesOutOfTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
         {
             if (mileStones.IsEmpty()) return;
-            var dayWidth = GetDayWidth(g);
-            var monthWidth = GetMonthWidth(g);
-            var yearWidth = GetYearWidth(g);
+            var dayWidth = GetDayWidth(detail);
+            var monthWidth = GetMonthWidth(detail);
+            var yearWidth = GetYearWidth(detail);
             var height = _grid.RowHeight(2);
 
             foreach (var m in mileStones)
@@ -237,29 +237,32 @@ namespace TaskManagement.UI
             }
         }
 
-        private void DrawCallenderDaysOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenHight)
+        private void DrawCallenderDaysOutOfTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight)
         {
-            var dayWidth = GetDayWidth(g);
-            var monthWidth = GetMonthWidth(g);
-            var yearWidth = GetYearWidth(g);
+            var dayWidth = GetDayWidth(detail);
+            var monthWidth = GetMonthWidth(detail);
+            var yearWidth = GetYearWidth(detail);
             DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth);
             DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth);
             DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth);
         }
 
-        private float GetYearWidth(Graphics g)
+        private float GetYearWidth(Detail detail)
         {
-            return _grid.MeasureString(g, "0000/").Width;
+            return detail.DateWidth / 2;
+            //            return _grid.MeasureString(g, "0000/").Width;
         }
 
-        private float GetMonthWidth(Graphics g)
+        private float GetMonthWidth(Detail detail)
         {
-            return _grid.MeasureString(g, "00/").Width;
+            return detail.DateWidth * 3 / 10;
+            //            return _grid.MeasureString(g, "00/").Width;
         }
 
-        private float GetDayWidth(Graphics g)
+        private float GetDayWidth(Detail detail)
         {
-            return _grid.MeasureString(g, "00").Width;
+            return detail.DateWidth / 5;
+            //            return _grid.MeasureString(g, "00").Width;
         }
 
         private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
@@ -342,10 +345,10 @@ namespace TaskManagement.UI
             }
         }
 
-        private void DrawTeamMembersOutOfTaskArea(Graphics g, Point panelLocation, float offsetFromHiddenWidth)
+        private void DrawTeamMembersOutOfTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenWidth)
         {
-            var companyHight = GetCompanyHeight();
-            var nameHeight = GetNameHeight();
+            var companyHight = detail.CompanyHeight;
+            var nameHeight = detail.NameHeight;
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(0, c);
@@ -358,27 +361,17 @@ namespace TaskManagement.UI
             }
         }
 
-        private float GetNameHeight()
-        {
-            return 20;
-        }
-
-        private float GetCompanyHeight()
-        {
-            return 10;
-        }
-
         internal void DrawAlwaysFrame(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
             panelLocation.Offset(-3, 0);
             DrawWorkItems(g, viewData, draggingItem, clip);
         }
 
-        internal void DrawAlwaysFrameOnly(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
+        internal void DrawTaskAreaOnPain(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
-            DrawCallenderDaysOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y);
-            DrawTeamMembersOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.X);
-            DrawMileStonesOutOfTaskArea(g, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
+            DrawCallenderDaysOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y);
+            DrawTeamMembersOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.X);
+            DrawMileStonesOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
         private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip)
