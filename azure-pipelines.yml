@@ -26,18 +26,13 @@ steps:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.argifactstagingdirectory)'
-    
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
