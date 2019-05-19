@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,6 +45,8 @@
             this.textBoxMember = new System.Windows.Forms.TextBox();
             this.radioButtonDate = new System.Windows.Forms.RadioButton();
             this.radioButtonDayCount = new System.Windows.Forms.RadioButton();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -216,6 +219,22 @@
             this.radioButtonDayCount.UseVisualStyleBackColor = true;
             this.radioButtonDayCount.CheckedChanged += new System.EventHandler(this.RadioButtonDayCount_CheckedChanged);
             // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(10, 197);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(89, 56);
+            this.textBox1.TabIndex = 17;
+            this.textBox1.Text = "\"|\"区切りで記述する。\r\n例：abc|xyx";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // EditWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
@@ -223,6 +242,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(310, 306);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.radioButtonDayCount);
             this.Controls.Add(this.radioButtonDate);
             this.Controls.Add(this.textBoxMember);
@@ -267,5 +287,7 @@
         private System.Windows.Forms.TextBox textBoxMember;
         private System.Windows.Forms.RadioButton radioButtonDate;
         private System.Windows.Forms.RadioButton radioButtonDayCount;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
