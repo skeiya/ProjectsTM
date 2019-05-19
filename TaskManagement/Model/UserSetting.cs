@@ -1,4 +1,6 @@
-﻿namespace TaskManagement.Model
+﻿using TaskManagement.ViewModel;
+
+namespace TaskManagement.Model
 {
     public class UserSetting
     {
@@ -7,5 +9,6 @@
         public float Ratio { set; get; }
         public int FontSize { set; get; }
         public string FilePath { get; set; }
+        public Detail Detail { set; get; } = new Detail();
     }
 }

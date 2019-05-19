@@ -67,6 +67,7 @@ namespace TaskManagement.UI
                 toolStripComboBoxFilter.Text = setting.FilterName;
                 _viewData.ViewRatio = setting.Ratio;
                 _viewData.FontSize = setting.FontSize;
+                _viewData.Detail = setting.Detail;
                 var appData = _fileIOService.OpenFile(setting.FilePath);
                 if (appData == null) return;
                 _viewData.Original = appData;
@@ -88,7 +89,8 @@ namespace TaskManagement.UI
                 FilterName = toolStripComboBoxFilter.Text,
                 FontSize = _viewData.FontSize,
                 Ratio = _viewData.ViewRatio,
-                FilePath = _fileIOService.FilePath
+                FilePath = _fileIOService.FilePath,
+                Detail = _viewData.Detail
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }
