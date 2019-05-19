@@ -30,7 +30,6 @@ namespace TaskManagement.ViewModel
         public event EventHandler FontChanged;
 
         public int FontSize { set; get; } = 6;
-        public float ViewRatio { set; get; } = 1.0f;
 
         public WorkItem Selected
         {
@@ -145,18 +144,13 @@ namespace TaskManagement.ViewModel
 
         internal void DecRatio()
         {
-            if (ViewRatio <= 0.2) return;
-            ViewRatio -= 0.1f;
+            if (Detail.ViewRatio <= 0.2) return;
+            Detail.ViewRatio -= 0.1f;
         }
 
         internal void IncRatio()
         {
-            ViewRatio += 0.1f;
-        }
-
-        internal bool IsEnlarged()
-        {
-            return ViewRatio > 1;
+            Detail.ViewRatio += 0.1f;
         }
     }
 }

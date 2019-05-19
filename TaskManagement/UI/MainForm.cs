@@ -65,7 +65,6 @@ namespace TaskManagement.UI
             {
                 var setting = UserSettingUIService.Load(UserSettingPath);
                 toolStripComboBoxFilter.Text = setting.FilterName;
-                _viewData.ViewRatio = setting.Ratio;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 var appData = _fileIOService.OpenFile(setting.FilePath);
@@ -88,7 +87,6 @@ namespace TaskManagement.UI
             {
                 FilterName = toolStripComboBoxFilter.Text,
                 FontSize = _viewData.FontSize,
-                Ratio = _viewData.ViewRatio,
                 FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail
             };
@@ -515,6 +513,8 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
             _viewData.DecRatio();
+            UpdatePanelLayout(_viewData.Detail);
+            _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -522,6 +522,8 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
             _viewData.IncRatio();
+            UpdatePanelLayout(_viewData.Detail);
+            _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }

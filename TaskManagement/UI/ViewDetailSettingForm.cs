@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TaskManagement.ViewModel;
 
@@ -16,11 +9,11 @@ namespace TaskManagement.UI
         public ViewDetailSettingForm(Detail p)
         {
             InitializeComponent();
-            textBoxCompany.Text = p.CompanyHeight.ToString();
-            textBoxName.Text = p.NameHeight.ToString();
-            textBoxRow.Text = p.RowHeight.ToString();
-            textBoxDate.Text = p.DateWidth.ToString();
-            textBoxCol.Text = p.ColWidth.ToString();
+            textBoxCompany.Text = p.CompanyHeightCore.ToString();
+            textBoxName.Text = p.NameHeightCore.ToString();
+            textBoxRow.Text = p.RowHeightCore.ToString();
+            textBoxDate.Text = p.DateWidthCore.ToString();
+            textBoxCol.Text = p.ColWidthCore.ToString();
         }
 
         public Detail Detail { get; private set; }
@@ -38,11 +31,11 @@ namespace TaskManagement.UI
             var result = new Detail();
             try
             {
-                result.CompanyHeight = int.Parse(textBoxCompany.Text);
-                result.NameHeight = int.Parse(textBoxName.Text);
-                result.RowHeight = int.Parse(textBoxRow.Text);
-                result.DateWidth = int.Parse(textBoxDate.Text);
-                result.ColWidth = int.Parse(textBoxCol.Text);
+                result.CompanyHeightCore = int.Parse(textBoxCompany.Text);
+                result.NameHeightCore = int.Parse(textBoxName.Text);
+                result.RowHeightCore = int.Parse(textBoxRow.Text);
+                result.DateWidthCore = int.Parse(textBoxDate.Text);
+                result.ColWidthCore = int.Parse(textBoxCol.Text);
             }
             catch
             {
