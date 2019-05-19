@@ -44,6 +44,7 @@ namespace TaskManagement.UI
             LoadUserSetting();
             UpdateGrid();
             UpdatePanelLayout(_viewData.Detail);
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
         }
 
         private void UpdateGrid()
@@ -185,7 +186,7 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-    //        taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
+            //        taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
             taskDrawArea.Paint += TaskDrawArea_Paint;
             taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
             taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
@@ -513,8 +514,10 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
             _viewData.DecRatio();
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             UpdatePanelLayout(_viewData.Detail);
             _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
+            taskDrawArea.Size = _grid.Size;
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -522,8 +525,10 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
             _viewData.IncRatio();
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             UpdatePanelLayout(_viewData.Detail);
             _grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
+            taskDrawArea.Size = _grid.Size;
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
@@ -583,7 +588,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemDetail_Click(object sender, EventArgs e)
         {
-            using(var dlg = new ViewDetailSettingForm(_viewData.Detail.Clone()))
+            using (var dlg = new ViewDetailSettingForm(_viewData.Detail.Clone()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Detail = dlg.Detail;
