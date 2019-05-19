@@ -54,8 +54,8 @@ namespace TaskManagement.UI
 
         private void SetRowHeights(Size s, Detail detail, bool isPrint)
         {
-            var company = isPrint ? 20 : 0;// GetCompanyHeight();
-            var name = isPrint ? 20 : 0;//GetNameHeight();
+            var company = isPrint ? 20 : 0;
+            var name = isPrint ? 20 : 0;
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
             var height = isPrint ? ((float)s.Height - name) / (_grid.RowCount - Members.RowCount) : detail.RowHeight;
@@ -215,10 +215,11 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 var r = _dayToRow[m.Day];
-                var bottom = _cellBoundsCache.Get(r, 0).Bottom;
+                var bounds = _cellBoundsCache.Get(r, 0);
+                var bottom = bounds.Bottom + offsetFromHiddenHight;
                 using (var b = new SolidBrush(m.Color))
                 {
-                    g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + bottom - offsetFromHiddenHight - height / 2);
+                    g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), bottom - height * 2 / 3);
                 }
                 _grid.DrawMileStoneLine(g, bottom, m.Color);
             }
@@ -250,19 +251,16 @@ namespace TaskManagement.UI
         private float GetYearWidth(Detail detail)
         {
             return detail.DateWidth / 2;
-            //            return _grid.MeasureString(g, "0000/").Width;
         }
 
         private float GetMonthWidth(Detail detail)
         {
             return detail.DateWidth * 3 / 10;
-            //            return _grid.MeasureString(g, "00/").Width;
         }
 
         private float GetDayWidth(Detail detail)
         {
             return detail.DateWidth / 5;
-            //            return _grid.MeasureString(g, "00").Width;
         }
 
         private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
@@ -365,13 +363,14 @@ namespace TaskManagement.UI
         {
             panelLocation.Offset(-3, 0);
             DrawWorkItems(g, viewData, draggingItem, clip);
+            DrawMileStonesOutOfTaskArea(g, viewData.Detail, new Point(0, 0), 0, viewData.Original.MileStones);
         }
 
-        internal void DrawTaskAreaOnPain(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
+        internal void DrawTaskAreaOnPaint(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
             DrawCallenderDaysOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.X);
-            DrawMileStonesOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y, viewData.Original.MileStones);
+            DrawMileStonesOutOfTaskArea(g, viewData.Detail, panelLocation, viewData.Detail.FixedHeight - offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
         private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip)

@@ -20,6 +20,9 @@ namespace TaskManagement.ViewModel
         public int DateWidthCore { set; get; } = 50;
         public int ColWidthCore { set; get; } = 20;
         public float ViewRatio { set; get; } = 1.0f;
+        [XmlIgnore]
+        public float FixedHeight => CompanyHeight + NameHeight;
+
         internal Detail Clone()
         {
             var result = new Detail();

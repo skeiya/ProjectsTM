@@ -34,8 +34,8 @@ namespace TaskManagement.UI
             _undoService.Changed += _undoService_Changed;
             panelTaskGrid.Resize += Panel1_Resize;
             panelTaskGrid.Scroll += Panel1_Scroll;
-            panelTaskGrid.AutoScroll = true;// _viewData.IsEnlarged();
-            panelFullView.Paint += PanelTaskGrid_Paint;
+            panelTaskGrid.AutoScroll = true;
+            panelFullView.Paint += PanelTaskAreaWithFixed_Paint;
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
@@ -55,9 +55,14 @@ namespace TaskManagement.UI
             _grid.UpdateFont(_viewData.FontSize);
         }
 
-        private void PanelTaskGrid_Paint(object sender, PaintEventArgs e)
+        private void PanelTaskAreaWithFixed_Paint(object sender, PaintEventArgs e)
         {
-            _grid.DrawTaskAreaOnPain(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
+            _grid.DrawTaskAreaOnPaint(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
+        }
+
+        private void PanelTaskAreaWithoutFixed_Paint(object sender, PaintEventArgs e)
+        {
+            _grid.DrawAlwaysFrame(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void LoadUserSetting()
@@ -186,8 +191,7 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-            //        taskDrawArea.Size = new Size(panelTaskGrid.Width - taskDrawArea.Location.X, panelTaskGrid.Height - taskDrawArea.Location.Y);
-            taskDrawArea.Paint += TaskDrawArea_Paint;
+            taskDrawArea.Paint += PanelTaskAreaWithoutFixed_Paint;
             taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
             taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
             taskDrawArea.MouseMove += TaskDrawArea_MouseMove;
@@ -392,11 +396,6 @@ namespace TaskManagement.UI
 
                 _workItemDragService.StartDrag(wi, e.Location, _grid);
             }
-        }
-
-        private void TaskDrawArea_Paint(object sender, PaintEventArgs e)
-        {
-            _grid.DrawAlwaysFrame(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
