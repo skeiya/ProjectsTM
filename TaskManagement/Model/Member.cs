@@ -107,9 +107,7 @@ namespace TaskManagement.Model
 
         public int CompareTo(Member other)
         {
-            var cmp = this.Company.CompareTo(other.Company);
-            if (cmp != 0) return cmp;
-            return this.DisplayName.CompareTo(other.DisplayName);
+            return this.ToSerializeString().CompareTo(other.ToSerializeString().ToString());
         }
     }
 }
