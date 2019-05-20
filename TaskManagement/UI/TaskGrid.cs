@@ -82,18 +82,9 @@ namespace TaskManagement.UI
 
         }
 
-        internal static float GetFixedColWidth(Graphics g, ViewData viewData, Font font)
+        public void UpdateRowColMap(ViewData viewData)
         {
-            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Width;
-        }
-
-        internal static float GetFixedRowHight(Graphics g, ViewData viewData, Font font)
-        {
-            return g.MeasureString("0000/00/00", viewData.CreateFont(font), 1000, StringFormat.GenericTypographic).Height * 2.5f;
-        }
-
-        private void UpdateRowColMap(ViewData viewData)
-        {
+            ClearRowColMap();
             int c = Callender.ColCount;
             foreach (var m in viewData.GetVisibleMembers())
             {
@@ -109,6 +100,14 @@ namespace TaskManagement.UI
                 _rowToDay.Add(r, d);
                 r++;
             }
+        }
+
+        private void ClearRowColMap()
+        {
+            _colToMember.Clear();
+            _memberToCol.Clear();
+            _dayToRow.Clear();
+            _rowToDay.Clear();
         }
 
         internal void UpdateFont(int size)

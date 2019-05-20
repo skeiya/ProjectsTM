@@ -537,8 +537,10 @@ namespace TaskManagement.UI
             using (var dlg = new ManageMemberForm(_viewData.Original))
             {
                 dlg.ShowDialog(this);
+                _grid.UpdateRowColMap(_viewData);
             }
             taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
