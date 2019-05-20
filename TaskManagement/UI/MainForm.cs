@@ -506,8 +506,10 @@ namespace TaskManagement.UI
             using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems))
             {
                 dlg.ShowDialog();
+                _grid.UpdateRowColMap(_viewData);
             }
             taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)

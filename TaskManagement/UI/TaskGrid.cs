@@ -23,8 +23,6 @@ namespace TaskManagement.UI
         {
             _grid = new CommonGrid(font);
             UpdateRowColMap(viewData);
-            _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
-            _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
             _colorConditions = viewData.Original.ColorConditions;
         }
 
@@ -85,6 +83,8 @@ namespace TaskManagement.UI
         public void UpdateRowColMap(ViewData viewData)
         {
             ClearRowColMap();
+            _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
+            _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
             int c = Callender.ColCount;
             foreach (var m in viewData.GetVisibleMembers())
             {
