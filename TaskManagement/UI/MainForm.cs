@@ -568,6 +568,7 @@ namespace TaskManagement.UI
                 _viewData.Original.MileStones = dlg.MileStones;
             }
             taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
