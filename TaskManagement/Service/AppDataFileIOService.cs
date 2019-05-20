@@ -25,7 +25,7 @@ namespace TaskManagement.Service
         {
             if (OverwrapedWorkItemsGetter.Get(appData.WorkItems).Count == 0) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes) return false;
-            return false;
+            return true;
         }
 
         internal AppData Open()
