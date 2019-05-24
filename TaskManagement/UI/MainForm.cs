@@ -56,9 +56,6 @@ namespace TaskManagement.UI
                 if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
                 ToolStripMenuItemReload_Click(null, null);
             }));
-            //var msg = "開いているファイルが外部で変更されました。リロードしますか？";
-            //if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            //ToolStripMenuItemReload_Click(null, null);
         }
 
         private void UpdateGrid()

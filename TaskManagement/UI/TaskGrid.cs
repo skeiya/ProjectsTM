@@ -220,7 +220,7 @@ namespace TaskManagement.UI
                 {
                     g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), bottom - height * 2 / 3);
                 }
-                _grid.DrawMileStoneLine(g, bottom, m.Color);
+                _grid.DrawMileStoneLineFiexed(g, bottom, m.Color, detail.DateWidth);
             }
         }
 

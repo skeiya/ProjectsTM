@@ -75,6 +75,16 @@ namespace TaskManagement.UI
             g.DrawString(s, Font, BrushCache.GetBrush(c), deflate, StringFormat.GenericTypographic);
         }
 
+        internal void DrawMileStoneLineFiexed(Graphics g, float bottom, Color color, float width)
+        {
+            using (var brush = new SolidBrush(color))
+            {
+                var height = 5f;
+                var x = 0f;
+                var y = bottom - height;
+                g.FillRectangle(brush, x, y, width, height);
+            }
+        }
         internal void DrawMileStoneLine(Graphics g, float bottom, Color color)
         {
             using (var brush = new SolidBrush(color))
