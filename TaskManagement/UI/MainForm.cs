@@ -45,6 +45,20 @@ namespace TaskManagement.UI
             UpdateGrid();
             UpdatePanelLayout(_viewData.Detail);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
+            _fileIOService.FileChanged += _fileIOService_FileChanged;
+        }
+
+        private void _fileIOService_FileChanged(object sender, EventArgs e)
+        {
+            this.BeginInvoke((Action)(() =>
+            {
+                var msg = "開いているファイルが外部で変更されました。リロードしますか？";
+                if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+                ToolStripMenuItemReload_Click(null, null);
+            }));
+            //var msg = "開いているファイルが外部で変更されました。リロードしますか？";
+            //if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            //ToolStripMenuItemReload_Click(null, null);
         }
 
         private void UpdateGrid()

@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
 using TaskManagement.Logic;
 using TaskManagement.Model;
 
@@ -6,6 +8,32 @@ namespace TaskManagement.Service
 {
     class AppDataFileIOService
     {
+        public event EventHandler FileChanged;
+        private DateTime _last;
+
+        public AppDataFileIOService()
+        {
+            _watcher = new FileSystemWatcher();
+            _watcher.Changed += _watcher_Changed;
+        }
+
+        private void _watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (!IsEnoughTerm()) return;
+            if (FileChanged != null) FileChanged(sender, e);
+        }
+
+        private bool IsEnoughTerm()
+        {
+            if (_last == null) return true;
+            var now = DateTime.Now;
+            var span = now - _last;
+            if (span.TotalSeconds < 3) return false;
+            _last = now;
+            return true;
+        }
+
+        private FileSystemWatcher _watcher;
         private string _previousFileName;
         public string FilePath => _previousFileName;
 
@@ -18,7 +46,15 @@ namespace TaskManagement.Service
                 return;
             }
             if (!CheckOverwrap(appData)) return;
-            AppDataSerializer.Serialize(_previousFileName, appData);
+            _watcher.EnableRaisingEvents = false;
+            try
+            {
+                AppDataSerializer.Serialize(_previousFileName, appData);
+            }
+            finally
+            {
+                _watcher.EnableRaisingEvents = true;
+            }
         }
 
         private bool CheckOverwrap(AppData appData)
@@ -49,14 +85,29 @@ namespace TaskManagement.Service
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                AppDataSerializer.Serialize(dlg.FileName, appData);
-                _previousFileName = dlg.FileName;
+                _watcher.EnableRaisingEvents = false;
+                try
+                {
+                    AppDataSerializer.Serialize(dlg.FileName, appData);
+                    _previousFileName = dlg.FileName;
+                }
+                finally
+                {
+                    _watcher.Path = Path.GetDirectoryName(_previousFileName);
+                    _watcher.Filter = Path.GetFileName(_previousFileName);
+                    _watcher.EnableRaisingEvents = true;
+                }
             }
         }
 
         public AppData OpenFile(string fileName)
         {
             _previousFileName = fileName;
+            _watcher.Path = Path.GetDirectoryName(fileName);
+            _watcher.Filter = Path.GetFileName(fileName);
+            _watcher.NotifyFilter = NotifyFilters.LastWrite;
+            _watcher.IncludeSubdirectories = false;
+            _watcher.EnableRaisingEvents = true;
             return AppDataSerializer.Deserialize(fileName);
         }
     }
