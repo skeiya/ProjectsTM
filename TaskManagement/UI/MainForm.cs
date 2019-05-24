@@ -311,9 +311,7 @@ namespace TaskManagement.UI
             if (string.IsNullOrEmpty(fileName)) return;
             var appData = _fileIOService.OpenFile(fileName);
             if (appData == null) return;
-            _viewData.Original = appData;
-            _viewData.Selected = null;
-            taskDrawArea.Invalidate();
+            Open(appData);
         }
 
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
@@ -451,12 +449,16 @@ namespace TaskManagement.UI
         {
             var appData = _fileIOService.Open();
             if (appData == null) return;
+            Open(appData);
+        }
+
+        private void Open(AppData appData)
+        {
             _viewData.Original = appData;
             _viewData.Selected = null;
             UpdateGrid();
             taskDrawArea.Invalidate();
         }
-
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
