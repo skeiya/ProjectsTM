@@ -605,5 +605,15 @@ namespace TaskManagement.UI
                 panelFullView.Invalidate();
             }
         }
+
+        private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
+        {
+            var appData = _fileIOService.ReOpen();
+            if (appData == null) return;
+            _viewData.Original = appData;
+            _viewData.Selected = null;
+            UpdateGrid();
+            taskDrawArea.Invalidate();
+        }
     }
 }

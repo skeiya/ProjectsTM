@@ -38,6 +38,11 @@ namespace TaskManagement.Service
             }
         }
 
+        internal AppData ReOpen()
+        {
+            return OpenFile(_previousFileName);
+        }
+
         internal void SaveOtherName(AppData appData)
         {
             if (!CheckOverwrap(appData)) return;
