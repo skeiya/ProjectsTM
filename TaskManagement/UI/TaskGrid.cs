@@ -242,9 +242,9 @@ namespace TaskManagement.UI
             var dayWidth = GetDayWidth(detail);
             var monthWidth = GetMonthWidth(detail);
             var yearWidth = GetYearWidth(detail);
-            DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth);
-            DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth);
-            DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth);
+            DrawYear(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, yearWidth, detail.FixedHeight);
+            DrawMonth(g, panelLocation, offsetFromHiddenHight, dayWidth, monthWidth, detail.FixedHeight);
+            DrawDay(g, panelLocation, offsetFromHiddenHight, dayWidth, detail.FixedHeight);
         }
 
         private float GetYearWidth(Detail detail)
@@ -262,40 +262,46 @@ namespace TaskManagement.UI
             return detail.DateWidth / 5;
         }
 
-        private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth)
+        private void DrawDay(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float fixedHeight)
         {
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var rect = _cellBoundsCache.Get(r, 2);
-                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, panelLocation.Y + rect.Y - offsetFromHiddenHight);
+                var y = panelLocation.Y + rect.Y - offsetFromHiddenHight;
+                if (y < fixedHeight) continue;
+                g.DrawString(_rowToDay[r].Day.ToString(), _grid.Font, Brushes.Black, panelLocation.X - dayWidth, y);
             }
         }
 
-        private void DrawMonth(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth)
+        private void DrawMonth(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth, float fixedHeight)
         {
             int m = 0;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var month = _rowToDay[r].Month;
                 if (m == month) continue;
-                m = month;
                 var rect = _cellBoundsCache.Get(r, 1);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
+                var y = panelLocation.Y + rect.Y - offsetFromHiddenHight;
+                if (y < fixedHeight) continue;
+                g.DrawString(month.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth), y);
+                m = month;
             }
         }
 
-        private void DrawYear(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth, float yearWidth)
+        private void DrawYear(Graphics g, Point panelLocation, float offsetFromHiddenHight, float dayWidth, float monthWidth, float yearWidth, float fixedHeight)
         {
             int y = 0;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
                 var year = _rowToDay[r].Year;
                 if (y == year) continue;
-                y = year;
                 var rect = _cellBoundsCache.Get(r, 0);
                 rect.Height = rect.Height * 2;//TODO: 適当に広げている
-                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), panelLocation.Y + rect.Y - offsetFromHiddenHight);
+                var yPos = panelLocation.Y + rect.Y - offsetFromHiddenHight;
+                if (yPos < fixedHeight) continue;
+                g.DrawString(year.ToString() + "/", _grid.Font, Brushes.Black, panelLocation.X - (dayWidth + monthWidth + yearWidth), yPos);
+                y = year;
             }
         }
 
@@ -349,12 +355,16 @@ namespace TaskManagement.UI
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(0, c);
-                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - (companyHight + nameHeight));
+                var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
+                if (x < detail.DateWidth) continue;
+                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, x, panelLocation.Y - (companyHight + nameHeight));
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(1, c);
-                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, rect.X + panelLocation.X - offsetFromHiddenWidth, panelLocation.Y - nameHeight);
+                var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
+                if (x < detail.DateWidth) continue;
+                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, x, panelLocation.Y - nameHeight);
             }
         }
 
