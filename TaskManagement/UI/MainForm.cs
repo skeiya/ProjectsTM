@@ -285,7 +285,6 @@ namespace TaskManagement.UI
             {
                 _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
             }
-            taskDrawArea.Invalidate();
         }
 
         private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
@@ -323,17 +322,17 @@ namespace TaskManagement.UI
         {
             try
             {
-                using (var c = new Control())
-                {
-                    if (_viewData.Selected == null) return;
-                    var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
-                    bounds.X += taskDrawArea.Location.X;
-                    bounds.Y += taskDrawArea.Location.Y;
-                    c.Bounds = Rectangle.Round(bounds);
-                    panelTaskGrid.Controls.Add(c);
-                    panelTaskGrid.ScrollControlIntoView(c);
-                    panelTaskGrid.Controls.Remove(c);
-                }
+                //using (var c = new Control())
+                //{
+                //    if (_viewData.Selected == null) return;
+                //    var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
+                //    bounds.X += taskDrawArea.Location.X;
+                //    bounds.Y += taskDrawArea.Location.Y;
+                //    c.Bounds = Rectangle.Round(bounds);
+                //    panelTaskGrid.Controls.Add(c);
+                //    panelTaskGrid.ScrollControlIntoView(c);
+                //    panelTaskGrid.Controls.Remove(c);
+                //}
             }
             finally
             {
