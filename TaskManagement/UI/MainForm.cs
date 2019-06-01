@@ -542,6 +542,9 @@ namespace TaskManagement.UI
                 dlg.ShowDialog();
                 _grid.UpdateRowColMap(_viewData);
             }
+            UpdateGrid();
+            _grid.UpdateRowColMap(_viewData);
+            UpdateDisplayOfSum(null);
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
         }
