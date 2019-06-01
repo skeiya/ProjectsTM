@@ -28,9 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBoxPattern = new System.Windows.Forms.TextBox();
             this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -39,10 +43,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 24;
-            this.listBox1.Location = new System.Drawing.Point(13, 90);
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(10, 33);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(775, 340);
+            this.listBox1.Size = new System.Drawing.Size(414, 184);
             this.listBox1.TabIndex = 0;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
@@ -50,34 +55,54 @@
             // 
             this.textBoxPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPattern.Location = new System.Drawing.Point(13, 13);
+            this.textBoxPattern.Location = new System.Drawing.Point(10, 8);
+            this.textBoxPattern.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxPattern.Name = "textBoxPattern";
-            this.textBoxPattern.Size = new System.Drawing.Size(775, 31);
+            this.textBoxPattern.Size = new System.Drawing.Size(264, 19);
             this.textBoxPattern.TabIndex = 1;
-            this.textBoxPattern.TextChanged += new System.EventHandler(this.TextBoxPattern_TextChanged);
             // 
             // checkBoxOverwrapPeriod
             // 
+            this.checkBoxOverwrapPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxOverwrapPeriod.AutoSize = true;
-            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(13, 51);
+            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(286, 10);
+            this.checkBoxOverwrapPeriod.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.checkBoxOverwrapPeriod.Name = "checkBoxOverwrapPeriod";
-            this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(173, 28);
+            this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(72, 16);
             this.checkBoxOverwrapPeriod.TabIndex = 2;
-            this.checkBoxOverwrapPeriod.Text = "期間重複あり";
+            this.checkBoxOverwrapPeriod.Text = "期間重複";
             this.checkBoxOverwrapPeriod.UseVisualStyleBackColor = true;
             this.checkBoxOverwrapPeriod.CheckedChanged += new System.EventHandler(this.CheckBoxOverwrapPeriod_CheckedChanged);
             // 
+            // buttonSearch
+            // 
+            this.buttonSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSearch.Location = new System.Drawing.Point(377, 6);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(47, 23);
+            this.buttonSearch.TabIndex = 3;
+            this.buttonSearch.Text = "検索";
+            this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.ButtonSearch_Click);
+            // 
+            // searchWorkitemFormBindingSource
+            // 
+            this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
+            // 
             // SearchWorkitemForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(434, 230);
+            this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.checkBoxOverwrapPeriod);
             this.Controls.Add(this.textBoxPattern);
             this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "SearchWorkitemForm";
             this.Text = "検索";
+            ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -88,5 +113,7 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox textBoxPattern;
         private System.Windows.Forms.CheckBox checkBoxOverwrapPeriod;
+        private System.Windows.Forms.BindingSource searchWorkitemFormBindingSource;
+        private System.Windows.Forms.Button buttonSearch;
     }
 }

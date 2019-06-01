@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
-using System.Timers;
 using System.Windows.Forms;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -14,8 +14,6 @@ namespace TaskManagement.UI
     {
         private readonly ViewData _viewData;
         private readonly WorkItemEditService _editService;
-        private System.Timers.Timer _timer = new System.Timers.Timer(100);
-        private int _tickCount = 0;
         private List<WorkItem> _list = new List<WorkItem>();
 
         public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService)
@@ -23,71 +21,12 @@ namespace TaskManagement.UI
             InitializeComponent();
             this._viewData = viewData;
             this._editService = editService;
-            UpdateFilteredList();
-            UpdateListBox();
-
-            _timer.Elapsed += _timer_Elapsed;
             listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
-        }
-
-        private void UpdateListBox()
-        {
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(_list.ToArray());
         }
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = _list[listBox1.SelectedIndex];
-        }
-
-        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            this.Invoke(new Action(() =>
-            {
-                if (_tickCount <= 5)
-                {
-                    _tickCount++;
-                    return;
-                }
-
-                _tickCount = 0;
-                _timer.Enabled = false;
-
-                UpdateFilteredList();
-                UpdateListBox();
-            }
-            ));
-        }
-
-        private void UpdateFilteredList()
-        {
-            _list.Clear();
-            if (string.IsNullOrEmpty(textBoxPattern.Text))
-            {
-                foreach (var wi in _viewData.GetFilteredWorkItems())
-                {
-                    _list.Add(wi);
-                }
-            }
-            else
-            {
-                try
-                {
-                    foreach (var wi in _viewData.GetFilteredWorkItems())
-                    {
-                        if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text)) continue;
-                        _list.Add(wi);
-                    }
-                }
-                catch { }
-            }
-        }
-
-        private void TextBoxPattern_TextChanged(object sender, EventArgs e)
-        {
-            _timer.Enabled = true;
-            _tickCount = 0;
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -101,9 +40,6 @@ namespace TaskManagement.UI
                 _viewData.Selected = newWi;
                 _viewData.UpdateCallenderAndMembers(wi);
             }
-
-            UpdateFilteredList();
-            UpdateListBox();
         }
 
         private void CheckBoxOverwrapPeriod_CheckedChanged(object sender, EventArgs e)
@@ -111,22 +47,43 @@ namespace TaskManagement.UI
             textBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
             if (!checkBoxOverwrapPeriod.Checked)
             {
-                UpdateFilteredList();
-                UpdateListBox();
                 return;
             }
 
             textBoxPattern.Text = string.Empty;
-            _tickCount = 0;
-            _timer.Enabled = false;
             _list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems);
-
-            listBox1.Items.Clear();
-            foreach (var l in _list)
-            {
-                listBox1.Items.Add(l.ToString());
-            }
+            UpdateListView();
         }
 
+        private void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            if (IsSearchOverwrap())
+            {
+                CheckBoxOverwrapPeriod_CheckedChanged(null, null);
+                return;
+            }
+            _list.Clear();
+            try
+            {
+                foreach (var wi in _viewData.GetFilteredWorkItems())
+                {
+                    if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text)) continue;
+                    _list.Add(wi);
+                }
+            }
+            catch { }
+            UpdateListView();
+        }
+
+        private bool IsSearchOverwrap()
+        {
+            return checkBoxOverwrapPeriod.Checked;
+        }
+
+        private void UpdateListView()
+        {
+            listBox1.Items.Clear();
+            listBox1.Items.AddRange(_list.Select((i) => i.ToString()).ToArray());
+        }
     }
 }
