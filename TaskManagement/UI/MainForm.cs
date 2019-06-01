@@ -25,6 +25,7 @@ namespace TaskManagement.UI
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
+        private CalculateSumService _calculateSumService = new CalculateSumService();
         private Cursor _originalCursor;
 
         public MainForm()
@@ -167,32 +168,10 @@ namespace TaskManagement.UI
             taskDrawArea.Invalidate();
         }
 
-        private Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
 
         private void UpdateDisplayOfSum(List<Member> updatedMembers)
         {
-            if (updatedMembers == null)
-            {
-                _sumCache.Clear();
-            }
-            else
-            {
-                foreach (var m in updatedMembers) _sumCache.Remove(m);
-            }
-            var sum = 0;
-            foreach (var m in _viewData.GetFilteredMembers())
-            {
-                if (!_sumCache.ContainsKey(m))
-                {
-                    var sumOfMember = 0;
-                    foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
-                    {
-                        sumOfMember += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
-                    }
-                    _sumCache.Add(m, sumOfMember);
-                }
-                sum += _sumCache[m];
-            }
+            var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
