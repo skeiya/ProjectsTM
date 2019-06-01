@@ -39,7 +39,6 @@ namespace TaskManagement.Service
 
         internal void Save(AppData appData)
         {
-            appData.WorkItems.Sort();
             if (string.IsNullOrEmpty(_previousFileName))
             {
                 SaveOtherName(appData);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,17 +7,24 @@ namespace TaskManagement.Model
 {
     public class WorkItems : IEnumerable<WorkItem>
     {
-        private List<WorkItem> _items = new List<WorkItem>();
+        
+        private SortedDictionary<Member, List<WorkItem>> _items = new SortedDictionary<Member, List<WorkItem>>();
+
+        public IEnumerable<List<WorkItem>> EachMembers => _items.Values;
 
         public void Add(WorkItem wi)
         {
-            _items.Add(wi);
+            if (!_items.ContainsKey(wi.AssignedMember))
+            {
+                _items.Add(wi.AssignedMember, new List<WorkItem>());
+            }
+            _items[wi.AssignedMember].Add(wi);
         }
 
         public int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project, Callender callender)
         {
             int result = 0;
-            foreach (var wi in _items.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
+            foreach (var wi in this.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
             {
                 foreach (var d in callender.GetPediodDays(wi.Period))
                 {
@@ -30,7 +38,8 @@ namespace TaskManagement.Model
 
         public IEnumerator<WorkItem> GetEnumerator()
         {
-            return _items.GetEnumerator();
+            return _items.SelectMany((s) => s.Value).GetEnumerator();
+            //return _items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -46,22 +55,23 @@ namespace TaskManagement.Model
             return _items.SequenceEqual(target._items);
         }
 
-        public override int GetHashCode()
-        {
-            return -566117206 + EqualityComparer<List<WorkItem>>.Default.GetHashCode(_items);
-        }
-
-        public void Sort()
-        {
-            _items.Sort();
-        }
-
         internal void Remove(WorkItem selected)
         {
-            if(!_items.Remove(selected))
+            if(!_items[selected.AssignedMember].Remove(selected))
             {
                 throw new System.Exception();
             }
+        }
+
+        public bool Equals(WorkItems other)
+        {
+            return other != null &&
+                   EqualityComparer<SortedDictionary<Member, List<WorkItem>>>.Default.Equals(_items, other._items);
+        }
+
+        public override int GetHashCode()
+        {
+            return -566117206 + EqualityComparer<SortedDictionary<Member, List<WorkItem>>>.Default.GetHashCode(_items);
         }
     }
 }
