@@ -163,15 +163,16 @@ namespace TaskManagement.UI
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
             UpdateDisplayOfSum();
+            taskDrawArea.Invalidate();
         }
 
         private void UpdateDisplayOfSum()
         {
             var sum = 0;
-            foreach (var w in _viewData.GetFilteredWorkItems())
-            {
-                sum += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
-            }
+            //foreach (var w in _viewData.GetFilteredWorkItems())
+            //{
+            //    sum += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
+            //}
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 

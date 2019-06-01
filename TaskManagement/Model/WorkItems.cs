@@ -8,15 +8,15 @@ namespace TaskManagement.Model
     public class WorkItems : IEnumerable<WorkItem>
     {
         
-        private SortedDictionary<Member, List<WorkItem>> _items = new SortedDictionary<Member, List<WorkItem>>();
+        private SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
-        public IEnumerable<List<WorkItem>> EachMembers => _items.Values;
+        public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
 
         public void Add(WorkItem wi)
         {
             if (!_items.ContainsKey(wi.AssignedMember))
             {
-                _items.Add(wi.AssignedMember, new List<WorkItem>());
+                _items.Add(wi.AssignedMember, new MembersWorkItems());
             }
             _items[wi.AssignedMember].Add(wi);
         }
@@ -39,7 +39,6 @@ namespace TaskManagement.Model
         public IEnumerator<WorkItem> GetEnumerator()
         {
             return _items.SelectMany((s) => s.Value).GetEnumerator();
-            //return _items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -63,15 +62,9 @@ namespace TaskManagement.Model
             }
         }
 
-        public bool Equals(WorkItems other)
-        {
-            return other != null &&
-                   EqualityComparer<SortedDictionary<Member, List<WorkItem>>>.Default.Equals(_items, other._items);
-        }
-
         public override int GetHashCode()
         {
-            return -566117206 + EqualityComparer<SortedDictionary<Member, List<WorkItem>>>.Default.GetHashCode(_items);
+            return -566117206 + EqualityComparer<SortedDictionary<Member, MembersWorkItems>>.Default.GetHashCode(_items);
         }
     }
 }

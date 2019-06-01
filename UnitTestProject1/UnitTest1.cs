@@ -76,7 +76,7 @@ namespace UnitTestProject1
                 writer.Flush();
                 stream.Position = 0;
                 var loadedApp = AppDataSerializer.LoadFromStream(reader);
-                Assert.AreEqual(orgApp, loadedApp);
+                Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }
 
