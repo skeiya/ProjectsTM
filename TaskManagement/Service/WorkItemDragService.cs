@@ -117,11 +117,6 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        private bool IsCtrlDown()
-        {
-            return (Control.ModifierKeys & Keys.Control) == Keys.Control;
-        }
-
         internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
             _beforeWorkItem = wi.Clone();
@@ -132,7 +127,7 @@ namespace TaskManagement.Service
             _draggedDay = grid.GetDayFromY(location.Y);
         }
 
-        private bool IsActive()
+        public bool IsActive()
         {
             if (IsDragging()) return true;
             if (IsExpanding()) return true;

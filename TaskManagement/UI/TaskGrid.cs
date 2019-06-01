@@ -199,7 +199,7 @@ namespace TaskManagement.UI
         {
             DrawCallenderDays(g);
             DrawTeamMembers(g);
-            DrawWorkItems(g, viewData, null, null);
+            DrawWorkItems(g, viewData, null, null, false);
             DrawMileStones(g, viewData.Original.MileStones);
         }
 
@@ -385,10 +385,10 @@ namespace TaskManagement.UI
             }
         }
 
-        internal void DrawTaskArea(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
+        internal void DrawTaskArea(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip, bool isDragging)
         {
             panelLocation.Offset(-3, 0);
-            DrawWorkItems(g, viewData, draggingItem, clip);
+            DrawWorkItems(g, viewData, draggingItem, clip, isDragging);
             DrawMileStonesTaskArea(g, viewData.Detail, new Point(0, 0), 0, viewData.Original.MileStones);
         }
 
@@ -399,7 +399,7 @@ namespace TaskManagement.UI
             DrawMileStonesFixedArea(g, viewData.Detail, panelLocation, viewData.Detail.FixedHeight - offsetFromHiddenLocation.Y, viewData.Original.MileStones);
         }
 
-        private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip)
+        private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip, bool isDragging)
         {
             foreach (var wi in viewData.GetFilteredWorkItems())
             {
@@ -412,8 +412,11 @@ namespace TaskManagement.UI
                 DrawWorkItem(g, viewData, viewData.Selected, clip);
                 var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
                 g.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
-                DrawTopDragBar(g, bounds);
-                DrawBottomDragBar(g, bounds);
+                if (!isDragging)
+                {
+                    DrawTopDragBar(g, bounds);
+                    DrawBottomDragBar(g, bounds);
+                }
             }
         }
 
