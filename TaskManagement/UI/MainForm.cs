@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -36,6 +37,7 @@ namespace TaskManagement.UI
             panelTaskGrid.Scroll += Panel1_Scroll;
             panelTaskGrid.AutoScroll = true;
             panelFullView.Paint += PanelTaskAreaWithFixed_Paint;
+            EnableDoubleBuffer();
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
@@ -46,6 +48,21 @@ namespace TaskManagement.UI
             UpdatePanelLayout(_viewData.Detail);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             _fileIOService.FileChanged += _fileIOService_FileChanged;
+        }
+
+        private void EnableDoubleBuffer()
+        {
+            typeof(Panel).InvokeMember("DoubleBuffered",
+             BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+              null, panelFullView, new object[] { true });
+
+            typeof(Panel).InvokeMember("DoubleBuffered",
+            BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+            null, panelTaskGrid, new object[] { true });
+
+            typeof(PictureBox).InvokeMember("DoubleBuffered",
+            BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+            null, taskDrawArea, new object[] { true });
         }
 
         private void _fileIOService_FileChanged(object sender, EventArgs e)
