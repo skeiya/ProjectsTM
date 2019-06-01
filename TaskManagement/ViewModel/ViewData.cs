@@ -67,7 +67,7 @@ namespace TaskManagement.ViewModel
             return Original.Callender.GetPeriodDayCount(Filter.Period);
         }
 
-        public Members GetVisibleMembers()
+        public Members GetFilteredMembers()
         {
             var result = new Members();
             if (Filter == null || Filter.HideMembers == null)
@@ -87,10 +87,25 @@ namespace TaskManagement.ViewModel
             return result;
         }
 
+        public MembersWorkItems GetFilteredWorkItemsOfMember(Member m)
+        {
+            if (Filter == null) return Original.WorkItems.OfMember(m);
+            var result = new MembersWorkItems();
+            foreach (var w in Original.WorkItems.OfMember(m))
+            {
+                if (!string.IsNullOrEmpty(Filter.WorkItem))
+                {
+                    if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
+                }
+                result.Add(w);
+            }
+            return result;
+        }
+
         public WorkItems GetFilteredWorkItems()
         {
             if (Filter == null) return Original.WorkItems;
-            var filteredMembers = GetVisibleMembers();
+            var filteredMembers = GetFilteredMembers();
             var period = GetFilteredDays();
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)

@@ -59,6 +59,7 @@
     <Compile Include="Service\DummyDataService.cs" />
     <Compile Include="Service\EditAction.cs" />
     <Compile Include="Service\EditActionType.cs" />
+    <Compile Include="Service\EditedEventArgs.cs" />
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\OldFileService.cs" />

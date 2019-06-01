@@ -84,9 +84,9 @@ namespace TaskManagement.UI
         {
             ClearRowColMap();
             _grid.RowCount = viewData.GetDaysCount() + Members.RowCount;
-            _grid.ColCount = viewData.GetVisibleMembers().Count + Callender.ColCount;
+            _grid.ColCount = viewData.GetFilteredMembers().Count + Callender.ColCount;
             int c = Callender.ColCount;
-            foreach (var m in viewData.GetVisibleMembers())
+            foreach (var m in viewData.GetFilteredMembers())
             {
                 _colToMember.Add(c, m);
                 _memberToCol.Add(m, c);

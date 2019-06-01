@@ -10,7 +10,7 @@ namespace TaskManagement.Service
         private Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
         private Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
 
-        public event EventHandler Changed;
+        public event EventHandler<EditedEventArgs> Changed;
 
         public UndoService()
         {
@@ -20,20 +20,20 @@ namespace TaskManagement.Service
 
         internal void Delete(WorkItem w)
         {
-            _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize()));
+            _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
         }
 
         internal void Add(WorkItem w)
         {
-            _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize()));
+            _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize(), w.AssignedMember));
         }
 
         internal void Push()
         {
             _undoStack.Push(_atomicAction.Clone());
+            Changed(this, new EditedEventArgs(_atomicAction.Members));
             _atomicAction.Clear();
             _redoStack.Clear();
-            Changed(this, null);
         }
 
         internal void Undo(ViewData viewData)
@@ -55,7 +55,7 @@ namespace TaskManagement.Service
                     viewData.Selected = w;
                 }
             }
-            Changed(this, null);
+            Changed(this, new EditedEventArgs(p.Members));
         }
 
         internal void Redo(ViewData viewData)
@@ -76,7 +76,7 @@ namespace TaskManagement.Service
                     viewData.Original.WorkItems.Remove(w);
                 }
             }
-            Changed(this, null);
+            Changed(this, new EditedEventArgs(r.Members));
         }
     }
 }

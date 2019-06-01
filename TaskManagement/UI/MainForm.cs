@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -154,25 +155,44 @@ namespace TaskManagement.UI
             panelTaskGrid.Size = new Size(panelFullView.Width - width, panelFullView.Height - hight);
         }
 
-        private void _undoService_Changed(object sender, EventArgs e)
+        private void _undoService_Changed(object sender, EditedEventArgs e)
         {
-            UpdateDisplayOfSum();
+            UpdateDisplayOfSum(e.UpdatedMembers);
             taskDrawArea.Invalidate();
         }
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
-            UpdateDisplayOfSum();
+            UpdateDisplayOfSum(null);
             taskDrawArea.Invalidate();
         }
 
-        private void UpdateDisplayOfSum()
+        private Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
+
+        private void UpdateDisplayOfSum(List<Member> updatedMembers)
         {
+            if (updatedMembers == null)
+            {
+                _sumCache.Clear();
+            }
+            else
+            {
+                foreach (var m in updatedMembers) _sumCache.Remove(m);
+            }
             var sum = 0;
-            //foreach (var w in _viewData.GetFilteredWorkItems())
-            //{
-            //    sum += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
-            //}
+            foreach (var m in _viewData.GetFilteredMembers())
+            {
+                if (!_sumCache.ContainsKey(m))
+                {
+                    var sumOfMember = 0;
+                    foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+                    {
+                        sumOfMember += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
+                    }
+                    _sumCache.Add(m, sumOfMember);
+                }
+                sum += _sumCache[m];
+            }
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
@@ -367,7 +387,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             taskDrawArea.Invalidate();
-            UpdateDisplayOfSum();
+            UpdateDisplayOfSum(null);
         }
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TaskManagement.Model;
 
 namespace TaskManagement.Service
 {
     class AtomicAction : IEnumerable<EditAction>
     {
         private List<EditAction> _list = new List<EditAction>();
+
+        public List<Member> Members => _list.Select((l) => l.Member).ToList();
 
         public IEnumerator<EditAction> GetEnumerator()
         {
