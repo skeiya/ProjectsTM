@@ -54,22 +54,30 @@ namespace TaskManagement.UI
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (!IsValid()) return;
+            try
+            {
+                ValidateValue();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+                return;
+            }
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private bool IsValid()
+        private void ValidateValue()
         {
             var from = textBoxFrom.Text;
             var to = textBoxTo.Text;
-            if (string.IsNullOrEmpty(from) && string.IsNullOrEmpty(to)) return true;
+            if (string.IsNullOrEmpty(from) && string.IsNullOrEmpty(to)) return;
+
             var fromDay = CallenderDay.Parse(textBoxFrom.Text);
+            if (fromDay == null || !_callender.Days.Contains(fromDay)) throw new Exception("Error:" + textBoxFrom.Text);
+
             var toDay = CallenderDay.Parse(textBoxTo.Text);
-            if (fromDay == null || toDay == null) return false;
-            if (!_callender.Days.Contains(fromDay)) return false;
-            if (!_callender.Days.Contains(toDay)) return false;
-            return true;
+            if (toDay == null || !_callender.Days.Contains(toDay)) throw new Exception("Error:" + textBoxTo.Text);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -157,9 +165,13 @@ namespace TaskManagement.UI
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
-            if(!IsValid())
+            try
             {
-                MessageBox.Show("invalid value");
+                ValidateValue();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
                 return;
             }
             _filter = GetFilter();
