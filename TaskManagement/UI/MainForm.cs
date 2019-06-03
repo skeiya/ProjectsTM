@@ -436,7 +436,11 @@ namespace TaskManagement.UI
             else
             {
                 var wi = _grid.PickFromPoint(e.Location, _viewData);
-                if (wi == null) return;
+                if (wi == null)
+                {
+                    _viewData.Selected = null;
+                    return;
+                }
                 _viewData.Selected = wi;
 
                 _workItemDragService.StartDrag(wi, e.Location, _grid);
