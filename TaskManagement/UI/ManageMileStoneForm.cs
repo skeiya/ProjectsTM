@@ -61,6 +61,7 @@ namespace TaskManagement.UI
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _mileStones.Replace(m, dlg.MileStone);
+                    UpdateList();
                 }
             }
             catch
