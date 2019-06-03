@@ -345,7 +345,7 @@ namespace TaskManagement.UI
                     var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
                     bounds.X += taskDrawArea.Location.X;
                     bounds.Y += taskDrawArea.Location.Y;
-                    if(panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
+                    if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
                     c.Bounds = Rectangle.Round(bounds);
                     panelTaskGrid.Controls.Add(c);
                     panelTaskGrid.ScrollControlIntoView(c);
@@ -366,8 +366,11 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            taskDrawArea.Invalidate();
+            UpdateGrid();
+            _grid.UpdateRowColMap(_viewData);
             UpdateDisplayOfSum(null);
+            taskDrawArea.Invalidate();
+            panelFullView.Invalidate();
         }
 
         private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -483,7 +486,6 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
-                taskDrawArea.Invalidate();
             }
         }
 

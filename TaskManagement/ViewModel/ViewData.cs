@@ -106,7 +106,6 @@ namespace TaskManagement.ViewModel
         {
             if (Filter == null) return Original.WorkItems;
             var filteredMembers = GetFilteredMembers();
-            var period = GetFilteredDays();
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)
             {
@@ -115,6 +114,7 @@ namespace TaskManagement.ViewModel
                 {
                     if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
                 }
+                if (!w.Period.HasInterSection(Filter.Period)) continue;
                 result.Add(w);
             }
             return result;

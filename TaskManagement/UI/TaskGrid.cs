@@ -213,7 +213,8 @@ namespace TaskManagement.UI
 
             foreach (var m in mileStones)
             {
-                var r = _dayToRow[m.Day];
+                int r = 0;
+                if (!_dayToRow.TryGetValue(m.Day, out r)) continue;
                 var bounds = _cellBoundsCache.Get(r, 0);
                 var bottom = bounds.Bottom;// + offsetFromHiddenHight;
                 _grid.DrawMileStoneLine(g, bottom, m.Color);
@@ -230,7 +231,8 @@ namespace TaskManagement.UI
 
             foreach (var m in mileStones)
             {
-                var r = _dayToRow[m.Day];
+                int r = 0;
+                if (!_dayToRow.TryGetValue(m.Day, out r)) continue;
                 var bounds = _cellBoundsCache.Get(r, 0);
                 var bottom = bounds.Bottom + offsetFromHiddenHight;
                 using (var b = new SolidBrush(m.Color))
