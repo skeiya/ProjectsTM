@@ -9,6 +9,7 @@ namespace TaskManagement.Service
     class AppDataFileIOService
     {
         public event EventHandler FileChanged;
+        public event EventHandler FileSaved;
         private DateTime _last;
 
         public AppDataFileIOService()
@@ -20,7 +21,7 @@ namespace TaskManagement.Service
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (!IsEnoughTerm()) return;
-            if (FileChanged != null) FileChanged(sender, e);
+            FileChanged?.Invoke(sender, e);
         }
 
         private bool IsEnoughTerm()
@@ -37,22 +38,46 @@ namespace TaskManagement.Service
         private string _previousFileName;
         public string FilePath => _previousFileName;
 
-        internal void Save(AppData appData)
+        internal bool Save(AppData appData)
         {
             if (string.IsNullOrEmpty(_previousFileName))
             {
-                SaveOtherName(appData);
-                return;
+                return SaveOtherName(appData);
             }
-            if (!CheckOverwrap(appData)) return;
+            if (!CheckOverwrap(appData)) return false;
             _watcher.EnableRaisingEvents = false;
             try
             {
                 AppDataSerializer.Serialize(_previousFileName, appData);
+                FileSaved?.Invoke(this, null);
             }
             finally
             {
                 _watcher.EnableRaisingEvents = true;
+            }
+            return true;
+        }
+
+        internal bool SaveOtherName(AppData appData)
+        {
+            if (!CheckOverwrap(appData)) return false;
+            using (var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return false;
+                _watcher.EnableRaisingEvents = false;
+                try
+                {
+                    AppDataSerializer.Serialize(dlg.FileName, appData);
+                    FileSaved?.Invoke(this, null);
+                    _previousFileName = dlg.FileName;
+                }
+                finally
+                {
+                    _watcher.Path = Path.GetDirectoryName(_previousFileName);
+                    _watcher.Filter = Path.GetFileName(_previousFileName);
+                    _watcher.EnableRaisingEvents = true;
+                }
+                return true;
             }
         }
 
@@ -76,27 +101,6 @@ namespace TaskManagement.Service
         internal AppData ReOpen()
         {
             return OpenFile(_previousFileName);
-        }
-
-        internal void SaveOtherName(AppData appData)
-        {
-            if (!CheckOverwrap(appData)) return;
-            using (var dlg = new SaveFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _watcher.EnableRaisingEvents = false;
-                try
-                {
-                    AppDataSerializer.Serialize(dlg.FileName, appData);
-                    _previousFileName = dlg.FileName;
-                }
-                finally
-                {
-                    _watcher.Path = Path.GetDirectoryName(_previousFileName);
-                    _watcher.Filter = Path.GetFileName(_previousFileName);
-                    _watcher.EnableRaisingEvents = true;
-                }
-            }
         }
 
         public AppData OpenFile(string fileName)

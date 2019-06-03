@@ -27,6 +27,7 @@ namespace TaskManagement.UI
         private WorkItemEditService _editService;
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private Cursor _originalCursor;
+        private bool _isDirty = false;
 
         public MainForm()
         {
@@ -45,11 +46,19 @@ namespace TaskManagement.UI
             InitializeFilterCombobox();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
+            this.FormClosing += MainForm_FormClosing;
             LoadUserSetting();
             UpdateGrid();
             UpdatePanelLayout(_viewData.Detail);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             _fileIOService.FileChanged += _fileIOService_FileChanged;
+            _fileIOService.FileSaved += _fileIOService_FileSaved;
+        }
+
+
+        private void _fileIOService_FileSaved(object sender, EventArgs e)
+        {
+            _isDirty = false;
         }
 
         private void EnableDoubleBuffer()
@@ -107,11 +116,7 @@ namespace TaskManagement.UI
                 toolStripComboBoxFilter.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
-                var appData = _fileIOService.OpenFile(setting.FilePath);
-                if (appData == null) return;
-                _viewData.Original = appData;
-                _viewData.Selected = null;
-                taskDrawArea.Invalidate();
+                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
             }
             catch
             {
@@ -120,6 +125,13 @@ namespace TaskManagement.UI
         }
 
         private string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TaskManagementTool", "UserSetting.xml");
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!_isDirty) return;
+            if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            if (!_fileIOService.Save(_viewData.Original)) e.Cancel = true;
+        }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -158,6 +170,7 @@ namespace TaskManagement.UI
 
         private void _undoService_Changed(object sender, EditedEventArgs e)
         {
+            _isDirty = true;
             UpdateDisplayOfSum(e.UpdatedMembers);
             taskDrawArea.Invalidate();
         }
@@ -326,8 +339,7 @@ namespace TaskManagement.UI
             var fileName = _fileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
             var appData = _fileIOService.OpenFile(fileName);
-            if (appData == null) return;
-            Open(appData);
+            OpenAppData(appData);
         }
 
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
@@ -467,17 +479,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            var appData = _fileIOService.Open();
-            if (appData == null) return;
-            Open(appData);
-        }
-
-        private void Open(AppData appData)
-        {
-            _viewData.Original = appData;
-            _viewData.Selected = null;
-            UpdateGrid();
-            taskDrawArea.Invalidate();
+            OpenAppData(_fileIOService.Open());
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
@@ -643,11 +645,16 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
         {
-            var appData = _fileIOService.ReOpen();
+            OpenAppData(_fileIOService.ReOpen());
+        }
+
+        private void OpenAppData(AppData appData)
+        {
             if (appData == null) return;
             _viewData.Original = appData;
             _viewData.Selected = null;
             UpdateGrid();
+            _isDirty = false;
             taskDrawArea.Invalidate();
         }
     }
