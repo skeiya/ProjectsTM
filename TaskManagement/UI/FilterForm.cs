@@ -73,11 +73,12 @@ namespace TaskManagement.UI
             var to = textBoxTo.Text;
             if (string.IsNullOrEmpty(from) && string.IsNullOrEmpty(to)) return;
 
+            var dayErrorMsg = "稼働日が存在しません。：";
             var fromDay = CallenderDay.Parse(textBoxFrom.Text);
-            if (fromDay == null || !_callender.Days.Contains(fromDay)) throw new Exception("Error:" + textBoxFrom.Text);
+            if (fromDay == null || !_callender.Days.Contains(fromDay)) throw new Exception(dayErrorMsg + textBoxFrom.Text);
 
             var toDay = CallenderDay.Parse(textBoxTo.Text);
-            if (toDay == null || !_callender.Days.Contains(toDay)) throw new Exception("Error:" + textBoxTo.Text);
+            if (toDay == null || !_callender.Days.Contains(toDay)) throw new Exception(dayErrorMsg + textBoxTo.Text);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
