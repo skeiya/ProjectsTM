@@ -466,7 +466,12 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditWorkItemForm(null, _viewData.Original.Callender))
+            AddNewWorkItem(null);
+        }
+
+        private void AddNewWorkItem(WorkItem proto)
+        {
+            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem(_viewData.Original.Callender);
@@ -526,7 +531,15 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            EditSelectedWorkItem();
+            if (_viewData.Selected != null)
+            {
+                EditSelectedWorkItem();
+                return;
+            }
+            var day = _grid.GetDayFromY(e.Location.Y);
+            var member = _grid.GetMemberFromX(e.Location.X);
+            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member);
+            AddNewWorkItem(proto);
         }
 
         private void EditSelectedWorkItem()
