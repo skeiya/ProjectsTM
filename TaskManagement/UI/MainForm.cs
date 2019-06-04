@@ -273,6 +273,19 @@ namespace TaskManagement.UI
             var devideMenu = new MenuItem("分割...");
             devideMenu.Click += DevideMenu_Click;
             taskDrawArea.ContextMenu.MenuItems.Add(devideMenu);
+            var jumpTodayMenu = new MenuItem("今日にジャンプ");
+            jumpTodayMenu.Click += JumpTodayMenu_Click;
+            taskDrawArea.ContextMenu.MenuItems.Add(jumpTodayMenu);
+        }
+
+        private void JumpTodayMenu_Click(object sender, EventArgs e)
+        {
+            var pos = Cursor.Position;
+            var m = _grid.GetMemberFromX(pos.X);
+            var now = DateTime.Now;
+            var today = new CallenderDay(now.Year, now.Month, now.Day);
+            if (!_viewData.Original.Callender.Days.Contains(today)) return;
+            MoveVisibleArea(_grid.GetBounds(m, new Period(today, today)));
         }
 
         private void DevideMenu_Click(object sender, EventArgs e)
@@ -351,22 +364,27 @@ namespace TaskManagement.UI
         {
             try
             {
-                using (var c = new Control())
-                {
-                    if (_viewData.Selected == null) return;
-                    var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
-                    bounds.X += taskDrawArea.Location.X;
-                    bounds.Y += taskDrawArea.Location.Y;
-                    if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
-                    c.Bounds = Rectangle.Round(bounds);
-                    panelTaskGrid.Controls.Add(c);
-                    panelTaskGrid.ScrollControlIntoView(c);
-                    panelTaskGrid.Controls.Remove(c);
-                }
+                if (_viewData.Selected == null) return;
+                var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
+                MoveVisibleArea(bounds);
             }
             finally
             {
                 taskDrawArea.Invalidate();
+            }
+        }
+
+        private void MoveVisibleArea(RectangleF bounds)
+        {
+            using (var c = new Control())
+            {
+                bounds.X += taskDrawArea.Location.X;
+                bounds.Y += taskDrawArea.Location.Y;
+                if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
+                c.Bounds = Rectangle.Round(bounds);
+                panelTaskGrid.Controls.Add(c);
+                panelTaskGrid.ScrollControlIntoView(c);
+                panelTaskGrid.Controls.Remove(c);
             }
         }
 

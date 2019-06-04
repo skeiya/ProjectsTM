@@ -451,12 +451,18 @@ namespace TaskManagement.UI
         public RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)
         {
             var period = GetVisiblePeriod(filter, w);
-            var col = _memberToCol[w.AssignedMember];
+            return GetBounds(w.AssignedMember, period);
+        }
+
+        public RectangleF GetBounds(Member member, Period period)
+        {
+            var col = _memberToCol[member];
             var rowTop = _dayToRow[period.From];
             var rowBottom = _dayToRow[period.To];
             var top = _cellBoundsCache.Get(rowTop, col);
             var bottom = _cellBoundsCache.Get(rowBottom, col);
             return new RectangleF(top.Location, new SizeF(top.Width, bottom.Y - top.Y + top.Height));
+
         }
 
         private void DrawBottomDragBar(Graphics g, RectangleF bounds)
