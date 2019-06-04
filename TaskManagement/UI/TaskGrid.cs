@@ -221,6 +221,18 @@ namespace TaskManagement.UI
             }
         }
 
+        private static MileStones GetMileStonesWithToday(ViewData viewData)
+        {
+            var result = viewData.Original.MileStones.Clone();
+            var date = DateTime.Now;
+            var today = new CallenderDay(date.Year, date.Month, date.Day);
+            if (viewData.Original.Callender.Days.Contains(today))
+            {
+                result.Add(new MileStone("Today", today, Color.Red));
+            }
+            return result;
+        }
+
         private void DrawMileStonesFixedArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
         {
             if (mileStones.IsEmpty()) return;
@@ -391,14 +403,14 @@ namespace TaskManagement.UI
         {
             panelLocation.Offset(-3, 0);
             DrawWorkItems(g, viewData, draggingItem, clip, isDragging);
-            DrawMileStonesTaskArea(g, viewData.Detail, new Point(0, 0), 0, viewData.Original.MileStones);
+            DrawMileStonesTaskArea(g, viewData.Detail, new Point(0, 0), 0, GetMileStonesWithToday(viewData));
         }
 
         internal void DrawFixedArea(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
         {
             DrawCallenderDaysOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y);
             DrawTeamMembersOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.X);
-            DrawMileStonesFixedArea(g, viewData.Detail, panelLocation, viewData.Detail.FixedHeight - offsetFromHiddenLocation.Y, viewData.Original.MileStones);
+            DrawMileStonesFixedArea(g, viewData.Detail, panelLocation, viewData.Detail.FixedHeight - offsetFromHiddenLocation.Y, GetMileStonesWithToday(viewData));
         }
 
         private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip, bool isDragging)
