@@ -50,6 +50,7 @@ namespace TaskManagement.Model
 
         internal bool HasInterSection(Period period)
         {
+            if (period == null) return true;
             if (period.Contains(From)) return true;
             if (period.Contains(To)) return true;
             return false;
