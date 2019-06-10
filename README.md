@@ -31,3 +31,15 @@ https://slack.com/api/chat.postMessage?token=xoxp-xxxx&channel=aa&text=%22Hello%
 https://slack.com/api/chat.postMessage?token=xoxp-427935500258-429278393766-628991580148-1e77c82043c4a4e851749c7ead55df8a&channel=aa&text=%22Hello%22
 
 Invoke-WebRequest -Method Post -Body @{token="xoxp-427935500258-429278393766-628991580148-1e77c82043c4a4e851749c7ead55df8a"; channel="aa"; text="Good night."} https://slack.com/api/chat.postMessage
+
+
+
+karNI8bSRoJXMRLgcqyWUNhbm78EUkZnac2bQXn3YlM
+
+curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" -F "message=ABC" https://notify-api.line.me/api/notify
+
+CIIF
+Invoke-WebRequest -Method Post -Headers @{Authorization="Bearer karNI8bSRoJXMRLgcqyWUNhbm78EUkZnac2bQXn3YlM"} -Body @{message="Good night."} https://notify-api.line.me/api/notify
+
+‚Ä‚·‚Æ
+Invoke-WebRequest -Method Post -Headers @{Authorization="Bearer rHaV0FNRAg3WuSmYYhiqIS1ydZpr9YDtBAW72utZwUK"} -Body @{message="‚Í‚ë‚Á‚Ò."} https://notify-api.line.me/api/notify
