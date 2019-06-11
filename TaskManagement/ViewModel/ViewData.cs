@@ -95,11 +95,17 @@ namespace TaskManagement.ViewModel
             {
                 if (!string.IsNullOrEmpty(Filter.WorkItem))
                 {
-                    if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
+                    if (IsFilteredWorkItem(w)) continue;
                 }
                 result.Add(w);
             }
             return result;
+        }
+
+        public bool IsFilteredWorkItem(WorkItem w)
+        {
+            if (Filter == null) return false;
+            return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
         public WorkItems GetFilteredWorkItems()

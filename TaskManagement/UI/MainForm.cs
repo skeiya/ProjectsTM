@@ -454,7 +454,7 @@ namespace TaskManagement.UI
             else
             {
                 var wi = _grid.PickFromPoint(e.Location, _viewData);
-                if (wi == null)
+                if (wi == null || _viewData.IsFilteredWorkItem(wi))
                 {
                     _viewData.Selected = null;
                     return;
