@@ -186,5 +186,28 @@ namespace TaskManagement.UI
                 }
             }
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EazyRegexForm())
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                textBoxWorkItem.Text = GetRegex(dlg.TaskName, dlg.ProjectName, dlg.MemberName, dlg.TagText);
+            }
+        }
+
+        private string GetRegex(string taskName, string projectName, string memberName, string tagText)
+        {
+            var result = @"^\[";
+            result += string.IsNullOrEmpty(taskName) ? ".*" : ".*" + taskName + ".*";
+            result += @"\]\[";
+            result += string.IsNullOrEmpty(projectName) ? ".*" : ".*" + projectName + ".*";
+            result += @"\]\[";
+            result += string.IsNullOrEmpty(memberName) ? ".*" : ".*" + memberName + ".*";
+            result += @"\]\[";
+            result += string.IsNullOrEmpty(tagText) ? ".*" : ".*" + tagText + ".*";
+            result += @"\]$";
+            return result;
+        }
     }
 }
