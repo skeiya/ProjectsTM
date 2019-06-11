@@ -11,13 +11,15 @@ namespace TaskManagement.UI
     public partial class FilterForm : Form
     {
         private Members _members;
+        private Members _originalMembers;
         private Filter _filter;
         private Callender _callender;
 
         public FilterForm(Members members, Filter filter, Callender callender)
         {
             InitializeComponent();
-            _members = members;
+            _originalMembers = members.Clone();
+            _members = members.Clone();
             _filter = filter;
             _callender = callender;
             UpdateAllField();
@@ -208,6 +210,20 @@ namespace TaskManagement.UI
             result += string.IsNullOrEmpty(tagText) ? ".*" : ".*" + tagText + ".*";
             result += @"\]$";
             return result;
+        }
+
+        private void CheckBoxSort_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSort.Checked)
+            {
+                _members.SortByCompany();
+            }
+            else
+            {
+                _members = _originalMembers.Clone();
+            }
+            _filter = GetFilter();
+            UpdateAllField();
         }
     }
 }

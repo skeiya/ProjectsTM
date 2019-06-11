@@ -44,6 +44,7 @@
             this.buttonImport = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.checkBoxSort = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -223,6 +224,17 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // checkBoxSort
+            // 
+            this.checkBoxSort.AutoSize = true;
+            this.checkBoxSort.Location = new System.Drawing.Point(109, 160);
+            this.checkBoxSort.Name = "checkBoxSort";
+            this.checkBoxSort.Size = new System.Drawing.Size(85, 16);
+            this.checkBoxSort.TabIndex = 13;
+            this.checkBoxSort.Text = "所属でソート";
+            this.checkBoxSort.UseVisualStyleBackColor = true;
+            this.checkBoxSort.CheckedChanged += new System.EventHandler(this.CheckBoxSort_CheckedChanged);
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.buttonApply;
@@ -230,6 +242,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(244, 403);
+            this.Controls.Add(this.checkBoxSort);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonImport);
@@ -274,5 +287,6 @@
         private System.Windows.Forms.Button buttonImport;
         private System.Windows.Forms.Button buttonExport;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBoxSort;
     }
 }

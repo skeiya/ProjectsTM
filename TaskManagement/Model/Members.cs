@@ -88,5 +88,10 @@ namespace TaskManagement.Model
         {
             return 229854969 + EqualityComparer<List<Member>>.Default.GetHashCode(_members);
         }
+
+        internal void SortByCompany()
+        {
+            _members.Sort((a, b) => a.Company.CompareTo(b.Company));
+        }
     }
 }
