@@ -33,7 +33,7 @@ namespace TaskManagement.UI
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            _printService = new PrintService(this.Font, _viewData);
+            _printService = new PrintService(_viewData, panelFullView.Font);
             _editService = new WorkItemEditService(_viewData, _undoService);
             _undoService.Changed += _undoService_Changed;
             panelTaskGrid.Resize += Panel1_Resize;

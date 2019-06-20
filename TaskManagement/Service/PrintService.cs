@@ -13,7 +13,7 @@ namespace TaskManagement.Service
         private Font _font;
         private ViewData _viewData;
 
-        internal PrintService(Font font, ViewData viewData)
+        internal PrintService(ViewData viewData, Font font)
         {
             _font = font;
             _viewData = viewData;
@@ -28,7 +28,7 @@ namespace TaskManagement.Service
             _printDocument.PrintPage += PrintDocument_PrintPage;
         }
 
-        private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             var grid = new TaskGrid(_viewData, e.PageBounds, _font, true);
             grid.OnResize(e.PageBounds.Size, null, true);
@@ -37,6 +37,7 @@ namespace TaskManagement.Service
 
         internal void Print()
         {
+            _font = new Font(_font.FontFamily, _viewData.FontSize);
             _printPreviewDialog1.Document = _printDocument;
             using (var dlg = new PrintDialog())
             {
