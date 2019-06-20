@@ -226,5 +226,13 @@ namespace TaskManagement.UI
             _filter = GetFilter();
             UpdateAllField();
         }
+
+        private void ButtonAllOff_Click(object sender, EventArgs e)
+        {
+            for(var idx = 0; idx < checkedListBox1.Items.Count; idx++)
+            {
+                checkedListBox1.SetItemCheckState(idx, CheckState.Unchecked);
+            }
+        }
     }
 }
