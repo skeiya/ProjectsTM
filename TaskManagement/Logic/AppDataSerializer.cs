@@ -8,7 +8,7 @@ namespace TaskManagement.Logic
     {
         public static void Serialize(string fileName, AppData appData)
         {
-            using (var stream = new StreamWriter(fileName))
+            using (var stream = StreamFactory.CreateWriter(fileName))
             {
                 WriteToStream(appData, stream);
             }
@@ -22,7 +22,7 @@ namespace TaskManagement.Logic
 
         public static AppData Deserialize(string fileName)
         {
-            using (var reader = new StreamReader(fileName))
+            using (var reader = StreamFactory.CreateReader(fileName))
             {
                 return LoadFromStream(reader);
             }

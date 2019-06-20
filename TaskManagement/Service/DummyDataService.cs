@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 
 namespace TaskManagement.Service
@@ -57,7 +58,7 @@ namespace TaskManagement.Service
             }
 
             var xml = new XmlSerializer(typeof(AppData));
-            using (var w = new StreamWriter(fileName))
+            using (var w = StreamFactory.CreateWriter(fileName))
             {
                 xml.Serialize(w, appData);
             }

@@ -62,7 +62,7 @@ namespace TaskManagement.Logic
         public static Callender ReadWorkingDays(string fileName)
         {
             var result = new Callender();
-            using (var r = new StreamReader(fileName))
+            using (var r = StreamFactory.CreateReader(fileName))
             {
                 while (true)
                 {
@@ -77,7 +77,7 @@ namespace TaskManagement.Logic
         public static Members ReadMembers(string fileName)
         {
             var result = new Members();
-            using (var r = new StreamReader(fileName))
+            using (var r = StreamFactory.CreateReader(fileName))
             {
                 r.ReadLine(); //タイトル行を読み捨てる
                 while (true)
@@ -98,7 +98,7 @@ namespace TaskManagement.Logic
         public static WorkItems ReadWorkItems(string fileName)
         {
             var result = new WorkItems();
-            using (var r = new StreamReader(fileName))
+            using (var r = StreamFactory.CreateReader(fileName))
             {
                 r.ReadLine(); //タイトル行を読み捨てる
                 var lineNo = 1;

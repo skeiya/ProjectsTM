@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using TaskManagement.Logic;
 
 namespace TaskManagement.Model
 {
@@ -100,7 +101,7 @@ namespace TaskManagement.Model
                 x.Serialize(s, this);
                 s.Flush();
                 s.Position = 0;
-                using (var r = new StreamReader(s))
+                using (var r = StreamFactory.CreateReader(s))
                 {
                     return r.ReadToEnd();
                 }
@@ -115,7 +116,7 @@ namespace TaskManagement.Model
         static internal WorkItem Deserialize(string text)
         {
             using (var s = new MemoryStream())
-            using (var w = new StreamWriter(s))
+            using (var w = StreamFactory.CreateWriter(s))
             {
                 w.Write(text);
                 w.Flush();

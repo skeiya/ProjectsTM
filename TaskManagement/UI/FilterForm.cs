@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
 
@@ -157,7 +158,7 @@ namespace TaskManagement.UI
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                using (var reader = new StreamReader(dlg.FileName))
+                using (var reader = StreamFactory.CreateReader(dlg.FileName))
                 {
                     var s = new XmlSerializer(typeof(Filter));
                     _filter = (Filter)s.Deserialize(reader);
@@ -181,7 +182,7 @@ namespace TaskManagement.UI
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                using (var writer = new StreamWriter(dlg.FileName))
+                using (var writer = StreamFactory.CreateWriter(dlg.FileName))
                 {
                     var s = new XmlSerializer(typeof(Filter));
                     s.Serialize(writer, _filter);

@@ -226,7 +226,7 @@ namespace TaskManagement.UI
                 return;
             }
             if (!File.Exists(path)) return;
-            using (var rs = new StreamReader(path))
+            using (var rs = StreamFactory.CreateReader(path))
             {
                 var x = new XmlSerializer(typeof(Filter));
                 var filter = (Filter)x.Deserialize(rs);

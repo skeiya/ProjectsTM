@@ -67,8 +67,8 @@ namespace UnitTestProject1
         public void LoadFile()
         {
             using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
-            using (var reader = new StreamReader(writer.BaseStream))
+            using (var writer = StreamFactory.CreateWriter(stream))
+            using (var reader = StreamFactory.CreateReader(writer.BaseStream))
             {
                 var orgApp = BuildDummyData();
 
@@ -124,8 +124,8 @@ namespace UnitTestProject1
         public void XML()
         {
             using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
-            using (var reader = new StreamReader(writer.BaseStream))
+            using (var writer = StreamFactory.CreateWriter(stream))
+            using (var reader = StreamFactory.CreateReader(writer.BaseStream))
             {
                 var orgApp = BuildDummyData();
 
