@@ -244,8 +244,8 @@ namespace TaskManagement.UI
             taskDrawArea.AllowDrop = true;
             taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
-            taskDrawArea.ContextMenu = new ContextMenu();
-            taskDrawArea.ContextMenu.Popup += ContextMenu_Popup;
+            taskDrawArea.ContextMenuStrip = new ContextMenuStrip();
+            InitializeContextMenu();
             this.KeyUp += MainForm_KeyUp;
             this.KeyDown += MainForm_KeyDown;
         }
@@ -264,24 +264,16 @@ namespace TaskManagement.UI
             taskDrawArea.Invalidate();
         }
 
-        private void ContextMenu_Popup(object sender, EventArgs e)
+        private void InitializeContextMenu()
         {
-            taskDrawArea.ContextMenu.MenuItems.Clear();
-            var editMenu = new MenuItem("編集...");
-            editMenu.Click += EditMenu_Click;
-            taskDrawArea.ContextMenu.MenuItems.Add(editMenu);
-            var devideMenu = new MenuItem("分割...");
-            devideMenu.Click += DevideMenu_Click;
-            taskDrawArea.ContextMenu.MenuItems.Add(devideMenu);
-            var jumpTodayMenu = new MenuItem("今日にジャンプ");
-            jumpTodayMenu.Click += JumpTodayMenu_Click;
-            taskDrawArea.ContextMenu.MenuItems.Add(jumpTodayMenu);
+            taskDrawArea.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
+            taskDrawArea.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
+            taskDrawArea.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
         }
 
         private void JumpTodayMenu_Click(object sender, EventArgs e)
         {
-            var pos = Cursor.Position;
-            var m = _grid.GetMemberFromX(pos.X);
+            var m = _viewData.Selected.AssignedMember;
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             if (!_viewData.Original.Callender.Days.Contains(today)) return;
