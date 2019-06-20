@@ -104,7 +104,7 @@ namespace TaskManagement.ViewModel
 
         public bool IsFilteredWorkItem(WorkItem w)
         {
-            if (Filter == null) return false;
+            if (Filter == null || Filter.WorkItem == null) return false;
             return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
