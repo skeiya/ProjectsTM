@@ -438,6 +438,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
+            this.ActiveControl = null;
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (e.Button != MouseButtons.Left) return;
