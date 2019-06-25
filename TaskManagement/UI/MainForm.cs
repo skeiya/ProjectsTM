@@ -612,6 +612,7 @@ namespace TaskManagement.UI
             }
             taskDrawArea.Invalidate();
             panelFullView.Invalidate();
+            UpdateGrid();
         }
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)

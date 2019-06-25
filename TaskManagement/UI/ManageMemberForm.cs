@@ -72,5 +72,17 @@ namespace TaskManagement.UI
         {
             Edit();
         }
+
+        private void ButtonAdd_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EditMemberForm((new Member()).ToSerializeString()))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var after = Member.Parse(dlg.EditText);
+                if (after == null) return;
+                _appData.Members.Add(after);
+            }
+            UpdateList();
+        }
     }
 }
