@@ -11,7 +11,7 @@ namespace TaskManagement.Model
         private SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
         public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
-        public MembersWorkItems OfMember(Member m) => _items[m];
+        public MembersWorkItems OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new MembersWorkItems();
 
         public void Add(WorkItem wi)
         {
