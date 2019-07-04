@@ -53,6 +53,8 @@ namespace TaskManagement.Model
             if (period == null) return true;
             if (period.Contains(From)) return true;
             if (period.Contains(To)) return true;
+            if (this.Contains(period.From)) return true;
+            if (this.Contains(period.To)) return true;
             return false;
         }
     }
