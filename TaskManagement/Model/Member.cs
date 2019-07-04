@@ -82,7 +82,7 @@ namespace TaskManagement.Model
 
         public override string ToString()
         {
-            return DisplayName + "(" + Company + ")";
+            return LastName + " " + FirstName + "(" + Company + ")";
         }
 
         public override bool Equals(object obj)

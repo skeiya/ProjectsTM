@@ -33,7 +33,7 @@ namespace TaskManagement.Model
             return result;
         }
 
-        public static int RowCount => 2;
+        public static int RowCount => 3;
 
         internal void Up(Member m)
         {

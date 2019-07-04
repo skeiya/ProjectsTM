@@ -163,7 +163,7 @@ namespace TaskManagement.UI
         private void UpdatePanelLayout(Detail detail)
         {
             var width = detail.DateWidth;
-            var hight = detail.CompanyHeight + detail.NameHeight;
+            var hight = detail.CompanyHeight + detail.NameHeight + detail.NameHeight;
             panelTaskGrid.Location = new Point(width, hight);
             panelTaskGrid.Size = new Size(panelFullView.Width - width, panelFullView.Height - hight);
         }

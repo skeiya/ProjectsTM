@@ -56,6 +56,7 @@ namespace TaskManagement.UI
             var name = isPrint ? 20 : 0;
             _grid.SetRowHeight(0, company);
             _grid.SetRowHeight(1, name);
+            _grid.SetRowHeight(2, name);
             var height = isPrint ? ((float)s.Height - name) / (_grid.RowCount - Members.RowCount) : detail.RowHeight;
             for (int r = Members.RowCount; r < _grid.RowCount; r++)
             {
@@ -375,27 +376,40 @@ namespace TaskManagement.UI
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(1, c);
-                _grid.DrawString(g, _colToMember[c].DisplayName, rect);
+                _grid.DrawString(g, _colToMember[c].LastName, rect);
+            }
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                var rect = _cellBoundsCache.Get(2, c);
+                _grid.DrawString(g, _colToMember[c].FirstName, rect);
             }
         }
 
         private void DrawTeamMembersOutOfTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenWidth)
         {
             var companyHight = detail.CompanyHeight;
-            var nameHeight = detail.NameHeight;
+            var lastNameHeight = detail.NameHeight;
+            var firstNameHeight = detail.NameHeight;
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(0, c);
                 var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
                 if (x < detail.DateWidth) continue;
-                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, x, panelLocation.Y - (companyHight + nameHeight));
+                g.DrawString(_colToMember[c].Company, _grid.Font, Brushes.Black, x, panelLocation.Y - (companyHight + lastNameHeight + firstNameHeight));
             }
             for (int c = Callender.ColCount; c < _grid.ColCount; c++)
             {
                 var rect = _cellBoundsCache.Get(1, c);
                 var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
                 if (x < detail.DateWidth) continue;
-                g.DrawString(_colToMember[c].DisplayName, _grid.Font, Brushes.Black, x, panelLocation.Y - nameHeight);
+                g.DrawString(_colToMember[c].LastName, _grid.Font, Brushes.Black, x, panelLocation.Y - (lastNameHeight + firstNameHeight));
+            }
+            for (int c = Callender.ColCount; c < _grid.ColCount; c++)
+            {
+                var rect = _cellBoundsCache.Get(2, c);
+                var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
+                if (x < detail.DateWidth) continue;
+                g.DrawString(_colToMember[c].FirstName, _grid.Font, Brushes.Black, x, panelLocation.Y - firstNameHeight);
             }
         }
 
