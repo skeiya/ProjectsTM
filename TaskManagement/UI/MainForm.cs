@@ -273,7 +273,7 @@ namespace TaskManagement.UI
 
         private void JumpTodayMenu_Click(object sender, EventArgs e)
         {
-            var m = _viewData.Selected.AssignedMember;
+            var m = _grid.GetMemberFromX(-panelTaskGrid.DisplayRectangle.X);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             if (!_viewData.Original.Callender.Days.Contains(today)) return;
