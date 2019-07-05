@@ -179,13 +179,13 @@ namespace TaskManagement.UI
 
         internal bool IsTopBar(RectangleF workItemBounds, PointF point)
         {
-            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds, _grid.RowHeight(2));
+            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds, _grid.RowHeight(Members.RowCount));
             return topBar.Contains(point);
         }
 
         internal bool IsBottomBar(RectangleF workItemBounds, PointF point)
         {
-            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds, _grid.RowHeight(2));
+            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds, _grid.RowHeight(Members.RowCount));
             return bottomBar.Contains(point);
         }
 
@@ -210,7 +210,7 @@ namespace TaskManagement.UI
             var dayWidth = GetDayWidth(detail);
             var monthWidth = GetMonthWidth(detail);
             var yearWidth = GetYearWidth(detail);
-            var height = _grid.RowHeight(2);
+            var height = _grid.RowHeight(Members.RowCount);
 
             foreach (var m in mileStones)
             {
@@ -240,7 +240,7 @@ namespace TaskManagement.UI
             var dayWidth = GetDayWidth(detail);
             var monthWidth = GetMonthWidth(detail);
             var yearWidth = GetYearWidth(detail);
-            var height = _grid.RowHeight(2);
+            var height = _grid.RowHeight(Members.RowCount);
 
             foreach (var m in mileStones)
             {
@@ -481,16 +481,16 @@ namespace TaskManagement.UI
 
         private void DrawBottomDragBar(Graphics g, RectangleF bounds)
         {
-            var rect = WorkItemDragService.GetBottomBarRect(bounds, _grid.RowHeight(2));// TODO (2)はやめる
-            var points = WorkItemDragService.GetBottomBarLine(bounds, _grid.RowHeight(2));
+            var rect = WorkItemDragService.GetBottomBarRect(bounds, _grid.RowHeight(Members.RowCount));// TODO (2)はやめる
+            var points = WorkItemDragService.GetBottomBarLine(bounds, _grid.RowHeight(Members.RowCount));
             g.FillRectangle(Brushes.DarkBlue, rect);
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
         private void DrawTopDragBar(Graphics g, RectangleF bounds)
         {
-            var rect = WorkItemDragService.GetTopBarRect(bounds, _grid.RowHeight(2));
-            var points = WorkItemDragService.GetTopBarLine(bounds, _grid.RowHeight(2));
+            var rect = WorkItemDragService.GetTopBarRect(bounds, _grid.RowHeight(Members.RowCount));
+            var points = WorkItemDragService.GetTopBarLine(bounds, _grid.RowHeight(Members.RowCount));
             g.FillRectangle(Brushes.DarkBlue, rect);
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }

@@ -21,7 +21,7 @@ namespace TaskManagement.ViewModel
         public int ColWidthCore { set; get; } = 20;
         public float ViewRatio { set; get; } = 1.0f;
         [XmlIgnore]
-        public float FixedHeight => CompanyHeight + NameHeight;
+        public float FixedHeight => CompanyHeight + NameHeight + NameHeight;
 
         internal Detail Clone()
         {
