@@ -10,6 +10,11 @@ namespace TaskManagement.Service
 
         public void ImportMemberAndWorkItems(ViewData viewData)
         {
+            if (CsvReader.IsNoProject)
+            {
+                MessageBox.Show("プロジェクト名を指定してください。");
+                return;
+            }
             try
             {
                 using (var dlg = new OpenFileDialog())

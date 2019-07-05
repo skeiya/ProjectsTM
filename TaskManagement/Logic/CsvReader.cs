@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using TaskManagement.Model;
 
 namespace TaskManagement.Logic
 {
     class CsvReader
     {
-        private static List<string> _existingProjects = new List<string>() { "C171", "C173", "C174", "C181", "C175A", "C141B" };
+        private static List<string> _existingProjects = new List<string>() { };
+
+        public static bool IsNoProject => _existingProjects.Count == 0;
 
         private static Tags ParseTags(string tag)
         {
