@@ -409,7 +409,7 @@ namespace TaskManagement.UI
                 var rect = _cellBoundsCache.Get(2, c);
                 var x = rect.X + panelLocation.X - offsetFromHiddenWidth;
                 if (x < detail.DateWidth) continue;
-                g.DrawString(_colToMember[c].FirstName, _grid.Font, Brushes.Black, x, panelLocation.Y - firstNameHeight);
+                g.DrawString(_colToMember[c].FirstName, _grid.Font, Brushes.Black, x + 3, panelLocation.Y - firstNameHeight);
             }
         }
 
