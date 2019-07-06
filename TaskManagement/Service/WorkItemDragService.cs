@@ -78,21 +78,16 @@ namespace TaskManagement.Service
             if (curDay == null) return;
 
             var draggedDay = _expandDirection > 0 ? selected.Period.From : selected.Period.To;
+            var otherSideDay = _expandDirection > 0 ? selected.Period.To : selected.Period.From;
             var offset = callender.GetOffset(draggedDay, curDay);
-            if (_expandDirection > 0)
-            {
-                var d = callender.ApplyOffset(selected.Period.From, offset + 1);
-                if (d == null || callender.GetOffset(d, selected.Period.To) < 0) return;
-                if (selected.Period.From.Equals(d)) return;
-                selected.Period.From = d;
-            }
-            else if (_expandDirection < 0)
-            {
-                var d = callender.ApplyOffset(selected.Period.To, offset - 1);
-                if (d == null || callender.GetOffset(selected.Period.From, d) < 0) return;
-                if (selected.Period.To.Equals(d)) return;
-                selected.Period.To = d;
-            }
+            var d = callender.ApplyOffset(draggedDay, offset + _expandDirection);
+            if (d == null || IsUpsideDown(callender, otherSideDay, d)) return;
+            draggedDay.CopyFrom(d);
+        }
+
+        private bool IsUpsideDown(Callender callender, CallenderDay otherSideDay, CallenderDay d)
+        {
+            return _expandDirection * callender.GetOffset(d, otherSideDay) < 0;
         }
 
         private bool IsOnlyMoveHorizontal(Point curLocation)
