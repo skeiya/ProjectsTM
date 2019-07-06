@@ -13,16 +13,19 @@ namespace TaskManagement.Service
         WorkItem _draggingWorkItem = null;
         private Point _draggedLocation;
         CallenderDay _draggedDay = null;
-        Period _draggedPeriod = null;
-        private Member _draggedMember;
         private int _expandDirection = 0;
         bool _isCopying = false;
 
         public WorkItem CopyingItem => _isCopying ? _draggingWorkItem : null;
 
-        public bool IsDragging()
+        public bool IsMoving()
         {
             return _draggingWorkItem != null;
+        }
+
+        private bool IsExpanding()
+        {
+            return _expandDirection != 0;
         }
 
         public void UpdateDraggingItem(TaskGrid grid, Point curLocation, ViewData viewData)
@@ -35,37 +38,37 @@ namespace TaskManagement.Service
                 return;
             }
 
-            if (IsDragging())
+            if (IsMoving())
             {
-                UpdateDragging(grid, curLocation, callender);
+                UpdateMoving(grid, curLocation, callender);
                 return;
             }
 
         }
 
-        private void UpdateDragging(TaskGrid grid, Point curLocation, Callender callender)
+        private void UpdateMoving(TaskGrid grid, Point curLocation, Callender callender)
         {
             var member = grid.GetMemberFromX(curLocation.X);
             if (member == null) return;
             var curDay = grid.GetDayFromY(curLocation.Y);
             if (curDay == null) return;
-
+            var draggedPediod = _beforeWorkItem.Period;
             if (IsOnlyMoveHorizontal(curLocation))
             {
                 _draggingWorkItem.AssignedMember = member;
-                _draggingWorkItem.Period = _draggedPeriod;
+                _draggingWorkItem.Period = draggedPediod;
             }
             else if (IsOnlyMoveVirtical(curLocation))
             {
-                _draggingWorkItem.AssignedMember = _draggedMember;
+                _draggingWorkItem.AssignedMember = _beforeWorkItem.AssignedMember;
                 var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, callender);
+                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
             }
             else
             {
                 _draggingWorkItem.AssignedMember = member;
                 var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, callender);
+                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
             }
         }
 
@@ -75,21 +78,16 @@ namespace TaskManagement.Service
             if (curDay == null) return;
 
             var draggedDay = _expandDirection > 0 ? selected.Period.From : selected.Period.To;
+            var otherSideDay = _expandDirection > 0 ? selected.Period.To : selected.Period.From;
             var offset = callender.GetOffset(draggedDay, curDay);
-            if (_expandDirection > 0)
-            {
-                var d = callender.ApplyOffset(selected.Period.From, offset + 1);
-                if (d == null || callender.GetOffset(d, selected.Period.To) < 0) return;
-                if (selected.Period.From.Equals(d)) return;
-                selected.Period.From = d;
-            }
-            else if (_expandDirection < 0)
-            {
-                var d = callender.ApplyOffset(selected.Period.To, offset - 1);
-                if (d == null || callender.GetOffset(selected.Period.From, d) < 0) return;
-                if (selected.Period.To.Equals(d)) return;
-                selected.Period.To = d;
-            }
+            var d = callender.ApplyOffset(draggedDay, offset + _expandDirection);
+            if (d == null || IsUpsideDown(callender, otherSideDay, d)) return;
+            draggedDay.CopyFrom(d);
+        }
+
+        private bool IsUpsideDown(Callender callender, CallenderDay otherSideDay, CallenderDay d)
+        {
+            return _expandDirection * callender.GetOffset(d, otherSideDay) < 0;
         }
 
         private bool IsOnlyMoveHorizontal(Point curLocation)
@@ -102,7 +100,6 @@ namespace TaskManagement.Service
         {
             if (!IsShiftDown()) return false;
             return IsVirticalLong(_draggedLocation, curLocation);
-
         }
 
         private bool IsVirticalLong(Point a, Point b)
@@ -117,19 +114,24 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
+        internal void StartExpand(int direction, WorkItem selected)
         {
+            _beforeWorkItem = selected.Clone();
+            _expandDirection = direction;
+        }
+
+        internal void StartMove(WorkItem wi, Point location, CallenderDay draggedDay)
+        {
+            if (wi == null) return;
             _beforeWorkItem = wi.Clone();
             _draggingWorkItem = wi;
             _draggedLocation = location;
-            _draggedPeriod = wi.Period.Clone();
-            _draggedMember = wi.AssignedMember;
-            _draggedDay = grid.GetDayFromY(location.Y);
+            _draggedDay = draggedDay;
         }
 
         public bool IsActive()
         {
-            if (IsDragging()) return true;
+            if (IsMoving()) return true;
             if (IsExpanding()) return true;
             return false;
         }
@@ -138,35 +140,54 @@ namespace TaskManagement.Service
         {
             try
             {
-                if (!IsActive()) return;
-                if (_beforeWorkItem.Equals(viewData.Selected)) return;
-                var edit = viewData.Selected.Clone();
-                //まず元に戻す
-                if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
-                viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
-                viewData.Selected.Period = _beforeWorkItem.Period;
+                if (!ExistsEdit(viewData)) return;
+                var edit = BackupEdit(viewData);
+                ClearEdit(viewData);
                 if (isCancel) return;
-                if (IsExpanding() || !_isCopying)
-                {
-                    editService.Replace(viewData.Selected, edit);
-                }
-                else
-                {
-                    editService.Add(edit);
-                }
-                viewData.Selected = edit;
+                ApplyEdit(editService, viewData, edit);
             }
             finally
             {
-                _isCopying = false;
-                _draggingWorkItem = null;
-                _expandDirection = 0;
+                ClearDragState();
             }
         }
 
-        private bool IsExpanding()
+        private void ClearDragState()
         {
-            return _expandDirection != 0;
+            _isCopying = false;
+            _draggingWorkItem = null;
+            _expandDirection = 0;
+        }
+
+        private void ApplyEdit(WorkItemEditService editService, ViewData viewData, WorkItem edit)
+        {
+            if (IsExpanding() || !_isCopying)
+            {
+                editService.Replace(viewData.Selected, edit);
+            }
+            else
+            {
+                editService.Add(edit);
+            }
+            viewData.Selected = edit;
+        }
+
+        private void ClearEdit(ViewData viewData)
+        {
+            if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
+            viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
+            viewData.Selected.Period = _beforeWorkItem.Period;
+        }
+
+        private static WorkItem BackupEdit(ViewData viewData)
+        {
+            return viewData.Selected.Clone();
+        }
+
+        private bool ExistsEdit(ViewData viewData)
+        {
+            if (!IsActive()) return false;
+            return !_beforeWorkItem.Equals(viewData.Selected);
         }
 
         internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds, float height)
@@ -197,12 +218,6 @@ namespace TaskManagement.Service
         internal static RectangleF GetTopBarRect(RectangleF bounds, float height)
         {
             return new RectangleF(bounds.X, bounds.Top - height, bounds.Width, height);
-        }
-
-        internal void StartExpand(int direction, WorkItem selected)
-        {
-            _beforeWorkItem = selected.Clone();
-            _expandDirection = direction;
         }
 
         internal void ToCopyMode(WorkItems workItems)

@@ -86,5 +86,12 @@ namespace TaskManagement.Model
             if (LesserThan(other)) return -1;
             return 1;
         }
+
+        internal void CopyFrom(CallenderDay d)
+        {
+            Year = d.Year;
+            Month = d.Month;
+            Day = d.Day;
+        }
     }
 }
