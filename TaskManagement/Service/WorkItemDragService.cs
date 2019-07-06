@@ -20,7 +20,7 @@ namespace TaskManagement.Service
 
         public WorkItem CopyingItem => _isCopying ? _draggingWorkItem : null;
 
-        public bool IsDragging()
+        public bool IsMoving()
         {
             return _draggingWorkItem != null;
         }
@@ -35,15 +35,15 @@ namespace TaskManagement.Service
                 return;
             }
 
-            if (IsDragging())
+            if (IsMoving())
             {
-                UpdateDragging(grid, curLocation, callender);
+                UpdateMoving(grid, curLocation, callender);
                 return;
             }
 
         }
 
-        private void UpdateDragging(TaskGrid grid, Point curLocation, Callender callender)
+        private void UpdateMoving(TaskGrid grid, Point curLocation, Callender callender)
         {
             var member = grid.GetMemberFromX(curLocation.X);
             if (member == null) return;
@@ -129,7 +129,7 @@ namespace TaskManagement.Service
 
         public bool IsActive()
         {
-            if (IsDragging()) return true;
+            if (IsMoving()) return true;
             if (IsExpanding()) return true;
             return false;
         }

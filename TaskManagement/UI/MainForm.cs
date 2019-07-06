@@ -425,7 +425,7 @@ namespace TaskManagement.UI
 
         private void UpdateHoveringText(MouseEventArgs e)
         {
-            if (_workItemDragService.IsDragging()) return;
+            if (_workItemDragService.IsMoving()) return;
             if (_grid == null) return;
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToString();
