@@ -449,7 +449,7 @@ namespace TaskManagement.UI
 
             var wi = _grid.PickFromPoint(e.Location, _viewData);
             _viewData.Selected = _viewData.IsFilteredWorkItem(wi) ? null : wi;
-            _workItemDragService.StartMove(_viewData.Selected, _grid.GetDayFromY(e.Location), _grid);
+            _workItemDragService.StartMove(_viewData.Selected, e.Location, _grid.GetDayFromY(e.Location.Y));
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)

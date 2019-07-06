@@ -145,8 +145,7 @@ namespace TaskManagement.Service
         {
             try
             {
-                if (!IsActive()) return;
-                if (_beforeWorkItem.Equals(viewData.Selected)) return;
+                if (!ExistsEdit(viewData)) return;
                 var edit = viewData.Selected.Clone();
                 //まず元に戻す
                 if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
@@ -169,6 +168,12 @@ namespace TaskManagement.Service
                 _draggingWorkItem = null;
                 _expandDirection = 0;
             }
+        }
+
+        private bool ExistsEdit(ViewData viewData)
+        {
+            if (!IsActive()) return false;
+            return !_beforeWorkItem.Equals(viewData.Selected);
         }
 
         internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds, float height)
