@@ -13,8 +13,6 @@ namespace TaskManagement.Service
         WorkItem _draggingWorkItem = null;
         private Point _draggedLocation;
         CallenderDay _draggedDay = null;
-        Period _draggedPeriod = null;
-        private Member _draggedMember;
         private int _expandDirection = 0;
         bool _isCopying = false;
 
@@ -49,23 +47,23 @@ namespace TaskManagement.Service
             if (member == null) return;
             var curDay = grid.GetDayFromY(curLocation.Y);
             if (curDay == null) return;
-
+            var draggedPediod = _beforeWorkItem.Period;
             if (IsOnlyMoveHorizontal(curLocation))
             {
                 _draggingWorkItem.AssignedMember = member;
-                _draggingWorkItem.Period = _draggedPeriod;
+                _draggingWorkItem.Period = draggedPediod;
             }
             else if (IsOnlyMoveVirtical(curLocation))
             {
-                _draggingWorkItem.AssignedMember = _draggedMember;
+                _draggingWorkItem.AssignedMember = _beforeWorkItem.AssignedMember;
                 var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, callender);
+                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
             }
             else
             {
                 _draggingWorkItem.AssignedMember = member;
                 var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = _draggedPeriod.ApplyOffset(offset, callender);
+                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
             }
         }
 
@@ -122,8 +120,6 @@ namespace TaskManagement.Service
             _beforeWorkItem = wi.Clone();
             _draggingWorkItem = wi;
             _draggedLocation = location;
-            _draggedPeriod = wi.Period.Clone();
-            _draggedMember = wi.AssignedMember;
             _draggedDay = grid.GetDayFromY(location.Y);
         }
 
