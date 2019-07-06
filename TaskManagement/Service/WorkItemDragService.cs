@@ -23,6 +23,11 @@ namespace TaskManagement.Service
             return _draggingWorkItem != null;
         }
 
+        private bool IsExpanding()
+        {
+            return _expandDirection != 0;
+        }
+
         public void UpdateDraggingItem(TaskGrid grid, Point curLocation, ViewData viewData)
         {
             var callender = viewData.Original.Callender;
@@ -114,13 +119,19 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
+        internal void StartExpand(int direction, WorkItem selected)
+        {
+            _beforeWorkItem = selected.Clone();
+            _expandDirection = direction;
+        }
+
+        internal void StartMove(WorkItem wi, Point location, CallenderDay draggedDay)
         {
             if (wi == null) return;
             _beforeWorkItem = wi.Clone();
             _draggingWorkItem = wi;
             _draggedLocation = location;
-            _draggedDay = grid.GetDayFromY(location.Y);
+            _draggedDay = draggedDay;
         }
 
         public bool IsActive()
@@ -160,11 +171,6 @@ namespace TaskManagement.Service
             }
         }
 
-        private bool IsExpanding()
-        {
-            return _expandDirection != 0;
-        }
-
         internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds, float height)
         {
             var bar = GetBottomBarRect(bounds, height);
@@ -193,12 +199,6 @@ namespace TaskManagement.Service
         internal static RectangleF GetTopBarRect(RectangleF bounds, float height)
         {
             return new RectangleF(bounds.X, bounds.Top - height, bounds.Width, height);
-        }
-
-        internal void StartExpand(int direction, WorkItem selected)
-        {
-            _beforeWorkItem = selected.Clone();
-            _expandDirection = direction;
         }
 
         internal void ToCopyMode(WorkItems workItems)
