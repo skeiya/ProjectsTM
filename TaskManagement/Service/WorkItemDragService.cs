@@ -146,28 +146,47 @@ namespace TaskManagement.Service
             try
             {
                 if (!ExistsEdit(viewData)) return;
-                var edit = viewData.Selected.Clone();
-                //まず元に戻す
-                if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
-                viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
-                viewData.Selected.Period = _beforeWorkItem.Period;
+                var edit = BackupEdit(viewData);
+                ClearEdit(viewData);
                 if (isCancel) return;
-                if (IsExpanding() || !_isCopying)
-                {
-                    editService.Replace(viewData.Selected, edit);
-                }
-                else
-                {
-                    editService.Add(edit);
-                }
-                viewData.Selected = edit;
+                ApplyEdit(editService, viewData, edit);
             }
             finally
             {
-                _isCopying = false;
-                _draggingWorkItem = null;
-                _expandDirection = 0;
+                ClearDragState();
             }
+        }
+
+        private void ClearDragState()
+        {
+            _isCopying = false;
+            _draggingWorkItem = null;
+            _expandDirection = 0;
+        }
+
+        private void ApplyEdit(WorkItemEditService editService, ViewData viewData, WorkItem edit)
+        {
+            if (IsExpanding() || !_isCopying)
+            {
+                editService.Replace(viewData.Selected, edit);
+            }
+            else
+            {
+                editService.Add(edit);
+            }
+            viewData.Selected = edit;
+        }
+
+        private void ClearEdit(ViewData viewData)
+        {
+            if (_isCopying) viewData.Original.WorkItems.Remove(_beforeWorkItem);
+            viewData.Selected.AssignedMember = _beforeWorkItem.AssignedMember;
+            viewData.Selected.Period = _beforeWorkItem.Period;
+        }
+
+        private static WorkItem BackupEdit(ViewData viewData)
+        {
+            return viewData.Selected.Clone();
         }
 
         private bool ExistsEdit(ViewData viewData)
