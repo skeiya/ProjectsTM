@@ -439,23 +439,17 @@ namespace TaskManagement.UI
         private void TaskDrawArea_MouseDown(object sender, MouseEventArgs e)
         {
             this.ActiveControl = null;
+
             if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (e.Button != MouseButtons.Left) return;
                 _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
+                return;
             }
-            else
-            {
-                var wi = _grid.PickFromPoint(e.Location, _viewData);
-                if (wi == null || _viewData.IsFilteredWorkItem(wi))
-                {
-                    _viewData.Selected = null;
-                    return;
-                }
-                _viewData.Selected = wi;
 
-                _workItemDragService.StartDrag(wi, e.Location, _grid);
-            }
+            var wi = _grid.PickFromPoint(e.Location, _viewData);
+            _viewData.Selected = _viewData.IsFilteredWorkItem(wi) ? null : wi;
+            _workItemDragService.StartDrag(_viewData.Selected, e.Location, _grid);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)

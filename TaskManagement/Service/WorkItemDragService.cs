@@ -102,7 +102,6 @@ namespace TaskManagement.Service
         {
             if (!IsShiftDown()) return false;
             return IsVirticalLong(_draggedLocation, curLocation);
-
         }
 
         private bool IsVirticalLong(Point a, Point b)
@@ -119,6 +118,7 @@ namespace TaskManagement.Service
 
         internal void StartDrag(WorkItem wi, Point location, TaskGrid grid)
         {
+            if (wi == null) return;
             _beforeWorkItem = wi.Clone();
             _draggingWorkItem = wi;
             _draggedLocation = location;
