@@ -47,6 +47,7 @@ namespace TaskManagement.UI
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
+            this.Shown += JumpTodayAtFirstDraw;
             LoadUserSetting();
             UpdateGrid();
             UpdatePanelLayout(_viewData.Detail);
@@ -94,13 +95,19 @@ namespace TaskManagement.UI
             _grid.UpdateFont(_viewData.FontSize);
         }
 
+        private void JumpTodayAtFirstDraw(object sender, System.EventArgs e)
+        {
+            JumpTodayMenu_Click(null, null);
+            this.Refresh();
+        }
+
         private void PanelTaskAreaWithFixed_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             _grid.DrawFixedArea(e.Graphics, _viewData, panelTaskGrid.Location, new Point(-taskDrawArea.Bounds.X, -taskDrawArea.Bounds.Y), _workItemDragService.CopyingItem, e.ClipRectangle);
         }
-
+               
         private void PanelTaskAreaWithoutFixed_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
