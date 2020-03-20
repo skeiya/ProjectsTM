@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FreeGridControl;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -12,6 +13,18 @@ namespace UnitTestProject1
     [TestClass]
     public class UnitTest1
     {
+        [TestMethod]
+        public void TestIntArrayForDesignShrink()
+        {
+            var ar = new IntArrayForDesign();
+            ar.Add(5);
+            ar.Add(5);
+            ar.Add(5);
+            ar.Add(5);
+            ar.SetCount(2);
+            Assert.AreEqual<int>(ar.Count, 2);
+        }
+
         [TestMethod]
         public void TestCallenderDayFormat()
         {
