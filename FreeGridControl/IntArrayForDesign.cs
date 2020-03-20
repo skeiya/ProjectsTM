@@ -46,7 +46,7 @@ namespace FreeGridControl
             if(this.Count < newCount)
             {
                 var append = new List<int>();
-                for (var index = 0; index < (newCount - this.Count); index++) append.Add(5);
+                for (var index = 0; index < (newCount - this.Count); index++) append.Add(35);
                 this.AddRange(append);
             }
             else

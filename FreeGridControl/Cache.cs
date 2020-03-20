@@ -31,6 +31,9 @@ namespace FreeGridControl
             {
                 _chacheWidth.Add(c, ColWidths.Sum(c));
             }
+            Updated(this, null);
         }
+
+        public event EventHandler Updated;
     }
 }
