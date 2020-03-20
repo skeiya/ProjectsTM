@@ -61,6 +61,7 @@ namespace FreeGridControl
         }
 
         [Category("Grid")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Rows
         {
             get => _cache.RowHeights.Count;
@@ -72,6 +73,7 @@ namespace FreeGridControl
             }
         }
         [Category("Grid")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Cols
         {
             get => _cache.ColWidths.Count;

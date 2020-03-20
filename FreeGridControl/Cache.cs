@@ -13,8 +13,8 @@ namespace FreeGridControl
         public IntArrayForDesign RowHeights = new IntArrayForDesign();
         public IntArrayForDesign ColWidths = new IntArrayForDesign();
 
-        public int GridWidth => GetWidth(ColWidths.Count);
         public int GridHight => GetHeight(RowHeights.Count);
+        public int GridWidth => GetWidth(ColWidths.Count);
 
         public int GetHeight(int row) => _cacheHeight[row];
         public int GetWidth(int col) => _chacheWidth[col];
