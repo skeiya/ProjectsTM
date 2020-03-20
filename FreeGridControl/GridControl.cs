@@ -9,29 +9,40 @@ namespace FreeGridControl
 {
     public partial class GridControl : UserControl
     {
-        private IntArrayForDesign _rowHeights = new IntArrayForDesign();
-        private IntArrayForDesign _colWidths = new IntArrayForDesign();
+        private Cache _cache = new Cache();
 
         public GridControl()
         {
             InitializeComponent();
-            _rowHeights.ItemChanged += _rowHeights_ItemChanged;
-            _colWidths.ItemChanged += _colWidths_ItemChanged;
+            _cache.RowHeights.ItemChanged += _rowHeights_ItemChanged;
+            _cache.ColWidths.ItemChanged += _colWidths_ItemChanged;
+            this.DoubleBuffered = true;
+            _cache.Update();
         }
 
         private void _colWidths_ItemChanged(object sender, System.EventArgs e)
         {
+            _cache.Update();
             this.Refresh();
         }
 
         private void _rowHeights_ItemChanged(object sender, System.EventArgs e)
         {
+            _cache.Update();
             this.Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            DrawGridLine(pe.Graphics);
+            try
+            {
+                DrawGridLine(pe.Graphics);
+            }
+            catch
+            {
+                _cache.Update();
+                DrawGridLine(pe.Graphics);
+            }
             base.OnPaint(pe);
         }
 
@@ -39,12 +50,12 @@ namespace FreeGridControl
         {
             for (var r = 0; r <= Rows; r++)
             {
-                var h = _rowHeights.Sum(r);
+                var h = _cache.GetHeight(r);
                 graphics.DrawLine(Pens.Black, new Point(0, h), new Point(GridWidth, h));
             }
             for (var c = 0; c <= Cols; c++)
             {
-                var w = _colWidths.Sum(c);
+                var w = _cache.GetWidth(c);
                 graphics.DrawLine(Pens.Black, new Point(w, 0), new Point(w, GridHeight));
             }
         }
@@ -52,23 +63,23 @@ namespace FreeGridControl
         [Category("Grid")]
         public int Rows
         {
-            get => _rowHeights.Count;
+            get => _cache.RowHeights.Count;
             set
             {
-                if (_rowHeights.Count == value) return;
-                _rowHeights.SetCount(value);
-                this.Invalidate();
+                if (Rows == value) return;
+                _cache.RowHeights.SetCount(value);
+                _cache.Update();
             }
         }
         [Category("Grid")]
         public int Cols
         {
-            get => _colWidths.Count;
+            get => _cache.ColWidths.Count;
             set
             {
-                if (_colWidths.Count == value) return;
-                _colWidths.SetCount(value);
-                this.Invalidate();
+                if (Cols == value) return;
+                _cache.ColWidths.SetCount(value);
+                _cache.Update();
             }
         }
         [Category("Grid")]
@@ -79,7 +90,7 @@ namespace FreeGridControl
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IntArrayForDesign RowHeights
         {
-            get => _rowHeights;
+            get => _cache.RowHeights;
             set
             {
                 ;
@@ -89,14 +100,14 @@ namespace FreeGridControl
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IntArrayForDesign ColWidths
         {
-            get => _colWidths;
+            get => _cache.ColWidths;
             set
             {
                 ;
             }
         }
 
-        public int GridWidth => _colWidths.Sum(_colWidths.Count);
-        public int GridHeight => _rowHeights.Sum(_rowHeights.Count);
+        public int GridWidth => _cache.GridWidth;
+        public int GridHeight => _cache.GridHight;
     }
 }
