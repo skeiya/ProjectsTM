@@ -47,7 +47,7 @@
             this.gridControl1.RowHeights.Add(15);
             this.gridControl1.RowHeights.Add(5);
             this.gridControl1.Rows = 3;
-            this.gridControl1.Size = new System.Drawing.Size(150, 150);
+            this.gridControl1.Size = new System.Drawing.Size(161, 150);
             this.gridControl1.TabIndex = 0;
             // 
             // Form1

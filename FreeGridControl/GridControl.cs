@@ -40,12 +40,12 @@ namespace FreeGridControl
             for (var r = 0; r <= Rows; r++)
             {
                 var h = _rowHeights.Sum(r);
-                graphics.DrawLine(Pens.Black, new Point(0, h), new Point(this.Width, h));
+                graphics.DrawLine(Pens.Black, new Point(0, h), new Point(GridWidth, h));
             }
             for (var c = 0; c <= Cols; c++)
             {
                 var w = _colWidths.Sum(c);
-                graphics.DrawLine(Pens.Black, new Point(w, 0), new Point(w, this.Height));
+                graphics.DrawLine(Pens.Black, new Point(w, 0), new Point(w, GridHeight));
             }
         }
 
@@ -95,5 +95,8 @@ namespace FreeGridControl
                 ;
             }
         }
+
+        public int GridWidth => _colWidths.Sum(_colWidths.Count);
+        public int GridHeight => _rowHeights.Sum(_rowHeights.Count);
     }
 }
