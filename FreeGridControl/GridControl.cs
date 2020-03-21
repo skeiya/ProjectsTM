@@ -26,6 +26,19 @@ namespace FreeGridControl
             this.hScrollBar.Value = 0;
             this.vScrollBar.Scroll += ScrollBar_Scroll;
             this.hScrollBar.Scroll += ScrollBar_Scroll;
+            this.MouseWheel += GridControl_MouseWheel;
+        }
+
+        private void GridControl_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (Math.Abs(e.Delta) < 120) return;
+
+            var maximum = 1 + vScrollBar.Maximum - vScrollBar.LargeChange;
+            var delta = -(e.Delta / 120) * vScrollBar.SmallChange * 2;
+            var offset = Math.Min(Math.Max(vScrollBar.Value + delta, vScrollBar.Minimum), maximum);
+
+            vScrollBar.Value = offset;
+            this.Refresh();
         }
 
         private void _cache_Updated(object sender, System.EventArgs e)
