@@ -12,6 +12,8 @@ namespace FreeGridControl
     {
         private Cache _cache = new Cache();
 
+        public event EventHandler<DrawEventArgs> OnDrawCell;
+
         public GridControl()
         {
             InitializeComponent();
@@ -55,51 +57,101 @@ namespace FreeGridControl
         {
             try
             {
-                DrawGridLine(pe.Graphics);
+                DrawGrid(pe.Graphics);
             }
             catch
             {
                 _cache.Update();
-                DrawGridLine(pe.Graphics);
+                DrawGrid(pe.Graphics);
             }
             base.OnPaint(pe);
         }
 
-        private void DrawGridLine(Graphics graphics)
-        {
-            DrawFixedGrid(graphics);
-            DrawNormalGrid(graphics);
-        }
-
-        private void DrawNormalGrid(Graphics graphics)
+        private void DrawGrid(Graphics graphics)
         {
             var vOffset = (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
             var hOffset = (int)(hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value);
+            DrawFixedGrid(graphics, vOffset, hOffset);
+            DrawNormalGrid(graphics, vOffset, hOffset);
+        }
+
+        private void DrawNormalGrid(Graphics graphics, int vOffset, int hOffset)
+        {
             for (var r = FixedRows + 1; r <= Rows; r++)
             {
-                var h = _cache.GetHeight(r) - vOffset;
+                var h = _cache.GetTop(r) - vOffset;
                 if (h <= FixedHight) continue;
                 graphics.DrawLine(Pens.Black, new Point(0 - hOffset, h), new Point(GridWidth - hOffset, h));
             }
             for (var c = FixedCols + 1; c <= Cols; c++)
             {
-                var w = _cache.GetWidth(c) - hOffset;
+                var w = _cache.GetLeft(c) - hOffset;
                 if (w <= FixedWidth) continue;
                 graphics.DrawLine(Pens.Black, new Point(w, 0 - vOffset), new Point(w, GridHeight - vOffset));
             }
+
+            for (var r = FixedRows; r < Rows; r++)
+            {
+                for (var c = FixedCols; c < Cols; c++)
+                {
+                    var rect = _cache.GetRectangle(r, c);
+                    rect.Offset(-hOffset, -vOffset);
+                    rect.Intersect(new RectangleF(_cache.FixedWidth, _cache.FixedHight, Width - _cache.FixedWidth, Height - _cache.FixedHight));
+                    if (rect.IsEmpty) continue;
+                    OnDrawCell?.Invoke(this, new DrawEventArgs(r, c, rect, graphics));
+                }
+            }
         }
 
-        private void DrawFixedGrid(Graphics graphics)
+        private void DrawFixedGrid(Graphics graphics, int vOffset, int hOffset)
         {
             for (var r = 0; r <= FixedRows; r++)
             {
-                var h = _cache.GetHeight(r);
+                var h = _cache.GetTop(r);
                 graphics.DrawLine(Pens.Blue, new Point(0, h), new Point(GridWidth, h));
             }
             for (var c = 0; c <= FixedCols; c++)
             {
-                var w = _cache.GetWidth(c);
+                var w = _cache.GetLeft(c);
                 graphics.DrawLine(Pens.Blue, new Point(w, 0), new Point(w, GridHeight));
+            }
+            
+            //FF FN
+            //NF NN
+
+            // FF
+            for (var r = 0; r < FixedRows; r++)
+            {
+                for (var c = 0; c < FixedCols; c++)
+                {
+                    OnDrawCell?.Invoke(this, new DrawEventArgs(r, c, _cache.GetRectangle(r, c), graphics));
+                }
+            }
+
+            //FN
+            for (var r = 0; r < FixedRows; r++)
+            {
+                for (var c = FixedCols; c < Cols; c++)
+                {
+                    var rect = _cache.GetRectangle(r, c);
+                    rect.Offset(-hOffset, 0);
+                    rect.Intersect(new RectangleF(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHight));
+                    if (rect.IsEmpty) continue;
+                    OnDrawCell?.Invoke(this, new DrawEventArgs(r, c, rect, graphics));
+                }
+            }
+
+            //NF
+            for (var r = FixedRows; r < Rows; r++)
+            {
+                for (var c = 0; c < FixedCols; c++)
+                {
+                    var rect = _cache.GetRectangle(r, c);
+                    rect.Offset(0, -vOffset);
+                    rect.Intersect(new RectangleF(0, _cache.FixedHight, _cache.FixedWidth, Height - _cache.FixedHight));
+                    if (rect.IsEmpty) continue;
+                    OnDrawCell?.Invoke(this, new DrawEventArgs(r, c, rect, graphics));
+                }
             }
         }
 
