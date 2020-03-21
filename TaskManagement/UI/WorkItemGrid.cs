@@ -48,6 +48,7 @@ namespace TaskManagement.UI
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
+            this._undoService.Changed += _undoService_Changed;
         }
 
         private void DetatchEvents()
@@ -57,6 +58,12 @@ namespace TaskManagement.UI
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
+            this._undoService.Changed -= _undoService_Changed;
+        }
+
+        private void _undoService_Changed(object sender, EditedEventArgs e)
+        {
+            this.Refresh();
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)

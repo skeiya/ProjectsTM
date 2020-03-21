@@ -45,7 +45,6 @@ namespace TaskManagement.UI
             this.Shown += JumpTodayAtFirstDraw;
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
-            //@@@UpdateGrid();
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             _fileIOService.FileChanged += _fileIOService_FileChanged;
             _fileIOService.FileSaved += _fileIOService_FileSaved;
