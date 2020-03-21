@@ -313,21 +313,19 @@ namespace FreeGridControl
 
         public int X2Col(int x)
         {
-            for (int c = 0; c < Cols; c++)
+            for (int c = 0; c <= Cols; c++)
             {
                 if (x < _cache.GetLeft(c) - HOffset) return c - 1;
             }
-            Debug.Assert(false);
             return -1;
         }
 
         public int Y2Row(int y)
         {
-            for (int r = 0; r < Rows; r++)
+            for (int r = 0; r <= Rows; r++)
             {
                 if (y < _cache.GetTop(r) - VOffset) return r - 1;
             }
-            Debug.Assert(false);
             return -1;
         }
     }

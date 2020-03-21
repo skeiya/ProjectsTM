@@ -41,7 +41,7 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            MoveVisibleArea(WorkItem2Rect(_viewData.Selected));
+            if (_viewData.Selected != null) MoveVisibleArea(WorkItem2Rect(_viewData.Selected));
             this.Invalidate();
         }
 
@@ -83,7 +83,9 @@ namespace TaskManagement.UI
 
         private CallenderDay Row2Day(int r)
         {
-            return _viewData.GetFilteredDays().ElementAt(r - FixedRows);
+            var days = _viewData.GetFilteredDays();
+            if (r - FixedRows < 0 || days.Count <= r - FixedRows) return null;
+            return days.ElementAt(r - FixedRows);
         }
 
         private Member X2Member(int x)
@@ -94,6 +96,8 @@ namespace TaskManagement.UI
 
         private Member Col2Member(int c)
         {
+            var members = _viewData.GetFilteredMembers();
+            if (c - FixedCols < 0 || members.Count <= c - FixedCols) return null;
             return _viewData.GetFilteredMembers().ElementAt(c - FixedCols);
         }
 
@@ -101,7 +105,7 @@ namespace TaskManagement.UI
         {
             var m = X2Member(location.X);
             var d = Y2Day(location.Y);
-
+            if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
         }
 
