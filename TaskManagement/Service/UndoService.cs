@@ -31,7 +31,7 @@ namespace TaskManagement.Service
         internal void Push()
         {
             _undoStack.Push(_atomicAction.Clone());
-            Changed(this, new EditedEventArgs(_atomicAction.Members));
+            Changed?.Invoke(this, new EditedEventArgs(_atomicAction.Members));
             _atomicAction.Clear();
             _redoStack.Clear();
         }

@@ -18,14 +18,17 @@ namespace TaskManagement.UI
         private ViewData _viewData;
 
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
+        private UndoService _undoService = new UndoService();
+        private WorkItemEditService _editService;
 
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
         {
             LockUpdate = true;
+            if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
-            this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            AttachEvents();
             var fixedRows = 2;
             var fixedCols = 3;
             this.Rows = _viewData.GetFilteredDays().Count + fixedRows;
@@ -33,10 +36,66 @@ namespace TaskManagement.UI
             this.FixedRows = fixedRows;
             this.FixedCols = fixedCols;
 
+            _editService = new WorkItemEditService(_viewData, _undoService);
+
+            LockUpdate = false;
+        }
+
+        private void AttachEvents()
+        {
+            this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
-            LockUpdate = false;
+            this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
+        }
+
+        private void DetatchEvents()
+        {
+            this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
+            this.OnDrawCell -= WorkItemGrid_OnDrawCell;
+            this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
+            this.MouseDown -= WorkItemGrid_MouseDown;
+            this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
+        }
+
+        private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (_viewData.Selected != null)
+            {
+                EditSelectedWorkItem();
+                return;
+            }
+            var day = Y2Day(e.Location.Y);
+            var member = X2Member(e.Location.X);
+            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member);
+            AddNewWorkItem(proto);
+        }
+
+        public void AddNewWorkItem(WorkItem proto)
+        {
+            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var wi = dlg.GetWorkItem(_viewData.Original.Callender);
+                _viewData.UpdateCallenderAndMembers(wi);
+                _editService.Add(wi);
+                _undoService.Push();
+            }
+        }
+
+        public void EditSelectedWorkItem()
+        {
+            var wi = _viewData.Selected;
+            if (wi == null) return;
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                _viewData.UpdateCallenderAndMembers(newWi);
+                _editService.Replace(wi, newWi);
+                _viewData.Selected = newWi;
+            }
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)

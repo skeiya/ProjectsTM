@@ -249,7 +249,7 @@ namespace TaskManagement.UI
 
         private void EditMenu_Click(object sender, EventArgs e)
         {
-            EditSelectedWorkItem();
+            workItemGrid1.EditSelectedWorkItem();
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
@@ -378,19 +378,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            AddNewWorkItem(null);
-        }
-
-        private void AddNewWorkItem(WorkItem proto)
-        {
-            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.Callender))
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                var wi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _viewData.UpdateCallenderAndMembers(wi);
-                _editService.Add(wi);
-                _undoService.Push();
-            }
+            workItemGrid1.AddNewWorkItem(null);
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -439,33 +427,6 @@ namespace TaskManagement.UI
                 _searchForm = new SearchWorkitemForm(_viewData, _editService);
             }
             if (!_searchForm.Visible) _searchForm.Show(this);
-        }
-
-        private void TaskDrawArea_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (_viewData.Selected != null)
-            {
-                EditSelectedWorkItem();
-                return;
-            }
-            var day = _grid.GetDayFromY(e.Location.Y);
-            var member = _grid.GetMemberFromX(e.Location.X);
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member);
-            AddNewWorkItem(proto);
-        }
-
-        private void EditSelectedWorkItem()
-        {
-            var wi = _viewData.Selected;
-            if (wi == null) return;
-            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
-                _viewData.UpdateCallenderAndMembers(newWi);
-                _editService.Replace(wi, newWi);
-                _viewData.Selected = newWi;
-            }
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
