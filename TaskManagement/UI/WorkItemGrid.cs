@@ -172,7 +172,7 @@ namespace TaskManagement.UI
 
             var wi = PickWorkItemFromPoint(e.Location);
             _viewData.Selected = wi;// _viewData.IsFilteredWorkItem(wi) ? null : wi;
-            _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+           // _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
         }
 
         private CallenderDay Y2Day(int y)
