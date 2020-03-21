@@ -606,9 +606,8 @@ namespace TaskManagement.UI
             if (appData == null) return;
             _viewData.Original = appData;
             _viewData.Selected = null;
-            //@@@UpdateGrid();
+            workItemGrid1.Initialize(_viewData);
             _isDirty = false;
-            //@@@taskDrawArea.Invalidate();
         }
     }
 }

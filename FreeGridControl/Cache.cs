@@ -14,6 +14,7 @@ namespace FreeGridControl
         private Dictionary<Tuple<int, int>, RectangleF> _chacheRect = new Dictionary<Tuple<int, int>, RectangleF>();
         public IntArrayForDesign RowHeights = new IntArrayForDesign();
         public IntArrayForDesign ColWidths = new IntArrayForDesign();
+        private bool _lockUpdate;
 
         public int GridHight => GetTop(RowHeights.Count);
         public int GridWidth => GetLeft(ColWidths.Count);
@@ -22,12 +23,22 @@ namespace FreeGridControl
         public int FixedHeight { get; private set; }
         public int FixedRows { get; set; }
         public int FixedCols { get; set; }
+        public bool LockUpdate
+        {
+            get => _lockUpdate; internal set
+            {
+                var org = _lockUpdate;
+                _lockUpdate = value;
+                if (org && !_lockUpdate) Update();
+            }
+        }
 
         public int GetTop(int row) => _cacheTop[row];
         public int GetLeft(int col) => _chacheLeft[col];
 
         public void Update()
         {
+            if (_lockUpdate) return;
             FixedHeight = RowHeights.Sum(FixedRows);
             FixedWidth = ColWidths.Sum(FixedCols);
             _cacheTop.Clear();

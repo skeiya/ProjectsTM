@@ -19,6 +19,7 @@ namespace TaskManagement.UI
 
         internal void Initialize(ViewData viewData)
         {
+            LockUpdate = true;
             this._viewData = viewData;
             var fixedRows = 2;
             var fixedCols = 3;
@@ -29,6 +30,7 @@ namespace TaskManagement.UI
 
             this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
+            LockUpdate = false;
         }
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)

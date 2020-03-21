@@ -15,6 +15,8 @@ namespace FreeGridControl
         public event EventHandler<DrawCellEventArgs> OnDrawCell;
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
+        public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
+
         public GridControl()
         {
             InitializeComponent();
