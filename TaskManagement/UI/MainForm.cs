@@ -463,11 +463,8 @@ namespace TaskManagement.UI
             using (var dlg = new ManageMemberForm(_viewData.Original))
             {
                 dlg.ShowDialog(this);
-                _grid.UpdateRowColMap(_viewData);
+                workItemGrid1.Initialize(_viewData);
             }
-            //@@@taskDrawArea.Invalidate();
-            //panelFullView.Invalidate();
-            //UpdateGrid();
         }
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
