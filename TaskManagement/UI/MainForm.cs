@@ -361,7 +361,7 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             _oldFileService.ImportMemberAndWorkItems(_viewData);
-            //@@@taskDrawArea.Invalidate();
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
