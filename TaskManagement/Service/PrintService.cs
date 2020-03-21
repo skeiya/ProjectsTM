@@ -30,9 +30,10 @@ namespace TaskManagement.Service
 
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
-            var grid = new TaskGrid(_viewData, e.PageBounds, _font, true);
-            grid.OnResize(e.PageBounds.Size, null, true);
-            //@@@grid.DrawPrint(e.Graphics, _viewData);
+            var grid = new WorkItemGrid();
+            grid.Size = e.PageBounds.Size;
+            grid.Initialize(_viewData);//@@@印刷用にカスタムする
+            grid.Print(e.Graphics);
         }
 
         internal void Print()

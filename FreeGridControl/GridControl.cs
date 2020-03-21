@@ -305,5 +305,10 @@ namespace FreeGridControl
             if (rect.Bottom < y) return false;
             return true;
         }
+
+        public void Print(Graphics graphics)
+        {
+            DrawGrid(graphics);
+        }
     }
 }
