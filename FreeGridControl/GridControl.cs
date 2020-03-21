@@ -146,17 +146,17 @@ namespace FreeGridControl
         {
             if (!isFixedRow && !isFixedCol)
             {
-                return new RectangleF(_cache.FixedWidth, _cache.FixedHight, Width - _cache.FixedWidth, Height - _cache.FixedHight);
+                return new RectangleF(_cache.FixedWidth, _cache.FixedHeight, Width - _cache.FixedWidth, Height - _cache.FixedHeight);
             }
             else if (isFixedRow && !isFixedCol)
             {
-                return new RectangleF(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHight);
+                return new RectangleF(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHeight);
             }
             else if (!isFixedRow && isFixedCol)
             {
-                return new RectangleF(0, _cache.FixedHight, _cache.FixedWidth, Height - _cache.FixedHight);
+                return new RectangleF(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
             }
-            return new RectangleF(0, 0, _cache.FixedWidth, _cache.FixedHight);
+            return new RectangleF(0, 0, _cache.FixedWidth, _cache.FixedHeight);
         }
 
         private bool IsFixedRow(int r)
@@ -194,9 +194,21 @@ namespace FreeGridControl
             }
         }
         [Category("Grid")]
-        public int FixedRows { get => _cache.FixedRows; set => _cache.FixedRows = value; }
+        public int FixedRows
+        {
+            get => _cache.FixedRows; set
+            {
+                _cache.FixedRows = value;
+                _cache.Update();
+            }
+        }
         [Category("Grid")]
-        public int FixedCols { get => _cache.FixedCols; set => _cache.FixedCols = value; }
+        public int FixedCols { get => _cache.FixedCols; set
+            {
+                _cache.FixedCols = value;
+                _cache.Update();
+            }
+        }
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IntArrayForDesign RowHeights
@@ -221,7 +233,7 @@ namespace FreeGridControl
         public int GridWidth => _cache.GridWidth;
         public int GridHeight => _cache.GridHight;
 
-        public int FixedHight => _cache.FixedHight;
+        public int FixedHight => _cache.FixedHeight;
         public int FixedWidth => _cache.FixedWidth;
     }
 }

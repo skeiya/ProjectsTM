@@ -19,7 +19,7 @@ namespace FreeGridControl
         public int GridWidth => GetLeft(ColWidths.Count);
 
         public int FixedWidth { get; private set; }
-        public int FixedHight { get; private set; }
+        public int FixedHeight { get; private set; }
         public int FixedRows { get; set; }
         public int FixedCols { get; set; }
 
@@ -28,7 +28,7 @@ namespace FreeGridControl
 
         public void Update()
         {
-            FixedHight = RowHeights.Sum(FixedRows);
+            FixedHeight = RowHeights.Sum(FixedRows);
             FixedWidth = ColWidths.Sum(FixedCols);
             _cacheTop.Clear();
             _chacheLeft.Clear();
