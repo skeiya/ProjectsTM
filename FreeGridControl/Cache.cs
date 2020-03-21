@@ -16,11 +16,18 @@ namespace FreeGridControl
         public int GridHight => GetHeight(RowHeights.Count);
         public int GridWidth => GetWidth(ColWidths.Count);
 
+        public int FixedWidth { get; private set; }
+        public int FixedHight { get; private set; }
+        public int FixedRows { get; set; }
+        public int FixedCols { get; set; }
+
         public int GetHeight(int row) => _cacheHeight[row];
         public int GetWidth(int col) => _chacheWidth[col];
 
         public void Update()
         {
+            FixedHight = RowHeights.Sum(FixedRows);
+            FixedWidth = ColWidths.Sum(FixedCols);
             _cacheHeight.Clear();
             _chacheWidth.Clear();
             for (var r = 0; r <= RowHeights.Count; r++)

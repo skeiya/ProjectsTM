@@ -36,8 +36,13 @@
             this.gridControl1.ColWidths.Add(35);
             this.gridControl1.ColWidths.Add(35);
             this.gridControl1.ColWidths.Add(35);
-            this.gridControl1.FixedCols = 0;
-            this.gridControl1.FixedRows = 0;
+            this.gridControl1.ColWidths.Add(35);
+            this.gridControl1.ColWidths.Add(35);
+            this.gridControl1.ColWidths.Add(35);
+            this.gridControl1.ColWidths.Add(35);
+            this.gridControl1.ColWidths.Add(35);
+            this.gridControl1.FixedCols = 2;
+            this.gridControl1.FixedRows = 3;
             this.gridControl1.Location = new System.Drawing.Point(83, 52);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RowHeights.Add(35);
@@ -45,7 +50,14 @@
             this.gridControl1.RowHeights.Add(35);
             this.gridControl1.RowHeights.Add(35);
             this.gridControl1.RowHeights.Add(35);
-            this.gridControl1.Size = new System.Drawing.Size(147, 156);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.RowHeights.Add(35);
+            this.gridControl1.Size = new System.Drawing.Size(249, 227);
             this.gridControl1.TabIndex = 0;
             // 
             // Form1

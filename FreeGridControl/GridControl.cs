@@ -67,17 +67,39 @@ namespace FreeGridControl
 
         private void DrawGridLine(Graphics graphics)
         {
+            DrawFixedGrid(graphics);
+            DrawNormalGrid(graphics);
+        }
+
+        private void DrawNormalGrid(Graphics graphics)
+        {
             var vOffset = (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
             var hOffset = (int)(hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value);
-            for (var r = 0; r <= Rows; r++)
+            for (var r = FixedRows + 1; r <= Rows; r++)
+            {
+                var h = _cache.GetHeight(r) - vOffset;
+                if (h <= FixedHight) continue;
+                graphics.DrawLine(Pens.Black, new Point(0 - hOffset, h), new Point(GridWidth - hOffset, h));
+            }
+            for (var c = FixedCols + 1; c <= Cols; c++)
+            {
+                var w = _cache.GetWidth(c) - hOffset;
+                if (w <= FixedWidth) continue;
+                graphics.DrawLine(Pens.Black, new Point(w, 0 - vOffset), new Point(w, GridHeight - vOffset));
+            }
+        }
+
+        private void DrawFixedGrid(Graphics graphics)
+        {
+            for (var r = 0; r <= FixedRows; r++)
             {
                 var h = _cache.GetHeight(r);
-                graphics.DrawLine(Pens.Black, new Point(0 - hOffset, h - vOffset), new Point(GridWidth - hOffset, h - vOffset));
+                graphics.DrawLine(Pens.Blue, new Point(0, h), new Point(GridWidth, h));
             }
-            for (var c = 0; c <= Cols; c++)
+            for (var c = 0; c <= FixedCols; c++)
             {
                 var w = _cache.GetWidth(c);
-                graphics.DrawLine(Pens.Black, new Point(w - hOffset, 0 - vOffset), new Point(w - hOffset, GridHeight - vOffset));
+                graphics.DrawLine(Pens.Blue, new Point(w, 0), new Point(w, GridHeight));
             }
         }
 
@@ -106,9 +128,9 @@ namespace FreeGridControl
             }
         }
         [Category("Grid")]
-        public int FixedRows { get; set; }
+        public int FixedRows { get => _cache.FixedRows; set => _cache.FixedRows = value; }
         [Category("Grid")]
-        public int FixedCols { get; set; }
+        public int FixedCols { get => _cache.FixedCols; set => _cache.FixedCols = value; }
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IntArrayForDesign RowHeights
@@ -132,5 +154,8 @@ namespace FreeGridControl
 
         public int GridWidth => _cache.GridWidth;
         public int GridHeight => _cache.GridHight;
+
+        public int FixedHight => _cache.FixedHight;
+        public int FixedWidth => _cache.FixedWidth;
     }
 }
