@@ -87,8 +87,8 @@ namespace FreeGridControl
             base.OnPaint(pe);
         }
 
-        private int VOffset => (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
-        private int HOffset => (int)(hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value);
+        private float VOffset => vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value;
+        private float HOffset => hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value;
         private void DrawGrid(Graphics graphics)
         {
             var vOffset = (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
@@ -143,14 +143,15 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(visibleRowColRect, graphics, GetRect));
         }
 
-        private Rectangle GetRect(int col, Tuple<int, int> topAndHeight)
+        private RectangleF GetRect(int col, Tuple<int, int> topAndHeight)
         {
             var left = _cache.GetLeft(col + FixedCols);
             var top = _cache.GetTop(topAndHeight.Item1 + FixedRows);
             var width = _cache.ColWidths[col + FixedCols];
             var height = _cache.GetTop(topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows) + _cache.RowHeights[topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows] - top;
-            var result = new Rectangle(left, top, width, height);
+            var result = new RectangleF(left, top, width, height);
             result.Offset(-HOffset, -VOffset);
+            result.Intersect(GetVisibleRect(false, false));
             return result;
         }
 

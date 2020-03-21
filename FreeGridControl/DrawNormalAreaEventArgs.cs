@@ -7,7 +7,7 @@ namespace FreeGridControl
     {
         public Rectangle? VisibleRowColRect { get; private set; }
 
-        public DrawNormalAreaEventArgs(Rectangle? visibleRowColRect, Graphics graphics, Func<int, Tuple<int, int>, Rectangle> getRect)
+        public DrawNormalAreaEventArgs(Rectangle? visibleRowColRect, Graphics graphics, Func<int, Tuple<int, int>, RectangleF> getRect)
         {
             this.VisibleRowColRect = visibleRowColRect;
             Graphics = graphics;
@@ -15,6 +15,6 @@ namespace FreeGridControl
         }
         public Graphics Graphics { get; set; }
 
-        public Func<int, Tuple<int, int>, Rectangle> GetRect { get; private set; }
+        public Func<int, Tuple<int, int>, RectangleF> GetRect { get; private set; }
     }
 }

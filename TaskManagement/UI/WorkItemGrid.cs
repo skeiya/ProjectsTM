@@ -77,7 +77,7 @@ namespace TaskManagement.UI
                 {
                     var rect = e.GetRect(c, GetRowRange(wi, visibleRowColRect));
                     e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, Brushes.Black, rect);
-                    e.Graphics.DrawRectangle(Pens.Black, rect);
+                    e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(rect));
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace TaskManagement.UI
             if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(visibleRowColRect.Top, visibleRowColRect.Height);
             if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(visibleRowColRect.Top, GetRow(wi.Period.To, visibleRowColRect) - visibleRowColRect.Top + 1);
             if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(GetRow(wi.Period.From, visibleRowColRect), GetRow(wi.Period.To, visibleRowColRect) - GetRow(wi.Period.From, visibleRowColRect) + 1);
-            return new Tuple<int, int>(GetRow(wi.Period.From, visibleRowColRect), visibleRowColRect.Bottom - GetRow(wi.Period.From, visibleRowColRect) - 1);
+            return new Tuple<int, int>(GetRow(wi.Period.From, visibleRowColRect), visibleRowColRect.Bottom - GetRow(wi.Period.From, visibleRowColRect));
         }
 
         private int GetRow(CallenderDay day, Rectangle visibleRowColRect)
