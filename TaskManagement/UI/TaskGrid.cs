@@ -429,15 +429,8 @@ namespace TaskManagement.UI
 
         private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip, bool isDragging)
         {
-            foreach (var wi in viewData.GetFilteredWorkItems())
-            {
-                DrawWorkItem(g, viewData, wi, clip);
-            }
-            if (draggingItem != null) DrawWorkItem(g, viewData, draggingItem, clip);
-
             if (viewData.Selected != null)
             {
-                DrawWorkItem(g, viewData, viewData.Selected, clip);
                 var bounds = GetWorkItemVisibleBounds(viewData.Selected, viewData.Filter);
                 g.DrawRectangle(Pens.LightGreen, Rectangle.Round(bounds));
                 if (!isDragging)
@@ -446,20 +439,6 @@ namespace TaskManagement.UI
                     DrawBottomDragBar(g, bounds);
                 }
             }
-        }
-
-        private void DrawWorkItem(Graphics g, ViewData viewData, WorkItem wi, RectangleF? clip)
-        {
-            var bounds = GetWorkItemVisibleBounds(wi, viewData.Filter);
-            if (clip.HasValue && !clip.Value.IntersectsWith(bounds)) return;
-            var colorContidion = _colorConditions.GetMatchColorCondition(wi.ToString());
-            if (colorContidion != null) g.FillRectangle(new SolidBrush(colorContidion.BackColor), Rectangle.Round(bounds));
-            var front = colorContidion == null ? Color.Black : colorContidion.ForeColor;
-            if (bounds.Width > 5 && bounds.Height > 5)
-            {
-                _grid.DrawString(g, wi.ToDrawString(viewData.Original.Callender), bounds, front);
-            }
-            g.DrawRectangle(Pens.Black, Rectangle.Round(bounds));
         }
 
         public RectangleF GetWorkItemVisibleBounds(WorkItem w, Filter filter)

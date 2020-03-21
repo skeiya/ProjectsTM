@@ -77,8 +77,11 @@ namespace TaskManagement.UI
                 var m = _viewData.GetFilteredMembers().ElementAt(c);
                 foreach (var wi in GetVisibleWorkItems(m, visibleRowColRect.Y, visibleRowColRect.Height))
                 {
+                    var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                     var rect = e.GetRect(c, GetRowRange(wi, visibleRowColRect));
-                    e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, Brushes.Black, rect);
+                    if(colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
+                    var front = colorCondition == null ? Color.Black : colorCondition.ForeColor;
+                    e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect);
                     e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(rect));
                 }
             }
