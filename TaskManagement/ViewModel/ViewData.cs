@@ -87,6 +87,15 @@ namespace TaskManagement.ViewModel
             return result;
         }
 
+        internal WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
+        {
+            foreach(var wi in GetFilteredWorkItemsOfMember(m))
+            {
+                if (wi.Period.Contains(d)) return wi;
+            }
+            return null;
+        }
+
         public MembersWorkItems GetFilteredWorkItemsOfMember(Member m)
         {
             if (Filter == null) return Original.WorkItems.OfMember(m);

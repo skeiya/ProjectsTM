@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TaskManagement.Model;
+using TaskManagement.Service;
 using TaskManagement.ViewModel;
 
 namespace TaskManagement.UI
@@ -15,12 +17,15 @@ namespace TaskManagement.UI
     {
         private ViewData _viewData;
 
+        private WorkItemDragService _workItemDragService = new WorkItemDragService();
+
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
         {
             LockUpdate = true;
             this._viewData = viewData;
+            this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             var fixedRows = 2;
             var fixedCols = 3;
             this.Rows = _viewData.GetFilteredDays().Count + fixedRows;
@@ -30,7 +35,74 @@ namespace TaskManagement.UI
 
             this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
+            this.MouseDown += WorkItemGrid_MouseDown;
             LockUpdate = false;
+        }
+
+        private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
+        {
+            MoveVisibleArea(WorkItem2Rect(_viewData.Selected));
+            this.Invalidate();
+        }
+
+        private void MoveVisibleArea(RectangleF bounds)
+        {
+            using (var c = new Control())
+            {
+                //@@@bounds.X += taskDrawArea.Location.X;
+                //bounds.Y += taskDrawArea.Location.Y;
+                //if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
+                //c.Bounds = Rectangle.Round(bounds);
+                //panelTaskGrid.Controls.Add(c);
+                //panelTaskGrid.ScrollControlIntoView(c);
+                //panelTaskGrid.Controls.Remove(c);
+            }
+        }
+
+        private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.ActiveControl = null;
+
+            //@@@if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
+            //{
+            //    if (e.Button != MouseButtons.Left) return;
+            //    _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
+            //    return;
+            //}
+
+            var wi = PickWorkItemFromPoint(e.Location);
+            _viewData.Selected = wi;// _viewData.IsFilteredWorkItem(wi) ? null : wi;
+            _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+        }
+
+        private CallenderDay Y2Day(int y)
+        {
+            var r = Y2Row(y);
+            return Row2Day(r);
+        }
+
+        private CallenderDay Row2Day(int r)
+        {
+            return _viewData.GetFilteredDays().ElementAt(r - FixedRows);
+        }
+
+        private Member X2Member(int x)
+        {
+            var c = X2Col(x);
+            return Col2Member(c);
+        }
+
+        private Member Col2Member(int c)
+        {
+            return _viewData.GetFilteredMembers().ElementAt(c - FixedCols);
+        }
+
+        private WorkItem PickWorkItemFromPoint(Point location)
+        {
+            var m = X2Member(location.X);
+            var d = Y2Day(location.Y);
+
+            return _viewData.PickFilterdWorkItem(m, d);
         }
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
@@ -78,7 +150,7 @@ namespace TaskManagement.UI
                 foreach (var wi in GetVisibleWorkItems(m, visibleRowColRect.Y, visibleRowColRect.Height))
                 {
                     var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-                    var rect = e.GetRect(c, GetRowRange(wi, visibleRowColRect));
+                    var rect = GetRect(c, GetRowRange(wi, visibleRowColRect));
                     if (colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
                     var front = colorCondition == null ? Color.Black : colorCondition.ForeColor;
                     e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect);
@@ -86,7 +158,52 @@ namespace TaskManagement.UI
                 }
             }
 
+            DrawSelectedWorkItemBound(e);
+
             DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData), visibleRowColRect.Y, visibleRowColRect.Height);
+        }
+
+        private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e)
+        {
+            if (_viewData.Selected != null)
+            {
+                var rect = WorkItem2Rect(_viewData.Selected);
+                e.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(rect));
+            }
+        }
+
+        private RectangleF WorkItem2Rect(WorkItem wi)
+        {
+            var col = Member2Col(wi.AssignedMember);
+            var rowRange = Period2RowRange(wi.Period);
+            return GetRect(col, rowRange);
+        }
+
+        private Tuple<int, int> Period2RowRange(Period period)
+        {
+            var fromRow = Day2Row(period.From);
+            var toRow = Day2Row(period.To);
+            return new Tuple<int, int>(fromRow, toRow - fromRow + 1);
+        }
+
+        private int Day2Row(CallenderDay day)
+        {
+            for (int r = 0; r < Rows; r++)
+            {
+                if (_viewData.GetFilteredDays().ElementAt(r).Equals(day)) return r;// + FixedRows;
+            }
+            Debug.Assert(false);
+            return -1;
+        }
+
+        private int Member2Col(Member m)
+        {
+            for (int c = 0; c < Cols; c++)
+            {
+                if (_viewData.GetFilteredMembers().ElementAt(c).Equals(m)) return c;// + FixedCols;
+            }
+            Debug.Assert(false);
+            return -1;
         }
 
         private static MileStones GetMileStonesWithToday(ViewData viewData)
@@ -106,7 +223,7 @@ namespace TaskManagement.UI
             foreach (var m in mileStones)
             {
                 int y;
-                if (!DayToY(m.Day, out y, topRow, rowCount)) continue;
+                if (!Day2Y(m.Day, out y, topRow, rowCount)) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
                     g.FillRectangle(brush, 0, y, Width, 5);
@@ -114,7 +231,7 @@ namespace TaskManagement.UI
             }
         }
 
-        private bool DayToY(CallenderDay day, out int y, int topRow, int rowCount)
+        private bool Day2Y(CallenderDay day, out int y, int topRow, int rowCount)
         {
             foreach (var r in Enumerable.Range(topRow, rowCount))
             {

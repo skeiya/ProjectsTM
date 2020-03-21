@@ -113,7 +113,6 @@ namespace TaskManagement.UI
         private void InitializeViewData()
         {
             _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             _viewData.FontChanged += _viewData_FontChanged;
             _viewData.AppDataChanged += _viewData_AppDataChanged;
         }
@@ -295,34 +294,6 @@ namespace TaskManagement.UI
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
         {
             _fileDragService.DragEnter(e);
-        }
-
-        private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (_viewData.Selected == null) return;
-                var bounds = _grid.GetWorkItemVisibleBounds(_viewData.Selected, _viewData.Filter);
-                MoveVisibleArea(bounds);
-            }
-            finally
-            {
-                //@@@taskDrawArea.Invalidate();
-            }
-        }
-
-        private void MoveVisibleArea(RectangleF bounds)
-        {
-            using (var c = new Control())
-            {
-                //@@@bounds.X += taskDrawArea.Location.X;
-                //bounds.Y += taskDrawArea.Location.Y;
-                //if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
-                //c.Bounds = Rectangle.Round(bounds);
-                //panelTaskGrid.Controls.Add(c);
-                //panelTaskGrid.ScrollControlIntoView(c);
-                //panelTaskGrid.Controls.Remove(c);
-            }
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)

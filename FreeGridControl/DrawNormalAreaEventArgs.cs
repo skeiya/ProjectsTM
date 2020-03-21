@@ -7,14 +7,11 @@ namespace FreeGridControl
     {
         public Rectangle? VisibleRowColRect { get; private set; }
 
-        public DrawNormalAreaEventArgs(Rectangle? visibleRowColRect, Graphics graphics, Func<int, Tuple<int, int>, RectangleF> getRect)
+        public DrawNormalAreaEventArgs(Rectangle? visibleRowColRect, Graphics graphics)
         {
             this.VisibleRowColRect = visibleRowColRect;
             Graphics = graphics;
-            GetRect = getRect;
         }
         public Graphics Graphics { get; set; }
-
-        public Func<int, Tuple<int, int>, RectangleF> GetRect { get; private set; }
     }
 }
