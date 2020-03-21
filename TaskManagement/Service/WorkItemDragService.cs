@@ -28,29 +28,29 @@ namespace TaskManagement.Service
             return _expandDirection != 0;
         }
 
-        public void UpdateDraggingItem(TaskGrid grid, Point curLocation, ViewData viewData)
+        public void UpdateDraggingItem(Func<int, Member> x2Member, Func<int, CallenderDay> y2Day, Point curLocation, ViewData viewData)
         {
             var callender = viewData.Original.Callender;
 
             if (IsExpanding())
             {
-                UpdateExpand(viewData.Selected, grid, curLocation, callender);
+                UpdateExpand(viewData.Selected, y2Day, curLocation, callender);
                 return;
             }
 
             if (IsMoving())
             {
-                UpdateMoving(grid, curLocation, callender);
+                UpdateMoving(x2Member, y2Day, curLocation, callender);
                 return;
             }
 
         }
 
-        private void UpdateMoving(TaskGrid grid, Point curLocation, Callender callender)
+        private void UpdateMoving(Func<int, Member> x2Member, Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
         {
-            var member = grid.GetMemberFromX(curLocation.X);
+            var member = x2Member(curLocation.X);
             if (member == null) return;
-            var curDay = grid.GetDayFromY(curLocation.Y);
+            var curDay = y2Day(curLocation.Y);
             if (curDay == null) return;
             var draggedPediod = _beforeWorkItem.Period;
             if (IsOnlyMoveHorizontal(curLocation))
@@ -72,9 +72,9 @@ namespace TaskManagement.Service
             }
         }
 
-        private void UpdateExpand(WorkItem selected, TaskGrid grid, Point curLocation, Callender callender)
+        private void UpdateExpand(WorkItem selected, Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
         {
-            var curDay = grid.GetDayFromY(curLocation.Y);
+            var curDay = y2Day(curLocation.Y);
             if (curDay == null) return;
 
             var draggedDay = _expandDirection > 0 ? selected.Period.From : selected.Period.To;

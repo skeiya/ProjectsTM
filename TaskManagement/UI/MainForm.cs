@@ -26,7 +26,6 @@ namespace TaskManagement.UI
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
         private CalculateSumService _calculateSumService = new CalculateSumService();
-        private Cursor _originalCursor;
         private bool _isDirty = false;
 
         public MainForm()
@@ -45,11 +44,16 @@ namespace TaskManagement.UI
             this.Shown += JumpTodayAtFirstDraw;
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
+            workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             _fileIOService.FileChanged += _fileIOService_FileChanged;
             _fileIOService.FileSaved += _fileIOService_FileSaved;
         }
 
+        private void WorkItemGrid1_HoveringTextChanged(object sender, string e)
+        {
+            toolStripStatusLabelSelect.Text = e;
+        }
 
         private void _fileIOService_FileSaved(object sender, EventArgs e)
         {
@@ -301,40 +305,10 @@ namespace TaskManagement.UI
             UpdateDisplayOfSum(null);
         }
 
-        private void TaskDrawArea_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_grid == null) return;
-            UpdateHoveringText(e);
-            _workItemDragService.UpdateDraggingItem(_grid, e.Location, _viewData);
-            if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
-            {
-                if (this.Cursor != Cursors.SizeNS)
-                {
-                    _originalCursor = this.Cursor;
-                    this.Cursor = Cursors.SizeNS;
-                }
-            }
-            else
-            {
-                if (this.Cursor == Cursors.SizeNS)
-                {
-                    this.Cursor = _originalCursor;
-                }
-            }
-            //@@@taskDrawArea.Invalidate();
-        }
 
         private bool IsControlDown()
         {
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
-        }
-
-        private void UpdateHoveringText(MouseEventArgs e)
-        {
-            if (_workItemDragService.IsMoving()) return;
-            if (_grid == null) return;
-            var wi = _grid.PickFromPoint(e.Location, _viewData);
-            toolStripStatusLabelSelect.Text = wi == null ? string.Empty : wi.ToString();
         }
 
         private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)

@@ -20,6 +20,9 @@ namespace TaskManagement.UI
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
+        private Cursor _originalCursor;
+
+        public event EventHandler<string> HoveringTextChanged;
 
         public WorkItemGrid() { }
 
@@ -49,6 +52,7 @@ namespace TaskManagement.UI
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed += _undoService_Changed;
+            this.MouseMove += WorkItemGrid_MouseMove;
         }
 
         private void DetatchEvents()
@@ -59,6 +63,36 @@ namespace TaskManagement.UI
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed -= _undoService_Changed;
+            this.MouseMove -= WorkItemGrid_MouseMove;
+        }
+
+        private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            UpdateHoveringText(e);
+            _workItemDragService.UpdateDraggingItem(X2Member, Y2Day, e.Location, _viewData);
+            if (/*_grid.IsWorkItemExpandArea(_viewData, e.Location)*/false)
+            {
+                if (this.Cursor != Cursors.SizeNS)
+                {
+                    _originalCursor = this.Cursor;
+                    this.Cursor = Cursors.SizeNS;
+                }
+            }
+            else
+            {
+                if (this.Cursor == Cursors.SizeNS)
+                {
+                    this.Cursor = _originalCursor;
+                }
+            }
+            //@@@taskDrawArea.Invalidate();
+        }
+
+        private void UpdateHoveringText(MouseEventArgs e)
+        {
+            if (_workItemDragService.IsMoving()) return;
+            var wi = _viewData.PickFilterdWorkItem(X2Member(e.X), Y2Day(e.Y));
+            HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)

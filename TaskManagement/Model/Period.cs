@@ -17,6 +17,7 @@ namespace TaskManagement.Model
 
         public bool Contains(CallenderDay day)
         {
+            if (day == null) return false;
             return From.LesserThan(day) && day.LesserThan(To);
         }
 
