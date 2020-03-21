@@ -492,8 +492,7 @@ namespace TaskManagement.UI
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
             }
-            //@@@taskDrawArea.Invalidate();
-            //panelFullView.Invalidate();
+            workItemGrid1.Refresh();
         }
 
         private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
