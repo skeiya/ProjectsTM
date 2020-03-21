@@ -405,7 +405,7 @@ namespace TaskManagement.UI
             {
                 dlg.ShowDialog();
             }
-            //@@@taskDrawArea.Invalidate();
+            workItemGrid1.Refresh();
         }
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
