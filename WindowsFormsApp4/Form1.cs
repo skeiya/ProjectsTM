@@ -18,7 +18,7 @@ namespace WindowsFormsApp4
             this.gridControl1.OnDrawCell += GridControl1_OnDrawCell;
         }
 
-        private void GridControl1_OnDrawCell(object sender, FreeGridControl.DrawEventArgs e)
+        private void GridControl1_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
         {
             if(e.RowIndex == 2 && e.ColIndex == 3)
             {

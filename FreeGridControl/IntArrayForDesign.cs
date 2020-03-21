@@ -19,7 +19,7 @@ namespace FreeGridControl
         {
             get
             {
-                return this[index];
+                return (int)base[index];
             }
             set
             {

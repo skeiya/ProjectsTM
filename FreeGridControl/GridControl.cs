@@ -12,7 +12,8 @@ namespace FreeGridControl
     {
         private Cache _cache = new Cache();
 
-        public event EventHandler<DrawEventArgs> OnDrawCell;
+        public event EventHandler<DrawCellEventArgs> OnDrawCell;
+        public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public GridControl()
         {
@@ -27,6 +28,12 @@ namespace FreeGridControl
             this.vScrollBar.Scroll += ScrollBar_Scroll;
             this.hScrollBar.Scroll += ScrollBar_Scroll;
             this.MouseWheel += GridControl_MouseWheel;
+            this.SizeChanged += GridControl_SizeChanged;
+        }
+
+        private void GridControl_SizeChanged(object sender, EventArgs e)
+        {
+            _cache_Updated(null, null);
         }
 
         private void GridControl_MouseWheel(object sender, MouseEventArgs e)
@@ -80,12 +87,14 @@ namespace FreeGridControl
             base.OnPaint(pe);
         }
 
+        private int VOffset => (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
+        private int HOffset => (int)(hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value);
         private void DrawGrid(Graphics graphics)
         {
             var vOffset = (int)(vScrollBar.Maximum / (float)(vScrollBar.Maximum - vScrollBar.LargeChange) * vScrollBar.Value);
             var hOffset = (int)(hScrollBar.Maximum / (float)(hScrollBar.Maximum - hScrollBar.LargeChange) * hScrollBar.Value);
-            DrawFixedLine(graphics, vOffset, hOffset);
-            DrawNormalLine(graphics, vOffset, hOffset);
+            //DrawFixedLine(graphics, vOffset, hOffset);
+            //DrawNormalLine(graphics, vOffset, hOffset);
             DrawCell(graphics, vOffset, hOffset);
         }
 
@@ -127,9 +136,56 @@ namespace FreeGridControl
                 {
                     var rect = GetDrawRect(r, c, vOffset, hOffset);
                     if (rect.IsEmpty) continue;
-                    OnDrawCell?.Invoke(this, new DrawEventArgs(r, c, rect, graphics));
+                    OnDrawCell?.Invoke(this, new DrawCellEventArgs(r, c, rect, graphics));
                 }
             }
+            var visibleRowColRect = GetVisibleRowColRect(vOffset, hOffset);
+            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(visibleRowColRect, graphics, GetRect));
+        }
+
+        private Rectangle GetRect(int col, Tuple<int, int> topAndHeight)
+        {
+            var left = _cache.GetLeft(col + FixedCols);
+            var top = _cache.GetTop(topAndHeight.Item1 + FixedRows);
+            var width = _cache.ColWidths[col + FixedCols];
+            var height = _cache.GetTop(topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows) + _cache.RowHeights[topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows] - top;
+            var result = new Rectangle(left, top, width, height);
+            result.Offset(-HOffset, -VOffset);
+            return result;
+        }
+
+        private Rectangle? GetVisibleRowColRect(int vOffset, int hOffset)
+        {
+            var leftTop = GetVisibleRowColLeftTop(vOffset, hOffset);
+            var rightButtom = GetVisibleRowColRightButtom(vOffset, hOffset);
+            if (leftTop == null || rightButtom == null) return null;
+            return new Rectangle(leftTop.Value.X - FixedCols, leftTop.Value.Y - FixedRows, rightButtom.Value.X - leftTop.Value.X + 1, rightButtom.Value.Y - leftTop.Value.Y + 1);
+        }
+
+        private Point? GetVisibleRowColRightButtom(int vOffset, int hOffset)
+        {
+            for (var r = Rows - 1; r >= FixedRows; r--)
+            {
+                for (var c = Cols - 1; c >= FixedCols; c--)
+                {
+                    var rect = GetDrawRect(r, c, vOffset, hOffset);
+                    if (!rect.IsEmpty) return new Point(c, r);
+                }
+            }
+            return null;
+        }
+
+        private Point? GetVisibleRowColLeftTop(int vOffset, int hOffset)
+        {
+            for (var r = FixedRows; r < Rows; r++)
+            {
+                for (var c = FixedCols; c < Cols; c++)
+                {
+                    var rect = GetDrawRect(r, c, vOffset, hOffset);
+                    if (!rect.IsEmpty) return new Point(c, r);
+                }
+            }
+            return null;
         }
 
         private RectangleF GetDrawRect(int r, int c, int vOffset, int hOffset)
@@ -203,7 +259,9 @@ namespace FreeGridControl
             }
         }
         [Category("Grid")]
-        public int FixedCols { get => _cache.FixedCols; set
+        public int FixedCols
+        {
+            get => _cache.FixedCols; set
             {
                 _cache.FixedCols = value;
                 _cache.Update();

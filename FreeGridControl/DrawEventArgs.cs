@@ -2,9 +2,9 @@
 
 namespace FreeGridControl
 {
-    public class DrawEventArgs
+    public class DrawCellEventArgs
     {
-        public DrawEventArgs(int r, int c, RectangleF rect, Graphics graphics)
+        public DrawCellEventArgs(int r, int c, RectangleF rect, Graphics graphics)
         {
             RowIndex = r;
             ColIndex = c;
