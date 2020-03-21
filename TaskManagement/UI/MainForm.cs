@@ -502,9 +502,8 @@ namespace TaskManagement.UI
             using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems))
             {
                 dlg.ShowDialog();
-                _grid.UpdateRowColMap(_viewData);
+                workItemGrid1.Initialize(_viewData);
             }
-            _grid.UpdateRowColMap(_viewData);
             UpdateDisplayOfSum(null);
         }
 

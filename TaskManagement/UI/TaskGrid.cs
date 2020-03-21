@@ -196,79 +196,6 @@ namespace TaskManagement.UI
             return IsTopBar(bounds, location) || IsBottomBar(bounds, location);
         }
 
-        public void DrawPrint(Graphics g, ViewData viewData)
-        {
-            DrawCallenderDays(g);
-            DrawTeamMembers(g);
-            DrawWorkItems(g, viewData, null, null, false);
-            DrawMileStones(g, viewData.Original.MileStones);
-        }
-
-        private void DrawMileStonesTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
-        {
-            if (mileStones.IsEmpty()) return;
-            var dayWidth = GetDayWidth(detail);
-            var monthWidth = GetMonthWidth(detail);
-            var yearWidth = GetYearWidth(detail);
-            var height = _grid.RowHeight(Members.RowCount);
-
-            foreach (var m in mileStones)
-            {
-                int r = 0;
-                if (!_dayToRow.TryGetValue(m.Day, out r)) continue;
-                var bounds = _cellBoundsCache.Get(r, 0);
-                var bottom = bounds.Bottom;// + offsetFromHiddenHight;
-                _grid.DrawMileStoneLine(g, bottom, m.Color);
-            }
-        }
-
-        private static MileStones GetMileStonesWithToday(ViewData viewData)
-        {
-            var result = viewData.Original.MileStones.Clone();
-            var date = DateTime.Now;
-            var today = new CallenderDay(date.Year, date.Month, date.Day);
-            if (viewData.Original.Callender.Days.Contains(today))
-            {
-                result.Add(new MileStone("Today", today, Color.Red));
-            }
-            return result;
-        }
-
-        private void DrawMileStonesFixedArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight, MileStones mileStones)
-        {
-            if (mileStones.IsEmpty()) return;
-            var dayWidth = GetDayWidth(detail);
-            var monthWidth = GetMonthWidth(detail);
-            var yearWidth = GetYearWidth(detail);
-            var height = _grid.RowHeight(Members.RowCount);
-
-            foreach (var m in mileStones)
-            {
-                int r = 0;
-                if (!_dayToRow.TryGetValue(m.Day, out r)) continue;
-                var bounds = _cellBoundsCache.Get(r, 0);
-                var bottom = bounds.Bottom + offsetFromHiddenHight;
-                using (var b = new SolidBrush(m.Color))
-                {
-                    g.DrawString(m.Name, _grid.Font, b, panelLocation.X - (dayWidth + monthWidth + yearWidth), bottom - height * 2 / 3);
-                }
-                _grid.DrawMileStoneLineFiexed(g, bottom, m.Color, detail.DateWidth);
-            }
-        }
-
-        private void DrawMileStones(Graphics g, MileStones mileStones)
-        {
-            foreach (var m in mileStones)
-            {
-                var r = _dayToRow[m.Day];
-                var rect = _cellBoundsCache.Get(r, 0);
-                var bottom = rect.Bottom;
-                _grid.DrawMileStoneLine(g, bottom, m.Color);
-                rect.Offset(0, rect.Height / 2);
-                _grid.DrawString(g, m.Name, rect, m.Color);
-            }
-        }
-
         private void DrawCallenderDaysOutOfTaskArea(Graphics g, Detail detail, Point panelLocation, float offsetFromHiddenHight)
         {
             var dayWidth = GetDayWidth(detail);
@@ -411,20 +338,6 @@ namespace TaskManagement.UI
                 if (x < detail.DateWidth) continue;
                 g.DrawString(_colToMember[c].FirstName, _grid.Font, Brushes.Black, x + 3, panelLocation.Y - firstNameHeight);
             }
-        }
-
-        internal void DrawTaskArea(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip, bool isDragging)
-        {
-            panelLocation.Offset(-3, 0);
-            DrawWorkItems(g, viewData, draggingItem, clip, isDragging);
-            DrawMileStonesTaskArea(g, viewData.Detail, new Point(0, 0), 0, GetMileStonesWithToday(viewData));
-        }
-
-        internal void DrawFixedArea(Graphics g, ViewData viewData, Point panelLocation, Point offsetFromHiddenLocation, WorkItem draggingItem, RectangleF clip)
-        {
-            DrawCallenderDaysOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.Y);
-            DrawTeamMembersOutOfTaskArea(g, viewData.Detail, panelLocation, offsetFromHiddenLocation.X);
-            DrawMileStonesFixedArea(g, viewData.Detail, panelLocation, viewData.Detail.FixedHeight - offsetFromHiddenLocation.Y, GetMileStonesWithToday(viewData));
         }
 
         private void DrawWorkItems(Graphics g, ViewData viewData, WorkItem draggingItem, RectangleF? clip, bool isDragging)

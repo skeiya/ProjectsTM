@@ -296,5 +296,14 @@ namespace FreeGridControl
 
         public int FixedHight => _cache.FixedHeight;
         public int FixedWidth => _cache.FixedWidth;
+
+        public bool RowToY(int r, out int y)
+        {
+            var rect = GetVisibleRect(false, false);
+            y = (int)(_cache.GetTop(r + FixedRows) - VOffset);
+            if (y < rect.Top) return false;
+            if (rect.Bottom < y) return false;
+            return true;
+        }
     }
 }

@@ -79,12 +79,52 @@ namespace TaskManagement.UI
                 {
                     var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                     var rect = e.GetRect(c, GetRowRange(wi, visibleRowColRect));
-                    if(colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
+                    if (colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
                     var front = colorCondition == null ? Color.Black : colorCondition.ForeColor;
                     e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect);
                     e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(rect));
                 }
             }
+
+            DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData), visibleRowColRect.Y, visibleRowColRect.Height);
+        }
+
+        private static MileStones GetMileStonesWithToday(ViewData viewData)
+        {
+            var result = viewData.Original.MileStones.Clone();
+            var date = DateTime.Now;
+            var today = new CallenderDay(date.Year, date.Month, date.Day);
+            if (viewData.Original.Callender.Days.Contains(today))
+            {
+                result.Add(new MileStone("Today", today, Color.Red));
+            }
+            return result;
+        }
+
+        private void DrawMileStones(Graphics g, MileStones mileStones, int topRow, int rowCount)
+        {
+            foreach (var m in mileStones)
+            {
+                int y;
+                if (!DayToY(m.Day, out y, topRow, rowCount)) continue;
+                using (var brush = new SolidBrush(m.Color))
+                {
+                    g.FillRectangle(brush, 0, y, Width, 5);
+                }
+            }
+        }
+
+        private bool DayToY(CallenderDay day, out int y, int topRow, int rowCount)
+        {
+            foreach (var r in Enumerable.Range(topRow, rowCount))
+            {
+                if (_viewData.GetFilteredDays().ElementAt(r).Equals(day))
+                {
+                    return RowToY(r, out y);
+                }
+            }
+            y = 0;
+            return false;
         }
 
         private Tuple<int, int> GetRowRange(WorkItem wi, Rectangle visibleRowColRect)
