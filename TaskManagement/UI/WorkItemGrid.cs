@@ -273,7 +273,28 @@ namespace TaskManagement.UI
             {
                 var rect = WorkItem2Rect(_viewData.Selected);
                 e.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(rect));
+
+                //@@@if(!isDragging) {
+                DrawTopDragBar(e.Graphics, rect);
+                DrawBottomDragBar(e.Graphics, rect);
+                //}
             }
+        }
+
+        private void DrawBottomDragBar(Graphics g, RectangleF bounds)
+        {
+            var rect = WorkItemDragService.GetBottomBarRect(bounds, 5);// @@@TODO (5)はやめる
+            var points = WorkItemDragService.GetBottomBarLine(bounds, 5);
+            g.FillRectangle(Brushes.DarkBlue, rect);
+            g.DrawLine(Pens.White, points.Item1, points.Item2);
+        }
+
+        private void DrawTopDragBar(Graphics g, RectangleF bounds)
+        {
+            var rect = WorkItemDragService.GetTopBarRect(bounds, 5);
+            var points = WorkItemDragService.GetTopBarLine(bounds, 5);
+            g.FillRectangle(Brushes.DarkBlue, rect);
+            g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
         private RectangleF WorkItem2Rect(WorkItem wi)
