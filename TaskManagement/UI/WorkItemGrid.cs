@@ -141,22 +141,13 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            if (_viewData.Selected != null) MoveVisibleArea(WorkItem2Rect(_viewData.Selected));
+            if (_viewData.Selected != null) MoveVisibleArea(_viewData.Selected.Period.From);
             this.Invalidate();
         }
 
-        private void MoveVisibleArea(RectangleF bounds)
+        private void MoveVisibleArea(CallenderDay day)
         {
-            using (var c = new Control())
-            {
-                //@@@bounds.X += taskDrawArea.Location.X;
-                //bounds.Y += taskDrawArea.Location.Y;
-                //if (panelTaskGrid.ClientRectangle.IntersectsWith(Rectangle.Round(bounds))) return;
-                //c.Bounds = Rectangle.Round(bounds);
-                //panelTaskGrid.Controls.Add(c);
-                //panelTaskGrid.ScrollControlIntoView(c);
-                //panelTaskGrid.Controls.Remove(c);
-            }
+            MoveVisibleArea(Day2DayIndex(day) + FixedRows);
         }
 
         private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -172,7 +163,7 @@ namespace TaskManagement.UI
 
             var wi = PickWorkItemFromPoint(e.Location);
             _viewData.Selected = wi;// _viewData.IsFilteredWorkItem(wi) ? null : wi;
-           // _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+                                    // _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
         }
 
         private CallenderDay Y2Day(int y)
@@ -306,12 +297,12 @@ namespace TaskManagement.UI
 
         private Tuple<int, int> Period2RowRange(Period period)
         {
-            var fromRow = Day2Row(period.From);
-            var toRow = Day2Row(period.To);
+            var fromRow = Day2DayIndex(period.From);
+            var toRow = Day2DayIndex(period.To);
             return new Tuple<int, int>(fromRow, toRow - fromRow + 1);
         }
 
-        private int Day2Row(CallenderDay day)
+        private int Day2DayIndex(CallenderDay day)
         {
             for (int r = 0; r < Rows; r++)
             {

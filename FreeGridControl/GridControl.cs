@@ -33,6 +33,12 @@ namespace FreeGridControl
             this.SizeChanged += GridControl_SizeChanged;
         }
 
+        public void MoveVisibleArea(int row)
+        {
+            this.vScrollBar.Value = (int)(((_cache.GetTop(row) - _cache.FixedHeight) / (float)_cache.GridHight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
+
+        }
+
         private void GridControl_SizeChanged(object sender, EventArgs e)
         {
             _cache_Updated(null, null);
