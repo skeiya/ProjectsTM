@@ -50,6 +50,7 @@ namespace TaskManagement.UI
             this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
+            this.MouseUp += WorkItemGrid_MouseUp;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
@@ -61,9 +62,15 @@ namespace TaskManagement.UI
             this.OnDrawCell -= WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
+            this.MouseUp -= WorkItemGrid_MouseDown;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
+        }
+
+        private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
+        {
+            _workItemDragService.End(_editService, _viewData, false);
         }
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
@@ -163,7 +170,7 @@ namespace TaskManagement.UI
 
             var wi = PickWorkItemFromPoint(e.Location);
             _viewData.Selected = wi;// _viewData.IsFilteredWorkItem(wi) ? null : wi;
-                                    // _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+            _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
         }
 
         private CallenderDay Y2Day(int y)

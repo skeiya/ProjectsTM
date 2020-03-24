@@ -311,11 +311,6 @@ namespace TaskManagement.UI
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
 
-        private void TaskDrawArea_MouseUp(object sender, MouseEventArgs e)
-        {
-            _workItemDragService.End(_editService, _viewData, false);
-        }
-
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             _oldFileService.ImportMemberAndWorkItems(_viewData);

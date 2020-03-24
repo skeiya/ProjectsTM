@@ -35,9 +35,12 @@ namespace FreeGridControl
 
         public void MoveVisibleArea(int row)
         {
-            this.vScrollBar.Value = (int)(((_cache.GetTop(row) - _cache.FixedHeight) / (float)_cache.GridHight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
-
+            if (IsVisible(row)) return;
+            var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
+            this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
         }
+
+        private bool IsVisible(int row) => VisibleRows.Contains(row);
 
         private void GridControl_SizeChanged(object sender, EventArgs e)
         {
@@ -303,6 +306,14 @@ namespace FreeGridControl
         public int FixedHight => _cache.FixedHeight;
         public int FixedWidth => _cache.FixedWidth;
 
+        private IntRange VisibleRows
+        {
+            get
+            {
+                return new IntRange(Y2Row(_cache.FixedHeight + 1), Y2Row(this.Height - 1));
+            }
+        }
+
         public bool RowToY(int r, out int y)
         {
             var rect = GetVisibleRect(false, false);
@@ -328,7 +339,11 @@ namespace FreeGridControl
 
         public int Y2Row(int y)
         {
-            for (int r = 0; r <= Rows; r++)
+            for (int r = 0; r < FixedRows; r++)
+            {
+                if (y < _cache.GetTop(r)) return r - 1;
+            }
+            for (int r = FixedRows; r <= Rows; r++)
             {
                 if (y < _cache.GetTop(r) - VOffset) return r - 1;
             }
