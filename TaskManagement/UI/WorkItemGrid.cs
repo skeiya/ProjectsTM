@@ -148,13 +148,13 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            if (_viewData.Selected != null) MoveVisibleArea(_viewData.Selected.Period.From);
+            if (_viewData.Selected != null) MoveVisibleArea(_viewData.Selected.Period.From, _viewData.Selected.AssignedMember);
             this.Invalidate();
         }
 
-        private void MoveVisibleArea(CallenderDay day)
+        private void MoveVisibleArea(CallenderDay day, Member m)
         {
-            MoveVisibleArea(Day2DayIndex(day) + FixedRows);
+            MoveVisibleArea(Day2DayIndex(day) + FixedRows, Member2MemberIndex(m) + FixedCols);
         }
 
         private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -297,7 +297,7 @@ namespace TaskManagement.UI
 
         private RectangleF WorkItem2Rect(WorkItem wi)
         {
-            var col = Member2Col(wi.AssignedMember);
+            var col = Member2MemberIndex(wi.AssignedMember);
             var rowRange = Period2RowRange(wi.Period);
             return GetRect(col, rowRange);
         }
@@ -319,7 +319,7 @@ namespace TaskManagement.UI
             return -1;
         }
 
-        private int Member2Col(Member m)
+        private int Member2MemberIndex(Member m)
         {
             for (int c = 0; c < Cols; c++)
             {

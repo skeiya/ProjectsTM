@@ -55,7 +55,6 @@
       <DependentUpon>GridControl.cs</DependentUpon>
     </Compile>
     <Compile Include="IntArrayForDesign.cs" />
-    <Compile Include="IntRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
