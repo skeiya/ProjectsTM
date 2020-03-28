@@ -372,8 +372,8 @@ namespace TaskManagement.UI
             // workItemGrid1
             // 
             this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.workItemGrid1.FixedCols = 0;
-            this.workItemGrid1.FixedRows = 0;
+            this.workItemGrid1.FixedColCount = 0;
+            this.workItemGrid1.FixedRowCount = 0;
             this.workItemGrid1.Location = new System.Drawing.Point(0, 25);
             this.workItemGrid1.Name = "workItemGrid1";
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);

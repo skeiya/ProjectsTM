@@ -41,8 +41,8 @@
             this.gridControl1.ColWidths.Add(35);
             this.gridControl1.ColWidths.Add(35);
             this.gridControl1.ColWidths.Add(35);
-            this.gridControl1.FixedCols = 2;
-            this.gridControl1.FixedRows = 3;
+            this.gridControl1.FixedColCount = 2;
+            this.gridControl1.FixedRowCount = 3;
             this.gridControl1.Location = new System.Drawing.Point(83, 52);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RowHeights.Add(35);

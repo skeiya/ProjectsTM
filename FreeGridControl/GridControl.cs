@@ -113,13 +113,13 @@ namespace FreeGridControl
 
         private void DrawNormalLine(Graphics graphics, int vOffset, int hOffset)
         {
-            for (var r = FixedRows + 1; r <= Rows; r++)
+            for (var r = FixedRowCount + 1; r <= RowCount; r++)
             {
                 var h = _cache.GetTop(r) - vOffset;
                 if (h <= FixedHight) continue;
                 graphics.DrawLine(Pens.Black, new Point(0 - hOffset, h), new Point(GridWidth - hOffset, h));
             }
-            for (var c = FixedCols + 1; c <= Cols; c++)
+            for (var c = FixedColCount + 1; c <= ColCount; c++)
             {
                 var w = _cache.GetLeft(c) - hOffset;
                 if (w <= FixedWidth) continue;
@@ -129,12 +129,12 @@ namespace FreeGridControl
 
         private void DrawFixedLine(Graphics graphics, int vOffset, int hOffset)
         {
-            for (var r = 0; r <= FixedRows; r++)
+            for (var r = 0; r <= FixedRowCount; r++)
             {
                 var h = _cache.GetTop(r);
                 graphics.DrawLine(Pens.Blue, new Point(0, h), new Point(GridWidth, h));
             }
-            for (var c = 0; c <= FixedCols; c++)
+            for (var c = 0; c <= FixedColCount; c++)
             {
                 var w = _cache.GetLeft(c);
                 graphics.DrawLine(Pens.Blue, new Point(w, 0), new Point(w, GridHeight));
@@ -143,9 +143,9 @@ namespace FreeGridControl
 
         private void DrawCell(Graphics graphics, int vOffset, int hOffset)
         {
-            for (var r = 0; r < Rows; r++)
+            for (var r = 0; r < RowCount; r++)
             {
-                for (var c = 0; c < Cols; c++)
+                for (var c = 0; c < ColCount; c++)
                 {
                     var rect = GetDrawRect(r, c, vOffset, hOffset);
                     if (rect.IsEmpty) continue;
@@ -158,10 +158,10 @@ namespace FreeGridControl
 
         public RectangleF GetRect(int col, Tuple<int, int> topAndHeight)
         {
-            var left = _cache.GetLeft(col + FixedCols);
-            var top = _cache.GetTop(topAndHeight.Item1 + FixedRows);
-            var width = _cache.ColWidths[col + FixedCols];
-            var height = _cache.GetTop(topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows) + _cache.RowHeights[topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRows] - top;
+            var left = _cache.GetLeft(col + FixedColCount);
+            var top = _cache.GetTop(topAndHeight.Item1 + FixedRowCount);
+            var width = _cache.ColWidths[col + FixedColCount];
+            var height = _cache.GetTop(topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRowCount) + _cache.RowHeights[topAndHeight.Item1 + topAndHeight.Item2 - 1 + FixedRowCount] - top;
             var result = new RectangleF(left, top, width, height);
             result.Offset(-HOffset, -VOffset);
             result.Intersect(GetVisibleRect(false, false));
@@ -173,14 +173,14 @@ namespace FreeGridControl
             var leftTop = GetVisibleRowColLeftTop(vOffset, hOffset);
             var rightButtom = GetVisibleRowColRightButtom(vOffset, hOffset);
             if (leftTop == null || rightButtom == null) return null;
-            return new Rectangle(leftTop.Value.X - FixedCols, leftTop.Value.Y - FixedRows, rightButtom.Value.X - leftTop.Value.X + 1, rightButtom.Value.Y - leftTop.Value.Y + 1);
+            return new Rectangle(leftTop.Value.X - FixedColCount, leftTop.Value.Y - FixedRowCount, rightButtom.Value.X - leftTop.Value.X + 1, rightButtom.Value.Y - leftTop.Value.Y + 1);
         }
 
         private Point? GetVisibleRowColRightButtom(int vOffset, int hOffset)
         {
-            for (var r = Rows - 1; r >= FixedRows; r--)
+            for (var r = RowCount - 1; r >= FixedRowCount; r--)
             {
-                for (var c = Cols - 1; c >= FixedCols; c--)
+                for (var c = ColCount - 1; c >= FixedColCount; c--)
                 {
                     var rect = GetDrawRect(r, c, vOffset, hOffset);
                     if (!rect.IsEmpty) return new Point(c, r);
@@ -191,9 +191,9 @@ namespace FreeGridControl
 
         private Point? GetVisibleRowColLeftTop(int vOffset, int hOffset)
         {
-            for (var r = FixedRows; r < Rows; r++)
+            for (var r = FixedRowCount; r < RowCount; r++)
             {
-                for (var c = FixedCols; c < Cols; c++)
+                for (var c = FixedColCount; c < ColCount; c++)
                 {
                     var rect = GetDrawRect(r, c, vOffset, hOffset);
                     if (!rect.IsEmpty) return new Point(c, r);
@@ -231,40 +231,40 @@ namespace FreeGridControl
 
         private bool IsFixedRow(int r)
         {
-            return r < FixedRows;
+            return r < FixedRowCount;
         }
 
         private bool IsFixedCol(int c)
         {
-            return c < FixedCols;
+            return c < FixedColCount;
         }
 
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int Rows
+        public int RowCount
         {
             get => _cache.RowHeights.Count;
             set
             {
-                if (Rows == value) return;
+                if (RowCount == value) return;
                 _cache.RowHeights.SetCount(value);
                 _cache.Update();
             }
         }
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int Cols
+        public int ColCount
         {
             get => _cache.ColWidths.Count;
             set
             {
-                if (Cols == value) return;
+                if (ColCount == value) return;
                 _cache.ColWidths.SetCount(value);
                 _cache.Update();
             }
         }
         [Category("Grid")]
-        public int FixedRows
+        public int FixedRowCount
         {
             get => _cache.FixedRows; set
             {
@@ -273,7 +273,7 @@ namespace FreeGridControl
             }
         }
         [Category("Grid")]
-        public int FixedCols
+        public int FixedColCount
         {
             get => _cache.FixedCols; set
             {
@@ -327,11 +327,11 @@ namespace FreeGridControl
 
         public int Col2X(int x)
         {
-            for (int c = 0; c < FixedCols; c++)
+            for (int c = 0; c < FixedColCount; c++)
             {
                 if (x < _cache.GetLeft(c)) return c - 1;
             }
-            for (int c = FixedCols; c <= Cols; c++)
+            for (int c = FixedColCount; c <= ColCount; c++)
             {
                 if (c < _cache.GetLeft(c) - HOffset) return c - 1;
             }
@@ -340,7 +340,7 @@ namespace FreeGridControl
 
         public int X2Col(int x)
         {
-            for (int c = 0; c <= Cols; c++)
+            for (int c = 0; c <= ColCount; c++)
             {
                 if (x < _cache.GetLeft(c) - HOffset) return c - 1;
             }
@@ -349,11 +349,11 @@ namespace FreeGridControl
 
         public int Y2Row(int y)
         {
-            for (int r = 0; r < FixedRows; r++)
+            for (int r = 0; r < FixedRowCount; r++)
             {
                 if (y < _cache.GetTop(r)) return r - 1;
             }
-            for (int r = FixedRows; r <= Rows; r++)
+            for (int r = FixedRowCount; r <= RowCount; r++)
             {
                 if (y < _cache.GetTop(r) - VOffset) return r - 1;
             }
@@ -363,7 +363,7 @@ namespace FreeGridControl
         public bool RowToY(int r, out int y)
         {
             var rect = GetVisibleRect(false, false);
-            y = (int)(_cache.GetTop(r + FixedRows) - VOffset);
+            y = (int)(_cache.GetTop(r + FixedRowCount) - VOffset);
             if (y < rect.Top) return false;
             if (rect.Bottom < y) return false;
             return true;

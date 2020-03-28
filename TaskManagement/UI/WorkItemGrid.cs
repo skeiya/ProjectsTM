@@ -34,10 +34,10 @@ namespace TaskManagement.UI
             AttachEvents();
             var fixedRows = 2;
             var fixedCols = 3;
-            this.Rows = _viewData.GetFilteredDays().Count + fixedRows;
-            this.Cols = _viewData.GetFilteredMembers().Count + fixedCols;
-            this.FixedRows = fixedRows;
-            this.FixedCols = fixedCols;
+            this.RowCount = _viewData.GetFilteredDays().Count + fixedRows;
+            this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
+            this.FixedRowCount = fixedRows;
+            this.FixedColCount = fixedCols;
 
             _editService = new WorkItemEditService(_viewData, _undoService);
 
@@ -154,7 +154,7 @@ namespace TaskManagement.UI
 
         private void MoveVisibleArea(CallenderDay day, Member m)
         {
-            MoveVisibleArea(Day2DayIndex(day) + FixedRows, Member2MemberIndex(m) + FixedCols);
+            MoveVisibleArea(Day2DayIndex(day) + FixedRowCount, Member2MemberIndex(m) + FixedColCount);
         }
 
         private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -182,8 +182,8 @@ namespace TaskManagement.UI
         private CallenderDay Row2Day(int r)
         {
             var days = _viewData.GetFilteredDays();
-            if (r - FixedRows < 0 || days.Count <= r - FixedRows) return null;
-            return days.ElementAt(r - FixedRows);
+            if (r - FixedRowCount < 0 || days.Count <= r - FixedRowCount) return null;
+            return days.ElementAt(r - FixedRowCount);
         }
 
         private Member X2Member(int x)
@@ -195,8 +195,8 @@ namespace TaskManagement.UI
         private Member Col2Member(int c)
         {
             var members = _viewData.GetFilteredMembers();
-            if (c - FixedCols < 0 || members.Count <= c - FixedCols) return null;
-            return _viewData.GetFilteredMembers().ElementAt(c - FixedCols);
+            if (c - FixedColCount < 0 || members.Count <= c - FixedColCount) return null;
+            return _viewData.GetFilteredMembers().ElementAt(c - FixedColCount);
         }
 
         private WorkItem PickWorkItemFromPoint(Point location)
@@ -209,33 +209,33 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
         {
-            var memberIndex = e.ColIndex - this.FixedCols;
+            var memberIndex = e.ColIndex - this.FixedColCount;
             if (0 <= memberIndex)
             {
                 var member = _viewData.GetFilteredMembers().ElementAt(memberIndex);
-                if (e.RowIndex == 0 && this.FixedCols <= e.ColIndex)
+                if (e.RowIndex == 0 && this.FixedColCount <= e.ColIndex)
                 {
                     e.Graphics.DrawString(member.Company, this.Font, Brushes.Black, e.Rect);
                 }
-                if (e.RowIndex == 1 && this.FixedCols <= e.ColIndex)
+                if (e.RowIndex == 1 && this.FixedColCount <= e.ColIndex)
                 {
                     e.Graphics.DrawString(member.DisplayName, this.Font, Brushes.Black, e.Rect);
                 }
             }
 
-            var dayIndex = e.RowIndex - this.FixedRows;
+            var dayIndex = e.RowIndex - this.FixedRowCount;
             if (0 <= dayIndex)
             {
                 var day = _viewData.GetFilteredDays().ElementAt(dayIndex);
-                if (this.FixedRows <= e.RowIndex && e.ColIndex == 0)
+                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 0)
                 {
                     e.Graphics.DrawString(day.Year.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
-                if (this.FixedRows <= e.RowIndex && e.ColIndex == 1)
+                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 1)
                 {
                     e.Graphics.DrawString(day.Month.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
-                if (this.FixedRows <= e.RowIndex && e.ColIndex == 2)
+                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 2)
                 {
                     e.Graphics.DrawString(day.Day.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
@@ -311,7 +311,7 @@ namespace TaskManagement.UI
 
         private int Day2DayIndex(CallenderDay day)
         {
-            for (int r = 0; r < Rows; r++)
+            for (int r = 0; r < RowCount; r++)
             {
                 if (_viewData.GetFilteredDays().ElementAt(r).Equals(day)) return r;// + FixedRows;
             }
@@ -321,7 +321,7 @@ namespace TaskManagement.UI
 
         private int Member2MemberIndex(Member m)
         {
-            for (int c = 0; c < Cols; c++)
+            for (int c = 0; c < ColCount; c++)
             {
                 if (_viewData.GetFilteredMembers().ElementAt(c).Equals(m)) return c;// + FixedCols;
             }
