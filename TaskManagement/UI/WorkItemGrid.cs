@@ -92,7 +92,7 @@ namespace TaskManagement.UI
                     this.Cursor = _originalCursor;
                 }
             }
-            //@@@taskDrawArea.Invalidate();
+            this.Invalidate();
         }
 
         private void UpdateHoveringText(MouseEventArgs e)
@@ -252,13 +252,9 @@ namespace TaskManagement.UI
                 foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
                 {
                     var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-                    var rowRange = GetRowRange(wi);
-                    if (rowRange.row == null) continue;
-                    var rect = GetRect(c, rowRange);
-                    if (colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
-                    var front = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-                    e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect);
-                    e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(rect));
+                    var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
+                    var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
+                    DrawWorkItem(wi, brush, color, Pens.Black, e.Graphics);
                 }
             }
 
@@ -267,16 +263,38 @@ namespace TaskManagement.UI
             DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
         }
 
+        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Graphics g)
+        {
+            var rowRange = GetRowRange(wi);
+            if (rowRange.row == null) return;
+            var rect = GetDrawRect(wi);
+            if (!rect.HasValue) return;
+            if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
+            var front = fore == null ? Color.Black : fore;
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect.Value);
+            g.DrawRectangle(edge, Rectangle.Round(rect.Value));
+        }
+
+        private RectangleF? GetDrawRect(WorkItem wi)
+        {
+            var rowRange = GetRowRange(wi);
+            if (rowRange.row == null) return null;
+            return GetRect(Member2Col(wi.AssignedMember), rowRange);
+        }
+
         private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e)
         {
             if (_viewData.Selected != null)
             {
-                var rect = WorkItem2Rect(_viewData.Selected);
-                e.Graphics.DrawRectangle(Pens.LightGreen, Rectangle.Round(rect));
+                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, e.Graphics);
 
                 //@@@if(!isDragging) {
-                DrawTopDragBar(e.Graphics, rect);
-                DrawBottomDragBar(e.Graphics, rect);
+                var rect = GetDrawRect(_viewData.Selected);
+                if (rect.HasValue)
+                {
+                    DrawTopDragBar(e.Graphics, rect.Value);
+                    DrawBottomDragBar(e.Graphics, rect.Value);
+                }
                 //}
             }
         }
