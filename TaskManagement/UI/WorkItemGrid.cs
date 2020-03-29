@@ -164,7 +164,7 @@ namespace TaskManagement.UI
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(X2Member, Y2Day, e.Location, _viewData);
-            if (/*_grid.IsWorkItemExpandArea(_viewData, e.Location)*/false)
+            if (IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (this.Cursor != Cursors.SizeNS)
                 {
@@ -245,24 +245,55 @@ namespace TaskManagement.UI
             MoveVisibleRowCol(Day2Row(day), Member2Col(m));
         }
 
-        private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
             this.ActiveControl = null;
 
-            //@@@if (_grid.IsWorkItemExpandArea(_viewData, e.Location))
-            //{
-            //    if (e.Button != MouseButtons.Left) return;
-            //    _workItemDragService.StartExpand(_grid.GetExpandDirection(_viewData, e.Location), _viewData.Selected);
-            //    return;
-            //}
+            if (IsWorkItemExpandArea(_viewData, e.Location))
+            {
+                if (e.Button != MouseButtons.Left) return;
+                _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected);
+                return;
+            }
 
             var wi = PickWorkItemFromPoint(e.Location);
             _viewData.Selected = wi;// _viewData.IsFilteredWorkItem(wi) ? null : wi;
             _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
         }
 
+        private int GetExpandDirection(ViewData viewData, Point location)
+        {
+            if (viewData.Selected == null) return 0;
+            var bounds = GetDrawRect(viewData.Selected);
+            if (!bounds.HasValue) return 0;
+            if (IsTopBar(bounds.Value, location)) return +1;
+            if (IsBottomBar(bounds.Value, location)) return -1;
+            return 0;
+        }
+
+        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
+        {
+            if (viewData.Selected == null) return false;
+            var bounds = GetDrawRect(viewData.Selected);// (viewData.Selected, viewData.Filter);
+            if (!bounds.HasValue) return false;
+            return IsTopBar(bounds.Value, location) || IsBottomBar(bounds.Value, location);
+        }
+
+        internal bool IsTopBar(RectangleF workItemBounds, PointF point)
+        {
+            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds, 5);//@@@ Draw側と共通化
+            return topBar.Contains(point);
+        }
+
+        internal bool IsBottomBar(RectangleF workItemBounds, PointF point)
+        {
+            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds, 5);
+            return bottomBar.Contains(point);
+        }
+
         private CallenderDay Y2Day(int y)
         {
+            if (GridHeight < y) return null;
             var r = Y2Row(y);
             return Row2Day(r);
         }
@@ -277,6 +308,7 @@ namespace TaskManagement.UI
 
         private Member X2Member(int x)
         {
+            if (GridWidth < x) return null;
             var c = X2Col(x);
             return Col2Member(c);
         }
@@ -363,10 +395,8 @@ namespace TaskManagement.UI
                         DrawWorkItem(wi, brush, color, Pens.Black, font, e.Graphics);
                     }
                 }
-
-                DrawSelectedWorkItemBound(e, font);
-
                 DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
+                DrawSelectedWorkItemBound(e, font);
             }
         }
 
@@ -506,7 +536,7 @@ namespace TaskManagement.UI
             if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, VisibleRowCount);
             if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, GetRow(wi.Period.To).Value - VisibleTopRow.Value + 1);
             if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (GetRow(wi.Period.From), GetRow(wi.Period.To).Value - GetRow(wi.Period.From).Value + 1);
-            return (GetRow(wi.Period.From), VisibleButtomRow.Value - GetRow(wi.Period.From).Value);
+            return (GetRow(wi.Period.From), VisibleButtomRow.Value - GetRow(wi.Period.From).Value + 1);
         }
 
         internal void Redo()

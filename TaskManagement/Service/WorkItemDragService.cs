@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using TaskManagement.Model;
-using TaskManagement.UI;
 using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
@@ -75,14 +74,21 @@ namespace TaskManagement.Service
         private void UpdateExpand(WorkItem selected, Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
         {
             var curDay = y2Day(curLocation.Y);
-            if (curDay == null) return;
-
             var draggedDay = _expandDirection > 0 ? selected.Period.From : selected.Period.To;
             var otherSideDay = _expandDirection > 0 ? selected.Period.To : selected.Period.From;
-            var offset = callender.GetOffset(draggedDay, curDay);
+            int offset = GetOffset(callender, curDay, draggedDay);
             var d = callender.ApplyOffset(draggedDay, offset + _expandDirection);
             if (d == null || IsUpsideDown(callender, otherSideDay, d)) return;
             draggedDay.CopyFrom(d);
+        }
+
+        private int GetOffset(Callender callender, CallenderDay curDay, CallenderDay draggedDay)
+        {
+            if (curDay == null)
+            {
+                return _expandDirection > 0 ? -2 : +2;
+            }
+            return callender.GetOffset(draggedDay, curDay);
         }
 
         private bool IsUpsideDown(Callender callender, CallenderDay otherSideDay, CallenderDay d)
