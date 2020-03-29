@@ -32,7 +32,8 @@ namespace TaskManagement.Service
         {
             var grid = new WorkItemGrid();
             grid.Size = e.PageBounds.Size;
-            grid.Initialize(_viewData);//@@@印刷用にカスタムする
+            grid.Initialize(_viewData);
+            grid.AdjustForPrint(e.PageBounds);
             grid.Print(e.Graphics);
         }
 

@@ -52,6 +52,22 @@ namespace TaskManagement.UI
             LockUpdate = false;
         }
 
+        internal void AdjustForPrint(Rectangle printRect)
+        {
+            var vRatio = printRect.Height / (float)GridHeight;
+            var hRatio = printRect.Width / (float)GridWidth;
+            LockUpdate = true;
+            for (var c = 0; c < ColCount; c++)
+            {
+                ColWidths[c] = (int)(ColWidths[c] * hRatio);
+            }
+            for (var r = 0; r < RowCount; r++)
+            {
+                RowHeights[r] = (int)(RowHeights[r] * vRatio);
+            }
+            LockUpdate = false;
+        }
+
         private void ApplyDetailSetting(Detail detail)
         {
             this.ColWidths[0] = detail.DateWidth / 2;
