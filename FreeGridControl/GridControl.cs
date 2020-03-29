@@ -286,8 +286,13 @@ namespace FreeGridControl
 
         public bool Row2Y(RowIndex r, out int y)
         {
+            if (r == null)
+            {
+                y = -1;
+                return false;
+            }
             var rect = GetVisibleRect(false, false);
-            y = (int)(_cache.GetTop(r.Offset(FixedRowCount)) - VOffset);
+            y = (int)(_cache.GetTop(r) - VOffset);
             if (y < rect.Top) return false;
             if (rect.Bottom < y) return false;
             return true;

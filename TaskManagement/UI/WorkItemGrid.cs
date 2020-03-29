@@ -341,11 +341,10 @@ namespace TaskManagement.UI
 
         private RowIndex Day2Row(CallenderDay day)
         {
-            foreach (var r in RowIndex.Range(0, RowCount))
+            foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value).Equals(day)) return r.Offset(FixedRowCount);
+                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
             }
-            Debug.Assert(false);
             return null;
         }
 

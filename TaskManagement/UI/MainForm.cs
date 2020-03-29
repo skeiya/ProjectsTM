@@ -299,7 +299,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            _grid.UpdateRowColMap(_viewData);
+            workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
 
