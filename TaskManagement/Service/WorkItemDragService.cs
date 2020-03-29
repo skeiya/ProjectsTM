@@ -17,6 +17,8 @@ namespace TaskManagement.Service
 
         public WorkItem CopyingItem => _isCopying ? _draggingWorkItem : null;
 
+        public static float ExpandHeight => 5;
+
         public bool IsMoving()
         {
             return _draggingWorkItem != null;
@@ -196,15 +198,15 @@ namespace TaskManagement.Service
             return !_beforeWorkItem.Equals(viewData.Selected);
         }
 
-        internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds, float height)
+        internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds)
         {
-            var bar = GetBottomBarRect(bounds, height);
+            var bar = GetBottomBarRect(bounds);
             return GetMidLine(bar);
         }
 
-        internal static Tuple<PointF, PointF> GetTopBarLine(RectangleF bounds, float height)
+        internal static Tuple<PointF, PointF> GetTopBarLine(RectangleF bounds)
         {
-            var bar = GetTopBarRect(bounds, height);
+            var bar = GetTopBarRect(bounds);
             return GetMidLine(bar);
         }
 
@@ -216,14 +218,14 @@ namespace TaskManagement.Service
             return new Tuple<PointF, PointF>(p1, p2);
         }
 
-        internal static RectangleF GetBottomBarRect(RectangleF bounds, float height)
+        internal static RectangleF GetBottomBarRect(RectangleF bounds)
         {
-            return new RectangleF(bounds.X, bounds.Bottom, bounds.Width, height);
+            return new RectangleF(bounds.X, bounds.Bottom, bounds.Width, ExpandHeight);
         }
 
-        internal static RectangleF GetTopBarRect(RectangleF bounds, float height)
+        internal static RectangleF GetTopBarRect(RectangleF bounds)
         {
-            return new RectangleF(bounds.X, bounds.Top - height, bounds.Width, height);
+            return new RectangleF(bounds.X, bounds.Top - ExpandHeight, bounds.Width, ExpandHeight);
         }
 
         internal void ToCopyMode(WorkItems workItems)

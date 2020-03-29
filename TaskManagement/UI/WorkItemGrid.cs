@@ -282,13 +282,13 @@ namespace TaskManagement.UI
 
         internal bool IsTopBar(RectangleF workItemBounds, PointF point)
         {
-            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds, 5);//@@@ Draw側と共通化
+            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds);
             return topBar.Contains(point);
         }
 
         internal bool IsBottomBar(RectangleF workItemBounds, PointF point)
         {
-            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds, 5);
+            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds);
             return bottomBar.Contains(point);
         }
 
@@ -452,16 +452,16 @@ namespace TaskManagement.UI
 
         private void DrawBottomDragBar(Graphics g, RectangleF bounds)
         {
-            var rect = WorkItemDragService.GetBottomBarRect(bounds, 5);// @@@TODO (5)はやめる
-            var points = WorkItemDragService.GetBottomBarLine(bounds, 5);
+            var rect = WorkItemDragService.GetBottomBarRect(bounds);
+            var points = WorkItemDragService.GetBottomBarLine(bounds);
             g.FillRectangle(Brushes.DarkBlue, rect);
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
         private void DrawTopDragBar(Graphics g, RectangleF bounds)
         {
-            var rect = WorkItemDragService.GetTopBarRect(bounds, 5);
-            var points = WorkItemDragService.GetTopBarLine(bounds, 5);
+            var rect = WorkItemDragService.GetTopBarRect(bounds);
+            var points = WorkItemDragService.GetTopBarLine(bounds);
             g.FillRectangle(Brushes.DarkBlue, rect);
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
