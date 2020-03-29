@@ -183,9 +183,6 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-            //@@@taskDrawArea.MouseDown += TaskDrawArea_MouseDown;
-            //taskDrawArea.MouseUp += TaskDrawArea_MouseUp;
-            //taskDrawArea.MouseMove += TaskDrawArea_MouseMove;
             //taskDrawArea.AllowDrop = true;
             //taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             //taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
