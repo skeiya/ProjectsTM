@@ -22,6 +22,10 @@ namespace TaskManagement.UI
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
 
+        public WorkItemEditService EditService => _editService;
+
+        public event EventHandler<EditedEventArgs> UndoChanged;
+
         public event EventHandler<string> HoveringTextChanged;
 
         public WorkItemGrid() { }
@@ -40,8 +44,14 @@ namespace TaskManagement.UI
             this.FixedColCount = fixedCols;
 
             _editService = new WorkItemEditService(_viewData, _undoService);
+            _undoService.Changed += _undoService_Changed1;
 
             LockUpdate = false;
+        }
+
+        private void _undoService_Changed1(object sender, EditedEventArgs e)
+        {
+            UndoChanged?.Invoke(this, e);
         }
 
         private void AttachEvents()
@@ -389,6 +399,16 @@ namespace TaskManagement.UI
             if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, GetRow(wi.Period.To).Value - VisibleTopRow.Value + 1);
             if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (GetRow(wi.Period.From), GetRow(wi.Period.To).Value - GetRow(wi.Period.From).Value + 1);
             return (GetRow(wi.Period.From), VisibleButtomRow.Value - GetRow(wi.Period.From).Value);
+        }
+
+        internal void Redo()
+        {
+            _undoService.Redo(_viewData);
+        }
+
+        internal void Undo()
+        {
+            _undoService.Undo(_viewData);
         }
 
         private RowIndex GetRow(CallenderDay day)

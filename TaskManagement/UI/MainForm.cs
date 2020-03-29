@@ -23,8 +23,6 @@ namespace TaskManagement.UI
         private OldFileService _oldFileService = new OldFileService();
         private PrintService _printService;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
-        private UndoService _undoService = new UndoService();
-        private WorkItemEditService _editService;
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private bool _isDirty = false;
 
@@ -33,8 +31,7 @@ namespace TaskManagement.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(_viewData, workItemGrid1.Font);
-            _editService = new WorkItemEditService(_viewData, _undoService);
-            _undoService.Changed += _undoService_Changed;
+            
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
@@ -44,6 +41,7 @@ namespace TaskManagement.UI
             this.Shown += JumpTodayAtFirstDraw;
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
+            workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             _fileIOService.FileChanged += _fileIOService_FileChanged;
@@ -205,7 +203,7 @@ namespace TaskManagement.UI
             }
             if (e.KeyCode == Keys.Escape)
             {
-                _workItemDragService.End(_editService, _viewData, true);
+                _workItemDragService.End(workItemGrid1.EditService, _viewData, true);
                 _viewData.Selected = null;
             }
             //@@@taskDrawArea.Invalidate();
@@ -241,7 +239,7 @@ namespace TaskManagement.UI
                 using (var dlg = new DevideWorkItemForm(count))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
-                    _editService.Devide(selected, dlg.Devided, dlg.Remain);
+                    workItemGrid1.EditService.Devide(selected, dlg.Devided, dlg.Remain);
                 }
             }
             catch
@@ -260,7 +258,7 @@ namespace TaskManagement.UI
             if (e.KeyCode == Keys.Delete)
             {
                 if (_viewData.Selected == null) return;
-                _editService.Delete(_viewData.Selected);
+                workItemGrid1.EditService.Delete(_viewData.Selected);
                 _viewData.Selected = null;
             }
             if (e.KeyCode == Keys.ControlKey)
@@ -376,7 +374,7 @@ namespace TaskManagement.UI
 
             if (_searchForm == null || _searchForm.IsDisposed)
             {
-                _searchForm = new SearchWorkitemForm(_viewData, _editService);
+                _searchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
             }
             if (!_searchForm.Visible) _searchForm.Show(this);
         }
@@ -427,12 +425,12 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
         {
-            _undoService.Undo(_viewData);
+            workItemGrid1.Undo();
         }
 
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
-            _undoService.Redo(_viewData);
+            workItemGrid1.Redo();
         }
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
