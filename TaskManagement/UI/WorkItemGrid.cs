@@ -438,14 +438,15 @@ namespace TaskManagement.UI
             {
                 DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics);
 
-                //@@@if(!isDragging) {
-                var rect = GetDrawRect(_viewData.Selected);
-                if (rect.HasValue)
+                if (!_workItemDragService.IsActive())
                 {
-                    DrawTopDragBar(e.Graphics, rect.Value);
-                    DrawBottomDragBar(e.Graphics, rect.Value);
+                    var rect = GetDrawRect(_viewData.Selected);
+                    if (rect.HasValue)
+                    {
+                        DrawTopDragBar(e.Graphics, rect.Value);
+                        DrawBottomDragBar(e.Graphics, rect.Value);
+                    }
                 }
-                //}
             }
         }
 
