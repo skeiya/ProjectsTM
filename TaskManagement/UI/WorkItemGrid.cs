@@ -94,7 +94,6 @@ namespace TaskManagement.UI
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this._viewData.FontChanged += _viewData_FontChanged;
-            this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
@@ -110,7 +109,6 @@ namespace TaskManagement.UI
         {
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
             this._viewData.FontChanged -= _viewData_FontChanged;
-            this.OnDrawCell -= WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseUp -= WorkItemGrid_MouseDown;
@@ -259,7 +257,7 @@ namespace TaskManagement.UI
         private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
             if (day == null || m == null) return;
-            MoveVisibleRowCol(Day2Row(day), Member2Col(m));
+            MoveVisibleRowCol(Day2Row(day), Member2Col(m, _viewData.GetFilteredMembers()));
         }
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
@@ -281,7 +279,7 @@ namespace TaskManagement.UI
         private int GetExpandDirection(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return 0;
-            var bounds = GetDrawRect(viewData.Selected);
+            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers());
             if (!bounds.HasValue) return 0;
             if (IsTopBar(bounds.Value, location)) return +1;
             if (IsBottomBar(bounds.Value, location)) return -1;
@@ -291,7 +289,7 @@ namespace TaskManagement.UI
         private bool IsWorkItemExpandArea(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return false;
-            var bounds = GetDrawRect(viewData.Selected);// (viewData.Selected, viewData.Filter);
+            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers());// (viewData.Selected, viewData.Filter);
             if (!bounds.HasValue) return false;
             return IsTopBar(bounds.Value, location) || IsBottomBar(bounds.Value, location);
         }
@@ -354,44 +352,6 @@ namespace TaskManagement.UI
             MoveVisibleDayAndMember(today, m);
         }
 
-        private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
-        {
-            using (var font = CreateFont())
-            {
-                var memberIndex = e.ColIndex.Value - this.FixedColCount;
-                if (0 <= memberIndex)
-                {
-                    var member = _viewData.GetFilteredMembers().ElementAt(memberIndex);
-                    if (e.RowIndex.Value == 0 && this.FixedColCount <= e.ColIndex.Value)
-                    {
-                        e.Graphics.DrawString(member.Company, font, Brushes.Black, e.Rect);
-                    }
-                    if (e.RowIndex.Value == 1 && this.FixedColCount <= e.ColIndex.Value)
-                    {
-                        e.Graphics.DrawString(member.DisplayName, font, Brushes.Black, e.Rect);
-                    }
-                }
-
-                var dayIndex = e.RowIndex.Value - this.FixedRowCount;
-                if (0 <= dayIndex)
-                {
-                    var day = _viewData.GetFilteredDays().ElementAt(dayIndex);
-                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 0)
-                    {
-                        e.Graphics.DrawString(day.Year.ToString(), font, Brushes.Black, e.Rect);
-                    }
-                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 1)
-                    {
-                        e.Graphics.DrawString(day.Month.ToString(), font, Brushes.Black, e.Rect);
-                    }
-                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 2)
-                    {
-                        e.Graphics.DrawString(day.Day.ToString(), font, Brushes.Black, e.Rect);
-                    }
-                }
-            }
-        }
-
         private Font CreateFont()
         {
             return new Font(this.Font.FontFamily, _viewData.FontSize);
@@ -403,18 +363,43 @@ namespace TaskManagement.UI
             {
                 foreach (var c in VisibleLeftCol.Range(VisibleColCount))
                 {
-                    var m = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
+                    var members = _viewData.GetFilteredMembers();
+                    var m = members.ElementAt(c.Value - FixedColCount);
+                    DrawMember(c, m, font, e.Graphics);
                     foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
                     {
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
                         var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-                        DrawWorkItem(wi, brush, color, Pens.Black, font, e.Graphics);
+                        DrawWorkItem(wi, brush, color, Pens.Black, font, e.Graphics, members);
                     }
                 }
+                DrawCalender(font, e.Graphics);
                 DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
                 DrawSelectedWorkItemBound(e, font);
             }
+        }
+
+        private void DrawCalender(Font font, Graphics g)
+        {
+            foreach(var r in VisibleTopRow.Range(VisibleRowCount))
+            {
+                var rectYear = GetRect(new ColIndex(0), (r, 1), false, true);
+                var rectMonth = GetRect(new ColIndex(1), (r, 1), false, true);
+                var rectDay = GetRect(new ColIndex(2), (r, 1), false, true);
+                var d = Row2Day(r);
+                g.DrawString(d.Year.ToString(), font, Brushes.Black, rectYear);
+                g.DrawString(d.Month.ToString(), font, Brushes.Black, rectMonth);
+                g.DrawString(d.Day.ToString(), font, Brushes.Black, rectDay);
+            }
+        }
+
+        private void DrawMember(ColIndex c, Member m, Font font, Graphics g)
+        {
+            var rectCompany = GetRect(c, (new RowIndex(0), 1), true, false);
+            g.DrawString(m.Company, font, Brushes.Black, rectCompany);
+            var rectName = GetRect(c, (new RowIndex(1), 1), true, false);
+            g.DrawString(m.DisplayName, font, Brushes.Black, rectName);
         }
 
         internal void DecRatio()
@@ -429,11 +414,11 @@ namespace TaskManagement.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g)
+        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g, Members members)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return;
-            var rect = GetDrawRect(wi);
+            var rect = GetDrawRect(wi, members);
             if (!rect.HasValue) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
             var front = fore == null ? Color.Black : fore;
@@ -441,22 +426,22 @@ namespace TaskManagement.UI
             g.DrawRectangle(edge, Rectangle.Round(rect.Value));
         }
 
-        private RectangleF? GetDrawRect(WorkItem wi)
+        private RectangleF? GetDrawRect(WorkItem wi, Members members)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember), rowRange);
+            return GetRect(Member2Col(wi.AssignedMember, members), rowRange, false, false);
         }
 
         private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e, Font font)
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics);
+                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics, _viewData.GetFilteredMembers());
 
                 if (!_workItemDragService.IsActive())
                 {
-                    var rect = GetDrawRect(_viewData.Selected);
+                    var rect = GetDrawRect(_viewData.Selected, _viewData.GetFilteredMembers());
                     if (rect.HasValue)
                     {
                         DrawTopDragBar(e.Graphics, rect.Value);
@@ -482,12 +467,12 @@ namespace TaskManagement.UI
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        private RectangleF WorkItem2Rect(WorkItem wi)
-        {
-            var col = Member2Col(wi.AssignedMember);
-            var rowRange = Period2RowRange(wi.Period);
-            return GetRect(col, rowRange);
-        }
+        //private RectangleF WorkItem2Rect(WorkItem wi)
+        //{
+        //    var col = Member2Col(wi.AssignedMember);
+        //    var rowRange = Period2RowRange(wi.Period);
+        //    return GetRect(col, rowRange);
+        //}
 
         private (RowIndex row, int count) Period2RowRange(Period period)
         {
@@ -505,11 +490,11 @@ namespace TaskManagement.UI
             return null;
         }
 
-        private ColIndex Member2Col(Member m)
+        private ColIndex Member2Col(Member m, Members members)
         {
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                if (_viewData.GetFilteredMembers().ElementAt(c.Value).Equals(m)) return c.Offset(FixedColCount);
+                if (members.ElementAt(c.Value).Equals(m)) return c.Offset(FixedColCount);
             }
             Debug.Assert(false);
             return null;

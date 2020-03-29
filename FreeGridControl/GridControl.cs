@@ -12,7 +12,6 @@ namespace FreeGridControl
     {
         private Cache _cache = new Cache();
 
-        public event EventHandler<DrawCellEventArgs> OnDrawCell;
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
@@ -116,32 +115,18 @@ namespace FreeGridControl
         private int HOffset => hScrollBar.Value;
         private void DrawGrid(Graphics graphics)
         {
-            DrawCell(graphics);
-        }
-
-        private void DrawCell(Graphics graphics)
-        {
-            foreach (var r in RowIndex.Range(0, RowCount))
-            {
-                foreach (var c in ColIndex.Range(0, ColCount))
-                {
-                    var rect = GetDrawRect(r, c, VOffset, HOffset);
-                    if (rect.IsEmpty) continue;
-                    OnDrawCell?.Invoke(this, new DrawCellEventArgs(r, c, rect, graphics));
-                }
-            }
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
         }
 
-        public RectangleF GetRect(ColIndex col, (RowIndex r, int count) topAndHeight)
+        public RectangleF GetRect(ColIndex col, (RowIndex r, int count) topAndHeight, bool isFixedRow, bool isFixedCol)
         {
             var top = _cache.GetTop(topAndHeight.r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(topAndHeight.r.Offset(topAndHeight.count)) - top;
             var result = new RectangleF(left, top, width, height);
-            result.Offset(-HOffset, -VOffset);
-            result.Intersect(GetVisibleRect(false, false));
+            result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
+            result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
             return result;
         }
 
