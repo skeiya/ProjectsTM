@@ -23,8 +23,8 @@ namespace FreeGridControl
             }
             set
             {
-                if (this[index].Equals(value)) return;
-                this[index] = value;
+                if (base[index].Equals(value)) return;
+                base[index] = value;
                 ItemChanged(this, null);
             }
         }

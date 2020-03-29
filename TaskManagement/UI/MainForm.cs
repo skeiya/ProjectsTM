@@ -430,8 +430,7 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Detail = dlg.Detail;
-                //@@@_grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
-                //panelFullView.Invalidate();
+                workItemGrid1.Initialize(_viewData);
             }
         }
 

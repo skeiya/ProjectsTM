@@ -43,6 +43,20 @@ namespace TaskManagement.UI
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
 
+            this.ColWidths[0] = _viewData.Detail.DateWidth / 2;
+            this.ColWidths[1] = _viewData.Detail.DateWidth / 4;
+            this.ColWidths[2] = _viewData.Detail.DateWidth / 4;
+            for (var c = FixedColCount; c < ColCount; c++)
+            {
+                this.ColWidths[c] = _viewData.Detail.ColWidth;
+            }
+            this.RowHeights[0] = _viewData.Detail.CompanyHeight;
+            this.RowHeights[1] = _viewData.Detail.NameHeight;
+            for(var r = FixedRowCount; r < RowCount; r++)
+            {
+                this.RowHeights[r] = _viewData.Detail.RowHeight;
+            }
+
             _editService = new WorkItemEditService(_viewData, _undoService);
             _undoService.Changed += _undoService_Changed1;
 
