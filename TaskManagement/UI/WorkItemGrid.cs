@@ -64,6 +64,8 @@ namespace TaskManagement.UI
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
+            this.KeyDown += WorkItemGrid_KeyDown;
+            this.KeyUp += WorkItemGrid_KeyUp;
         }
 
         private void DetatchEvents()
@@ -76,6 +78,35 @@ namespace TaskManagement.UI
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this._undoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
+            this.KeyDown -= WorkItemGrid_KeyDown;
+        }
+
+        private void WorkItemGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                _workItemDragService.ToCopyMode(_viewData.Original.WorkItems);
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
+                _workItemDragService.End(_editService, _viewData, true);
+                _viewData.Selected = null;
+            }
+            //@@@taskDrawArea.Invalidate();
+        }
+
+        private void WorkItemGrid_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (_viewData.Selected == null) return;
+                _editService.Delete(_viewData.Selected);
+                _viewData.Selected = null;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
+            }
         }
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)

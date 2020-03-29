@@ -22,7 +22,6 @@ namespace TaskManagement.UI
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private OldFileService _oldFileService = new OldFileService();
         private PrintService _printService;
-        private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private bool _isDirty = false;
 
@@ -183,26 +182,10 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
+            InitializeContextMenu();
             workItemGrid1.AllowDrop = true;
             workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            InitializeContextMenu();
-            this.KeyUp += MainForm_KeyUp;
-            this.KeyDown += MainForm_KeyDown;
-        }
-
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                _workItemDragService.ToCopyMode(_viewData.Original.WorkItems);
-            }
-            if (e.KeyCode == Keys.Escape)
-            {
-                _workItemDragService.End(workItemGrid1.EditService, _viewData, true);
-                _viewData.Selected = null;
-            }
-            //@@@taskDrawArea.Invalidate();
         }
 
         private void InitializeContextMenu()
@@ -244,20 +227,6 @@ namespace TaskManagement.UI
         private void EditMenu_Click(object sender, EventArgs e)
         {
             workItemGrid1.EditSelectedWorkItem();
-        }
-
-        private void MainForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                if (_viewData.Selected == null) return;
-                workItemGrid1.EditService.Delete(_viewData.Selected);
-                _viewData.Selected = null;
-            }
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
-            }
         }
 
         //@@@private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
