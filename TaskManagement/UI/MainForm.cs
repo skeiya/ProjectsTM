@@ -355,20 +355,14 @@ namespace TaskManagement.UI
         {
             _viewData.DecRatio();
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            //@@@_grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
-            //taskDrawArea.Size = _grid.Size;
-            //taskDrawArea.Invalidate();
-            //panelFullView.Invalidate();
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
             _viewData.IncRatio();
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            //@@@_grid.OnResize(taskDrawArea.Size, _viewData.Detail, false);
-            //taskDrawArea.Size = _grid.Size;
-            //taskDrawArea.Invalidate();
-            //panelFullView.Invalidate();
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
