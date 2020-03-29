@@ -183,9 +183,9 @@ namespace TaskManagement.UI
 
         void InitializeTaskDrawArea()
         {
-            //taskDrawArea.AllowDrop = true;
-            //taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
-            //taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
+            workItemGrid1.AllowDrop = true;
+            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
+            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             InitializeContextMenu();
             this.KeyUp += MainForm_KeyUp;
             this.KeyDown += MainForm_KeyDown;
