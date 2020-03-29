@@ -58,6 +58,7 @@ namespace FreeGridControl
 
         private void GridControl_MouseWheel(object sender, MouseEventArgs e)
         {
+            if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
             var maximum = 1 + vScrollBar.Maximum - vScrollBar.LargeChange;
@@ -66,6 +67,10 @@ namespace FreeGridControl
 
             vScrollBar.Value = offset;
             this.Refresh();
+        }
+        public bool IsControlDown()
+        {
+            return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
 
         private void _cache_Updated(object sender, System.EventArgs e)

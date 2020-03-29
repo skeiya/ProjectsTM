@@ -30,7 +30,7 @@ namespace TaskManagement.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             _printService = new PrintService(_viewData, workItemGrid1.Font);
-            
+
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeFilterCombobox();
@@ -43,8 +43,15 @@ namespace TaskManagement.UI
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
+            workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
             _fileIOService.FileChanged += _fileIOService_FileChanged;
             _fileIOService.FileSaved += _fileIOService_FileSaved;
+        }
+
+        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
+        {
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + ratio.ToString();
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void WorkItemGrid1_HoveringTextChanged(object sender, string e)
@@ -229,23 +236,6 @@ namespace TaskManagement.UI
             workItemGrid1.EditSelectedWorkItem();
         }
 
-        //@@@private void TaskDrawArea_MouseWheel(object sender, MouseEventArgs e)
-        //{
-        //    if (!IsControlDown())
-        //    {
-        //        Panel1_Scroll(null, null);
-        //        return;
-        //    }
-        //    if (e.Delta > 0)
-        //    {
-        //        ToolStripMenuItemLargeRatio_Click(sender, e);
-        //    }
-        //    else
-        //    {
-        //        ToolStripMenuItemSmallRatio_Click(sender, e);
-        //    }
-        //}
-
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
             var fileName = _fileDragService.Drop(e);
@@ -263,12 +253,6 @@ namespace TaskManagement.UI
         {
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
-        }
-
-
-        private bool IsControlDown()
-        {
-            return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
@@ -353,16 +337,12 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            _viewData.DecRatio();
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            workItemGrid1.Initialize(_viewData);
+            workItemGrid1.DecRatio();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            _viewData.IncRatio();
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            workItemGrid1.Initialize(_viewData);
+            workItemGrid1.IncRatio();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)

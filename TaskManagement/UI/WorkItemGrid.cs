@@ -27,6 +27,7 @@ namespace TaskManagement.UI
         public event EventHandler<EditedEventArgs> UndoChanged;
 
         public event EventHandler<string> HoveringTextChanged;
+        public event EventHandler<float> RatioChanged;
 
         public WorkItemGrid() { }
 
@@ -81,6 +82,7 @@ namespace TaskManagement.UI
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
+            this.MouseWheel += WorkItemGrid_MouseWheel;
             this._undoService.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
             this.KeyDown += WorkItemGrid_KeyDown;
@@ -95,10 +97,28 @@ namespace TaskManagement.UI
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseUp -= WorkItemGrid_MouseDown;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
+            this.MouseWheel -= WorkItemGrid_MouseWheel;
             this._undoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
         }
+
+        private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (IsControlDown())
+            {
+                if (e.Delta > 0)
+                {
+                    IncRatio();
+                }
+                else
+                {
+                    DecRatio();
+                }
+            }
+        }
+
+
 
         private void WorkItemGrid_KeyDown(object sender, KeyEventArgs e)
         {
@@ -330,6 +350,18 @@ namespace TaskManagement.UI
             DrawSelectedWorkItemBound(e);
 
             DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
+        }
+
+        internal void DecRatio()
+        {
+            _viewData.DecRatio();
+            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
+        }
+
+        internal void IncRatio()
+        {
+            _viewData.IncRatio();
+            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Graphics g)
