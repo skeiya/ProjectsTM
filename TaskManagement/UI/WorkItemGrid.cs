@@ -382,15 +382,34 @@ namespace TaskManagement.UI
 
         private void DrawCalender(Font font, Graphics g)
         {
-            foreach(var r in VisibleTopRow.Range(VisibleRowCount))
+            var year = 0;
+            var month = 0;
+            var day = 0;
+            foreach (var r in VisibleTopRow.Range(VisibleRowCount))
             {
-                var rectYear = GetRect(new ColIndex(0), (r, 1), false, true);
-                var rectMonth = GetRect(new ColIndex(1), (r, 1), false, true);
-                var rectDay = GetRect(new ColIndex(2), (r, 1), false, true);
                 var d = Row2Day(r);
-                g.DrawString(d.Year.ToString(), font, Brushes.Black, rectYear);
-                g.DrawString(d.Month.ToString(), font, Brushes.Black, rectMonth);
-                g.DrawString(d.Day.ToString(), font, Brushes.Black, rectDay);
+                if (year != d.Year)
+                {
+                    var rectYear = GetRect(new ColIndex(0), (r, 1), false, true);
+                    year = d.Year;
+                    rectYear.Offset(0, _viewData.Detail.RowHeight);
+                    rectYear.Inflate(0, _viewData.Detail.RowHeight);
+                    g.DrawString(year.ToString(), font, Brushes.Black, rectYear);
+                }
+                if (month != d.Month)
+                {
+                    var rectMonth = GetRect(new ColIndex(1), (r, 1), false, true);
+                    month = d.Month;
+                    rectMonth.Offset(0, _viewData.Detail.RowHeight);
+                    rectMonth.Inflate(0, _viewData.Detail.RowHeight);
+                    g.DrawString(month.ToString(), font, Brushes.Black, rectMonth);
+                }
+                if (day != d.Day)
+                {
+                    var rectDay = GetRect(new ColIndex(2), (r, 1), false, true);
+                    day = d.Day;
+                    g.DrawString(day.ToString(), font, Brushes.Black, rectDay);
+                }
             }
         }
 
