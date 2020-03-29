@@ -279,7 +279,7 @@ namespace FreeGridControl
                 return false;
             }
             var rect = GetVisibleRect(false, false);
-            y = (int)(_cache.GetTop(r) - VOffset);
+            y = _cache.GetTop(r) - VOffset;
             if (y < rect.Top) return false;
             if (rect.Bottom < y) return false;
             return true;

@@ -122,7 +122,7 @@ namespace TaskManagement.Logic
 
         private static string GetRatio(int year, int month, Member member, Project project, Callender callender, WorkItems workItems)
         {
-            return string.Format("{0:f1}", (float)GetTargetDays(year, month, member, project, workItems, callender) / (float)GetTotalDays(year, month, callender));
+            return string.Format("{0:f1}", GetTargetDays(year, month, member, project, workItems, callender) / (float)GetTotalDays(year, month, callender));
         }
 
         private static int GetTotalDays(int year, int month, Callender callender)
