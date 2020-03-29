@@ -138,7 +138,7 @@ namespace TaskManagement.UI
                 _workItemDragService.End(_editService, _viewData, true);
                 _viewData.Selected = null;
             }
-            //@@@taskDrawArea.Invalidate();
+            this.Invalidate();
         }
 
         private void WorkItemGrid_KeyUp(object sender, KeyEventArgs e)
@@ -153,6 +153,7 @@ namespace TaskManagement.UI
             {
                 _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
             }
+            this.Invalidate();
         }
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
