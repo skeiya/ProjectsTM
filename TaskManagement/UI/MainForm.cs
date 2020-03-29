@@ -17,7 +17,6 @@ namespace TaskManagement.UI
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm _searchForm;
-        private TaskGrid _grid;
         private FileDragService _fileDragService = new FileDragService();
         private AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private OldFileService _oldFileService = new OldFileService();
@@ -120,13 +119,7 @@ namespace TaskManagement.UI
         private void InitializeViewData()
         {
             _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.FontChanged += _viewData_FontChanged;
             _viewData.AppDataChanged += _viewData_AppDataChanged;
-        }
-
-        private void _viewData_FontChanged(object sender, EventArgs e)
-        {
-            _grid.UpdateFont(_viewData.FontSize);
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)

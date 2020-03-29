@@ -77,6 +77,7 @@ namespace TaskManagement.UI
         private void AttachEvents()
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            this._viewData.FontChanged += _viewData_FontChanged;
             this.OnDrawCell += WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
@@ -92,6 +93,7 @@ namespace TaskManagement.UI
         private void DetatchEvents()
         {
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
+            this._viewData.FontChanged -= _viewData_FontChanged;
             this.OnDrawCell -= WorkItemGrid_OnDrawCell;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
@@ -101,6 +103,11 @@ namespace TaskManagement.UI
             this._undoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
+        }
+
+        private void _viewData_FontChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
@@ -300,56 +307,67 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
         {
-            var memberIndex = e.ColIndex.Value - this.FixedColCount;
-            if (0 <= memberIndex)
+            using (var font = CreateFont())
             {
-                var member = _viewData.GetFilteredMembers().ElementAt(memberIndex);
-                if (e.RowIndex.Value == 0 && this.FixedColCount <= e.ColIndex.Value)
+                var memberIndex = e.ColIndex.Value - this.FixedColCount;
+                if (0 <= memberIndex)
                 {
-                    e.Graphics.DrawString(member.Company, this.Font, Brushes.Black, e.Rect);
+                    var member = _viewData.GetFilteredMembers().ElementAt(memberIndex);
+                    if (e.RowIndex.Value == 0 && this.FixedColCount <= e.ColIndex.Value)
+                    {
+                        e.Graphics.DrawString(member.Company, font, Brushes.Black, e.Rect);
+                    }
+                    if (e.RowIndex.Value == 1 && this.FixedColCount <= e.ColIndex.Value)
+                    {
+                        e.Graphics.DrawString(member.DisplayName, font, Brushes.Black, e.Rect);
+                    }
                 }
-                if (e.RowIndex.Value == 1 && this.FixedColCount <= e.ColIndex.Value)
-                {
-                    e.Graphics.DrawString(member.DisplayName, this.Font, Brushes.Black, e.Rect);
-                }
-            }
 
-            var dayIndex = e.RowIndex.Value - this.FixedRowCount;
-            if (0 <= dayIndex)
-            {
-                var day = _viewData.GetFilteredDays().ElementAt(dayIndex);
-                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 0)
+                var dayIndex = e.RowIndex.Value - this.FixedRowCount;
+                if (0 <= dayIndex)
                 {
-                    e.Graphics.DrawString(day.Year.ToString(), this.Font, Brushes.Black, e.Rect);
-                }
-                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 1)
-                {
-                    e.Graphics.DrawString(day.Month.ToString(), this.Font, Brushes.Black, e.Rect);
-                }
-                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 2)
-                {
-                    e.Graphics.DrawString(day.Day.ToString(), this.Font, Brushes.Black, e.Rect);
+                    var day = _viewData.GetFilteredDays().ElementAt(dayIndex);
+                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 0)
+                    {
+                        e.Graphics.DrawString(day.Year.ToString(), font, Brushes.Black, e.Rect);
+                    }
+                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 1)
+                    {
+                        e.Graphics.DrawString(day.Month.ToString(), font, Brushes.Black, e.Rect);
+                    }
+                    if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 2)
+                    {
+                        e.Graphics.DrawString(day.Day.ToString(), font, Brushes.Black, e.Rect);
+                    }
                 }
             }
         }
 
+        private Font CreateFont()
+        {
+            return new Font(this.Font.FontFamily, _viewData.FontSize);
+        }
+
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
-            foreach (var c in VisibleLeftCol.Range(VisibleColCount))
+            using (var font = CreateFont())
             {
-                var m = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
-                foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
+                foreach (var c in VisibleLeftCol.Range(VisibleColCount))
                 {
-                    var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-                    var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
-                    var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-                    DrawWorkItem(wi, brush, color, Pens.Black, e.Graphics);
+                    var m = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
+                    foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
+                    {
+                        var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
+                        var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
+                        var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
+                        DrawWorkItem(wi, brush, color, Pens.Black, font, e.Graphics);
+                    }
                 }
+
+                DrawSelectedWorkItemBound(e, font);
+
+                DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
             }
-
-            DrawSelectedWorkItemBound(e);
-
-            DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
         }
 
         internal void DecRatio()
@@ -364,7 +382,7 @@ namespace TaskManagement.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Graphics g)
+        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return;
@@ -372,7 +390,7 @@ namespace TaskManagement.UI
             if (!rect.HasValue) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
             var front = fore == null ? Color.Black : fore;
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect.Value);
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender), font, BrushCache.GetBrush(front), rect.Value);
             g.DrawRectangle(edge, Rectangle.Round(rect.Value));
         }
 
@@ -383,11 +401,11 @@ namespace TaskManagement.UI
             return GetRect(Member2Col(wi.AssignedMember), rowRange);
         }
 
-        private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e)
+        private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e, Font font)
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, e.Graphics);
+                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics);
 
                 //@@@if(!isDragging) {
                 var rect = GetDrawRect(_viewData.Selected);
