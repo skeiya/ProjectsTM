@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
@@ -118,7 +117,7 @@ namespace TaskManagement.Logic
             var words = text.Split(',');
             if (words.Length != 10)
             {
-                throw new System.Exception(String.Format("{0}行目の区切り数が異常です。", lineNo));
+                throw new System.Exception(string.Format("{0}行目の区切り数が異常です。", lineNo));
             }
 
             var project = ParseProject(words[5], words[3]);
