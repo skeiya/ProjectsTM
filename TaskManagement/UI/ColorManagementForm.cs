@@ -103,7 +103,7 @@ namespace TaskManagement.UI
 
         private void ButtonImport_Click(object sender, EventArgs e)
         {
-            using(var dlg = new OpenFileDialog())
+            using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var appData = AppDataSerializer.Deserialize(dlg.FileName);

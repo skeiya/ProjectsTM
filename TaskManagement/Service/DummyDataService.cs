@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -26,12 +21,12 @@ namespace TaskManagement.Service
                     for (var day = 1; day < 31; day++)
                     {
                         appData.Callender.Add(new CallenderDay(year, month, day));
-                        if(from == null)
+                        if (from == null)
                         {
                             from = new CallenderDay(year, month, day);
                             continue;
                         }
-                        if(count > 3)
+                        if (count > 3)
                         {
                             count = 0;
                             var to = new CallenderDay(year, month, day);
@@ -50,7 +45,8 @@ namespace TaskManagement.Service
             appData.WorkItems = new WorkItems();
             var p = new Project("PRJ");
             var t = new Tags(new List<string>() { "a" });
-            foreach (var period in periods) {
+            foreach (var period in periods)
+            {
                 foreach (var m in appData.Members)
                 {
                     appData.WorkItems.Add(new WorkItem(p, "Task", t, period, m));

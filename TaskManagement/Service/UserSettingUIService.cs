@@ -11,7 +11,8 @@ namespace TaskManagement.Service
         {
             var xml = new XmlSerializer(typeof(UserSetting));
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            using (var w = StreamFactory.CreateWriter(filePath)) {
+            using (var w = StreamFactory.CreateWriter(filePath))
+            {
                 xml.Serialize(w, setting);
             }
         }
@@ -19,7 +20,7 @@ namespace TaskManagement.Service
         internal static UserSetting Load(string filePath)
         {
             var xml = new XmlSerializer(typeof(UserSetting));
-            using(var r = StreamFactory.CreateReader(filePath))
+            using (var r = StreamFactory.CreateReader(filePath))
             {
                 return (UserSetting)xml.Deserialize(r);
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace FreeGridControl
 {
@@ -33,7 +32,7 @@ namespace FreeGridControl
         {
             if (r == 0) return 0;
             var sum = 0;
-            foreach(var i in this.GetRange(0, r))
+            foreach (var i in this.GetRange(0, r))
             {
                 sum += (int)i;
             }
@@ -43,7 +42,7 @@ namespace FreeGridControl
         public void SetCount(int newCount)
         {
             if (this.Count == newCount) return;
-            if(this.Count < newCount)
+            if (this.Count < newCount)
             {
                 var append = new List<int>();
                 for (var index = 0; index < (newCount - this.Count); index++) append.Add(35);

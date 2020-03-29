@@ -46,7 +46,7 @@ namespace TaskManagement.Model
         {
             if (_tags == null || _tags.Count == 0) return string.Empty;
             var result = new StringBuilder();
-            foreach(var t in _tags)
+            foreach (var t in _tags)
             {
                 result.Append(t + Environment.NewLine);
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace TaskManagement.Model
 {
     public class WorkItems : IEnumerable<WorkItem>
     {
-        
+
         private SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
         public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
@@ -57,7 +56,7 @@ namespace TaskManagement.Model
 
         internal void Remove(WorkItem selected)
         {
-            if(!_items[selected.AssignedMember].Remove(selected))
+            if (!_items[selected.AssignedMember].Remove(selected))
             {
                 throw new System.Exception();
             }

@@ -38,7 +38,7 @@ namespace TaskManagement.Model
             var items = obj as MembersWorkItems;
             if (items == null) return false;
             if (_items.Count != items._items.Count) return false;
-            for(var index  = 0; index < _items.Count; index++)
+            for (var index = 0; index < _items.Count; index++)
             {
                 if (!_items[index].Equals(items._items[index])) return false;
             }

@@ -90,7 +90,7 @@ namespace TaskManagement.ViewModel
         internal WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
         {
             if (m == null) return null;
-            foreach(var wi in GetFilteredWorkItemsOfMember(m))
+            foreach (var wi in GetFilteredWorkItemsOfMember(m))
             {
                 if (wi.Period.Contains(d)) return wi;
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace TaskManagement.Model
@@ -46,12 +45,12 @@ namespace TaskManagement.Model
 
         private int FindIndex(Member m)
         {
-            return _members.FindIndex((x)=>x.Equals(m));
+            return _members.FindIndex((x) => x.Equals(m));
         }
 
         public bool Contain(Member m)
         {
-            foreach(var f in _members)
+            foreach (var f in _members)
             {
                 if (f.Equals(m)) return true;
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using TaskManagement.Model;
+﻿using TaskManagement.Model;
 
 namespace TaskManagement.ViewModel
 {

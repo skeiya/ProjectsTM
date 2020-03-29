@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace TaskManagement.Model
@@ -42,7 +40,7 @@ namespace TaskManagement.Model
         internal ColorCondition At(int i)
         {
             var index = 0;
-            foreach(var c in _list)
+            foreach (var c in _list)
             {
                 if (index == i) return c;
                 index++;
@@ -84,7 +82,7 @@ namespace TaskManagement.Model
         internal void Apply(ColorConditions colorConditions)
         {
             _list.Clear();
-            foreach(var c in colorConditions)
+            foreach (var c in colorConditions)
             {
                 _list.Add(c);
             }

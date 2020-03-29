@@ -20,7 +20,7 @@ namespace TaskManagement.Model
             if (target == null) return false;
             if (!Callender.Equals(target.Callender)) return false;
             if (!Members.Equals(target.Members)) return false;
-            if(!ColorConditions.Equals(target.ColorConditions)) return false;
+            if (!ColorConditions.Equals(target.ColorConditions)) return false;
             return WorkItems.Equals(target.WorkItems);
         }
 

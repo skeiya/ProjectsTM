@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -229,7 +228,7 @@ namespace TaskManagement.UI
 
         private void ButtonAllOff_Click(object sender, EventArgs e)
         {
-            for(var idx = 0; idx < checkedListBox1.Items.Count; idx++)
+            for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
             {
                 checkedListBox1.SetItemCheckState(idx, CheckState.Unchecked);
             }
