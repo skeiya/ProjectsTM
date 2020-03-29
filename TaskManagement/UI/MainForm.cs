@@ -211,6 +211,7 @@ namespace TaskManagement.UI
             try
             {
                 var selected = _viewData.Selected;
+                if (selected == null) return;
                 var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
                 using (var dlg = new DevideWorkItemForm(count))
                 {
