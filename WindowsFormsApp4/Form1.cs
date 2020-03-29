@@ -20,7 +20,7 @@ namespace WindowsFormsApp4
 
         private void GridControl1_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
         {
-            if(e.RowIndex == 2 && e.ColIndex == 3)
+            if (e.RowIndex.Value == 2 && e.ColIndex.Value == 3)
             {
                 int a = 0;
                 a++;

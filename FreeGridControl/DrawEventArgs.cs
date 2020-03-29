@@ -4,7 +4,7 @@ namespace FreeGridControl
 {
     public class DrawCellEventArgs
     {
-        public DrawCellEventArgs(int r, int c, RectangleF rect, Graphics graphics)
+        public DrawCellEventArgs(RowIndex r, ColIndex c, RectangleF rect, Graphics graphics)
         {
             RowIndex = r;
             ColIndex = c;
@@ -12,8 +12,8 @@ namespace FreeGridControl
             Graphics = graphics;
         }
 
-        public int RowIndex { get; }
-        public int ColIndex { get; }
+        public RowIndex RowIndex { get; }
+        public ColIndex ColIndex { get; }
         public RectangleF Rect { get; }
         public Graphics Graphics { get; }
     }

@@ -148,13 +148,13 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            if (_viewData.Selected != null) MoveVisibleArea(_viewData.Selected.Period.From, _viewData.Selected.AssignedMember);
+            if (_viewData.Selected != null) MoveVisibleDayAndMember(_viewData.Selected.Period.From, _viewData.Selected.AssignedMember);
             this.Invalidate();
         }
 
-        private void MoveVisibleArea(CallenderDay day, Member m)
+        private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
-            MoveVisibleArea(Day2DayIndex(day) + FixedRowCount, Member2MemberIndex(m) + FixedColCount);
+            MoveVisibleRowCol(Day2Row(day), Member2Col(m));
         }
 
         private void WorkItemGrid_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -179,11 +179,12 @@ namespace TaskManagement.UI
             return Row2Day(r);
         }
 
-        private CallenderDay Row2Day(int r)
+        private CallenderDay Row2Day(RowIndex r)
         {
+            if (r == null) return null;
             var days = _viewData.GetFilteredDays();
-            if (r - FixedRowCount < 0 || days.Count <= r - FixedRowCount) return null;
-            return days.ElementAt(r - FixedRowCount);
+            if (r.Value - FixedRowCount < 0 || days.Count <= r.Value - FixedRowCount) return null;
+            return days.ElementAt(r.Value - FixedRowCount);
         }
 
         private Member X2Member(int x)
@@ -192,11 +193,12 @@ namespace TaskManagement.UI
             return Col2Member(c);
         }
 
-        private Member Col2Member(int c)
+        private Member Col2Member(ColIndex c)
         {
+            if (c == null) return null;
             var members = _viewData.GetFilteredMembers();
-            if (c - FixedColCount < 0 || members.Count <= c - FixedColCount) return null;
-            return _viewData.GetFilteredMembers().ElementAt(c - FixedColCount);
+            if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
+            return _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
         }
 
         private WorkItem PickWorkItemFromPoint(Point location)
@@ -209,33 +211,33 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
         {
-            var memberIndex = e.ColIndex - this.FixedColCount;
+            var memberIndex = e.ColIndex.Value - this.FixedColCount;
             if (0 <= memberIndex)
             {
                 var member = _viewData.GetFilteredMembers().ElementAt(memberIndex);
-                if (e.RowIndex == 0 && this.FixedColCount <= e.ColIndex)
+                if (e.RowIndex.Value == 0 && this.FixedColCount <= e.ColIndex.Value)
                 {
                     e.Graphics.DrawString(member.Company, this.Font, Brushes.Black, e.Rect);
                 }
-                if (e.RowIndex == 1 && this.FixedColCount <= e.ColIndex)
+                if (e.RowIndex.Value == 1 && this.FixedColCount <= e.ColIndex.Value)
                 {
                     e.Graphics.DrawString(member.DisplayName, this.Font, Brushes.Black, e.Rect);
                 }
             }
 
-            var dayIndex = e.RowIndex - this.FixedRowCount;
+            var dayIndex = e.RowIndex.Value - this.FixedRowCount;
             if (0 <= dayIndex)
             {
                 var day = _viewData.GetFilteredDays().ElementAt(dayIndex);
-                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 0)
+                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 0)
                 {
                     e.Graphics.DrawString(day.Year.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
-                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 1)
+                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 1)
                 {
                     e.Graphics.DrawString(day.Month.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
-                if (this.FixedRowCount <= e.RowIndex && e.ColIndex == 2)
+                if (this.FixedRowCount <= e.RowIndex.Value && e.ColIndex.Value == 2)
                 {
                     e.Graphics.DrawString(day.Day.ToString(), this.Font, Brushes.Black, e.Rect);
                 }
@@ -244,15 +246,15 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
-            if (!e.VisibleRowColRect.HasValue) return;
-            var visibleRowColRect = e.VisibleRowColRect.Value;
-            foreach (var c in Enumerable.Range(visibleRowColRect.X, visibleRowColRect.Width))
+            foreach (var c in VisibleLeftCol.Range(VisibleColCount))
             {
-                var m = _viewData.GetFilteredMembers().ElementAt(c);
-                foreach (var wi in GetVisibleWorkItems(m, visibleRowColRect.Y, visibleRowColRect.Height))
+                var m = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
+                foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
                 {
                     var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-                    var rect = GetRect(c, GetRowRange(wi, visibleRowColRect));
+                    var rowRange = GetRowRange(wi);
+                    if (rowRange.row == null) continue;
+                    var rect = GetRect(c, rowRange);
                     if (colorCondition != null) e.Graphics.FillRectangle(new SolidBrush(colorCondition.BackColor), Rectangle.Round(rect));
                     var front = colorCondition == null ? Color.Black : colorCondition.ForeColor;
                     e.Graphics.DrawString(wi.ToDrawString(_viewData.Original.Callender), this.Font, BrushCache.GetBrush(front), rect);
@@ -262,7 +264,7 @@ namespace TaskManagement.UI
 
             DrawSelectedWorkItemBound(e);
 
-            DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData), visibleRowColRect.Y, visibleRowColRect.Height);
+            DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
         }
 
         private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e)
@@ -297,36 +299,36 @@ namespace TaskManagement.UI
 
         private RectangleF WorkItem2Rect(WorkItem wi)
         {
-            var col = Member2MemberIndex(wi.AssignedMember);
+            var col = Member2Col(wi.AssignedMember);
             var rowRange = Period2RowRange(wi.Period);
             return GetRect(col, rowRange);
         }
 
-        private Tuple<int, int> Period2RowRange(Period period)
+        private (RowIndex row, int count) Period2RowRange(Period period)
         {
-            var fromRow = Day2DayIndex(period.From);
-            var toRow = Day2DayIndex(period.To);
-            return new Tuple<int, int>(fromRow, toRow - fromRow + 1);
+            var fromRow = Day2Row(period.From);
+            var toRow = Day2Row(period.To);
+            return (fromRow, toRow.Value - fromRow.Value + 1);
         }
 
-        private int Day2DayIndex(CallenderDay day)
+        private RowIndex Day2Row(CallenderDay day)
         {
-            for (int r = 0; r < RowCount; r++)
+            foreach (var r in RowIndex.Range(0, RowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r).Equals(day)) return r;// + FixedRows;
+                if (_viewData.GetFilteredDays().ElementAt(r.Value).Equals(day)) return r.Offset(FixedRowCount);
             }
             Debug.Assert(false);
-            return -1;
+            return null;
         }
 
-        private int Member2MemberIndex(Member m)
+        private ColIndex Member2Col(Member m)
         {
-            for (int c = 0; c < ColCount; c++)
+            foreach (var c in ColIndex.Range(0, ColCount))
             {
-                if (_viewData.GetFilteredMembers().ElementAt(c).Equals(m)) return c;// + FixedCols;
+                if (_viewData.GetFilteredMembers().ElementAt(c.Value).Equals(m)) return c.Offset(FixedColCount);
             }
             Debug.Assert(false);
-            return -1;
+            return null;
         }
 
         private static MileStones GetMileStonesWithToday(ViewData viewData)
@@ -341,12 +343,11 @@ namespace TaskManagement.UI
             return result;
         }
 
-        private void DrawMileStones(Graphics g, MileStones mileStones, int topRow, int rowCount)
+        private void DrawMileStones(Graphics g, MileStones mileStones)
         {
             foreach (var m in mileStones)
             {
-                int y;
-                if (!Day2Y(m.Day, out y, topRow, rowCount)) continue;
+                if (!Day2Y(m.Day, out int y)) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
                     g.FillRectangle(brush, 0, y, Width, 5);
@@ -354,40 +355,32 @@ namespace TaskManagement.UI
             }
         }
 
-        private bool Day2Y(CallenderDay day, out int y, int topRow, int rowCount)
+        private bool Day2Y(CallenderDay day, out int y)
         {
-            foreach (var r in Enumerable.Range(topRow, rowCount))
-            {
-                if (_viewData.GetFilteredDays().ElementAt(r).Equals(day))
-                {
-                    return RowToY(r, out y);
-                }
-            }
-            y = 0;
-            return false;
+            var r = Day2Row(day);
+            return Row2Y(r, out y);
         }
 
-        private Tuple<int, int> GetRowRange(WorkItem wi, Rectangle visibleRowColRect)
+        private (RowIndex row, int count) GetRowRange(WorkItem wi)
         {
-            var filteredDays = _viewData.GetFilteredDays();
-            var visibleTopDay = filteredDays.ElementAt(visibleRowColRect.Top);
-            var visibleButtomDay = filteredDays.ElementAt(visibleRowColRect.Top + visibleRowColRect.Height - 1);
+            var visibleTopDay = Row2Day(VisibleTopRow);
+            var visibleButtomDay = Row2Day(VisibleButtomRow);
             var visiblePeriod = new Period(visibleTopDay, visibleButtomDay);
-            if (!visiblePeriod.HasInterSection(wi.Period)) return null;
-            if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(visibleRowColRect.Top, visibleRowColRect.Height);
-            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(visibleRowColRect.Top, GetRow(wi.Period.To, visibleRowColRect) - visibleRowColRect.Top + 1);
-            if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return new Tuple<int, int>(GetRow(wi.Period.From, visibleRowColRect), GetRow(wi.Period.To, visibleRowColRect) - GetRow(wi.Period.From, visibleRowColRect) + 1);
-            return new Tuple<int, int>(GetRow(wi.Period.From, visibleRowColRect), visibleRowColRect.Bottom - GetRow(wi.Period.From, visibleRowColRect));
+            if (!visiblePeriod.HasInterSection(wi.Period)) return (null, 0);
+            if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, VisibleRowCount);
+            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, GetRow(wi.Period.To).Value - VisibleTopRow.Value + 1);
+            if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (GetRow(wi.Period.From), GetRow(wi.Period.To).Value - GetRow(wi.Period.From).Value + 1);
+            return (GetRow(wi.Period.From), VisibleButtomRow.Value - GetRow(wi.Period.From).Value);
         }
 
-        private int GetRow(CallenderDay day, Rectangle visibleRowColRect)
+        private RowIndex GetRow(CallenderDay day)
         {
-            foreach (var r in Enumerable.Range(visibleRowColRect.Y, visibleRowColRect.Height))
+            foreach (var r in VisibleTopRow.Range(VisibleRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r).Equals(day)) return r;
+                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
             }
             Debug.Assert(false);
-            return 0;
+            return null;
         }
 
         private IEnumerable<Member> GetVisibleMembers(int left, int count)
@@ -398,10 +391,11 @@ namespace TaskManagement.UI
             }
         }
 
-        private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, int top, int count)
+        private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
         {
-            var topDay = _viewData.GetFilteredDays().ElementAt(top);
-            var buttomDay = _viewData.GetFilteredDays().ElementAt(top + count - 1);
+            if (count <= 0) yield break;
+            var topDay = _viewData.GetFilteredDays().ElementAt(top.Value - FixedRowCount);
+            var buttomDay = _viewData.GetFilteredDays().ElementAt(top.Value + count - 1 - FixedRowCount);
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
                 if (!wi.Period.HasInterSection(new Period(topDay, buttomDay))) continue;

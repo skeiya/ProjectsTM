@@ -5,11 +5,8 @@ namespace FreeGridControl
 {
     public class DrawNormalAreaEventArgs
     {
-        public Rectangle? VisibleRowColRect { get; private set; }
-
-        public DrawNormalAreaEventArgs(Rectangle? visibleRowColRect, Graphics graphics)
+        public DrawNormalAreaEventArgs(Graphics graphics)
         {
-            this.VisibleRowColRect = visibleRowColRect;
             Graphics = graphics;
         }
         public Graphics Graphics { get; set; }
