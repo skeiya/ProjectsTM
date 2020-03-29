@@ -164,6 +164,7 @@ namespace TaskManagement.UI
 
         private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
+            if (day == null || m == null) return;
             MoveVisibleRowCol(Day2Row(day), Member2Col(m));
         }
 
@@ -217,6 +218,14 @@ namespace TaskManagement.UI
             var d = Y2Day(location.Y);
             if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
+        }
+
+        internal void MoveToToday()
+        {
+            var m = _viewData.Selected == null ? X2Member(0) : _viewData.Selected.AssignedMember;
+            var now = DateTime.Now;
+            var today = new CallenderDay(now.Year, now.Month, now.Day);
+            MoveVisibleDayAndMember(today, m);
         }
 
         private void WorkItemGrid_OnDrawCell(object sender, FreeGridControl.DrawCellEventArgs e)
