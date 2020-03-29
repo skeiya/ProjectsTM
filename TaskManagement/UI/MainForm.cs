@@ -189,7 +189,6 @@ namespace TaskManagement.UI
             //taskDrawArea.AllowDrop = true;
             //taskDrawArea.DragEnter += TaskDrawArea_DragEnter;
             //taskDrawArea.DragDrop += TaskDrawArea_DragDrop;
-            //taskDrawArea.ContextMenuStrip = new ContextMenuStrip();
             InitializeContextMenu();
             this.KeyUp += MainForm_KeyUp;
             this.KeyDown += MainForm_KeyDown;
@@ -211,9 +210,10 @@ namespace TaskManagement.UI
 
         private void InitializeContextMenu()
         {
-            //@@@taskDrawArea.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
-            //taskDrawArea.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
-            //taskDrawArea.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
+            workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
+            workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
         }
 
         private void JumpTodayMenu_Click(object sender, EventArgs e)
