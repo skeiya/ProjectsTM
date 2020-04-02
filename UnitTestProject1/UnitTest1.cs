@@ -16,7 +16,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestIntArrayForDesignShrink()
         {
-            var ar = new IntArrayForDesign();
+            var ar = new FloatArrayForDesign();
             ar.Add(5);
             ar.Add(5);
             ar.Add(5);

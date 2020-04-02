@@ -72,9 +72,9 @@ namespace FreeGridControl
         private void _cache_Updated(object sender, System.EventArgs e)
         {
             this.vScrollBar.Minimum = 0;
-            this.vScrollBar.Maximum = Math.Max(0, _cache.GridHight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
+            this.vScrollBar.Maximum = (int)Math.Max(0, _cache.GridHight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
             this.hScrollBar.Minimum = 0;
-            this.hScrollBar.Maximum = Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
+            this.hScrollBar.Maximum = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
 
             this.Refresh();
         }
@@ -208,7 +208,7 @@ namespace FreeGridControl
         }
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public IntArrayForDesign RowHeights
+        public FloatArrayForDesign RowHeights
         {
             get => _cache.RowHeights;
             set
@@ -218,7 +218,7 @@ namespace FreeGridControl
         }
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public IntArrayForDesign ColWidths
+        public FloatArrayForDesign ColWidths
         {
             get => _cache.ColWidths;
             set
@@ -227,11 +227,8 @@ namespace FreeGridControl
             }
         }
 
-        public int GridWidth => _cache.GridWidth;
-        public int GridHeight => _cache.GridHight;
-
-        public int FixedHight => _cache.FixedHeight;
-        public int FixedWidth => _cache.FixedWidth;
+        public float GridWidth => _cache.GridWidth;
+        public float GridHeight => _cache.GridHight;
 
         public RowIndex VisibleTopRow => Y2Row(_cache.FixedHeight + 1);
         public RowIndex VisibleButtomRow => (_cache.GridHight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
@@ -245,7 +242,7 @@ namespace FreeGridControl
             DrawGrid(graphics);
         }
 
-        public ColIndex X2Col(int x)
+        public ColIndex X2Col(float x)
         {
             foreach (var c in ColIndex.Range(0, FixedColCount))
             {
@@ -258,7 +255,7 @@ namespace FreeGridControl
             return new ColIndex(ColCount - 1);
         }
 
-        public RowIndex Y2Row(int y)
+        public RowIndex Y2Row(float y)
         {
             foreach (var r in RowIndex.Range(0, FixedRowCount))
             {
@@ -271,7 +268,7 @@ namespace FreeGridControl
             return new RowIndex(RowCount - 1);
         }
 
-        public bool Row2Y(RowIndex r, out int y)
+        public bool Row2Y(RowIndex r, out float y)
         {
             if (r == null)
             {

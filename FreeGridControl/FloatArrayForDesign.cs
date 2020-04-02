@@ -5,20 +5,20 @@ using System.Diagnostics;
 namespace FreeGridControl
 {
     [Serializable]
-    public class IntArrayForDesign : System.Collections.ArrayList
+    public class FloatArrayForDesign : System.Collections.ArrayList
     {
 
-        public IntArrayForDesign()
+        public FloatArrayForDesign()
         {
         }
 
         public event EventHandler ItemChanged;
 
-        new public int this[int index]
+        new public float this[int index]
         {
             get
             {
-                return (int)base[index];
+                return (float)base[index];
             }
             set
             {
@@ -28,13 +28,13 @@ namespace FreeGridControl
             }
         }
 
-        internal int Sum(int r)
+        internal float Sum(int r)
         {
             if (r == 0) return 0;
-            var sum = 0;
+            var sum = 0f;
             foreach (var i in this.GetRange(0, r))
             {
-                sum += (int)i;
+                sum += (float)i;
             }
             return sum;
         }

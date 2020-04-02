@@ -57,11 +57,11 @@ namespace TaskManagement.UI
             LockUpdate = true;
             for (var c = 0; c < ColCount; c++)
             {
-                ColWidths[c] = (int)(ColWidths[c] * hRatio);
+                ColWidths[c] = (ColWidths[c] * hRatio);
             }
             for (var r = 0; r < RowCount; r++)
             {
-                RowHeights[r] = (int)(RowHeights[r] * vRatio);
+                RowHeights[r] = (RowHeights[r] * vRatio);
             }
             LockUpdate = false;
         }
@@ -534,7 +534,7 @@ namespace TaskManagement.UI
         {
             foreach (var m in mileStones)
             {
-                if (!Day2Y(m.Day, out int y)) continue;
+                if (!Day2Y(m.Day, out var y)) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
                     g.FillRectangle(brush, 0, y, Width, 5);
@@ -542,7 +542,7 @@ namespace TaskManagement.UI
             }
         }
 
-        private bool Day2Y(CallenderDay day, out int y)
+        private bool Day2Y(CallenderDay day, out float y)
         {
             var r = Day2Row(day);
             return Row2Y(r, out y);
