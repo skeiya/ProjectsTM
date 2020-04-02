@@ -357,6 +357,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             using (var font = CreateFont())
             {
                 foreach (var c in VisibleLeftCol.Range(VisibleColCount))
