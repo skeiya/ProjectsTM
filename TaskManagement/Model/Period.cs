@@ -25,7 +25,7 @@ namespace TaskManagement.Model
         {
             var from = callender.ApplyOffset(From, offset);
             var to = callender.ApplyOffset(To, offset);
-            if (from == null || to == null) return this;
+            if (from == null || to == null) return null;
             return new Period(from, to);
         }
 

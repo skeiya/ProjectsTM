@@ -49,28 +49,32 @@ namespace TaskManagement.Service
 
         private void UpdateMoving(Func<int, Member> x2Member, Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
         {
-            var member = x2Member(curLocation.X);
-            if (member == null) return;
+            var member = GetNewMember(x2Member, curLocation);
+            if (member != null)
+            {
+                _draggingWorkItem.AssignedMember = member;
+            }
+            var period = GetNewPeriod(y2Day, curLocation, callender);
+            if (period != null)
+            {
+                _draggingWorkItem.Period = period;
+            }
+        }
+
+        private Member GetNewMember(Func<int, Member> x2Member, Point curLocation)
+        {
+            if (IsOnlyMoveVirtical(curLocation)) return _beforeWorkItem.AssignedMember;
+            return x2Member(curLocation.X);
+        }
+
+        private Period GetNewPeriod(Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
+        {
+            if (IsOnlyMoveHorizontal(curLocation)) return _beforeWorkItem.Period;
             var curDay = y2Day(curLocation.Y);
-            if (curDay == null) return;
+            if (curDay == null) return null;
             var draggedPediod = _beforeWorkItem.Period;
-            if (IsOnlyMoveHorizontal(curLocation))
-            {
-                _draggingWorkItem.AssignedMember = member;
-                _draggingWorkItem.Period = draggedPediod;
-            }
-            else if (IsOnlyMoveVirtical(curLocation))
-            {
-                _draggingWorkItem.AssignedMember = _beforeWorkItem.AssignedMember;
-                var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
-            }
-            else
-            {
-                _draggingWorkItem.AssignedMember = member;
-                var offset = callender.GetOffset(_draggedDay, curDay);
-                _draggingWorkItem.Period = draggedPediod.ApplyOffset(offset, callender);
-            }
+            var offset = callender.GetOffset(_draggedDay, curDay);
+            return draggedPediod.ApplyOffset(offset, callender);
         }
 
         private void UpdateExpand(WorkItem selected, Func<int, CallenderDay> y2Day, Point curLocation, Callender callender)
