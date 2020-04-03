@@ -27,6 +27,9 @@ namespace TaskManagement.UI
         public event EventHandler<string> HoveringTextChanged;
         public event EventHandler<float> RatioChanged;
 
+        private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
+        private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
+
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -34,6 +37,7 @@ namespace TaskManagement.UI
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
+            this._viewData.FilterChanged += _viewData_FilterChanged;
             AttachEvents();
             var fixedRows = 2;
             var fixedCols = 3;
@@ -48,6 +52,18 @@ namespace TaskManagement.UI
             _undoService.Changed += _undoService_Changed1;
 
             LockUpdate = false;
+            UpdateDayRowCache();
+        }
+
+        private void UpdateDayRowCache()
+        {
+            _day2RowCache.Clear();
+            _row2DayChache.Clear();
+        }
+
+        private void _viewData_FilterChanged(object sender, EventArgs e)
+        {
+            UpdateDayRowCache();
         }
 
         internal void AdjustForPrint(Rectangle printRect)
@@ -136,8 +152,6 @@ namespace TaskManagement.UI
                 }
             }
         }
-
-
 
         private void WorkItemGrid_KeyDown(object sender, KeyEventArgs e)
         {
@@ -313,10 +327,13 @@ namespace TaskManagement.UI
 
         private CallenderDay Row2Day(RowIndex r)
         {
+            if (_row2DayChache.TryGetValue(r, out var day)) return day;
             if (r == null) return null;
             var days = _viewData.GetFilteredDays();
             if (r.Value - FixedRowCount < 0 || days.Count <= r.Value - FixedRowCount) return null;
-            return days.ElementAt(r.Value - FixedRowCount);
+            day = days.ElementAt(r.Value - FixedRowCount);
+            _row2DayChache.Add(r, day);
+            return day;
         }
 
         private Member X2Member(int x)
@@ -559,20 +576,17 @@ namespace TaskManagement.UI
 
         private RowIndex GetRow(CallenderDay day)
         {
+            if (_day2RowCache.TryGetValue(day, out var row)) return row;
             foreach (var r in VisibleTopRow.Range(VisibleRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
+                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
+                {
+                    _day2RowCache.Add(day, r);
+                    return r;
+                }
             }
             Debug.Assert(false);
             return null;
-        }
-
-        private IEnumerable<Member> GetVisibleMembers(int left, int count)
-        {
-            for (var index = left; index < left + count; index++)
-            {
-                yield return _viewData.GetFilteredMembers().ElementAt(index);
-            }
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)

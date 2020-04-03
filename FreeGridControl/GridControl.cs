@@ -82,7 +82,7 @@ namespace FreeGridControl
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             UpdateVisibleRange();
-            this.Invalidate();
+            this.Refresh();
         }
 
         private void UpdateVisibleRange()
