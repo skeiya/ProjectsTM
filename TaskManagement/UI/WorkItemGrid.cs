@@ -374,7 +374,7 @@ namespace TaskManagement.UI
                     }
                 }
                 DrawCalender(font, e.Graphics);
-                DrawMileStones(e.Graphics, GetMileStonesWithToday(_viewData));
+                DrawMileStones(font, e.Graphics, GetMileStonesWithToday(_viewData));
                 DrawSelectedWorkItemBound(e, font);
             }
         }
@@ -485,20 +485,6 @@ namespace TaskManagement.UI
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        //private RectangleF WorkItem2Rect(WorkItem wi)
-        //{
-        //    var col = Member2Col(wi.AssignedMember);
-        //    var rowRange = Period2RowRange(wi.Period);
-        //    return GetRect(col, rowRange);
-        //}
-
-        private (RowIndex row, int count) Period2RowRange(Period period)
-        {
-            var fromRow = Day2Row(period.From);
-            var toRow = Day2Row(period.To);
-            return (fromRow, toRow.Value - fromRow.Value + 1);
-        }
-
         private RowIndex Day2Row(CallenderDay day)
         {
             foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
@@ -530,14 +516,15 @@ namespace TaskManagement.UI
             return result;
         }
 
-        private void DrawMileStones(Graphics g, MileStones mileStones)
+        private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
             foreach (var m in mileStones)
             {
                 if (!Day2Y(m.Day, out var y)) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
-                    g.FillRectangle(brush, 0, y, Width, 5);
+                    g.FillRectangle(brush, 0, y, Width, 1);
+                    g.DrawString(m.Name, font, brush, 0, y - 10);
                 }
             }
         }
