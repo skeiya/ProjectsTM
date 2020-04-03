@@ -75,13 +75,22 @@ namespace FreeGridControl
             this.vScrollBar.Maximum = (int)Math.Max(0, _cache.GridHight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
             this.hScrollBar.Minimum = 0;
             this.hScrollBar.Maximum = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
-
-            this.Refresh();
+            UpdateVisibleRange();
+            this.Invalidate();
         }
 
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            this.Refresh();
+            UpdateVisibleRange();
+            this.Invalidate();
+        }
+
+        private void UpdateVisibleRange()
+        {
+            VisibleTopRow = Y2Row(_cache.FixedHeight + 1);
+            VisibleButtomRow = (_cache.GridHight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
+            VisibleRowCount = VisibleButtomRow.Value - VisibleTopRow.Value + 1;
+            VisibleColCount = VisibleRightCol.Value - VisibleLeftCol.Value + 1;
         }
 
         private void _colWidths_ItemChanged(object sender, System.EventArgs e)
@@ -230,12 +239,12 @@ namespace FreeGridControl
         public float GridWidth => _cache.GridWidth;
         public float GridHeight => _cache.GridHight;
 
-        public RowIndex VisibleTopRow => Y2Row(_cache.FixedHeight + 1);
-        public RowIndex VisibleButtomRow => (_cache.GridHight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
-        public int VisibleRowCount => VisibleButtomRow.Value - VisibleTopRow.Value + 1;
+        public RowIndex VisibleTopRow { get; private set; }
+        public RowIndex VisibleButtomRow { get; private set; }
+        public int VisibleRowCount { get; private set; }
+        public int VisibleColCount { get; private set; }
         public ColIndex VisibleLeftCol => X2Col(_cache.FixedWidth + 1);
         public ColIndex VisibleRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
-        public int VisibleColCount => VisibleRightCol.Value - VisibleLeftCol.Value + 1;
 
         public void Print(Graphics graphics)
         {
