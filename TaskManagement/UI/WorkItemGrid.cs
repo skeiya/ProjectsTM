@@ -37,7 +37,6 @@ namespace TaskManagement.UI
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
-            this._viewData.FilterChanged += _viewData_FilterChanged;
             AttachEvents();
             var fixedRows = 3;
             var fixedCols = 3;
@@ -109,6 +108,7 @@ namespace TaskManagement.UI
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this._viewData.FontChanged += _viewData_FontChanged;
+            this._viewData.FilterChanged += _viewData_FilterChanged;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
@@ -124,6 +124,7 @@ namespace TaskManagement.UI
         {
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
             this._viewData.FontChanged -= _viewData_FontChanged;
+            this._viewData.FilterChanged -= _viewData_FilterChanged;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseUp -= WorkItemGrid_MouseDown;
