@@ -39,7 +39,7 @@ namespace TaskManagement.UI
             this._viewData = viewData;
             this._viewData.FilterChanged += _viewData_FilterChanged;
             AttachEvents();
-            var fixedRows = 2;
+            var fixedRows = 3;
             var fixedCols = 3;
             this.RowCount = _viewData.GetFilteredDays().Count + fixedRows;
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
@@ -93,6 +93,7 @@ namespace TaskManagement.UI
             }
             this.RowHeights[0] = detail.CompanyHeight;
             this.RowHeights[1] = detail.NameHeight;
+            this.RowHeights[2] = detail.NameHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
                 this.RowHeights[r] = detail.RowHeight;
@@ -433,8 +434,10 @@ namespace TaskManagement.UI
         {
             var rectCompany = GetRect(c, (new RowIndex(0), 1), true, false);
             g.DrawString(m.Company, font, Brushes.Black, rectCompany);
-            var rectName = GetRect(c, (new RowIndex(1), 1), true, false);
-            g.DrawString(m.DisplayName, font, Brushes.Black, rectName);
+            var firstName = GetRect(c, (new RowIndex(1), 1), true, false);
+            g.DrawString(m.FirstName, font, Brushes.Black, firstName);
+            var lastName = GetRect(c, (new RowIndex(2), 1), true, false);
+            g.DrawString(m.LastName, font, Brushes.Black, lastName);
         }
 
         internal void DecRatio()
