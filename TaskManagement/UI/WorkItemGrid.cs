@@ -263,7 +263,7 @@ namespace TaskManagement.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
         {
-            if (_viewData.Selected != null) MoveVisibleDayAndMember(_viewData.Selected.Period.From, _viewData.Selected.AssignedMember);
+            if (_viewData.Selected != null) MoveVisibleRowCol(GetRowRange(_viewData.Selected).row, Member2Col(_viewData.Selected.AssignedMember, _viewData.GetFilteredMembers()));
             this.Invalidate();
         }
 
@@ -505,14 +505,14 @@ namespace TaskManagement.UI
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        private RowIndex Day2Row(CallenderDay day)
-        {
-            foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
-            {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
-            }
-            return null;
-        }
+        //private RowIndex Day2Row(CallenderDay day)
+        //{
+        //    foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
+        //    {
+        //        if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
+        //    }
+        //    return null;
+        //}
 
         private ColIndex Member2Col(Member m, Members members)
         {
@@ -562,9 +562,9 @@ namespace TaskManagement.UI
             var visiblePeriod = new Period(visibleTopDay, visibleButtomDay);
             if (!visiblePeriod.HasInterSection(wi.Period)) return (null, 0);
             if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, VisibleRowCount);
-            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, GetRow(wi.Period.To).Value - VisibleTopRow.Value + 1);
-            if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (GetRow(wi.Period.From), GetRow(wi.Period.To).Value - GetRow(wi.Period.From).Value + 1);
-            return (GetRow(wi.Period.From), VisibleButtomRow.Value - GetRow(wi.Period.From).Value + 1);
+            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, Day2Row(wi.Period.To).Value - VisibleTopRow.Value + 1);
+            if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (Day2Row(wi.Period.From), Day2Row(wi.Period.To).Value - Day2Row(wi.Period.From).Value + 1);
+            return (Day2Row(wi.Period.From), VisibleButtomRow.Value - Day2Row(wi.Period.From).Value + 1);
         }
 
         internal void Redo()
@@ -577,7 +577,7 @@ namespace TaskManagement.UI
             _undoService.Undo(_viewData);
         }
 
-        private RowIndex GetRow(CallenderDay day)
+        private RowIndex Day2Row(CallenderDay day)
         {
             if (_day2RowCache.TryGetValue(day, out var row)) return row;
             foreach (var r in VisibleTopRow.Range(VisibleRowCount))
@@ -588,7 +588,6 @@ namespace TaskManagement.UI
                     return r;
                 }
             }
-            Debug.Assert(false);
             return null;
         }
 

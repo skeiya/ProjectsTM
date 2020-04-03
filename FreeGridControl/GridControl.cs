@@ -40,6 +40,8 @@ namespace FreeGridControl
 
         private bool IsVisible(RowIndex row, ColIndex col)
         {
+            if (row == null) return false;
+            if (col == null) return false;
             if (row.Value < VisibleTopRow.Value) return false;
             if (VisibleButtomRow.Value < row.Value) return false;
             if (col.Value < VisibleLeftCol.Value) return false;
@@ -136,16 +138,6 @@ namespace FreeGridControl
             return result;
         }
 
-        private RectangleF GetDrawRect(RowIndex r, ColIndex c, int vOffset, int hOffset)
-        {
-            var isFixedRow = IsFixedRow(r);
-            var isFixedCol = IsFixedCol(c);
-            var rect = _cache.GetRectangle(r, c);
-            rect.Offset(isFixedCol ? 0 : -hOffset, isFixedRow ? 0 : -vOffset);
-            rect.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
-            return rect;
-        }
-
         RectangleF GetVisibleRect(bool isFixedRow, bool isFixedCol)
         {
             if (!isFixedRow && !isFixedCol)
@@ -161,16 +153,6 @@ namespace FreeGridControl
                 return new RectangleF(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
             }
             return new RectangleF(0, 0, _cache.FixedWidth, _cache.FixedHeight);
-        }
-
-        private bool IsFixedRow(RowIndex r)
-        {
-            return r.Value < FixedRowCount;
-        }
-
-        private bool IsFixedCol(ColIndex c)
-        {
-            return c.Value < FixedColCount;
         }
 
         [Category("Grid")]
@@ -197,6 +179,7 @@ namespace FreeGridControl
                 _cache.Update();
             }
         }
+
         [Category("Grid")]
         public int FixedRowCount
         {
@@ -206,6 +189,7 @@ namespace FreeGridControl
                 _cache.Update();
             }
         }
+
         [Category("Grid")]
         public int FixedColCount
         {
@@ -215,6 +199,7 @@ namespace FreeGridControl
                 _cache.Update();
             }
         }
+
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public FloatArrayForDesign RowHeights
@@ -225,6 +210,7 @@ namespace FreeGridControl
                 ;
             }
         }
+
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public FloatArrayForDesign ColWidths
