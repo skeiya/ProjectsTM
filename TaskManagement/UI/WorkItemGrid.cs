@@ -48,7 +48,6 @@ namespace TaskManagement.UI
             ApplyDetailSetting(_viewData.Detail);
 
             _editService = new WorkItemEditService(_viewData, _undoService);
-            _undoService.Changed += _undoService_Changed1;
 
             LockUpdate = false;
             UpdateDayRowCache();
@@ -99,9 +98,10 @@ namespace TaskManagement.UI
             }
         }
 
-        private void _undoService_Changed1(object sender, EditedEventArgs e)
+        private void _undoService_Changed(object sender, EditedEventArgs e)
         {
             UndoChanged?.Invoke(this, e);
+            this.Refresh();
         }
 
         private void AttachEvents()
@@ -216,11 +216,6 @@ namespace TaskManagement.UI
             if (_workItemDragService.IsMoving()) return;
             var wi = _viewData.PickFilterdWorkItem(X2Member(e.X), Y2Day(e.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-        }
-
-        private void _undoService_Changed(object sender, EditedEventArgs e)
-        {
-            this.Refresh();
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
