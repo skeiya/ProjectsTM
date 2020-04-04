@@ -1,10 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 
 namespace TaskManagement.Model
 {
-    public class MileStone
+    public class MileStone : IComparable<MileStone>
     {
         public MileStone() { }
 
@@ -24,6 +25,13 @@ namespace TaskManagement.Model
         {
             get { return ColorSerializer.Serialize(Color); }
             set { Color = ColorSerializer.Deserialize(value); }
+        }
+
+        public int CompareTo(MileStone other)
+        {
+            var cmp = this.Day.CompareTo(other.Day);
+            if (0 != cmp) return cmp;
+            return this.Name.CompareTo(other.Name);
         }
 
         internal MileStone Clone()

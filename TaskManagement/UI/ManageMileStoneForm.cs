@@ -32,6 +32,7 @@ namespace TaskManagement.UI
         private void UpdateList()
         {
             listView1.Items.Clear();
+            _mileStones.Sort();
             foreach (var m in _mileStones)
             {
                 var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() });
