@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TaskManagement.Model
@@ -40,6 +41,12 @@ namespace TaskManagement.Model
         internal void Delete(MileStone m)
         {
             _list.Remove(m);
+        }
+
+        internal IEnumerable<MileStone> Sort()
+        {
+            _list.Sort();
+            return _list;
         }
 
         internal bool IsEmpty()
