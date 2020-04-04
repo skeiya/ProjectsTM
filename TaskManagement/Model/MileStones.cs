@@ -43,10 +43,9 @@ namespace TaskManagement.Model
             _list.Remove(m);
         }
 
-        internal IEnumerable<MileStone> Sort()
+        internal void Sort()
         {
             _list.Sort();
-            return _list;
         }
 
         internal bool IsEmpty()
