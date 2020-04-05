@@ -403,7 +403,7 @@ namespace TaskManagement.UI
                 var d = Row2Day(r);
                 if (year != d.Year)
                 {
-                    var rectYear = GetRect(new ColIndex(0), r, false, true);
+                    var rectYear = GetRect(new ColIndex(0), r, 1, false, true);
                     year = d.Year;
                     rectYear.Offset(0, _viewData.Detail.RowHeight);
                     rectYear.Inflate(0, _viewData.Detail.RowHeight);
@@ -411,7 +411,7 @@ namespace TaskManagement.UI
                 }
                 if (month != d.Month)
                 {
-                    var rectMonth = GetRect(new ColIndex(1), r, false, true);
+                    var rectMonth = GetRect(new ColIndex(1), r, 1, false, true);
                     month = d.Month;
                     rectMonth.Offset(0, _viewData.Detail.RowHeight);
                     rectMonth.Inflate(0, _viewData.Detail.RowHeight);
@@ -419,7 +419,7 @@ namespace TaskManagement.UI
                 }
                 if (day != d.Day)
                 {
-                    var rectDay = GetRect(new ColIndex(2), r, false, true);
+                    var rectDay = GetRect(new ColIndex(2), r, 1, false, true);
                     day = d.Day;
                     g.DrawString(day.ToString(), font, Brushes.Black, rectDay);
                 }
@@ -428,11 +428,11 @@ namespace TaskManagement.UI
 
         private void DrawMember(ColIndex c, Member m, Font font, Graphics g)
         {
-            var rectCompany = GetRect(c, new RowIndex(0), true, false);
+            var rectCompany = GetRect(c, new RowIndex(0), 1, true, false);
             g.DrawString(m.Company, font, Brushes.Black, rectCompany);
-            var firstName = GetRect(c, new RowIndex(1), true, false);
+            var firstName = GetRect(c, new RowIndex(1), 1, true, false);
             g.DrawString(m.FirstName, font, Brushes.Black, firstName);
-            var lastName = GetRect(c, new RowIndex(2), true, false);
+            var lastName = GetRect(c, new RowIndex(2), 1, true, false);
             g.DrawString(m.LastName, font, Brushes.Black, lastName);
         }
 
@@ -462,7 +462,7 @@ namespace TaskManagement.UI
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, false, false);
+            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false);
         }
 
         private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e, Font font)
