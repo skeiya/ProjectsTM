@@ -450,8 +450,6 @@ namespace TaskManagement.UI
 
         private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g, Members members)
         {
-            var rowRange = GetRowRange(wi);
-            if (rowRange.row == null) return;
             var rect = GetDrawRect(wi, members);
             if (!rect.HasValue) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
