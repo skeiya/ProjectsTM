@@ -404,6 +404,8 @@ namespace TaskManagement.UI
                 var d = Row2Day(r);
                 if (year != d.Year)
                 {
+                    month = 0;
+                    day = 0;
                     var rectYear = GetRect(new ColIndex(0), r, 1, false, true);
                     year = d.Year;
                     rectYear.Offset(0, _viewData.Detail.RowHeight);
@@ -412,6 +414,7 @@ namespace TaskManagement.UI
                 }
                 if (month != d.Month)
                 {
+                    day = 0;
                     var rectMonth = GetRect(new ColIndex(1), r, 1, false, true);
                     month = d.Month;
                     rectMonth.Offset(0, _viewData.Detail.RowHeight);
