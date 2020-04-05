@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement", "TaskManag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "..\UnitTestProject1\UnitTestProject1.csproj", "{F30F4EB3-B7E4-4116-B26B-41C9016D122B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeGridControl", "..\FreeGridControl\FreeGridControl.csproj", "{6D254261-CF2D-44FA-BC6E-87152F1D1C43}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{F30F4EB3-B7E4-4116-B26B-41C9016D122B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F30F4EB3-B7E4-4116-B26B-41C9016D122B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F30F4EB3-B7E4-4116-B26B-41C9016D122B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D254261-CF2D-44FA-BC6E-87152F1D1C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D254261-CF2D-44FA-BC6E-87152F1D1C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D254261-CF2D-44FA-BC6E-87152F1D1C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D254261-CF2D-44FA-BC6E-87152F1D1C43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
