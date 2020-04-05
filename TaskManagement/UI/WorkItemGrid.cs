@@ -267,7 +267,9 @@ namespace TaskManagement.UI
         private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
             if (day == null || m == null) return;
-            MoveVisibleRowCol(Day2Row(day), Member2Col(m, _viewData.GetFilteredMembers()));
+            var row = Day2Row(day);
+            if (row == null) return;
+            MoveVisibleRowCol(row, Member2Col(m, _viewData.GetFilteredMembers()));
         }
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
