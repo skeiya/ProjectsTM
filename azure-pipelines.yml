@@ -39,6 +39,7 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
