@@ -227,6 +227,7 @@ namespace TaskManagement.UI
             }
             var day = Y2Day(e.Location.Y);
             var member = X2Member(e.Location.X);
+            if (day == null || member == null) return;
             var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member);
             AddNewWorkItem(proto);
         }
