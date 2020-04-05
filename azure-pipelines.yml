@@ -42,7 +42,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/*/FreeGridControl.csproj'
+    packagesToPack: '**/*.csproj'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2
