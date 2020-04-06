@@ -406,30 +406,51 @@ namespace TaskManagement.UI
                 var d = Row2Day(r);
                 if (year != d.Year)
                 {
-                    month = 0;
-                    day = 0;
                     var rectYear = GetRect(new ColIndex(0), r, 1, false, true);
-                    year = d.Year;
-                    rectYear.Offset(0, _viewData.Detail.RowHeight);
-                    rectYear.Inflate(0, _viewData.Detail.RowHeight);
-                    g.DrawString(year.ToString(), font, Brushes.Black, rectYear);
+                    if (!rectYear.IsEmpty)
+                    {
+                        month = 0;
+                        day = 0;
+                        year = DrawYear(font, g, d, rectYear);
+                    }
                 }
                 if (month != d.Month)
                 {
-                    day = 0;
                     var rectMonth = GetRect(new ColIndex(1), r, 1, false, true);
-                    month = d.Month;
-                    rectMonth.Offset(0, _viewData.Detail.RowHeight);
-                    rectMonth.Inflate(0, _viewData.Detail.RowHeight);
-                    g.DrawString(month.ToString(), font, Brushes.Black, rectMonth);
+                    if (!rectMonth.IsEmpty)
+                    {
+                        day = 0;
+                        month = DrawMonth(font, g, d, rectMonth);
+                    }
                 }
                 if (day != d.Day)
                 {
                     var rectDay = GetRect(new ColIndex(2), r, 1, false, true);
-                    day = d.Day;
-                    g.DrawString(day.ToString(), font, Brushes.Black, rectDay);
+                    if (!rectDay.IsEmpty)
+                    {
+                        day = d.Day;
+                        g.DrawString(day.ToString(), font, Brushes.Black, rectDay);
+                    }
                 }
             }
+        }
+
+        private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)
+        {
+            int month = d.Month;
+            rectMonth.Offset(0, _viewData.Detail.RowHeight);
+            rectMonth.Inflate(0, _viewData.Detail.RowHeight);
+            g.DrawString(month.ToString(), font, Brushes.Black, rectMonth);
+            return month;
+        }
+
+        private int DrawYear(Font font, Graphics g, CallenderDay d, RectangleF rectYear)
+        {
+            int year = d.Year;
+            rectYear.Offset(0, _viewData.Detail.RowHeight);
+            rectYear.Inflate(0, _viewData.Detail.RowHeight);
+            g.DrawString(year.ToString(), font, Brushes.Black, rectYear);
+            return year;
         }
 
         private void DrawMember(ColIndex c, Member m, Font font, Graphics g)
@@ -458,6 +479,7 @@ namespace TaskManagement.UI
         {
             var rect = GetDrawRect(wi, members);
             if (!rect.HasValue) return;
+            if (rect.Value.IsEmpty) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
             var front = fore == null ? Color.Black : fore;
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender), font, BrushCache.GetBrush(front), rect.Value);
