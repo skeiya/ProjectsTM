@@ -29,7 +29,8 @@ namespace TaskManagement.UI
 
         private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
         private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
-
+        private Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
+        private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -50,18 +51,20 @@ namespace TaskManagement.UI
             _editService = new WorkItemEditService(_viewData, _undoService);
 
             LockUpdate = false;
-            UpdateDayRowCache();
+            UpdateCache();
         }
 
-        private void UpdateDayRowCache()
+        private void UpdateCache()
         {
             _day2RowCache.Clear();
             _row2DayChache.Clear();
+            _member2ColChache.Clear();
+            _col2MemberChache.Clear();
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            UpdateDayRowCache();
+            UpdateCache();
         }
 
         internal void AdjustForPrint(Rectangle printRect)
@@ -345,10 +348,13 @@ namespace TaskManagement.UI
 
         private Member Col2Member(ColIndex c)
         {
+            if (_col2MemberChache.TryGetValue(c, out var member)) return member;
             if (c == null) return null;
             var members = _viewData.GetFilteredMembers();
             if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
-            return _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
+            var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
+            _col2MemberChache.Add(c, result);
+            return result;
         }
 
         private WorkItem PickWorkItemFromPoint(Point location)
@@ -527,20 +533,17 @@ namespace TaskManagement.UI
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        //private RowIndex Day2Row(CallenderDay day)
-        //{
-        //    foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
-        //    {
-        //        if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day)) return r;
-        //    }
-        //    return null;
-        //}
-
         private ColIndex Member2Col(Member m, Members members)
         {
+            if (_member2ColChache.TryGetValue(m, out var col)) return col;
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                if (members.ElementAt(c.Value).Equals(m)) return c.Offset(FixedColCount);
+                if (members.ElementAt(c.Value).Equals(m))
+                {
+                    var result = c.Offset(FixedColCount);
+                    _member2ColChache.Add(m, result);
+                    return result;
+                }
             }
             Debug.Assert(false);
             return null;
