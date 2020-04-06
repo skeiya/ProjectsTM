@@ -383,9 +383,9 @@ namespace TaskManagement.UI
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             using (var font = CreateFont())
             {
+                var members = _viewData.GetFilteredMembers();
                 foreach (var c in VisibleLeftCol.Range(VisibleColCount))
                 {
-                    var members = _viewData.GetFilteredMembers();
                     var m = members.ElementAt(c.Value - FixedColCount);
                     DrawMember(c, m, font, e.Graphics);
                     foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
