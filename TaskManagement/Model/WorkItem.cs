@@ -43,7 +43,7 @@ namespace TaskManagement.Model
             AssignedMember = assignedMember;
         }
 
-        public string ToDrawString(Callender callender)
+        public string ToDrawString(Callender callender, bool isAppendDays)
         {
             var result = new StringBuilder();
             result.Append(Name);
@@ -51,8 +51,11 @@ namespace TaskManagement.Model
             result.Append(Project.ToString());
             result.Append(Environment.NewLine);
             result.Append(Tags.ToDrawString());
-            result.Append(Environment.NewLine);
-            result.Append(callender.GetPeriodDayCount(Period).ToString() + "d");
+            if (isAppendDays)
+            {
+                result.Append(Environment.NewLine);
+                result.Append(callender.GetPeriodDayCount(Period).ToString() + "d");
+            }
             return result.ToString();
         }
 

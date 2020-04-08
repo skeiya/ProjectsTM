@@ -489,8 +489,16 @@ namespace TaskManagement.UI
             if (rect.Value.IsEmpty) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
             var front = fore == null ? Color.Black : fore;
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender), font, BrushCache.GetBrush(front), rect.Value);
+            var isAppendDays = IsAppendDays(g, font, rect.Value);
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
             g.DrawRectangle(edge, Rectangle.Round(rect.Value));
+        }
+
+        private bool IsAppendDays(Graphics g, Font f, RectangleF rect)
+        {
+            var min = g.MeasureString("5d", f);
+            if (rect.Height < min.Height) return false;
+            return min.Width < rect.Width;
         }
 
         private RectangleF? GetDrawRect(WorkItem wi, Members members)
