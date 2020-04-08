@@ -36,8 +36,8 @@
     <ApplicationIcon>res\Dakirby309-Simply-Styled-Calendar.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FreeGridControl, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\FreeGridControl.1.0.5\lib\net461\FreeGridControl.dll</HintPath>
+    <Reference Include="FreeGridControl, Version=1.0.5.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FreeGridControl.1.0.5.2\lib\net461\FreeGridControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

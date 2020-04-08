@@ -385,11 +385,11 @@ namespace TaskManagement.UI
             using (var font = CreateFont())
             {
                 var members = _viewData.GetFilteredMembers();
-                foreach (var c in VisibleLeftCol.Range(VisibleColCount))
+                foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
                 {
                     var m = members.ElementAt(c.Value - FixedColCount);
                     DrawMember(c, m, font, e.Graphics);
-                    foreach (var wi in GetVisibleWorkItems(m, VisibleTopRow, VisibleRowCount))
+                    foreach (var wi in GetVisibleWorkItems(m, VisibleNormalTopRow, VisibleNormalRowCount))
                     {
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
@@ -408,7 +408,7 @@ namespace TaskManagement.UI
             var year = 0;
             var month = 0;
             var day = 0;
-            foreach (var r in VisibleTopRow.Range(VisibleRowCount))
+            foreach (var r in VisibleNormalTopRow.Range(VisibleNormalRowCount))
             {
                 var d = Row2Day(r);
                 if (year != d.Year)
@@ -591,14 +591,14 @@ namespace TaskManagement.UI
 
         private (RowIndex row, int count) GetRowRange(WorkItem wi)
         {
-            var visibleTopDay = Row2Day(VisibleTopRow);
-            var visibleButtomDay = Row2Day(VisibleButtomRow);
+            var visibleTopDay = Row2Day(VisibleNormalTopRow);
+            var visibleButtomDay = Row2Day(VisibleNormalButtomRow);
             var visiblePeriod = new Period(visibleTopDay, visibleButtomDay);
             if (!visiblePeriod.HasInterSection(wi.Period)) return (null, 0);
-            if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, VisibleRowCount);
-            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleTopRow, Day2Row(wi.Period.To).Value - VisibleTopRow.Value + 1);
+            if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleNormalTopRow, VisibleNormalRowCount);
+            if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleNormalTopRow, Day2Row(wi.Period.To).Value - VisibleNormalTopRow.Value + 1);
             if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (Day2Row(wi.Period.From), Day2Row(wi.Period.To).Value - Day2Row(wi.Period.From).Value + 1);
-            return (Day2Row(wi.Period.From), VisibleButtomRow.Value - Day2Row(wi.Period.From).Value + 1);
+            return (Day2Row(wi.Period.From), VisibleNormalButtomRow.Value - Day2Row(wi.Period.From).Value + 1);
         }
 
         internal void Redo()
@@ -614,7 +614,7 @@ namespace TaskManagement.UI
         private RowIndex Day2Row(CallenderDay day)
         {
             if (_day2RowCache.TryGetValue(day, out var row)) return row;
-            foreach (var r in VisibleTopRow.Range(VisibleRowCount))
+            foreach (var r in VisibleNormalTopRow.Range(VisibleNormalRowCount))
             {
                 if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
                 {
