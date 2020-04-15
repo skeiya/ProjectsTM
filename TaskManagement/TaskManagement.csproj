@@ -36,9 +36,6 @@
     <ApplicationIcon>res\Dakirby309-Simply-Styled-Calendar.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FreeGridControl, Version=1.0.5.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\FreeGridControl.1.0.5.2\lib\net461\FreeGridControl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -269,6 +266,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="nuget.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeGridControl\FreeGridControl.csproj">
+      <Project>{ba48dcdd-d652-409a-b204-de163c403e12}</Project>
+      <Name>FreeGridControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
