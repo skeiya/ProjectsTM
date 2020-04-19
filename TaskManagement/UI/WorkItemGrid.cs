@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
@@ -192,10 +193,37 @@ namespace TaskManagement.UI
             _workItemDragService.End(_editService, _viewData, false);
         }
 
+        private bool ScrollOneStep(ScrollDirection direction)
+        {
+            const int scrollCellCount = 5;
+            switch (direction)
+            {
+                case ScrollDirection.RIGHT:    ScrollHorizontal(_viewData.Detail.ColWidth * scrollCellCount);  break;
+                case ScrollDirection.LEFT:     ScrollHorizontal(-_viewData.Detail.ColWidth * scrollCellCount); break;
+                case ScrollDirection.LOWER:    ScrollVertical(_viewData.Detail.RowHeight * scrollCellCount);   break;
+                case ScrollDirection.UPPER:    ScrollVertical(-_viewData.Detail.RowHeight * scrollCellCount);  break;
+                default: return false;
+            }
+            return true;
+        }
+
+        public bool ScrollAndUpdate(ScrollDirection direction)
+        {
+            if (!ScrollOneStep(direction)) return false;
+            return true;
+        }
+
+        private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
+        {
+          if (!_workItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
+            Thread.Sleep(500);
+        }
+
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(X2Member, Y2Day, e.Location, _viewData);
+            if (_workItemDragService.IsMoving()) ScrollByDragToOutsideOfPanel(e.Location);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (this.Cursor != Cursors.SizeNS)

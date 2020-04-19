@@ -24,19 +24,43 @@ namespace FreeGridControl
             _cache.Update();
             this.vScrollBar.Value = 0;
             this.hScrollBar.Value = 0;
-            this.vScrollBar.Scroll += ScrollBar_Scroll;
-            this.hScrollBar.Scroll += ScrollBar_Scroll;
+            this.vScrollBar.ValueChanged += ScrollBar_ValueChanged;
+            this.hScrollBar.ValueChanged += ScrollBar_ValueChanged;
             this.MouseWheel += GridControl_MouseWheel;
             this.SizeChanged += GridControl_SizeChanged;
+        }
+
+        protected void ScrollHorizontal(int moveDistance)
+        {
+            var currentWidth = this.hScrollBar.Value * _cache.GridWidth / (this.hScrollBar.Maximum - this.hScrollBar.LargeChange);
+            var targetWidth = currentWidth + moveDistance;
+            if (targetWidth > _cache.GridWidth) targetWidth = _cache.GridWidth;
+            if (targetWidth < 0) targetWidth = 0;
+            this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
+        }
+
+        protected void ScrollVertical(int moveDistance)
+        {
+            var currentHeight = this.vScrollBar.Value * _cache.GridHeight / (this.vScrollBar.Maximum - this.vScrollBar.LargeChange);
+            var targetHeight = currentHeight + moveDistance;
+            if (targetHeight > _cache.GridHeight) targetHeight = _cache.GridHeight;
+            if (targetHeight < 0) targetHeight = 0;
+            this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
         }
 
         public void MoveVisibleRowCol(RowIndex row, ColIndex col)
         {
             if (IsVisible(row, col)) return;
-            var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
-            this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
-            var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
-            this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
+            if (row != null)
+            {
+                var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
+                this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
+            }
+            if (col != null)
+            {
+                var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
+                this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
+            }
         }
 
         private bool IsVisible(RowIndex row, ColIndex col)
@@ -83,6 +107,12 @@ namespace FreeGridControl
         }
 
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            UpdateVisibleRange();
+            this.Refresh();
+        }
+
+        private void ScrollBar_ValueChanged(object sender, EventArgs e)
         {
             UpdateVisibleRange();
             this.Refresh();

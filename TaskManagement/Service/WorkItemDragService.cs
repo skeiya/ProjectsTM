@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
+using TaskManagement.UI;
 
 namespace TaskManagement.Service
 {
@@ -14,6 +15,8 @@ namespace TaskManagement.Service
         CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
         bool _isCopying = false;
+
+        private ScrollByDragServicce _scrollByDragService = new ScrollByDragServicce();
 
         public WorkItem CopyingItem => _isCopying ? _draggingWorkItem : null;
 
@@ -247,6 +250,11 @@ namespace TaskManagement.Service
             if (!_isCopying) return;
             _isCopying = false;
             workItems.Remove(_beforeWorkItem);
+        }
+
+        public bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
+        {
+            return _scrollByDragService.Scroll(mouseLocationOnTaskGrid, wig);
         }
     }
 }
