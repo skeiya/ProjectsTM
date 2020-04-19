@@ -89,7 +89,6 @@ namespace FreeGridControl
             var offset = Math.Min(Math.Max(vScrollBar.Value + delta, vScrollBar.Minimum), maximum);
 
             vScrollBar.Value = offset;
-            ScrollBar_Scroll(null, null);
         }
         public bool IsControlDown()
         {
@@ -104,12 +103,6 @@ namespace FreeGridControl
             this.hScrollBar.Maximum = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
             UpdateVisibleRange();
             this.Invalidate();
-        }
-
-        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            UpdateVisibleRange();
-            this.Refresh();
         }
 
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
