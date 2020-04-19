@@ -38,10 +38,16 @@ namespace TaskManagement.UI
             Close();
         }
 
+        private MileStone ErrorMsg_NonWokingDay()
+        {
+            MessageBox.Show("非稼働日です。稼働日を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return null;
+        }
+
         private MileStone CreateMileStone()
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
-            if (!_callender.Days.Contains(day)) return null;
+            if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
             return new MileStone(textBoxName.Text, day, labelColor.BackColor);
         }
 
