@@ -75,7 +75,6 @@ namespace TaskManagement.UI
         private void JumpTodayAtFirstDraw(object sender, System.EventArgs e)
         {
             JumpTodayMenu_Click(null, null);
-            this.Refresh();
         }
 
         private void LoadUserSetting()
