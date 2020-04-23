@@ -143,8 +143,8 @@ namespace FreeGridControl
             base.OnPaint(pe);
         }
 
-        private int VOffset => vScrollBar.Value;
-        private int HOffset => hScrollBar.Value;
+        protected int VOffset => vScrollBar.Value;
+        protected int HOffset => hScrollBar.Value;
         private void DrawGrid(Graphics graphics)
         {
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
@@ -157,8 +157,8 @@ namespace FreeGridControl
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
             var result = new RectangleF(left, top, width, height);
-            result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
-            result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
+            //result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
+            //result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
             return result;
         }
 
@@ -315,5 +315,8 @@ namespace FreeGridControl
             if (rect.Bottom < y) return false;
             return true;
         }
+
+        protected float FixedWidth => _cache.FixedWidth;
+        protected float FixedHeight => _cache.FixedHeight;
     }
 }

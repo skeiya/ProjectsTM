@@ -179,6 +179,7 @@
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Tags.cs" />
+    <Compile Include="ViewModel\InvalidArea.cs" />
     <Compile Include="ViewModel\ViewData.cs" />
     <Compile Include="Model\WorkItem.cs" />
     <Compile Include="Model\WorkItems.cs" />
