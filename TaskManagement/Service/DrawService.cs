@@ -203,7 +203,7 @@ namespace TaskManagement.Service
             var range = GetVisibleNormalRowColRange();
             y = 0;
             if (!range.Rows.Contains(r)) return false;
-            y = getRect(new ColIndex(0), r, 1, false, false, true).Y;
+            y = getRect(range.LeftCol, r, 1, false, false, true).Y;
             return true;
         }
 

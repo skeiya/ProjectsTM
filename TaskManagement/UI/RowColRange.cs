@@ -38,5 +38,7 @@ namespace TaskManagement.UI
 
         public int RowCount => _rowCount;
         public RowIndex TopRow => _topRow;
+
+        public ColIndex LeftCol => _leftCol;
     }
 }
