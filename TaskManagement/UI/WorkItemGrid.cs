@@ -71,11 +71,11 @@ namespace TaskManagement.UI
             _drawService = new DrawService(
                 _viewData,
                 new Size((int)GridWidth, (int)GridHeight),
-                GetVisibleSize,
+                () => new Size(Width, Height),
                 new SizeF(FixedWidth, FixedHeight),
-                GetScrollOffset,
-                IsDragActive,
-                GetVisibleNormalRowColRange,
+                () => new Point(HOffset, VOffset),
+                () => _workItemDragService.IsActive(),
+                () => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount),
                 GetMemberDrawRect,
                 Col2Member,
                 GetNeighbers,
@@ -99,26 +99,6 @@ namespace TaskManagement.UI
                 if (r != null) neighbers.Add(r);
             }
             return neighbers;
-        }
-
-        RowColRange GetVisibleNormalRowColRange()
-        {
-            return new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
-        }
-
-        bool IsDragActive()
-        {
-            return _workItemDragService.IsActive();
-        }
-
-        Size GetVisibleSize()
-        {
-            return new Size(Width, Height);
-        }
-
-        Point GetScrollOffset()
-        {
-            return new Point(HOffset, VOffset);
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
