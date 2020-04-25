@@ -469,11 +469,11 @@ namespace TaskManagement.UI
                 foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
                 {
                     var m = members.ElementAt(c.Value - FixedColCount);
-                    if (_invalidArea.IsValid(m)) continue;
-                    _invalidArea.Validate(m);
-                    foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
+                    foreach (var wi in GetVisibleWorkItems(m, VisibleNormalTopRow, VisibleNormalRowCount))
                     {
                         if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
+                        if (_invalidArea.IsValid(wi)) continue;
+                        _invalidArea.Validate(wi);
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
                         var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;

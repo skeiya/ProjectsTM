@@ -28,17 +28,22 @@ namespace TaskManagement.ViewModel
             }
 
         }
-        internal void Validate(Member m)
+        internal void Validate(WorkItem wi)
         {
-            if (IsValid(m)) return;
+            if (IsValid(wi)) return;
 
-            _validList.Add(m, new HashSet<WorkItem>());
+            if (_validList.TryGetValue(wi.AssignedMember, out var workItems))
+            {
+                workItems.Add(wi);
+                return;
+            }
+            _validList.Add(wi.AssignedMember, new HashSet<WorkItem>() { wi });
         }
 
-        internal bool IsValid(Member m)
+        internal bool IsValid(WorkItem wi)
         {
-            if (!_validList.TryGetValue(m, out var workItems)) return false;
-            return true;
+            if (!_validList.TryGetValue(wi.AssignedMember, out var workItems)) return false;
+            return workItems.Contains(wi);
         }
 
         internal void Invalidate(List<Member> members, Func<Member, RectangleF> GetMemberDrawRect, Func<ColIndex, Member> col2member, Func<Member, ColIndex> member2col)
