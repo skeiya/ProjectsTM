@@ -73,7 +73,6 @@ namespace TaskManagement.UI
                 new Size((int)GridWidth, (int)GridHeight),
                 GetVisibleSize,
                 new SizeF(FixedWidth, FixedHeight),
-                new Size(FixedRowCount, FixedColCount),
                 GetScrollOffset,
                 IsDragActive,
                 GetVisibleNormalRowColRange,

@@ -18,7 +18,6 @@ namespace TaskManagement.Service
         private Func<RowColRange> GetVisibleNormalRowColRange { get; }
 
         private readonly SizeF _fixedSize;
-        private readonly Size _fixedRowColCount;
         private readonly Func<bool> _isDragActive;
         private ImageBuffer _imageBuffer;
         private Func<Member, RectangleF> getMemberDrawRect;
@@ -32,7 +31,6 @@ namespace TaskManagement.Service
             Size fullSize,
             Func<Size> GetVisibleSize,
             SizeF fixedSize,
-            Size fixedRowColCount,
             Func<Point> GetScrollOffset,
             Func<bool> IsDragActive,
             Func<RowColRange> GetVisibleNormalRowColRange,
@@ -48,7 +46,6 @@ namespace TaskManagement.Service
             this._viewData = viewData;
             this.GetVisibleSize = GetVisibleSize;
             this._fixedSize = fixedSize;
-            this._fixedRowColCount = fixedRowColCount;
             this.GetScrollOffset = GetScrollOffset;
             _isDragActive = IsDragActive;
             this.GetVisibleNormalRowColRange = GetVisibleNormalRowColRange;
@@ -111,7 +108,7 @@ namespace TaskManagement.Service
                 var members = _viewData.GetFilteredMembers();
                 foreach (var c in range.Cols)
                 {
-                    var m = members.ElementAt(c.Value - _fixedRowColCount.Width);
+                    var m = col2Member(c);
                     foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                     {
                         if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
@@ -130,8 +127,8 @@ namespace TaskManagement.Service
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
         {
             if (count <= 0) yield break;
-            var topDay = _viewData.GetFilteredDays().ElementAt(top.Value - _fixedRowColCount.Height);
-            var buttomDay = _viewData.GetFilteredDays().ElementAt(top.Value + count - 1 - _fixedRowColCount.Height);
+            var topDay = row2Day(top);
+            var buttomDay = row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
                 if (!wi.Period.HasInterSection(new Period(topDay, buttomDay))) continue;
