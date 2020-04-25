@@ -322,7 +322,7 @@ namespace TaskManagement.UI
         private int GetExpandDirection(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return 0;
-            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers());
+            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
             if (!bounds.HasValue) return 0;
             if (IsTopBar(bounds.Value, location)) return +1;
             if (IsBottomBar(bounds.Value, location)) return -1;
@@ -332,7 +332,7 @@ namespace TaskManagement.UI
         private bool IsWorkItemExpandArea(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return false;
-            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers());// (viewData.Selected, viewData.Filter);
+            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
             if (!bounds.HasValue) return false;
             return IsTopBar(bounds.Value, location) || IsBottomBar(bounds.Value, location);
         }
@@ -413,38 +413,15 @@ namespace TaskManagement.UI
             TransferBuffer(e.Graphics);
             using (var font = CreateFont())
             {
+                DrawCalender(font, e.Graphics);
+                DrawMember(font, e.Graphics);
                 DrawMileStones(font, e.Graphics, GetMileStonesWithToday(_viewData));
                 DrawSelectedWorkItemBound(e, font);
             }
-            //e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            //e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            //using (var font = CreateFont())
-            //{
-            //    var members = _viewData.GetFilteredMembers();
-            //    foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
-            //    {
-            //        var m = members.ElementAt(c.Value - FixedColCount);
-            //        DrawMember(c, m, font, e.Graphics);
-            //        foreach (var wi in GetVisibleWorkItems(m, VisibleNormalTopRow, VisibleNormalRowCount))
-            //        {
-            //            var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-            //            var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
-            //            var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-            //            DrawWorkItem(wi, brush, color, Pens.Black, font, e.Graphics, members);
-            //        }
-            //    }
-            //    DrawCalender(font, e.Graphics);
-            //    DrawMileStones(font, e.Graphics, GetMileStonesWithToday(_viewData));
-            //    DrawSelectedWorkItemBound(e, font);
-            //}
         }
 
         private void TransferBuffer(Graphics g)
         {
-            //g.DrawImage(_bitmap,
-            //    new RectangleF(0, 0, Width, FixedHeight),
-            //    new RectangleF(0, 0, Width, FixedHeight),
-            //    GraphicsUnit.Pixel);
             g.DrawImage(_bitmap,
                 new RectangleF(FixedWidth, 0, Width - FixedWidth, FixedHeight),
                 new RectangleF(HOffset + FixedWidth, 0, Width - FixedWidth, FixedHeight),
@@ -481,17 +458,15 @@ namespace TaskManagement.UI
                 foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
                 {
                     var m = members.ElementAt(c.Value - FixedColCount);
-                    if (!_invalidArea.IsDirty(m)) continue;
-                    _invalidArea.Clear(m);
-                    DrawMember(c, m, font, g);
-                    foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
+                    foreach (var wi in GetVisibleWorkItems(m, VisibleNormalTopRow, VisibleNormalRowCount))
                     {
+                        if (_invalidArea.IsValid(wi)) continue;
+                        _invalidArea.Validate(wi);
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
                         var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-                        DrawWorkItem(wi, brush, color, Pens.Black, font, g, members);
+                        DrawWorkItem(wi, brush, color, Pens.Black, font, g, members, false);
                     }
-                    DrawCalender(font, g);
                 }
             }
         }
@@ -501,14 +476,12 @@ namespace TaskManagement.UI
             var year = 0;
             var month = 0;
             var day = 0;
-            foreach (var d in _viewData.GetFilteredDays())
-            //foreach (var r in VisibleNormalTopRow.Range(VisibleNormalRowCount))
+            foreach (var r in VisibleNormalTopRow.Range(VisibleNormalRowCount))
             {
-                //var d = Row2Day(r);
-                var r = Day2Row(d);
+                var d = Row2Day(r);
                 if (year != d.Year)
                 {
-                    var rectYear = GetRect(new ColIndex(0), r, 1, false, true);
+                    var rectYear = GetRect(new ColIndex(0), r, 1, false, true, true);
                     if (!rectYear.IsEmpty)
                     {
                         month = 0;
@@ -518,7 +491,7 @@ namespace TaskManagement.UI
                 }
                 if (month != d.Month)
                 {
-                    var rectMonth = GetRect(new ColIndex(1), r, 1, false, true);
+                    var rectMonth = GetRect(new ColIndex(1), r, 1, false, true, true);
                     if (!rectMonth.IsEmpty)
                     {
                         day = 0;
@@ -527,7 +500,7 @@ namespace TaskManagement.UI
                 }
                 if (day != d.Day)
                 {
-                    var rectDay = GetRect(new ColIndex(2), r, 1, false, true);
+                    var rectDay = GetRect(new ColIndex(2), r, 1, false, true, true);
                     if (!rectDay.IsEmpty)
                     {
                         day = d.Day;
@@ -555,14 +528,18 @@ namespace TaskManagement.UI
             return year;
         }
 
-        private void DrawMember(ColIndex c, Member m, Font font, Graphics g)
+        private void DrawMember(Font font, Graphics g)
         {
-            var rectCompany = GetRect(c, new RowIndex(0), 1, true, false);
-            g.DrawString(m.Company, font, Brushes.Black, rectCompany);
-            var firstName = GetRect(c, new RowIndex(1), 1, true, false);
-            g.DrawString(m.FirstName, font, Brushes.Black, firstName);
-            var lastName = GetRect(c, new RowIndex(2), 1, true, false);
-            g.DrawString(m.LastName, font, Brushes.Black, lastName);
+            foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
+            {
+                var m = Col2Member(c);
+                var rectCompany = GetRect(c, new RowIndex(0), 1, true, false, true);
+                g.DrawString(m.Company, font, Brushes.Black, rectCompany);
+                var firstName = GetRect(c, new RowIndex(1), 1, true, false, true);
+                g.DrawString(m.FirstName, font, Brushes.Black, firstName);
+                var lastName = GetRect(c, new RowIndex(2), 1, true, false, true);
+                g.DrawString(m.LastName, font, Brushes.Black, lastName);
+            }
         }
 
         internal void DecRatio()
@@ -577,9 +554,9 @@ namespace TaskManagement.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g, Members members)
+        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g, Members members, bool isFrontView)
         {
-            var rect = GetDrawRect(wi, members);
+            var rect = GetDrawRect(wi, members, isFrontView);
             if (!rect.HasValue) return;
             if (rect.Value.IsEmpty) return;
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
@@ -596,22 +573,22 @@ namespace TaskManagement.UI
             return min.Width < rect.Width;
         }
 
-        private RectangleF? GetDrawRect(WorkItem wi, Members members)
+        private RectangleF? GetDrawRect(WorkItem wi, Members members, bool isFrontView)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false);
+            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
         }
 
         private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e, Font font)
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics, _viewData.GetFilteredMembers());
+                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics, _viewData.GetFilteredMembers(), true);
 
                 if (!_workItemDragService.IsActive())
                 {
-                    var rect = GetDrawRect(_viewData.Selected, _viewData.GetFilteredMembers());
+                    var rect = GetDrawRect(_viewData.Selected, _viewData.GetFilteredMembers(), true);
                     if (rect.HasValue)
                     {
                         DrawTopDragBar(e.Graphics, rect.Value);

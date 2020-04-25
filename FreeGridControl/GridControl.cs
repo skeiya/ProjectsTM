@@ -150,15 +150,18 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
         }
 
-        public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol)
+        public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
         {
             var top = _cache.GetTop(r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
             var result = new RectangleF(left, top, width, height);
-            //result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
-            //result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
+            if (isFrontView)
+            {
+                result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
+                result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
+            }
             return result;
         }
 

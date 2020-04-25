@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TaskManagement.Model;
 
 namespace TaskManagement.ViewModel
 {
     class InvalidArea
     {
-        private List<Member> _clearList = new List<Member>();
-        internal void Clear(Member m)
+        private HashSet<WorkItem> _validList = new HashSet<WorkItem>();
+        internal void Validate(WorkItem wi)
         {
-            if (!IsDirty(m)) return;
-            _clearList.Add(m);
+            if (IsValid(wi)) return;
+            _validList.Add(wi);
         }
 
-        internal bool IsDirty(Member m)
+        internal bool IsValid(WorkItem wi)
         {
-            return !_clearList.Contains(m);
+            return _validList.Contains(wi);
         }
     }
 }
