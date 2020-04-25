@@ -17,13 +17,6 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '$(solution)'
-    feedsToUse: 'select'
-    vstsFeed: 'c38bd986-96f6-4c5c-ad03-e660b90492f0/d70930c3-1776-40a0-bcf7-236187f4a469'
-
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
