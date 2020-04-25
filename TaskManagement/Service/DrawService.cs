@@ -22,9 +22,8 @@ namespace TaskManagement.Service
         private ImageBuffer _imageBuffer;
         private Func<Member, RectangleF> getMemberDrawRect;
         private Func<ColIndex, Member> col2Member;
-        private Func<Member, ColIndex> member2Col;
+        private Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers;
         private Func<RowIndex, CallenderDay> row2Day;
-        private Func<CallenderDay, RowIndex> day2Row;
 
         public DrawService(
             ViewData viewData,
@@ -36,9 +35,8 @@ namespace TaskManagement.Service
             Func<RowColRange> GetVisibleNormalRowColRange,
             Func<Member, RectangleF> getMemberDrawRect,
             Func<ColIndex, Member> col2Member,
-            Func<Member, ColIndex> member2Col,
+            Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers,
             Func<RowIndex, CallenderDay> row2Day,
-            Func<CallenderDay, RowIndex> day2Row,
             Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect,
             Func<WorkItem, Members, bool, RectangleF?> getDrawRect,
             Font font)
@@ -52,9 +50,8 @@ namespace TaskManagement.Service
             _imageBuffer = new ImageBuffer(fullSize.Width, fullSize.Height);
             this.getMemberDrawRect = getMemberDrawRect;
             this.col2Member = col2Member;
-            this.member2Col = member2Col;
+            this.GetNeighbers = GetNeighbers;
             this.row2Day = row2Day;
-            this.day2Row = day2Row;
             this.getRect = getRect;
             this.getDrawRect = getDrawRect;
             this._font = font;
@@ -186,25 +183,18 @@ namespace TaskManagement.Service
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
-            foreach (var m in mileStones)
+            var range = GetVisibleNormalRowColRange();
+            foreach (var r in range.Rows)
             {
-                if (!Day2Y(m.Day, out var y)) continue;
+                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(row2Day(r)));
+                if (m == null) continue;
+                var y = getRect(range.LeftCol, r, 0, false, false, true).Y;
                 using (var brush = new SolidBrush(m.Color))
                 {
                     g.FillRectangle(brush, 0, y, GetVisibleSize().Width, 1);
                     g.DrawString(m.Name, font, brush, 0, y - 10);
                 }
             }
-        }
-
-        private bool Day2Y(CallenderDay day, out float y)
-        {
-            var r = day2Row(day);
-            var range = GetVisibleNormalRowColRange();
-            y = 0;
-            if (!range.Rows.Contains(r)) return false;
-            y = getRect(range.LeftCol, r, 1, false, false, true).Y;
-            return true;
         }
 
 
@@ -268,7 +258,7 @@ namespace TaskManagement.Service
 
         internal void InvalidateMembers(List<Member> updatedMembers)
         {
-            _imageBuffer.Invalidate(updatedMembers, getMemberDrawRect, col2Member, member2Col);
+            _imageBuffer.Invalidate(updatedMembers, getMemberDrawRect, col2Member, GetNeighbers);
         }
 
         private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)

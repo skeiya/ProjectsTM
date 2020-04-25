@@ -46,28 +46,17 @@ namespace TaskManagement.ViewModel
             return workItems.Contains(wi);
         }
 
-        internal void Invalidate(List<Member> members, Func<Member, RectangleF> GetMemberDrawRect, Func<ColIndex, Member> col2member, Func<Member, ColIndex> member2col)
+        internal void Invalidate(List<Member> members, Func<Member, RectangleF> GetMemberDrawRect, Func<ColIndex, Member> col2member, Func<IEnumerable<Member>, IEnumerable<Member>> getNeighbers
+            )
         {
-            //該当メンバの列を少し広めにクリアFill＆該当メンバの両隣含めて再描画
+            //該当メンバの列を少し広めにクリアFill
             foreach (var m in members)
             {
                 var rect = GetMemberDrawRect(m);
                 rect.Inflate(1, 1);
                 _bitmapGraphics.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect);
             }
-
-            var redrawMembers = new HashSet<Member>();
-            foreach (var m in members)
-            {
-                var c = member2col(m);
-                var l = col2member(new ColIndex(c.Value - 1));
-                var r = col2member(new ColIndex(c.Value + 1));
-
-                redrawMembers.Add(m);
-                if (l != null) redrawMembers.Add(l);
-                if (r != null) redrawMembers.Add(r);
-            }
-            foreach (var m in redrawMembers)
+            foreach (var m in getNeighbers(members))
             {
                 _validList.Remove(m);
             }

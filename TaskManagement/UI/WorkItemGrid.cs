@@ -78,12 +78,27 @@ namespace TaskManagement.UI
                 GetVisibleNormalRowColRange,
                 GetMemberDrawRect,
                 Col2Member,
-                Member2Col,
+                GetNeighbers,
                 Row2Day,
-                Day2Row,
                 GetRect,
                 GetDrawRect,
                 this.Font);
+        }
+
+        IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
+        {
+            var neighbers = new HashSet<Member>();
+            foreach (var m in members)
+            {
+                var c = Member2Col(m);
+                var l = Col2Member(new ColIndex(c.Value - 1));
+                var r = Col2Member(new ColIndex(c.Value + 1));
+
+                neighbers.Add(m);
+                if (l != null) neighbers.Add(l);
+                if (r != null) neighbers.Add(r);
+            }
+            return neighbers;
         }
 
         RowColRange GetVisibleNormalRowColRange()
