@@ -25,7 +25,7 @@ namespace TaskManagement.ViewModel
         private WorkItem _selected;
 
         public event EventHandler FilterChanged;
-        public event EventHandler SelectedWorkItemChanged;
+        public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
         public event EventHandler FontChanged;
 
@@ -40,7 +40,8 @@ namespace TaskManagement.ViewModel
                 _selected = value;
                 if (_selected != org)
                 {
-                    SelectedWorkItemChanged(this, null);
+                    var arg = new SelectedWorkItemChangedArg(org, _selected);
+                    SelectedWorkItemChanged(this, arg);
                 }
             }
         }

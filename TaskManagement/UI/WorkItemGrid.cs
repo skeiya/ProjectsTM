@@ -61,6 +61,12 @@ namespace TaskManagement.UI
             _row2DayChache.Clear();
             _member2ColChache.Clear();
             _col2MemberChache.Clear();
+            if (_invalidArea != null)
+            {
+                _invalidArea.Dispose();
+                _invalidArea = null;
+            }
+            _invalidArea = new InvalidArea((int)GridWidth, (int)GridHeight);
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
@@ -105,7 +111,19 @@ namespace TaskManagement.UI
         private void _undoService_Changed(object sender, EditedEventArgs e)
         {
             UndoChanged?.Invoke(this, e);
+            _invalidArea.Invalidate(e.UpdatedMembers, GetMemberDrawRect, Col2Member, Member2Col);
             this.Refresh();
+        }
+
+        ColIndex Member2Col(Member m)
+        {
+            return Member2Col(m, _viewData.GetFilteredMembers());
+        }
+
+        RectangleF GetMemberDrawRect(Member m)
+        {
+            var col = Member2Col(m, _viewData.GetFilteredMembers());
+            return new RectangleF(GetLeft(col), FixedHeight, ColWidths[col.Value], GridHeight);
         }
 
         private void AttachEvents()
@@ -289,8 +307,9 @@ namespace TaskManagement.UI
             }
         }
 
-        private void _viewData_SelectedWorkItemChanged(object sender, EventArgs e)
+        private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
+            _invalidArea.Invalidate(e.UpdatedMembers, GetMemberDrawRect, Col2Member, Member2Col);
             if (_viewData.Selected != null) MoveVisibleRowCol(GetRowRange(_viewData.Selected).row, Member2Col(_viewData.Selected.AssignedMember, _viewData.GetFilteredMembers()));
             this.Invalidate();
         }
@@ -406,50 +425,42 @@ namespace TaskManagement.UI
             return new Font(this.Font.FontFamily, _viewData.FontSize);
         }
 
-        private InvalidArea _invalidArea = new InvalidArea();
+        private InvalidArea _invalidArea;
+
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
-            DrawAllArea();
-            TransferBuffer(e.Graphics);
+            DrawWorkItemAreaBase(e.Graphics);
+            DrawAroundAndOverlay(e.Graphics);
+        }
+
+        private void DrawAroundAndOverlay(Graphics g)
+        {
             using (var font = CreateFont())
             {
-                DrawCalender(font, e.Graphics);
-                DrawMember(font, e.Graphics);
-                DrawMileStones(font, e.Graphics, GetMileStonesWithToday(_viewData));
-                DrawSelectedWorkItemBound(e, font);
+                DrawCalender(font, g);
+                DrawMember(font, g);
+                DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
+                DrawSelectedWorkItemBound(g, font);
             }
         }
 
-        private void TransferBuffer(Graphics g)
+        private void DrawWorkItemAreaBase(Graphics g)
         {
-            g.DrawImage(_bitmap,
-                new RectangleF(FixedWidth, 0, Width - FixedWidth, FixedHeight),
-                new RectangleF(HOffset + FixedWidth, 0, Width - FixedWidth, FixedHeight),
-                GraphicsUnit.Pixel);
-            g.DrawImage(_bitmap,
-                new RectangleF(0, FixedHeight, FixedWidth, Height - FixedHeight),
-                new RectangleF(0, VOffset + FixedHeight, FixedWidth, Height - FixedHeight),
-                GraphicsUnit.Pixel);
-            g.DrawImage(_bitmap,
+            var image = DrawImageBuffer();
+            TransferImage(g, image);
+        }
+
+        private void TransferImage(Graphics g, Image image)
+        {
+            g.DrawImage(image,
                 new RectangleF(FixedWidth, FixedHeight, Width - FixedWidth, Height - FixedHeight),
                 new RectangleF(HOffset + FixedWidth, VOffset + FixedHeight, Width - FixedWidth, Height - FixedHeight),
                 GraphicsUnit.Pixel);
         }
 
-        private Bitmap _bitmap;
-        private Graphics _bitmapGraphics;
-        private void DrawAllArea()
+        private Image DrawImageBuffer()
         {
-            if (_bitmap == null)
-            {
-                _bitmap = new Bitmap((int)GridWidth, (int)GridHeight); // size変更時に
-                _bitmapGraphics = Graphics.FromImage(_bitmap);
-            }
-            DrawAllCore(_bitmapGraphics);
-        }
-
-        private void DrawAllCore(Graphics g)
-        {
+            var g = _invalidArea.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             using (var font = CreateFont())
@@ -458,10 +469,11 @@ namespace TaskManagement.UI
                 foreach (var c in VisibleLeftCol.Range(VisibleNormalColCount))
                 {
                     var m = members.ElementAt(c.Value - FixedColCount);
-                    foreach (var wi in GetVisibleWorkItems(m, VisibleNormalTopRow, VisibleNormalRowCount))
+                    if (_invalidArea.IsValid(m)) continue;
+                    _invalidArea.Validate(m);
+                    foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
                     {
-                        if (_invalidArea.IsValid(wi)) continue;
-                        _invalidArea.Validate(wi);
+                        if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
                         var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
@@ -469,6 +481,7 @@ namespace TaskManagement.UI
                     }
                 }
             }
+            return _invalidArea.Image;
         }
 
         private void DrawCalender(Font font, Graphics g)
@@ -580,19 +593,19 @@ namespace TaskManagement.UI
             return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
         }
 
-        private void DrawSelectedWorkItemBound(DrawNormalAreaEventArgs e, Font font)
+        private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, e.Graphics, _viewData.GetFilteredMembers(), true);
+                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
 
                 if (!_workItemDragService.IsActive())
                 {
                     var rect = GetDrawRect(_viewData.Selected, _viewData.GetFilteredMembers(), true);
                     if (rect.HasValue)
                     {
-                        DrawTopDragBar(e.Graphics, rect.Value);
-                        DrawBottomDragBar(e.Graphics, rect.Value);
+                        DrawTopDragBar(g, rect.Value);
+                        DrawBottomDragBar(g, rect.Value);
                     }
                 }
             }

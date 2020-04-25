@@ -150,6 +150,11 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
         }
 
+        protected float GetLeft(ColIndex c)
+        {
+            return _cache.GetLeft(c);
+        }
+
         public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
         {
             var top = _cache.GetTop(r);
