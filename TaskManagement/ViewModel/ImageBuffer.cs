@@ -8,7 +8,7 @@ using TaskManagement.UI;
 
 namespace TaskManagement.ViewModel
 {
-    class InvalidArea : IDisposable
+    class ImageBuffer : IDisposable
     {
         private Bitmap _bitmap;
         private Graphics _bitmapGraphics;
@@ -18,7 +18,7 @@ namespace TaskManagement.ViewModel
 
         public Image Image => _bitmap;
 
-        internal InvalidArea(int width, int height)
+        internal ImageBuffer(int width, int height)
         {
             if (_bitmap == null)
             {

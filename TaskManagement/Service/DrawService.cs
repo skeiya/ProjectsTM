@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManagement.Model;
 using TaskManagement.UI;
 using TaskManagement.ViewModel;
@@ -16,13 +14,13 @@ namespace TaskManagement.Service
         private ViewData _viewData;
 
         private Func<Size> GetVisibleSize { get; }
-        private Func<Size> GetScrollSize { get; }
+        private Func<Point> GetScrollOffset { get; }
         private Func<RowColRange> GetVisibleNormalRowColRange { get; }
 
         private readonly SizeF _fixedSize;
         private readonly Size _fixedRowColCount;
         private readonly Func<bool> _isDragActive;
-        private InvalidArea _invalidArea;
+        private ImageBuffer _imageBuffer;
         private Func<Member, RectangleF> getMemberDrawRect;
         private Func<ColIndex, Member> col2Member;
         private Func<Member, ColIndex> member2Col;
@@ -35,7 +33,7 @@ namespace TaskManagement.Service
             Func<Size> GetVisibleSize,
             SizeF fixedSize,
             Size fixedRowColCount,
-            Func<Size> GetScrollSize,
+            Func<Point> GetScrollOffset,
             Func<bool> IsDragActive,
             Func<RowColRange> GetVisibleNormalRowColRange,
             Func<Member, RectangleF> getMemberDrawRect,
@@ -51,10 +49,10 @@ namespace TaskManagement.Service
             this.GetVisibleSize = GetVisibleSize;
             this._fixedSize = fixedSize;
             this._fixedRowColCount = fixedRowColCount;
-            this.GetScrollSize = GetScrollSize;
+            this.GetScrollOffset = GetScrollOffset;
             _isDragActive = IsDragActive;
             this.GetVisibleNormalRowColRange = GetVisibleNormalRowColRange;
-            _invalidArea = new InvalidArea(fullSize.Width, fullSize.Height);
+            _imageBuffer = new ImageBuffer(fullSize.Width, fullSize.Height);
             this.getMemberDrawRect = getMemberDrawRect;
             this.col2Member = col2Member;
             this.member2Col = member2Col;
@@ -90,17 +88,21 @@ namespace TaskManagement.Service
 
         private void TransferImage(Graphics g, Image image)
         {
+            var dst = GetVisibleNormalRect();
+            var src = dst;
+            src.Offset(GetScrollOffset());
+            g.DrawImage(image, dst, src, GraphicsUnit.Pixel);
+        }
+
+        private RectangleF GetVisibleNormalRect()
+        {
             var visibleSize = GetVisibleSize();
-            var scrollSize = GetScrollSize();
-            g.DrawImage(image,
-                new RectangleF(_fixedSize.Width, _fixedSize.Height, visibleSize.Width - _fixedSize.Width, visibleSize.Height - _fixedSize.Height),
-                new RectangleF(scrollSize.Width + _fixedSize.Width, scrollSize.Height + _fixedSize.Height, visibleSize.Width - _fixedSize.Width, visibleSize.Height - _fixedSize.Height),
-                GraphicsUnit.Pixel);
+            return new RectangleF(_fixedSize.Width, _fixedSize.Height, visibleSize.Width - _fixedSize.Width, visibleSize.Height - _fixedSize.Height);
         }
 
         private Image DrawImageBuffer()
         {
-            var g = _invalidArea.Graphics;
+            var g = _imageBuffer.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             using (var font = CreateFont())
@@ -113,8 +115,8 @@ namespace TaskManagement.Service
                     foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                     {
                         if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
-                        if (_invalidArea.IsValid(wi)) continue;
-                        _invalidArea.Validate(wi);
+                        if (_imageBuffer.IsValid(wi)) continue;
+                        _imageBuffer.Validate(wi);
                         var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
                         var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
                         var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
@@ -122,7 +124,7 @@ namespace TaskManagement.Service
                     }
                 }
             }
-            return _invalidArea.Image;
+            return _imageBuffer.Image;
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
@@ -269,7 +271,7 @@ namespace TaskManagement.Service
 
         internal void InvalidateMembers(List<Member> updatedMembers)
         {
-            _invalidArea.Invalidate(updatedMembers, getMemberDrawRect, col2Member, member2Col);
+            _imageBuffer.Invalidate(updatedMembers, getMemberDrawRect, col2Member, member2Col);
         }
 
         private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)
@@ -323,7 +325,7 @@ namespace TaskManagement.Service
             {
                 if (disposing)
                 {
-                    _invalidArea.Dispose();
+                    _imageBuffer.Dispose();
                 }
 
                 // TODO: アンマネージ リソース (アンマネージ オブジェクト) を解放し、下のファイナライザーをオーバーライドします。

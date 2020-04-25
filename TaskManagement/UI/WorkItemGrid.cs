@@ -74,7 +74,7 @@ namespace TaskManagement.UI
                 GetVisibleSize,
                 new SizeF(FixedWidth, FixedHeight),
                 new Size(FixedRowCount, FixedColCount),
-                GetScrollSize,
+                GetScrollOffset,
                 IsDragActive,
                 GetVisibleNormalRowColRange,
                 GetMemberDrawRect,
@@ -102,9 +102,9 @@ namespace TaskManagement.UI
             return new Size(Width, Height);
         }
 
-        Size GetScrollSize()
+        Point GetScrollOffset()
         {
-            return new Size(HOffset, VOffset);
+            return new Point(HOffset, VOffset);
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
