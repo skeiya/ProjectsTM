@@ -69,8 +69,8 @@ namespace FreeGridControl
             if (col == null) return false;
             if (row.Value < VisibleNormalTopRow.Value) return false;
             if (VisibleNormalButtomRow.Value < row.Value) return false;
-            if (col.Value < VisibleLeftCol.Value) return false;
-            if (VisibleRightCol.Value < col.Value) return false;
+            if (col.Value < VisibleNormalLeftCol.Value) return false;
+            if (VisibleNormalRightCol.Value < col.Value) return false;
             return true;
         }
 
@@ -116,7 +116,7 @@ namespace FreeGridControl
             VisibleNormalTopRow = Y2Row(_cache.FixedHeight + 1);
             VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
-            VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleRightCol.Value - VisibleLeftCol.Value + 1;
+            VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
         private void _colWidths_ItemChanged(object sender, System.EventArgs e)
@@ -261,8 +261,8 @@ namespace FreeGridControl
         public RowIndex VisibleNormalButtomRow { get; private set; }
         public int VisibleNormalRowCount { get; private set; }
         public int VisibleNormalColCount { get; private set; }
-        public ColIndex VisibleLeftCol => X2Col(_cache.FixedWidth + 1);
-        public ColIndex VisibleRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
+        public ColIndex VisibleNormalLeftCol => X2Col(_cache.FixedWidth + 1);
+        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
 
         public void Print(Graphics graphics)
         {

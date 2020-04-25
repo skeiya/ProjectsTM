@@ -61,6 +61,7 @@
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
     <Compile Include="Service\CalculateSumService.cs" />
+    <Compile Include="Service\DrawService.cs" />
     <Compile Include="Service\DummyDataService.cs" />
     <Compile Include="Service\EditAction.cs" />
     <Compile Include="Service\EditActionType.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="UI\ManageMileStoneForm.Designer.cs">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\RowColRange.cs" />
     <Compile Include="UI\ViewDetailSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
