@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.UI;
 using TaskManagement.ViewModel;
@@ -76,8 +77,23 @@ namespace TaskManagement.Service
             {
                 DrawCalender(font, g);
                 DrawMember(font, g);
+                DrawEdgeWorkItems(font, g);
                 DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
                 DrawSelectedWorkItemBound(g, font);
+            }
+        }
+
+        private void DrawEdgeWorkItems(Font font, Graphics g)
+        {
+            var range = GetVisibleNormalRowColRange();
+            var members = _viewData.GetFilteredMembers();
+            foreach (var c in range.Cols)
+            {
+                var m = col2Member(c);
+                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, c.Equals(range.LeftCol) ? range.RowCount : 1))
+                {
+                    DrawWorkItem(wi, Pens.Black, font, g, members, true, true);
+                }
             }
         }
 
@@ -118,10 +134,7 @@ namespace TaskManagement.Service
                         if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
                         if (_imageBuffer.IsValid(wi)) continue;
                         _imageBuffer.Validate(wi);
-                        var colorCondition = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-                        var brush = colorCondition == null ? null : new SolidBrush(colorCondition.BackColor);
-                        var color = colorCondition == null ? Color.Black : colorCondition.ForeColor;
-                        DrawWorkItem(wi, brush, color, Pens.Black, font, g, members, false);
+                        DrawWorkItem(wi, Pens.Black, font, g, members, false, false);
                     }
                 }
             }
@@ -140,11 +153,16 @@ namespace TaskManagement.Service
             }
         }
 
-        private void DrawWorkItem(WorkItem wi, SolidBrush fillBrush, Color fore, Pen edge, Font font, Graphics g, Members members, bool isFrontView)
+        private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, Members members, bool isFrontView, bool clear)
         {
+            var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
+            var fillBrush = cond == null ? null : new SolidBrush(cond.BackColor);
+            var fore = cond == null ? Color.Black : cond.ForeColor;
+
             var rect = getDrawRect(wi, members, isFrontView);
             if (!rect.HasValue) return;
             if (rect.Value.IsEmpty) return;
+            if (clear) g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect.Value);
             if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
             var front = fore == null ? Color.Black : fore;
             var isAppendDays = IsAppendDays(g, font, rect.Value);
@@ -158,7 +176,6 @@ namespace TaskManagement.Service
             if (rect.Height < min.Height) return false;
             return min.Width < rect.Width;
         }
-
 
         private void DrawBottomDragBar(Graphics g, RectangleF bounds)
         {
@@ -204,12 +221,11 @@ namespace TaskManagement.Service
             }
         }
 
-
         private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, null, Color.Black, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
+                DrawWorkItem(_viewData.Selected, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true, false);
 
                 if (!_isDragActive())
                 {
