@@ -82,7 +82,7 @@ namespace TaskManagement.UI
                 GetNeighbers,
                 Row2Day,
                 GetRect,
-                GetDrawRect,
+                GetWorkItemDrawRect,
                 this.Font);
         }
 
@@ -378,7 +378,7 @@ namespace TaskManagement.UI
         private int GetExpandDirection(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return 0;
-            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
+            var bounds = GetWorkItemDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
             if (!bounds.HasValue) return 0;
             if (IsTopBar(bounds.Value, location)) return +1;
             if (IsBottomBar(bounds.Value, location)) return -1;
@@ -388,7 +388,7 @@ namespace TaskManagement.UI
         private bool IsWorkItemExpandArea(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return false;
-            var bounds = GetDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
+            var bounds = GetWorkItemDrawRect(viewData.Selected, viewData.GetFilteredMembers(), true);
             if (!bounds.HasValue) return false;
             return IsTopBar(bounds.Value, location) || IsBottomBar(bounds.Value, location);
         }
@@ -474,7 +474,7 @@ namespace TaskManagement.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        private RectangleF? GetDrawRect(WorkItem wi, Members members, bool isFrontView)
+        private RectangleF? GetWorkItemDrawRect(WorkItem wi, Members members, bool isFrontView)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;

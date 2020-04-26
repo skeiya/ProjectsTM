@@ -44,8 +44,8 @@ namespace TaskManagement.Service
             Func<ColIndex, Member> col2Member,
             Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers,
             Func<RowIndex, CallenderDay> row2Day,
-            Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect,
-            Func<WorkItem, Members, bool, RectangleF?> getDrawRect,
+            Func<ColIndex, RowIndex, int , bool, bool, bool, RectangleF> getRect,
+            Func<WorkItem, Members, bool, RectangleF?> getWorkItemDrawRect,
             Font font)
         {
             this._viewData = viewData;
@@ -60,7 +60,7 @@ namespace TaskManagement.Service
             this.GetNeighbers = GetNeighbers;
             this.row2Day = row2Day;
             this.getRect = getRect;
-            this.getDrawRect = getDrawRect;
+            this.getWorkItemDrawRect = getWorkItemDrawRect;
             this._font = font;
         }
 
@@ -159,7 +159,7 @@ namespace TaskManagement.Service
             var fillBrush = cond == null ? null : new SolidBrush(cond.BackColor);
             var fore = cond == null ? Color.Black : cond.ForeColor;
 
-            var rect = getDrawRect(wi, members, isFrontView);
+            var rect = getWorkItemDrawRect(wi, members, isFrontView);
             if (!rect.HasValue) return;
             if (rect.Value.IsEmpty) return;
             if (clear) g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect.Value);
@@ -229,7 +229,7 @@ namespace TaskManagement.Service
 
                 if (!_isDragActive())
                 {
-                    var rect = getDrawRect(_viewData.Selected, _viewData.GetFilteredMembers(), true);
+                    var rect = getWorkItemDrawRect(_viewData.Selected, _viewData.GetFilteredMembers(), true);
                     if (rect.HasValue)
                     {
                         DrawTopDragBar(g, rect.Value);
@@ -326,7 +326,7 @@ namespace TaskManagement.Service
         #region IDisposable Support
         private bool disposedValue = false; // 重複する呼び出しを検出するには
         private Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect;
-        private Func<WorkItem, Members, bool, RectangleF?> getDrawRect;
+        private Func<WorkItem, Members, bool, RectangleF?> getWorkItemDrawRect;
         private readonly Font _font;
 
         protected virtual void Dispose(bool disposing)
