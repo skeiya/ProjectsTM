@@ -233,7 +233,7 @@ namespace TaskManagement.UI
             }
             if (e.KeyCode == Keys.ControlKey)
             {
-                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems);
+                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);
             }
             this.Invalidate();
         }
