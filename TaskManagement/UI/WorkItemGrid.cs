@@ -144,7 +144,7 @@ namespace TaskManagement.UI
         {
             UndoChanged?.Invoke(this, e);
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            this.Refresh();
+            this.Invalidate();
         }
 
         ColIndex Member2Col(Member m)
@@ -191,7 +191,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
-            this.Refresh();
+            this.Invalidate();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
@@ -240,7 +240,10 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
         {
-            _workItemDragService.End(_editService, _viewData, false);
+            using (new RedrawLock(_drawService, () => this.Invalidate()))
+            {
+                _workItemDragService.End(_editService, _viewData, false);
+            }
         }
 
         private bool ScrollOneStep(ScrollDirection direction)

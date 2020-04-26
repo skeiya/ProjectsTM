@@ -14,6 +14,12 @@ namespace TaskManagement.Service
         private ViewData _viewData;
 
         private Func<Size> GetVisibleSize { get; }
+        private bool _redrawLock = false;
+        internal void Lock(bool redrawLock)
+        {
+            _redrawLock = redrawLock;
+        }
+
         private Func<Point> GetScrollOffset { get; }
         private Func<RowColRange> GetVisibleNormalRowColRange { get; }
 
@@ -59,6 +65,7 @@ namespace TaskManagement.Service
 
         internal void Draw(Graphics g)
         {
+            if (_redrawLock) return;
             DrawWorkItemAreaBase(g);
             DrawAroundAndOverlay(g);
         }

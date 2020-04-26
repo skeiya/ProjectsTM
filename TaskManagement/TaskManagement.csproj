@@ -131,6 +131,7 @@
     <Compile Include="UI\ManageMileStoneForm.Designer.cs">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
     <Compile Include="UI\ViewDetailSettingForm.cs">
       <SubType>Form</SubType>
