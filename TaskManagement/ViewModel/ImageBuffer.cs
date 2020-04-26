@@ -28,6 +28,7 @@ namespace TaskManagement.ViewModel
             }
 
         }
+
         internal void Validate(WorkItem wi)
         {
             if (IsValid(wi)) return;

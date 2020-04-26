@@ -63,7 +63,11 @@ namespace TaskManagement.UI
             _row2DayChache.Clear();
             _member2ColChache.Clear();
             _col2MemberChache.Clear();
+            RefreshDrawService();
+        }
 
+        private void RefreshDrawService()
+        {
             if (_drawService != null)
             {
                 _drawService.Dispose();
@@ -193,6 +197,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
+            RefreshDrawService();
             this.Invalidate();
         }
 
