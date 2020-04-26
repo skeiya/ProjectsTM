@@ -156,7 +156,8 @@ namespace TaskManagement.UI
         RectangleF GetMemberDrawRect(Member m)
         {
             var col = Member2Col(m, _viewData.GetFilteredMembers());
-            return new RectangleF(GetLeft(col), FixedHeight, ColWidths[col.Value], GridHeight);
+            var rect = GetRect(col, VisibleNormalTopRow, 1, false, false, false);
+            return new RectangleF(rect.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
 
         private void AttachEvents()
