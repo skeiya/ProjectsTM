@@ -71,9 +71,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TaskManagement\TaskManagement.csproj">
       <Project>{217d0cf7-f594-43c1-a3e1-40fb70ee643b}</Project>
       <Name>TaskManagement</Name>
