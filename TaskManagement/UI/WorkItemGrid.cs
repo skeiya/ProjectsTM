@@ -464,7 +464,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
-            _drawService.Draw(e.Graphics);
+            _drawService.Draw(e.Graphics, e.IsPrint);
         }
 
         internal void DecRatio()

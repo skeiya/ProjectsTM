@@ -44,7 +44,7 @@ namespace TaskManagement.Service
             Func<ColIndex, Member> col2Member,
             Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers,
             Func<RowIndex, CallenderDay> row2Day,
-            Func<ColIndex, RowIndex, int , bool, bool, bool, RectangleF> getRect,
+            Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect,
             Func<WorkItem, Members, bool, RectangleF?> getWorkItemDrawRect,
             Font font)
         {
@@ -64,14 +64,14 @@ namespace TaskManagement.Service
             this._font = font;
         }
 
-        internal void Draw(Graphics g)
+        internal void Draw(Graphics g, bool isPrint)
         {
             if (_redrawLock) return;
-            DrawWorkItemAreaBase(g);
-            DrawAroundAndOverlay(g);
+            if (!isPrint) DrawWorkItemAreaBase(g);
+            DrawAroundAndOverlay(g, isPrint);
         }
 
-        private void DrawAroundAndOverlay(Graphics g)
+        private void DrawAroundAndOverlay(Graphics g, bool isPrint)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
@@ -79,24 +79,30 @@ namespace TaskManagement.Service
             {
                 DrawCalender(font, g);
                 DrawMember(font, g);
-                DrawEdgeWorkItems(font, g);
+                DrawEdgeWorkItems(font, g, isPrint);
                 DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
                 DrawSelectedWorkItemBound(g, font);
             }
         }
 
-        private void DrawEdgeWorkItems(Font font, Graphics g)
+        private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
         {
             var range = GetVisibleNormalRowColRange();
             var members = _viewData.GetFilteredMembers();
             foreach (var c in range.Cols)
             {
                 var m = col2Member(c);
-                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, c.Equals(range.LeftCol) ? range.RowCount : 1))
+                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isPrint)))
                 {
                     DrawWorkItem(wi, Pens.Black, font, g, members, true);
                 }
             }
+        }
+
+        private static int GetRowCount(RowColRange range, ColIndex c, bool isPrint)
+        {
+            if (isPrint) return range.RowCount;
+            return c.Equals(range.LeftCol) ? range.RowCount : 1;
         }
 
         private void DrawWorkItemAreaBase(Graphics g)
@@ -166,7 +172,7 @@ namespace TaskManagement.Service
             g.FillRectangle(fillBrush, rect.Value);
             var isAppendDays = IsAppendDays(g, font, rect.Value);
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
-            g.DrawRectangle(edge, Rectangle.Round(rect.Value));
+            g.DrawRectangle(edge,rect.Value.X, rect.Value.Y, rect.Value.Width, rect.Value.Height);
         }
 
         private bool IsAppendDays(Graphics g, Font f, RectangleF rect)

@@ -133,21 +133,21 @@ namespace FreeGridControl
         {
             try
             {
-                DrawGrid(pe.Graphics);
+                DrawGrid(pe.Graphics, false);
             }
             catch
             {
                 _cache.Update();
-                DrawGrid(pe.Graphics);
+                DrawGrid(pe.Graphics, false);
             }
             base.OnPaint(pe);
         }
 
         protected int VOffset => vScrollBar.Value;
         protected int HOffset => hScrollBar.Value;
-        private void DrawGrid(Graphics graphics)
+        private void DrawGrid(Graphics graphics, bool isPrint)
         {
-            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
+            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
         }
 
         public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
@@ -261,7 +261,7 @@ namespace FreeGridControl
 
         public void Print(Graphics graphics)
         {
-            DrawGrid(graphics);
+            DrawGrid(graphics, true);
         }
 
         public ColIndex X2Col(float x)
