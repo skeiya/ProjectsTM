@@ -271,7 +271,6 @@
     <Content Include="Help\help.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="nuget.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FreeGridControl\FreeGridControl.csproj">
