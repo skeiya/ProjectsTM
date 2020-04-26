@@ -9,6 +9,7 @@ using System.Threading;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
+using System.Globalization;
 
 namespace TaskManagement.UI
 {
@@ -497,14 +498,18 @@ namespace TaskManagement.UI
 
         private (RowIndex row, int count) GetRowRange(WorkItem wi)
         {
-            //var visibleTopDay = Row2Day(VisibleNormalTopRow);
-            //var visibleButtomDay = Row2Day(VisibleNormalButtomRow);
-            //var visiblePeriod = new Period(visibleTopDay, visibleButtomDay);
-            //if (!visiblePeriod.HasInterSection(wi.Period)) return (null, 0);
-            //if (wi.Period.Contains(visibleTopDay) && wi.Period.Contains(visibleButtomDay)) return (VisibleNormalTopRow, VisibleNormalRowCount);
-            //if (wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (VisibleNormalTopRow, Day2Row(wi.Period.To).Value - VisibleNormalTopRow.Value + 1);
-            //if (!wi.Period.Contains(visibleTopDay) && !wi.Period.Contains(visibleButtomDay)) return (Day2Row(wi.Period.From), Day2Row(wi.Period.To).Value - Day2Row(wi.Period.From).Value + 1);
-            return (Day2Row(wi.Period.From), Day2Row(wi.Period.To).Value - Day2Row(wi.Period.From).Value + 1);
+            RowIndex row = null;
+            int count = 0;
+            foreach (var d in _viewData.Original.Callender.GetPediodDays(wi.Period))
+            {
+                if (!_viewData.GetFilteredDays().Contains(d)) continue;
+                if (row == null)
+                {
+                    row = Day2Row(d);
+                }
+                count++;
+            }
+            return (row, count);
         }
 
         internal void Redo()
