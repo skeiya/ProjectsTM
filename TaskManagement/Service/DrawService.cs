@@ -73,6 +73,8 @@ namespace TaskManagement.Service
 
         private void DrawAroundAndOverlay(Graphics g)
         {
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             using (var font = CreateFont())
             {
                 DrawCalender(font, g);
@@ -92,7 +94,7 @@ namespace TaskManagement.Service
                 var m = col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, c.Equals(range.LeftCol) ? range.RowCount : 1))
                 {
-                    DrawWorkItem(wi, Pens.Black, font, g, members, true, true);
+                    DrawWorkItem(wi, Pens.Black, font, g, members, true);
                 }
             }
         }
@@ -121,7 +123,7 @@ namespace TaskManagement.Service
         {
             var g = _imageBuffer.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             using (var font = CreateFont())
             {
                 var range = GetVisibleNormalRowColRange();
@@ -134,7 +136,7 @@ namespace TaskManagement.Service
                         if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
                         if (_imageBuffer.IsValid(wi)) continue;
                         _imageBuffer.Validate(wi);
-                        DrawWorkItem(wi, Pens.Black, font, g, members, false, false);
+                        DrawWorkItem(wi, Pens.Black, font, g, members, false);
                     }
                 }
             }
@@ -153,18 +155,15 @@ namespace TaskManagement.Service
             }
         }
 
-        private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, Members members, bool isFrontView, bool clear)
+        private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, Members members, bool isFrontView)
         {
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-            var fillBrush = cond == null ? null : new SolidBrush(cond.BackColor);
-            var fore = cond == null ? Color.Black : cond.ForeColor;
-
+            var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : new SolidBrush(cond.BackColor);
+            var front = cond == null ? Color.Black : cond.ForeColor;
             var rect = getWorkItemDrawRect(wi, members, isFrontView);
             if (!rect.HasValue) return;
             if (rect.Value.IsEmpty) return;
-            if (clear) g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect.Value);
-            if (fillBrush != null) g.FillRectangle(fillBrush, Rectangle.Round(rect.Value));
-            var front = fore == null ? Color.Black : fore;
+            g.FillRectangle(fillBrush, rect.Value);
             var isAppendDays = IsAppendDays(g, font, rect.Value);
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
             g.DrawRectangle(edge, Rectangle.Round(rect.Value));
@@ -225,7 +224,7 @@ namespace TaskManagement.Service
         {
             if (_viewData.Selected != null)
             {
-                DrawWorkItem(_viewData.Selected, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true, false);
+                DrawWorkItem(_viewData.Selected, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
 
                 if (!_isDragActive())
                 {
