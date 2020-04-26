@@ -34,6 +34,7 @@ namespace TaskManagement.Service
             grid.Size = e.PageBounds.Size;
             grid.Initialize(_viewData);
             grid.AdjustForPrint(e.PageBounds);
+            grid.RefreshDraw();
             grid.Print(e.Graphics);
         }
 

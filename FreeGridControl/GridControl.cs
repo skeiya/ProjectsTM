@@ -69,8 +69,8 @@ namespace FreeGridControl
             if (col == null) return false;
             if (row.Value < VisibleNormalTopRow.Value) return false;
             if (VisibleNormalButtomRow.Value < row.Value) return false;
-            if (col.Value < VisibleLeftCol.Value) return false;
-            if (VisibleRightCol.Value < col.Value) return false;
+            if (col.Value < VisibleNormalLeftCol.Value) return false;
+            if (VisibleNormalRightCol.Value < col.Value) return false;
             return true;
         }
 
@@ -116,7 +116,7 @@ namespace FreeGridControl
             VisibleNormalTopRow = Y2Row(_cache.FixedHeight + 1);
             VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
-            VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleRightCol.Value - VisibleLeftCol.Value + 1;
+            VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
         private void _colWidths_ItemChanged(object sender, System.EventArgs e)
@@ -133,32 +133,35 @@ namespace FreeGridControl
         {
             try
             {
-                DrawGrid(pe.Graphics);
+                DrawGrid(pe.Graphics, false);
             }
             catch
             {
                 _cache.Update();
-                DrawGrid(pe.Graphics);
+                DrawGrid(pe.Graphics, false);
             }
             base.OnPaint(pe);
         }
 
-        private int VOffset => vScrollBar.Value;
-        private int HOffset => hScrollBar.Value;
-        private void DrawGrid(Graphics graphics)
+        protected int VOffset => vScrollBar.Value;
+        protected int HOffset => hScrollBar.Value;
+        private void DrawGrid(Graphics graphics, bool isPrint)
         {
-            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics));
+            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
         }
 
-        public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol)
+        public RectangleF GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
         {
             var top = _cache.GetTop(r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
             var result = new RectangleF(left, top, width, height);
-            result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
-            result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
+            if (isFrontView)
+            {
+                result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
+                result.Intersect(GetVisibleRect(isFixedRow, isFixedCol));
+            }
             return result;
         }
 
@@ -253,12 +256,12 @@ namespace FreeGridControl
         public RowIndex VisibleNormalButtomRow { get; private set; }
         public int VisibleNormalRowCount { get; private set; }
         public int VisibleNormalColCount { get; private set; }
-        public ColIndex VisibleLeftCol => X2Col(_cache.FixedWidth + 1);
-        public ColIndex VisibleRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
+        public ColIndex VisibleNormalLeftCol => X2Col(_cache.FixedWidth + 1);
+        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
 
         public void Print(Graphics graphics)
         {
-            DrawGrid(graphics);
+            DrawGrid(graphics, true);
         }
 
         public ColIndex X2Col(float x)
@@ -315,5 +318,8 @@ namespace FreeGridControl
             if (rect.Bottom < y) return false;
             return true;
         }
+
+        protected float FixedWidth => _cache.FixedWidth;
+        protected float FixedHeight => _cache.FixedHeight;
     }
 }

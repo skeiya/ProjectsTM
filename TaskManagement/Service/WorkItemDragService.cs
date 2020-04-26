@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
 using TaskManagement.UI;
+using System.Collections.Generic;
 
 namespace TaskManagement.Service
 {
@@ -244,12 +245,13 @@ namespace TaskManagement.Service
             workItems.Add(_beforeWorkItem);
         }
 
-        internal void ToMoveMode(WorkItems workItems)
+        internal void ToMoveMode(WorkItems workItems, Action<List<Member>> invalidateMembers)
         {
             if (!IsActive()) return;
             if (!_isCopying) return;
             _isCopying = false;
             workItems.Remove(_beforeWorkItem);
+            invalidateMembers(new List<Member>() { _beforeWorkItem.AssignedMember });
         }
 
         public bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
