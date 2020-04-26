@@ -13,6 +13,7 @@ namespace TaskManagement.Service
     class DrawService : IDisposable
     {
         private ViewData _viewData;
+        private readonly Size _fullSize;
 
         private Func<Size> GetVisibleSize { get; }
         private bool _redrawLock = false;
@@ -49,6 +50,7 @@ namespace TaskManagement.Service
             Font font)
         {
             this._viewData = viewData;
+            this._fullSize = fullSize;
             this.GetVisibleSize = GetVisibleSize;
             this._fixedSize = fixedSize;
             this.GetScrollOffset = GetScrollOffset;
@@ -166,13 +168,15 @@ namespace TaskManagement.Service
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
             var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : new SolidBrush(cond.BackColor);
             var front = cond == null ? Color.Black : cond.ForeColor;
-            var rect = getWorkItemDrawRect(wi, members, isFrontView);
-            if (!rect.HasValue) return;
-            if (rect.Value.IsEmpty) return;
-            g.FillRectangle(fillBrush, rect.Value);
-            var isAppendDays = IsAppendDays(g, font, rect.Value);
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
-            g.DrawRectangle(edge,rect.Value.X, rect.Value.Y, rect.Value.Width, rect.Value.Height);
+            var res = getWorkItemDrawRect(wi, members, isFrontView);
+            if (!res.HasValue) return;
+            if (res.Value.IsEmpty) return;
+            var rect = res.Value;
+            rect.Intersect(new RectangleF(0, 0, _fullSize.Width - 1, _fullSize.Height - 1));
+            g.FillRectangle(fillBrush, rect);
+            var isAppendDays = IsAppendDays(g, font, rect);
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect);
+            g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         private bool IsAppendDays(Graphics g, Font f, RectangleF rect)
