@@ -63,10 +63,10 @@ namespace TaskManagement.UI
             _row2DayChache.Clear();
             _member2ColChache.Clear();
             _col2MemberChache.Clear();
-            RefreshDrawService();
+            RefreshDraw();
         }
 
-        private void RefreshDrawService()
+        public void RefreshDraw()
         {
             if (_drawService != null)
             {
@@ -88,6 +88,7 @@ namespace TaskManagement.UI
                 GetRect,
                 GetWorkItemDrawRect,
                 this.Font);
+            this.Invalidate();
         }
 
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
@@ -197,8 +198,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
-            RefreshDrawService();
-            this.Invalidate();
+            RefreshDraw();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
