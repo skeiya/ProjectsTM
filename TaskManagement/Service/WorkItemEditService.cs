@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
@@ -106,16 +108,58 @@ namespace TaskManagement.Service
             var newSetected = new WorkItems();
             foreach (var s in starts)
             {
-                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
-                {
-                    if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
-                    {
-                        if (newSetected.Contains(w)) continue;
-                        newSetected.Add(w);
-                    }
-                }
+                newSetected.Add(GetSameMemberAfterItems(s));
             }
             _viewData.Selected = newSetected;
+        }
+
+        private WorkItems GetSameMemberAfterItems(WorkItem s)
+        {
+            var result = new WorkItems();
+            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
+            {
+                if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
+                {
+                    if (result.Contains(w)) continue;
+                    result.Add(w);
+                }
+            }
+            return result;
+        }
+
+        internal void AlignAfterward(WorkItems starts)
+        {
+            if (HasSameMember(starts)) return;
+            var before = new WorkItems();
+            var after = new WorkItems();
+            var cal = _viewData.Original.Callender;
+            foreach (var s in starts)
+            {
+                var lastTo = s.Period.To;
+                foreach (var w in GetSameMemberAfterItems(s).OrderBy(o => o.Period.From))
+                {
+                    if (w.Equals(s)) continue;
+                    before.Add(w.Clone());
+                    var nextFrom = cal.ApplyOffset(lastTo, 1);
+                    var offset = cal.GetOffset(w.Period.From, nextFrom);
+                    var a = w.Clone();
+                    a.Period = w.Period.ApplyOffset(offset, cal);
+                    lastTo = a.Period.To;
+                    after.Add(a);
+                }
+            }
+            Replace(before, after);
+        }
+
+        private static bool HasSameMember(WorkItems starts)
+        {
+            var members = new List<Member>();
+            foreach (var s in starts)
+            {
+                if (members.Contains(s.AssignedMember)) return true;
+                members.Add(s.AssignedMember);
+            }
+            return false;
         }
     }
 }

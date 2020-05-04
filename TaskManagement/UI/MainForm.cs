@@ -195,6 +195,14 @@ namespace TaskManagement.UI
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を選択").Click += SelectAfterwardMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
+        }
+
+        private void AlignAfterwardMenu_Click(object sender, EventArgs e)
+        {
+            var selected = _viewData.Selected;
+            if (selected == null) return;
+            workItemGrid1.EditService.AlignAfterward(selected);
         }
 
         private void SelectAfterwardMenu_Click(object sender, EventArgs e)
