@@ -83,14 +83,13 @@ namespace UnitTestProject1
             using (var stream = new MemoryStream())
             using (var writer = StreamFactory.CreateWriter(stream))
             using (var reader = StreamFactory.CreateReader(writer.BaseStream))
-            using (var xmlReader = XmlReader.Create(reader))
             {
                 var orgApp = BuildDummyData();
 
                 AppDataSerializer.WriteToStream(orgApp, writer);
                 writer.Flush();
                 stream.Position = 0;
-                var loadedApp = AppDataSerializer.LoadFromStream(xmlReader);
+                var loadedApp = AppDataSerializer.LoadFromStream(reader);
                 Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }

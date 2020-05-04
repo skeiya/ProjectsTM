@@ -6,7 +6,7 @@ using TaskManagement.Model;
 
 namespace TaskManagement.Service
 {
-    class AppDataFileIOService
+    class AppDataFileIOService : IDisposable
     {
         public event EventHandler FileChanged;
         public event EventHandler FileSaved;
@@ -112,6 +112,11 @@ namespace TaskManagement.Service
             _watcher.IncludeSubdirectories = false;
             _watcher.EnableRaisingEvents = true;
             return AppDataSerializer.Deserialize(fileName);
+        }
+
+        public void Dispose()
+        {
+            _watcher.Dispose();
         }
     }
 }

@@ -17,11 +17,12 @@ namespace TaskManagement.UI
     public partial class MainForm : Form
     {
         private ViewData _viewData = new ViewData(new AppData());
-        private SearchWorkitemForm _searchForm;
+        private SearchWorkitemForm SearchForm { get; set; }
+        private PrintService PrintService { get; set; }
+        private AppDataFileIOService FileIOService { get; } = new AppDataFileIOService();
+
         private FileDragService _fileDragService = new FileDragService();
-        private AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private OldFileService _oldFileService = new OldFileService();
-        private PrintService _printService;
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private bool _isDirty = false;
 
@@ -29,7 +30,7 @@ namespace TaskManagement.UI
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            _printService = new PrintService(_viewData, workItemGrid1.Font);
+            PrintService = new PrintService(_viewData, workItemGrid1.Font);
 
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
@@ -44,8 +45,8 @@ namespace TaskManagement.UI
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
-            _fileIOService.FileChanged += _fileIOService_FileChanged;
-            _fileIOService.FileSaved += _fileIOService_FileSaved;
+            FileIOService.FileChanged += _fileIOService_FileChanged;
+            FileIOService.FileSaved += _fileIOService_FileSaved;
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
@@ -87,7 +88,7 @@ namespace TaskManagement.UI
                 toolStripComboBoxFilter.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
-                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
+                OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
             {
@@ -101,7 +102,7 @@ namespace TaskManagement.UI
         {
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!_fileIOService.Save(_viewData.Original)) e.Cancel = true;
+            if (!FileIOService.Save(_viewData.Original)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -110,7 +111,7 @@ namespace TaskManagement.UI
             {
                 FilterName = toolStripComboBoxFilter.Text,
                 FontSize = _viewData.FontSize,
-                FilePath = _fileIOService.FilePath,
+                FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail
             };
             UserSettingUIService.Save(UserSettingPath, setting);
@@ -173,10 +174,9 @@ namespace TaskManagement.UI
             }
             if (!File.Exists(path)) return;
             using (var rs = StreamFactory.CreateReader(path))
-            using (var xmlReader = XmlReader.Create(rs))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                var filter = (Filter)x.Deserialize(xmlReader);
+                var filter = (Filter)x.Deserialize(rs);
                 _viewData.SetFilter(filter);
             }
         }
@@ -261,7 +261,7 @@ namespace TaskManagement.UI
         {
             var fileName = _fileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
-            var appData = _fileIOService.OpenFile(fileName);
+            var appData = FileIOService.OpenFile(fileName);
             OpenAppData(appData);
         }
 
@@ -290,7 +290,7 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
         {
             _viewData.Selected = null;
-            _printService.Print();
+            PrintService.Print();
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
@@ -300,12 +300,12 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            _fileIOService.Save(_viewData.Original);
+            FileIOService.Save(_viewData.Original);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            OpenAppData(_fileIOService.Open());
+            OpenAppData(FileIOService.Open());
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
@@ -339,11 +339,11 @@ namespace TaskManagement.UI
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
 
-            if (_searchForm == null || _searchForm.IsDisposed)
+            if (SearchForm == null || SearchForm.IsDisposed)
             {
-                _searchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
+                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
             }
-            if (!_searchForm.Visible) _searchForm.Show(this);
+            if (!SearchForm.Visible) SearchForm.Show(this);
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -377,7 +377,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            _fileIOService.SaveOtherName(_viewData.Original);
+            FileIOService.SaveOtherName(_viewData.Original);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -431,7 +431,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
         {
-            OpenAppData(_fileIOService.ReOpen());
+            OpenAppData(FileIOService.ReOpen());
         }
 
         private void OpenAppData(AppData appData)

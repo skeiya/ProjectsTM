@@ -23,3 +23,9 @@ dotnet_diagnostic.CA1307.severity = none
 
 # CA1031: 一般的な例外の種類はキャッチしません
 dotnet_diagnostic.CA1031.severity = none
+
+# CA5369: 逆シリアル化に XmlReader を使用する
+dotnet_diagnostic.CA5369.severity = none
+
+# CA3075: XML での DTD 処理が安全ではありません
+dotnet_diagnostic.CA3075.severity = none

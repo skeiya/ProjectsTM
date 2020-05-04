@@ -116,13 +116,12 @@ namespace TaskManagement.Model
         {
             using (var s = new MemoryStream())
             using (var w = StreamFactory.CreateWriter(s))
-            using (var xmlReader = XmlReader.Create(s))
             {
                 w.Write(text);
                 w.Flush();
                 s.Position = 0;
                 var x = new XmlSerializer(typeof(WorkItem));
-                return (WorkItem)x.Deserialize(xmlReader);
+                return (WorkItem)x.Deserialize(s);
             }
         }
 

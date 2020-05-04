@@ -14,7 +14,10 @@ namespace TaskManagement
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            using (var mainForm = new MainForm())
+            {
+                Application.Run(mainForm);
+            }
         }
     }
 }

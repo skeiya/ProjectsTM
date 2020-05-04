@@ -22,9 +22,8 @@ namespace TaskManagement.Service
         {
             var xml = new XmlSerializer(typeof(UserSetting));
             using (var r = StreamFactory.CreateReader(filePath))
-            using (var xmlReader = XmlReader.Create(r))
             {
-                return (UserSetting)xml.Deserialize(xmlReader);
+                return (UserSetting)xml.Deserialize(r);
             }
         }
 

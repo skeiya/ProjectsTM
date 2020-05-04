@@ -24,13 +24,12 @@ namespace TaskManagement.Logic
         public static AppData Deserialize(string fileName)
         {
             using (var reader = StreamFactory.CreateReader(fileName))
-            using (var xmlReader = XmlReader.Create(reader))
             {
-                return LoadFromStream(xmlReader);
+                return LoadFromStream(reader);
             }
         }
 
-        public static AppData LoadFromStream(XmlReader reader)
+        public static AppData LoadFromStream(StreamReader reader)
         {
             var serializer = new XmlSerializer(typeof(AppData));
             return (AppData)serializer.Deserialize(reader);

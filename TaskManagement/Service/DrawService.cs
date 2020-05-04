@@ -134,7 +134,7 @@ namespace TaskManagement.Service
         private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, Members members, bool isFrontView)
         {
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-            var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : new SolidBrush(cond.BackColor);
+            var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : BrushCache.GetBrush(cond.BackColor);
             var front = cond == null ? Color.Black : cond.ForeColor;
             var res = _grid.GetWorkItemDrawRect(wi, members, isFrontView);
             if (!res.HasValue) return;

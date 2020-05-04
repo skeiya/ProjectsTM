@@ -159,10 +159,9 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var reader = StreamFactory.CreateReader(dlg.FileName))
-                using (var xmlReader = XmlReader.Create(reader))
                 {
                     var s = new XmlSerializer(typeof(Filter));
-                    _filter = (Filter)s.Deserialize(xmlReader);
+                    _filter = (Filter)s.Deserialize(reader);
                     UpdateAllField();
                 }
             }
