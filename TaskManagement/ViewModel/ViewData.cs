@@ -46,11 +46,6 @@ namespace TaskManagement.ViewModel
             }
         }
 
-        internal Font CreateFont(Font font)
-        {
-            return new Font(font.FontFamily, FontSize);
-        }
-
         public ViewData(AppData appData)
         {
             Original = appData;

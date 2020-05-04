@@ -47,6 +47,8 @@
             this.radioButtonDayCount = new System.Windows.Forms.RadioButton();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxState = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -112,7 +114,7 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(193, 274);
+            this.buttonOK.Location = new System.Drawing.Point(193, 306);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(35, 22);
@@ -125,7 +127,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(237, 274);
+            this.buttonCancel.Location = new System.Drawing.Point(237, 306);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(64, 22);
@@ -143,7 +145,7 @@
             this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTags.Multiline = true;
             this.textBoxTags.Name = "textBoxTags";
-            this.textBoxTags.Size = new System.Drawing.Size(200, 88);
+            this.textBoxTags.Size = new System.Drawing.Size(200, 91);
             this.textBoxTags.TabIndex = 13;
             // 
             // textBoxFrom
@@ -235,13 +237,33 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(10, 281);
+            this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "状態";
+            // 
+            // comboBoxState
+            // 
+            this.comboBoxState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxState.FormattingEnabled = true;
+            this.comboBoxState.Location = new System.Drawing.Point(103, 278);
+            this.comboBoxState.Name = "comboBoxState";
+            this.comboBoxState.Size = new System.Drawing.Size(200, 20);
+            this.comboBoxState.TabIndex = 18;
+            // 
             // EditWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(310, 306);
+            this.ClientSize = new System.Drawing.Size(310, 338);
+            this.Controls.Add(this.comboBoxState);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.radioButtonDayCount);
             this.Controls.Add(this.radioButtonDate);
@@ -256,6 +278,7 @@
             this.Controls.Add(this.textBoxWorkItemName);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -289,5 +312,7 @@
         private System.Windows.Forms.RadioButton radioButtonDayCount;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBoxState;
     }
 }

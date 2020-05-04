@@ -55,11 +55,28 @@ namespace TaskManagement.Service
 
         internal void Replace(WorkItem before, WorkItem after)
         {
+            if (before.Equals(after)) return;
             _viewData.Original.WorkItems.Remove(before);
             _viewData.Original.WorkItems.Add(after);
             _undoService.Delete(before);
             _undoService.Add(after);
             _undoService.Push();
+        }
+
+        internal void Done(WorkItem selected)
+        {
+            var done = selected.Clone();
+
+            done.State = TaskState.Done;
+
+            _undoService.Delete(selected);
+            _undoService.Add(done);
+            _undoService.Push();
+
+            var workItems = _viewData.Original.WorkItems;
+            _viewData.Selected = null;
+            workItems.Remove(selected);
+            workItems.Add(done);
         }
     }
 }

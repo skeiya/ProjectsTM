@@ -20,14 +20,30 @@ namespace TaskManagement.UI
             textBoxFrom.Text = wi.Period == null ? string.Empty : wi.Period.From.ToString();
             textBoxTo.Text = wi.Period == null ? string.Empty : wi.Period.To.ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
+            InitDropDownList(wi.State);
             this._wi = wi;
             this._callender = callender;
+        }
+
+        private void InitDropDownList(TaskState state)
+        {
+            comboBoxState.Items.Clear();
+            foreach (var e in Enum.GetValues(typeof(TaskState)))
+            {
+                comboBoxState.Items.Add(e);
+            }
+            comboBoxState.SelectedItem = state;
         }
 
         public WorkItem GetWorkItem(Callender callender)
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, radioButtonDayCount.Checked);
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember());
+            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState());
+        }
+
+        private TaskState GetState()
+        {
+            return (TaskState)comboBoxState.SelectedItem;
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -52,7 +68,7 @@ namespace TaskManagement.UI
             if (period == null) return null;
             var m = GetAssignedMember();
             if (m == null) return null;
-            return new WorkItem(p, w, GetTags(), period, m);
+            return new WorkItem(p, w, GetTags(), period, m, GetState());
         }
 
         private Member GetAssignedMember()

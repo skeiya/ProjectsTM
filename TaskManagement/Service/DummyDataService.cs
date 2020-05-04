@@ -49,7 +49,7 @@ namespace TaskManagement.Service
             {
                 foreach (var m in appData.Members)
                 {
-                    appData.WorkItems.Add(new WorkItem(p, "Task", t, period, m));
+                    appData.WorkItems.Add(new WorkItem(p, "Task", t, period, m, TaskState.Active));
                 }
             }
 

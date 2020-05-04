@@ -77,14 +77,12 @@ namespace TaskManagement.Service
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            using (var font = CreateFont())
-            {
-                DrawCalender(font, g);
-                DrawMember(font, g);
-                DrawEdgeWorkItems(font, g, isPrint);
-                DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
-                DrawSelectedWorkItemBound(g, font);
-            }
+            var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
+            DrawCalender(font, g);
+            DrawMember(font, g);
+            DrawEdgeWorkItems(font, g, isPrint);
+            DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
+            DrawSelectedWorkItemBound(g, font);
         }
 
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
@@ -132,20 +130,18 @@ namespace TaskManagement.Service
             var g = _imageBuffer.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            using (var font = CreateFont())
+            var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
+            var range = GetVisibleNormalRowColRange();
+            var members = _viewData.GetFilteredMembers();
+            foreach (var c in range.Cols)
             {
-                var range = GetVisibleNormalRowColRange();
-                var members = _viewData.GetFilteredMembers();
-                foreach (var c in range.Cols)
+                var m = col2Member(c);
+                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                 {
-                    var m = col2Member(c);
-                    foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
-                    {
-                        if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
-                        if (_imageBuffer.IsValid(wi)) continue;
-                        _imageBuffer.Validate(wi);
-                        DrawWorkItem(wi, Pens.Black, font, g, members, false);
-                    }
+                    if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
+                    if (_imageBuffer.IsValid(wi)) continue;
+                    _imageBuffer.Validate(wi);
+                    DrawWorkItem(wi, Pens.Black, font, g, members, false);
                 }
             }
             return _imageBuffer.Image;
@@ -171,6 +167,10 @@ namespace TaskManagement.Service
             var res = getWorkItemDrawRect(wi, members, isFrontView);
             if (!res.HasValue) return;
             if (res.Value.IsEmpty) return;
+            if (wi.State == TaskState.Done)
+            {
+                font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
+            }
             var rect = res.Value;
             rect.Intersect(new RectangleF(0, 0, _fullSize.Width - 1, _fullSize.Height - 1));
             g.FillRectangle(fillBrush, rect);
@@ -325,12 +325,6 @@ namespace TaskManagement.Service
                 g.DrawString(m.LastName, font, Brushes.Black, lastName);
             }
         }
-
-        private Font CreateFont()
-        {
-            return new Font(_font.FontFamily, _viewData.FontSize);
-        }
-
 
         #region IDisposable Support
         private bool disposedValue = false; // 重複する呼び出しを検出するには

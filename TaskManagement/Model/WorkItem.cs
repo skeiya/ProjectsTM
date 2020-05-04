@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 
@@ -31,16 +32,18 @@ namespace TaskManagement.Model
             set { Tags = Tags.Parse(value); }
         }
 
+        public TaskState State { get; set; }
 
         public WorkItem() { }
 
-        public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember)
+        public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state)
         {
             this.Project = project;
             this.Name = name;
             Tags = tags;
             Period = period;
             AssignedMember = assignedMember;
+            State = state;
         }
 
         public string ToDrawString(Callender callender, bool isAppendDays)
@@ -61,16 +64,7 @@ namespace TaskManagement.Model
 
         public override string ToString()
         {
-            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "]";
-        }
-
-        public void Edit(Project project, string v, Period period, Member member, Tags tags)
-        {
-            this.Project = project;
-            this.Name = v;
-            this.Period = period;
-            this.AssignedMember = member;
-            this.Tags = tags;
+            return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + State.ToString() + "]";
         }
 
         public override bool Equals(object obj)
@@ -81,6 +75,7 @@ namespace TaskManagement.Model
             if (!Tags.Equals(target.Tags)) return false;
             if (!Name.Equals(target.Name)) return false;
             if (!Period.Equals(target.Period)) return false;
+            if (!State.Equals(target.State)) return false;
             return AssignedMember.Equals(target.AssignedMember);
         }
 
@@ -92,6 +87,7 @@ namespace TaskManagement.Model
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<Member>.Default.GetHashCode(AssignedMember);
+            hashCode = hashCode * -1521134295 + EqualityComparer<TaskState>.Default.GetHashCode(State);
             return hashCode;
         }
 

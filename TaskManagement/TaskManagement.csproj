@@ -58,6 +58,7 @@
     <Compile Include="Model\MembersWorkItems.cs" />
     <Compile Include="Model\MileStone.cs" />
     <Compile Include="Model\MileStones.cs" />
+    <Compile Include="Model\TaskState.cs" />
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
     <Compile Include="Service\CalculateSumService.cs" />
@@ -125,6 +126,7 @@
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\UndoService.cs" />
+    <Compile Include="UI\FontCache.cs" />
     <Compile Include="UI\ManageMileStoneForm.cs">
       <SubType>Form</SubType>
     </Compile>
