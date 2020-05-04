@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -102,9 +101,9 @@ namespace TaskManagement.Model
         internal WorkItems Clone()
         {
             var result = new WorkItems();
-            foreach(var ws in this._items)
+            foreach (var ws in this._items)
             {
-                foreach(var w in ws.Value)
+                foreach (var w in ws.Value)
                 {
                     result.Add(w.Clone());
                 }

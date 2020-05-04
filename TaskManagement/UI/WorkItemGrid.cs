@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
-using System.Globalization;
 
 namespace TaskManagement.UI
 {

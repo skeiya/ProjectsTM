@@ -18,13 +18,13 @@ namespace TaskManagement.Service
         {
             var gridLeft = wig.Left;
             for (int i = 0; i < wig.FixedColCount; i++) gridLeft += (int)wig.ColWidths[i];
-            if (cursorPtOnWorkItemGrid.X < gridLeft)    return ScrollDirection.LEFT;
-            if (cursorPtOnWorkItemGrid.X > wig.Right)   return ScrollDirection.RIGHT;
+            if (cursorPtOnWorkItemGrid.X < gridLeft) return ScrollDirection.LEFT;
+            if (cursorPtOnWorkItemGrid.X > wig.Right) return ScrollDirection.RIGHT;
 
             var gridTop = wig.Top;
             for (int i = 0; i < wig.FixedRowCount; i++) gridTop += (int)wig.RowHeights[i];
-            if (cursorPtOnWorkItemGrid.Y < gridTop)     return ScrollDirection.UPPER;
-            if (cursorPtOnWorkItemGrid.Y > wig.Bottom)  return ScrollDirection.LOWER;
+            if (cursorPtOnWorkItemGrid.Y < gridTop) return ScrollDirection.UPPER;
+            if (cursorPtOnWorkItemGrid.Y > wig.Bottom) return ScrollDirection.LOWER;
 
             return ScrollDirection.NONE;
         }
