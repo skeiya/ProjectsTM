@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -82,13 +83,14 @@ namespace UnitTestProject1
             using (var stream = new MemoryStream())
             using (var writer = StreamFactory.CreateWriter(stream))
             using (var reader = StreamFactory.CreateReader(writer.BaseStream))
+            using (var xmlReader = XmlReader.Create(reader))
             {
                 var orgApp = BuildDummyData();
 
                 AppDataSerializer.WriteToStream(orgApp, writer);
                 writer.Flush();
                 stream.Position = 0;
-                var loadedApp = AppDataSerializer.LoadFromStream(reader);
+                var loadedApp = AppDataSerializer.LoadFromStream(xmlReader);
                 Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }

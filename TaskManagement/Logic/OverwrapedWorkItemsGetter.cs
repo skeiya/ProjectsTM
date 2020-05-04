@@ -3,7 +3,7 @@ using TaskManagement.Model;
 
 namespace TaskManagement.Logic
 {
-    public class OverwrapedWorkItemsGetter
+    public static class OverwrapedWorkItemsGetter
     {
         public static List<WorkItem> Get(WorkItems workItems)
         {

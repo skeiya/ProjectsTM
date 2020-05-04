@@ -9,10 +9,10 @@ namespace TaskManagement.Service
     {
         private Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
 
-        public int Calculate(ViewData _viewData, List<Member> updatedMembers)
+        public int Calculate(ViewData viewData, List<Member> updatedMembers)
         {
-            UpdateCache(_viewData, updatedMembers);
-            var filteredMembers = _viewData.GetFilteredMembers();
+            UpdateCache(viewData, updatedMembers);
+            var filteredMembers = viewData.GetFilteredMembers();
             return _sumCache.Where((i) => filteredMembers.Contain(i.Key)).Sum((i) => i.Value);
         }
 

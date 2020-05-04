@@ -38,7 +38,7 @@ namespace TaskManagement.UI
             Close();
         }
 
-        private MileStone ErrorMsg_NonWokingDay()
+        private static MileStone ErrorMsg_NonWokingDay()
         {
             MessageBox.Show("非稼働日です。稼働日を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return null;

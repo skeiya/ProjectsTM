@@ -151,14 +151,14 @@ namespace TaskManagement.Service
             g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
-        private bool IsAppendDays(Graphics g, Font f, RectangleF rect)
+        private static bool IsAppendDays(Graphics g, Font f, RectangleF rect)
         {
             var min = g.MeasureString("5d", f);
             if (rect.Height < min.Height) return false;
             return min.Width < rect.Width;
         }
 
-        private void DrawBottomDragBar(Graphics g, RectangleF bounds)
+        private static void DrawBottomDragBar(Graphics g, RectangleF bounds)
         {
             var rect = WorkItemDragService.GetBottomBarRect(bounds);
             var points = WorkItemDragService.GetBottomBarLine(bounds);
@@ -166,7 +166,7 @@ namespace TaskManagement.Service
             g.DrawLine(Pens.White, points.Item1, points.Item2);
         }
 
-        private void DrawTopDragBar(Graphics g, RectangleF bounds)
+        private static void DrawTopDragBar(Graphics g, RectangleF bounds)
         {
             var rect = WorkItemDragService.GetTopBarRect(bounds);
             var points = WorkItemDragService.GetTopBarLine(bounds);

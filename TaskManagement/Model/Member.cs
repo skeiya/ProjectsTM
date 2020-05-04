@@ -109,5 +109,40 @@ namespace TaskManagement.Model
         {
             return this.ToSerializeString().CompareTo(other.ToSerializeString().ToString());
         }
+
+        public static bool operator ==(Member left, Member right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Member left, Member right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(Member left, Member right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(Member left, Member right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(Member left, Member right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(Member left, Member right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
+        }
     }
 }

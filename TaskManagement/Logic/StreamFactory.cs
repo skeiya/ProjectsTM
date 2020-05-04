@@ -3,7 +3,7 @@ using System.Text;
 
 namespace TaskManagement.Logic
 {
-    public class StreamFactory
+    public static class StreamFactory
     {
         public static StreamWriter CreateWriter(string path)
         {

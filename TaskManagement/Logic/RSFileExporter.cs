@@ -6,7 +6,7 @@ using TaskManagement.Model;
 
 namespace TaskManagement.Logic
 {
-    public class RSFileExporter
+    public static class RSFileExporter
     {
         public static void Export(AppData appData)
         {

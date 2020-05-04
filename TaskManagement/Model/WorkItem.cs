@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 
@@ -115,12 +116,13 @@ namespace TaskManagement.Model
         {
             using (var s = new MemoryStream())
             using (var w = StreamFactory.CreateWriter(s))
+            using (var xmlReader = XmlReader.Create(s))
             {
                 w.Write(text);
                 w.Flush();
                 s.Position = 0;
                 var x = new XmlSerializer(typeof(WorkItem));
-                return (WorkItem)x.Deserialize(s);
+                return (WorkItem)x.Deserialize(xmlReader);
             }
         }
 
@@ -132,6 +134,41 @@ namespace TaskManagement.Model
             if (cmp != 0) return cmp;
             cmp = this.Period.To.CompareTo(other.Period.To);
             return cmp;
+        }
+
+        public static bool operator ==(WorkItem left, WorkItem right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(WorkItem left, WorkItem right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(WorkItem left, WorkItem right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(WorkItem left, WorkItem right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(WorkItem left, WorkItem right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(WorkItem left, WorkItem right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
         }
     }
 }

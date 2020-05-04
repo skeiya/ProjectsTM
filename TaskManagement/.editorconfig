@@ -1,0 +1,25 @@
+﻿[*.cs]
+
+# CA1710: 識別子は、正しいサフィックスを含んでいなければなりません
+dotnet_diagnostic.CA1710.severity = none
+
+# CA1062: パブリック メソッドの引数の検証
+dotnet_diagnostic.CA1062.severity = none
+
+# CA1051: 参照可能なインスタンス フィールドを宣言しません
+dotnet_diagnostic.CA1051.severity = none
+
+# CA1303: ローカライズされるパラメーターとしてリテラルを渡さない
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1814: 複数次元の配列ではなくジャグ配列を使用します
+dotnet_diagnostic.CA1814.severity = none
+
+# CA1305: IFormatProvider を指定します
+dotnet_diagnostic.CA1305.severity = none
+
+# CA1307: StringComparison を指定します
+dotnet_diagnostic.CA1307.severity = none
+
+# CA1031: 一般的な例外の種類はキャッチしません
+dotnet_diagnostic.CA1031.severity = none

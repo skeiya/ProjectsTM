@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -158,9 +159,10 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var reader = StreamFactory.CreateReader(dlg.FileName))
+                using (var xmlReader = XmlReader.Create(reader))
                 {
                     var s = new XmlSerializer(typeof(Filter));
-                    _filter = (Filter)s.Deserialize(reader);
+                    _filter = (Filter)s.Deserialize(xmlReader);
                     UpdateAllField();
                 }
             }

@@ -56,17 +56,6 @@ namespace TaskManagement.Model
             return string.Format("{0:D4}/{1:D2}/{2:D2}", Year, Month, Day);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (this == obj) return true;
-            var other = obj as CallenderDay;
-            if (other == null) return false;
-            if (this.Year != other.Year) return false;
-            if (this.Month != other.Month) return false;
-            if (this.Day != other.Day) return false;
-            return true;
-        }
-
         public bool LesserThan(CallenderDay to)
         {
             if (Year != to.Year) return Year < to.Year;
@@ -91,6 +80,50 @@ namespace TaskManagement.Model
             Year = d.Year;
             Month = d.Month;
             Day = d.Day;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CallenderDay day &&
+                   Year == day.Year &&
+                   Month == day.Month &&
+                   Day == day.Day &&
+                   Date == day.Date;
+        }
+
+        public static bool operator ==(CallenderDay left, CallenderDay right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(CallenderDay left, CallenderDay right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(CallenderDay left, CallenderDay right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(CallenderDay left, CallenderDay right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(CallenderDay left, CallenderDay right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(CallenderDay left, CallenderDay right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
         }
     }
 }

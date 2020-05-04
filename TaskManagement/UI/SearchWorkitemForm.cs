@@ -35,7 +35,7 @@ namespace TaskManagement.UI
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                var newWi = dlg.GetWorkItem();
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);

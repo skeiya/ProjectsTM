@@ -14,7 +14,7 @@ namespace TaskManagement.Service
 
     class ScrollByDragServicce
     {
-        private ScrollDirection GetDirection(Point cursorPtOnWorkItemGrid, WorkItemGrid wig)
+        private static ScrollDirection GetDirection(Point cursorPtOnWorkItemGrid, WorkItemGrid wig)
         {
             var gridLeft = wig.Left;
             for (int i = 0; i < wig.FixedColCount; i++) gridLeft += (int)wig.ColWidths[i];
@@ -29,7 +29,7 @@ namespace TaskManagement.Service
             return ScrollDirection.NONE;
         }
 
-        public bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
+        public static bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
         {
             var direction = GetDirection(mouseLocationOnTaskGrid, wig);
             if (direction == ScrollDirection.NONE) return false;

@@ -1,10 +1,11 @@
 ﻿using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Model;
 
 namespace TaskManagement.Logic
 {
-    public class AppDataSerializer
+    public static class AppDataSerializer
     {
         public static void Serialize(string fileName, AppData appData)
         {
@@ -23,12 +24,13 @@ namespace TaskManagement.Logic
         public static AppData Deserialize(string fileName)
         {
             using (var reader = StreamFactory.CreateReader(fileName))
+            using (var xmlReader = XmlReader.Create(reader))
             {
-                return LoadFromStream(reader);
+                return LoadFromStream(xmlReader);
             }
         }
 
-        public static AppData LoadFromStream(StreamReader reader)
+        public static AppData LoadFromStream(XmlReader reader)
         {
             var serializer = new XmlSerializer(typeof(AppData));
             return (AppData)serializer.Deserialize(reader);

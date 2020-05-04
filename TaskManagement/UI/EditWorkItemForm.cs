@@ -35,7 +35,7 @@ namespace TaskManagement.UI
             comboBoxState.SelectedItem = state;
         }
 
-        public WorkItem GetWorkItem(Callender callender)
+        public WorkItem GetWorkItem()
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, radioButtonDayCount.Checked);
             return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState());

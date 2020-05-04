@@ -276,7 +276,7 @@ namespace TaskManagement.UI
 
         private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
         {
-            if (!_workItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
+            if (!WorkItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
             Thread.Sleep(500);
         }
 
@@ -329,7 +329,7 @@ namespace TaskManagement.UI
             using (var dlg = new EditWorkItemForm(proto, _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var wi = dlg.GetWorkItem(_viewData.Original.Callender);
+                var wi = dlg.GetWorkItem();
                 _viewData.UpdateCallenderAndMembers(wi);
                 _editService.Add(wi);
                 _undoService.Push();
@@ -345,7 +345,7 @@ namespace TaskManagement.UI
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
+                var newWi = dlg.GetWorkItem();
                 _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
@@ -435,13 +435,13 @@ namespace TaskManagement.UI
             return null != PickExpandingWorkItem(location);
         }
 
-        internal bool IsTopBar(RectangleF workItemBounds, PointF point)
+        internal static bool IsTopBar(RectangleF workItemBounds, PointF point)
         {
             var topBar = WorkItemDragService.GetTopBarRect(workItemBounds);
             return topBar.Contains(point);
         }
 
-        internal bool IsBottomBar(RectangleF workItemBounds, PointF point)
+        internal static bool IsBottomBar(RectangleF workItemBounds, PointF point)
         {
             var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds);
             return bottomBar.Contains(point);

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -94,7 +95,7 @@ namespace TaskManagement.UI
             }
         }
 
-        private string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TaskManagementTool", "UserSetting.xml");
+        private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TaskManagementTool", "UserSetting.xml");
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -172,9 +173,10 @@ namespace TaskManagement.UI
             }
             if (!File.Exists(path)) return;
             using (var rs = StreamFactory.CreateReader(path))
+            using (var xmlReader = XmlReader.Create(rs))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                var filter = (Filter)x.Deserialize(rs);
+                var filter = (Filter)x.Deserialize(xmlReader);
                 _viewData.SetFilter(filter);
             }
         }

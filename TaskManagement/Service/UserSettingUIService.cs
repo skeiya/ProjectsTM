@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -21,8 +22,9 @@ namespace TaskManagement.Service
         {
             var xml = new XmlSerializer(typeof(UserSetting));
             using (var r = StreamFactory.CreateReader(filePath))
+            using (var xmlReader = XmlReader.Create(r))
             {
-                return (UserSetting)xml.Deserialize(r);
+                return (UserSetting)xml.Deserialize(xmlReader);
             }
         }
 

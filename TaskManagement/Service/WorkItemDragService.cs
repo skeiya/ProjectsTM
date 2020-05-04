@@ -16,7 +16,6 @@ namespace TaskManagement.Service
         private Point _draggedLocation;
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
-        private ScrollByDragServicce _scrollByDragService = new ScrollByDragServicce();
 
         private DragState _state = DragState.None;
         public DragState State
@@ -95,7 +94,7 @@ namespace TaskManagement.Service
             viewData.Selected = result;
         }
 
-        private Period GetNewPeriod(Period period, int pOffset, Callender cal)
+        private static Period GetNewPeriod(Period period, int pOffset, Callender cal)
         {
             return period.ApplyOffset(pOffset, cal);
         }
@@ -116,7 +115,7 @@ namespace TaskManagement.Service
             return cur.Value - dragged.Value;
         }
 
-        private Member GetNewMember(IWorkItemGrid grid, Member before, int offset)
+        private static Member GetNewMember(IWorkItemGrid grid, Member before, int offset)
         {
             var newCol = grid.Member2Col(before).Offset(offset);
             return grid.Col2Member(newCol);
@@ -172,14 +171,14 @@ namespace TaskManagement.Service
             return IsVirticalLong(_draggedLocation, curLocation);
         }
 
-        private bool IsVirticalLong(Point a, Point b)
+        private static bool IsVirticalLong(Point a, Point b)
         {
             var h = Math.Abs(a.Y - b.Y);
             var w = Math.Abs(a.X - b.X);
             return w < h;
         }
 
-        private bool IsShiftDown()
+        private static bool IsShiftDown()
         {
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
@@ -325,9 +324,9 @@ namespace TaskManagement.Service
             invalidateMembers(_backup.Select(w => w.AssignedMember));
         }
 
-        public bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
+        public static bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
         {
-            return _scrollByDragService.Scroll(mouseLocationOnTaskGrid, wig);
+            return ScrollByDragServicce.Scroll(mouseLocationOnTaskGrid, wig);
         }
     }
 }
