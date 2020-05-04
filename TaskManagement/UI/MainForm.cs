@@ -194,6 +194,14 @@ namespace TaskManagement.UI
             workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("以降を選択").Click += SelectAfterwardMenu_Click;
+        }
+
+        private void SelectAfterwardMenu_Click(object sender, EventArgs e)
+        {
+            var selected = _viewData.Selected;
+            if (selected == null) return;
+            workItemGrid1.EditService.SelectAfterward(selected);
         }
 
         private void DoneMenu_Click(object sender, EventArgs e)

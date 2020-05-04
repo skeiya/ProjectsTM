@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
 
@@ -88,7 +89,7 @@ namespace TaskManagement.Service
         {
             var done = selected.Clone();
 
-            foreach(var w in done) w.State = TaskState.Done;
+            foreach (var w in done) w.State = TaskState.Done;
 
             _undoService.Delete(selected);
             _undoService.Add(done);
@@ -98,6 +99,23 @@ namespace TaskManagement.Service
             _viewData.Selected = null;
             workItems.Remove(selected);
             workItems.Add(done);
+        }
+
+        internal void SelectAfterward(WorkItems starts)
+        {
+            var newSetected = new WorkItems();
+            foreach (var s in starts)
+            {
+                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
+                {
+                    if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
+                    {
+                        if (newSetected.Contains(w)) continue;
+                        newSetected.Add(w);
+                    }
+                }
+            }
+            _viewData.Selected = newSetected;
         }
     }
 }
