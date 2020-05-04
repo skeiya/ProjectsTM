@@ -62,6 +62,7 @@
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
     <Compile Include="Service\CalculateSumService.cs" />
+    <Compile Include="Service\DragState.cs" />
     <Compile Include="Service\DrawService.cs" />
     <Compile Include="Service\DummyDataService.cs" />
     <Compile Include="Service\EditAction.cs" />
@@ -185,6 +186,7 @@
     </Compile>
     <Compile Include="Model\Tags.cs" />
     <Compile Include="ViewModel\ImageBuffer.cs" />
+    <Compile Include="ViewModel\IWorkItemGrid.cs" />
     <Compile Include="ViewModel\SelectedWorkItemChangedArg.cs" />
     <Compile Include="ViewModel\ViewData.cs" />
     <Compile Include="Model\WorkItem.cs" />

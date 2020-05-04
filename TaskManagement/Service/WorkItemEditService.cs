@@ -15,18 +15,30 @@ namespace TaskManagement.Service
             this._undoService = undoService;
         }
 
-        public void Add(WorkItem item)
+        public void Add(WorkItems wis)
         {
+            if (wis == null) return;
             var items = _viewData.Original.WorkItems;
-            if (item != null && !items.Contains(item))
+            foreach (var w in wis)
             {
-                items.Add(item);
-                _undoService.Add(item);
-                _undoService.Push();
+                if (items.Contains(w)) continue;
+                items.Add(w);
+                _undoService.Add(w);
             }
+            _undoService.Push();
         }
 
-        internal void Delete(WorkItem selected)
+        public void Add(WorkItem wi)
+        {
+            if (wi == null) return;
+            var items = _viewData.Original.WorkItems;
+            if (items.Contains(wi)) return;
+            items.Add(wi);
+            _undoService.Add(wi);
+            _undoService.Push();
+        }
+
+        internal void Delete()
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
             _undoService.Delete(_viewData.Selected);
@@ -53,6 +65,15 @@ namespace TaskManagement.Service
             workItems.Add(d2);
         }
 
+        internal void Replace(WorkItems before, WorkItems after)
+        {
+            _viewData.Original.WorkItems.Remove(before);
+            _viewData.Original.WorkItems.Add(after);
+            _undoService.Delete(before);
+            _undoService.Add(after);
+            _undoService.Push();
+        }
+
         internal void Replace(WorkItem before, WorkItem after)
         {
             if (before.Equals(after)) return;
@@ -63,11 +84,11 @@ namespace TaskManagement.Service
             _undoService.Push();
         }
 
-        internal void Done(WorkItem selected)
+        internal void Done(WorkItems selected)
         {
             var done = selected.Clone();
 
-            done.State = TaskState.Done;
+            foreach(var w in done) w.State = TaskState.Done;
 
             _undoService.Delete(selected);
             _undoService.Add(done);

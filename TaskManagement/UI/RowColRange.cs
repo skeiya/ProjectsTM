@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TaskManagement.UI
 {
-    internal class RowColRange
+    public class RowColRange
     {
         private ColIndex _leftCol;
         private RowIndex _topRow;

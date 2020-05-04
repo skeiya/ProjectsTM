@@ -26,7 +26,7 @@ namespace TaskManagement.UI
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _viewData.Selected = _list[listBox1.SelectedIndex];
+            _viewData.Selected = new WorkItems(_list[listBox1.SelectedIndex]);
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -37,7 +37,7 @@ namespace TaskManagement.UI
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem(_viewData.Original.Callender);
                 _editService.Replace(wi, newWi);
-                _viewData.Selected = newWi;
+                _viewData.Selected = new WorkItems(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
             }
         }

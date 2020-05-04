@@ -47,17 +47,18 @@ namespace TaskManagement.ViewModel
             return workItems.Contains(wi);
         }
 
-        internal void Invalidate(List<Member> members, Func<Member, RectangleF> GetMemberDrawRect, Func<ColIndex, Member> col2member, Func<IEnumerable<Member>, IEnumerable<Member>> getNeighbers
-            )
+        internal void Invalidate(IEnumerable<Member> members, IWorkItemGrid grid)
         {
             //該当メンバの列を少し広めにクリアFill
             foreach (var m in members)
             {
-                var rect = GetMemberDrawRect(m);
-                rect.Inflate(1, 1);
-                _bitmapGraphics.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect);
+                var rect = grid.GetMemberDrawRect(m);
+                if (!rect.HasValue) continue;
+                var newRect = rect.Value;
+                newRect.Inflate(1, 1);
+                _bitmapGraphics.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), newRect);
             }
-            foreach (var m in getNeighbers(members))
+            foreach (var m in grid.GetNeighbers(members))
             {
                 _validList.Remove(m);
             }

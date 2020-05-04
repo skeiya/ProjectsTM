@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
 
@@ -18,9 +19,19 @@ namespace TaskManagement.Service
 
         private AtomicAction _atomicAction = new AtomicAction();
 
+        internal void Delete(WorkItems wis)
+        {
+            foreach (var w in wis) Delete(w);
+        }
+
         internal void Delete(WorkItem w)
         {
             _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
+        }
+
+        internal void Add(WorkItems wis)
+        {
+            foreach (var w in wis) Add(w);
         }
 
         internal void Add(WorkItem w)
@@ -41,18 +52,18 @@ namespace TaskManagement.Service
             if (_undoStack.Count == 0) return;
             var p = _undoStack.Pop();
             _redoStack.Push(p);
+            viewData.Selected = new WorkItems();
             foreach (var a in p)
             {
                 var w = WorkItem.Deserialize(a.WorkItemText);
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Remove(w);
-                    viewData.Selected = null;
                 }
                 else if (a.Action == EditActionType.Delete)
                 {
                     viewData.Original.WorkItems.Add(w);
-                    viewData.Selected = w;
+                    viewData.Selected.Add(w);
                 }
             }
             Changed(this, new EditedEventArgs(p.Members));
@@ -63,13 +74,14 @@ namespace TaskManagement.Service
             if (_redoStack.Count == 0) return;
             var r = _redoStack.Pop();
             _undoStack.Push(r);
+            viewData.Selected = new WorkItems();
             foreach (var a in r)
             {
                 var w = WorkItem.Deserialize(a.WorkItemText);
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Add(w);
-                    viewData.Selected = w;
+                    viewData.Selected.Add(w);
                 }
                 else if (a.Action == EditActionType.Delete)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -216,7 +217,9 @@ namespace TaskManagement.UI
         {
             try
             {
-                var selected = _viewData.Selected;
+                if (_viewData.Selected == null) return;
+                if (_viewData.Selected.Count() != 1) return;
+                var selected = _viewData.Selected.Unique;
                 if (selected == null) return;
                 var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
                 using (var dlg = new DevideWorkItemForm(count))

@@ -13,56 +13,27 @@ namespace TaskManagement.Service
     class DrawService : IDisposable
     {
         private ViewData _viewData;
-        private readonly Size _fullSize;
 
-        private Func<Size> GetVisibleSize { get; }
         private bool _redrawLock = false;
         internal void Lock(bool redrawLock)
         {
             _redrawLock = redrawLock;
         }
 
-        private Func<Point> GetScrollOffset { get; }
-        private Func<RowColRange> GetVisibleNormalRowColRange { get; }
-
-        private readonly SizeF _fixedSize;
         private readonly Func<bool> _isDragActive;
         private ImageBuffer _imageBuffer;
-        private Func<Member, RectangleF> getMemberDrawRect;
-        private Func<ColIndex, Member> col2Member;
-        private Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers;
-        private Func<RowIndex, CallenderDay> row2Day;
+        private IWorkItemGrid _grid;
 
         public DrawService(
             ViewData viewData,
-            Size fullSize,
-            Func<Size> GetVisibleSize,
-            SizeF fixedSize,
-            Func<Point> GetScrollOffset,
+            IWorkItemGrid grid,
             Func<bool> IsDragActive,
-            Func<RowColRange> GetVisibleNormalRowColRange,
-            Func<Member, RectangleF> getMemberDrawRect,
-            Func<ColIndex, Member> col2Member,
-            Func<IEnumerable<Member>, IEnumerable<Member>> GetNeighbers,
-            Func<RowIndex, CallenderDay> row2Day,
-            Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect,
-            Func<WorkItem, Members, bool, RectangleF?> getWorkItemDrawRect,
             Font font)
         {
             this._viewData = viewData;
-            this._fullSize = fullSize;
-            this.GetVisibleSize = GetVisibleSize;
-            this._fixedSize = fixedSize;
-            this.GetScrollOffset = GetScrollOffset;
             _isDragActive = IsDragActive;
-            this.GetVisibleNormalRowColRange = GetVisibleNormalRowColRange;
-            _imageBuffer = new ImageBuffer(fullSize.Width, fullSize.Height);
-            this.getMemberDrawRect = getMemberDrawRect;
-            this.col2Member = col2Member;
-            this.GetNeighbers = GetNeighbers;
-            this.row2Day = row2Day;
-            this.getRect = getRect;
-            this.getWorkItemDrawRect = getWorkItemDrawRect;
+            _imageBuffer = new ImageBuffer((int)grid.FullSize.Width, (int)grid.FullSize.Height);
+            this._grid = grid;
             this._font = font;
         }
 
@@ -87,11 +58,11 @@ namespace TaskManagement.Service
 
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
         {
-            var range = GetVisibleNormalRowColRange();
+            var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
             foreach (var c in range.Cols)
             {
-                var m = col2Member(c);
+                var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isPrint)))
                 {
                     DrawWorkItem(wi, Pens.Black, font, g, members, true);
@@ -115,14 +86,15 @@ namespace TaskManagement.Service
         {
             var dst = GetVisibleNormalRect();
             var src = dst;
-            src.Offset(GetScrollOffset());
+            src.Offset(_grid.ScrollOffset);
             g.DrawImage(image, dst, src, GraphicsUnit.Pixel);
         }
 
         private RectangleF GetVisibleNormalRect()
         {
-            var visibleSize = GetVisibleSize();
-            return new RectangleF(_fixedSize.Width, _fixedSize.Height, visibleSize.Width - _fixedSize.Width, visibleSize.Height - _fixedSize.Height);
+            var visibleSize = _grid.VisibleSize;
+            var fixedSize = _grid.FixedSize;
+            return new RectangleF(fixedSize.Width, fixedSize.Height, visibleSize.Width - fixedSize.Width, visibleSize.Height - fixedSize.Height);
         }
 
         private Image DrawImageBuffer()
@@ -131,11 +103,11 @@ namespace TaskManagement.Service
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
-            var range = GetVisibleNormalRowColRange();
+            var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
             foreach (var c in range.Cols)
             {
-                var m = col2Member(c);
+                var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                 {
                     if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
@@ -150,8 +122,8 @@ namespace TaskManagement.Service
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
         {
             if (count <= 0) yield break;
-            var topDay = row2Day(top);
-            var buttomDay = row2Day(top.Offset(count - 1));
+            var topDay = _grid.Row2Day(top);
+            var buttomDay = _grid.Row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
                 if (!wi.Period.HasInterSection(new Period(topDay, buttomDay))) continue;
@@ -164,7 +136,7 @@ namespace TaskManagement.Service
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
             var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : new SolidBrush(cond.BackColor);
             var front = cond == null ? Color.Black : cond.ForeColor;
-            var res = getWorkItemDrawRect(wi, members, isFrontView);
+            var res = _grid.GetWorkItemDrawRect(wi, members, isFrontView);
             if (!res.HasValue) return;
             if (res.Value.IsEmpty) return;
             if (wi.State == TaskState.Done)
@@ -172,7 +144,7 @@ namespace TaskManagement.Service
                 font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
             }
             var rect = res.Value;
-            rect.Intersect(new RectangleF(0, 0, _fullSize.Width - 1, _fullSize.Height - 1));
+            rect.Intersect(new RectangleF(0, 0, _grid.FullSize.Width - 1, _grid.FullSize.Height - 1));
             g.FillRectangle(fillBrush, rect);
             var isAppendDays = IsAppendDays(g, font, rect);
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect);
@@ -216,29 +188,34 @@ namespace TaskManagement.Service
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
-            var range = GetVisibleNormalRowColRange();
+            var range = _grid.VisibleRowColRange;
             foreach (var r in range.Rows)
             {
-                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(row2Day(r)));
+                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
                 if (m == null) continue;
-                var y = getRect(range.LeftCol, r, 0, false, false, true).Y;
+                var rect = _grid.GetRect(range.LeftCol, r, 0, false, false, true);
+                if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
-                    g.FillRectangle(brush, 0, y, GetVisibleSize().Width, 1);
-                    g.DrawString(m.Name, font, brush, 0, y - 10);
+                    g.FillRectangle(brush, 0, rect.Value.Y, _grid.VisibleSize.Width, 1);
+                    g.DrawString(m.Name, font, brush, 0, rect.Value.Y - 10);
                 }
             }
         }
 
         private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
-            if (_viewData.Selected != null)
+            if (_viewData.Selected == null) return;
+            foreach (var w in _viewData.Selected)
             {
-                DrawWorkItem(_viewData.Selected, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
+                DrawWorkItem(w, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
+            }
 
-                if (!_isDragActive())
+            if (!_isDragActive())
+            {
+                foreach (var w in _viewData.Selected)
                 {
-                    var rect = getWorkItemDrawRect(_viewData.Selected, _viewData.GetFilteredMembers(), true);
+                    var rect = _grid.GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
                     if (rect.HasValue)
                     {
                         DrawTopDragBar(g, rect.Value);
@@ -253,44 +230,44 @@ namespace TaskManagement.Service
             var year = 0;
             var month = 0;
             var day = 0;
-            var range = GetVisibleNormalRowColRange();
+            var range = _grid.VisibleRowColRange;
             foreach (var r in range.Rows)
             {
-                var d = row2Day(r);
+                var d = _grid.Row2Day(r);
                 if (year != d.Year)
                 {
-                    var rectYear = getRect(new ColIndex(0), r, 1, false, true, true);
-                    if (!rectYear.IsEmpty)
+                    var rectYear = _grid.GetRect(new ColIndex(0), r, 1, false, true, true);
+                    if (rectYear.HasValue)
                     {
                         month = 0;
                         day = 0;
-                        year = DrawYear(font, g, d, rectYear);
+                        year = DrawYear(font, g, d, rectYear.Value);
                     }
                 }
                 if (month != d.Month)
                 {
-                    var rectMonth = getRect(new ColIndex(1), r, 1, false, true, true);
-                    if (!rectMonth.IsEmpty)
+                    var rectMonth = _grid.GetRect(new ColIndex(1), r, 1, false, true, true);
+                    if (rectMonth.HasValue)
                     {
                         day = 0;
-                        month = DrawMonth(font, g, d, rectMonth);
+                        month = DrawMonth(font, g, d, rectMonth.Value);
                     }
                 }
                 if (day != d.Day)
                 {
-                    var rectDay = getRect(new ColIndex(2), r, 1, false, true, true);
-                    if (!rectDay.IsEmpty)
+                    var rectDay = _grid.GetRect(new ColIndex(2), r, 1, false, true, true);
+                    if (rectDay.HasValue)
                     {
                         day = d.Day;
-                        g.DrawString(day.ToString(), font, Brushes.Black, rectDay);
+                        g.DrawString(day.ToString(), font, Brushes.Black, rectDay.Value);
                     }
                 }
             }
         }
 
-        internal void InvalidateMembers(List<Member> updatedMembers)
+        internal void InvalidateMembers(IEnumerable<Member> updatedMembers)
         {
-            _imageBuffer.Invalidate(updatedMembers, getMemberDrawRect, col2Member, GetNeighbers);
+            _imageBuffer.Invalidate(updatedMembers, _grid);
         }
 
         private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)
@@ -313,23 +290,21 @@ namespace TaskManagement.Service
 
         private void DrawMember(Font font, Graphics g)
         {
-            var range = GetVisibleNormalRowColRange();
+            var range = _grid.VisibleRowColRange;
             foreach (var c in range.Cols)
             {
-                var m = col2Member(c);
-                var rectCompany = getRect(c, new RowIndex(0), 1, true, false, true);
-                g.DrawString(m.Company, font, Brushes.Black, rectCompany);
-                var firstName = getRect(c, new RowIndex(1), 1, true, false, true);
-                g.DrawString(m.FirstName, font, Brushes.Black, firstName);
-                var lastName = getRect(c, new RowIndex(2), 1, true, false, true);
-                g.DrawString(m.LastName, font, Brushes.Black, lastName);
+                var m = _grid.Col2Member(c);
+                var rectCompany = _grid.GetRect(c, new RowIndex(0), 1, true, false, true);
+                g.DrawString(m.Company, font, Brushes.Black, rectCompany.Value);
+                var firstName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
+                g.DrawString(m.FirstName, font, Brushes.Black, firstName.Value);
+                var lastName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
+                g.DrawString(m.LastName, font, Brushes.Black, lastName.Value);
             }
         }
 
         #region IDisposable Support
         private bool disposedValue = false; // 重複する呼び出しを検出するには
-        private Func<ColIndex, RowIndex, int, bool, bool, bool, RectangleF> getRect;
-        private Func<WorkItem, Members, bool, RectangleF?> getWorkItemDrawRect;
         private readonly Font _font;
 
         protected virtual void Dispose(bool disposing)

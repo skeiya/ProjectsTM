@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
@@ -22,7 +23,7 @@ namespace TaskManagement.ViewModel
         }
 
         private AppData _appData;
-        private WorkItem _selected;
+        private WorkItems _selected;
 
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
@@ -31,7 +32,7 @@ namespace TaskManagement.ViewModel
 
         public int FontSize { set; get; } = 6;
 
-        public WorkItem Selected
+        public WorkItems Selected
         {
             get { return _selected; }
             set
