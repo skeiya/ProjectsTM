@@ -224,7 +224,7 @@ namespace TaskManagement.UI
             }
             if (e.KeyCode == Keys.Escape)
             {
-                _workItemDragService.End(_editService, _viewData, true);
+                _workItemDragService.End(_editService, _viewData, true, null);
                 _viewData.Selected = null;
             }
             this.Invalidate();
@@ -249,8 +249,44 @@ namespace TaskManagement.UI
         {
             using (new RedrawLock(_drawService, () => this.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false);
+                _workItemDragService.End(_editService, _viewData, false, RangeSelect);
             }
+        }
+
+        public Rectangle? GetRangeSelectBound()
+        {
+            if (_workItemDragService.State != DragState.RangeSelect) return null;
+            var p1 = this.PointToClient(Cursor.Position);
+            var p2 = _workItemDragService.DragedLocation;
+            return GetRectangle(p1, p2);
+        }
+
+        void RangeSelect()
+        {
+            var range = GetRangeSelectBound();
+            if (!range.HasValue) return;
+            var members = _viewData.GetFilteredMembers();
+            var selected = new WorkItems();
+            foreach (var c in VisibleRowColRange.Cols)
+            {
+                var m = Col2Member(c);
+                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+                {
+                    var rect = GetWorkItemDrawRect(w, members, true);
+                    if (!rect.HasValue) continue;
+                    if (range.Value.Contains(Rectangle.Round(rect.Value))) selected.Add(w);
+                }
+            }
+            _viewData.Selected = selected;
+        }
+
+        private static Rectangle GetRectangle(Point p1, Point p2)
+        {
+            var x = Math.Min(p1.X, p2.X);
+            var w = Math.Abs(p1.X - p2.X);
+            var y = Math.Min(p1.Y, p2.Y);
+            var h = Math.Abs(p1.Y - p2.Y);
+            return new Rectangle(x, y, w, h);
         }
 
         private bool ScrollOneStep(ScrollDirection direction)
@@ -368,7 +404,11 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            this.ActiveControl = null;
+            if (e.Button == MouseButtons.Right)
+            {
+                _workItemDragService.StartRangeSelect(e.Location);
+            }
+
             if (e.Button == MouseButtons.Left)
             {
                 if (IsWorkItemExpandArea(_viewData, e.Location))

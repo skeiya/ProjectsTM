@@ -27,5 +27,7 @@ namespace TaskManagement.ViewModel
         SizeF FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
+
+        Rectangle? GetRangeSelectBound();
     }
 }

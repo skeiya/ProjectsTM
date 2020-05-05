@@ -8,5 +8,7 @@
         BeforeMoving,
         Moving,
         Copying,
+        BeforeRangeSelect,
+        RangeSelect,
     }
 }

@@ -32,6 +32,8 @@ namespace TaskManagement.Service
 
         public static float ExpandHeight => 5;
 
+        public Point DragedLocation => _draggedLocation;
+
         public void UpdateDraggingItem(IWorkItemGrid grid, Point curLocation, ViewData viewData)
         {
             var callender = viewData.Original.Callender;
@@ -48,6 +50,12 @@ namespace TaskManagement.Service
                     {
                         var enoughDistance = Math.Pow(_draggedLocation.X - curLocation.X, 2) + Math.Pow(_draggedLocation.Y - curLocation.Y, 2) > 25;
                         if (enoughDistance) State = DragState.Expanding;
+                        break;
+                    }
+                case DragState.BeforeRangeSelect:
+                    {
+                        var enoughDistance = Math.Pow(_draggedLocation.X - curLocation.X, 2) + Math.Pow(_draggedLocation.Y - curLocation.Y, 2) > 25;
+                        if (enoughDistance) State = DragState.RangeSelect;
                         break;
                     }
             }
@@ -199,18 +207,32 @@ namespace TaskManagement.Service
             State = DragState.BeforeMoving;
         }
 
+        internal void StartRangeSelect(Point location)
+        {
+            _draggedLocation = location;
+            State = DragState.BeforeRangeSelect;
+        }
+
         public bool IsActive()
         {
             return State != DragState.None;
         }
 
-        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel)
+        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect)
         {
             switch (State)
             {
                 case DragState.None:
                 case DragState.BeforeExpanding:
                 case DragState.BeforeMoving:
+                case DragState.BeforeRangeSelect:
+                    ClearDragState();
+                    return;
+                case DragState.RangeSelect:
+                    if (!isCancel && RangeSelect != null)
+                    {
+                        RangeSelect();
+                    }
                     ClearDragState();
                     return;
             }

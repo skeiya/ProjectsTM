@@ -54,6 +54,19 @@ namespace TaskManagement.Service
             DrawEdgeWorkItems(font, g, isPrint);
             DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
             DrawSelectedWorkItemBound(g, font);
+            DrawRangeSelectBound(g);
+        }
+
+        private void DrawRangeSelectBound(Graphics g)
+        {
+            var rect = _grid.GetRangeSelectBound();
+            if (!rect.HasValue) return;
+            using (var pen = new Pen(Color.Red, 2))
+            {
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                pen.DashOffset += 10;
+                g.DrawRectangle(pen, rect.Value);
+            }
         }
 
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
