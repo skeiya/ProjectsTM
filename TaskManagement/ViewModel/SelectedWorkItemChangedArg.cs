@@ -15,14 +15,14 @@ namespace TaskManagement.ViewModel
             this.selected = selected;
         }
 
-        public List<Member> UpdatedMembers
+        public IEnumerable<Member> UpdatedMembers
         {
             get
             {
                 var result = new List<Member>();
                 if (org != null) result.AddRange(org.Select(w => w.AssignedMember));
                 if (selected != null) result.AddRange(selected.Select(w => w.AssignedMember));
-                return result;
+                return result.Distinct();
             }
         }
     }
