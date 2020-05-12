@@ -123,7 +123,7 @@ namespace TaskManagement.Service
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                 {
-                    if (_viewData.Selected != null && _viewData.Selected.Equals(wi)) continue;
+                    if (_viewData.Selected != null && _viewData.Selected.Contains(wi)) continue;
                     if (_imageBuffer.IsValid(wi)) continue;
                     _imageBuffer.Validate(wi);
                     DrawWorkItem(wi, Pens.Black, font, g, members, false);
