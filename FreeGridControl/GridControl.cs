@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace FreeGridControl
@@ -96,6 +97,8 @@ namespace FreeGridControl
 
         private void _cache_Updated(object sender, System.EventArgs e)
         {
+            vScrollBar.LargeChange = this.Height;
+            hScrollBar.LargeChange = this.Width;
             this.vScrollBar.Minimum = 0;
             this.vScrollBar.Maximum = (int)Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
             this.hScrollBar.Minimum = 0;
