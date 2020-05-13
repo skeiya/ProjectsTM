@@ -10,11 +10,6 @@ namespace TaskManagement.Service
 
         public void ImportMemberAndWorkItems(ViewData viewData)
         {
-            if (CsvReader.IsNoProject)
-            {
-                MessageBox.Show("プロジェクト名を指定してください。");
-                return;
-            }
             try
             {
                 using (var dlg = new OpenFileDialog())
@@ -22,6 +17,7 @@ namespace TaskManagement.Service
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     viewData.Original.Members = CsvReader.ReadMembers(dlg.FileName);
                     viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName);
+                    viewData.ClearCallenderAndMembers();
                     foreach (var w in viewData.Original.WorkItems) // TODO 暫定
                     {
                         viewData.UpdateCallenderAndMembers(w);

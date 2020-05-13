@@ -23,6 +23,12 @@ namespace TaskManagement.ViewModel
         private AppData _appData;
         private WorkItems _selected;
 
+        internal void ClearCallenderAndMembers()
+        {
+            this.Original.Callender = new Callender();
+            this.Original.Members = new Members();
+        }
+
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
