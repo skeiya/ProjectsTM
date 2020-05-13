@@ -413,7 +413,7 @@ namespace TaskManagement.UI
             {
                 if (IsWorkItemExpandArea(_viewData, e.Location))
                 {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected);
+                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, Y2Day(e.Location.Y));
                     return;
                 }
             }

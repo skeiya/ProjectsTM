@@ -191,10 +191,11 @@ namespace TaskManagement.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        internal void StartExpand(int direction, WorkItems selected)
+        internal void StartExpand(int direction, WorkItems selected, CallenderDay callenderDay)
         {
             _backup = selected.Clone();
             _expandDirection = direction;
+            _draggedDay = callenderDay;
             State = DragState.BeforeExpanding;
         }
 
