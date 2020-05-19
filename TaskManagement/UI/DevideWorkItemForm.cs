@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace TaskManagement.UI
 {
-    public partial class DevideWorkItemForm : Form
+    public partial class DivideWorkItemForm : Form
     {
         private readonly int _originalCount;
 
-        public DevideWorkItemForm(int count)
+        public DivideWorkItemForm(int count)
         {
             InitializeComponent();
             labelBefore.Text = count.ToString();
@@ -30,13 +30,13 @@ namespace TaskManagement.UI
 
         private bool IsValid()
         {
-            if (Devided <= 0) return false;
+            if (Divided <= 0) return false;
             if (Remain <= 0) return false;
             return true;
         }
 
-        public int Devided => int.Parse(textBoxDevided.Text);
-        public int Remain => _originalCount - Devided;
+        public int Divided => int.Parse(textBoxDivided.Text);
+        public int Remain => _originalCount - Divided;
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
@@ -44,11 +44,11 @@ namespace TaskManagement.UI
             Close();
         }
 
-        private void TextBoxDevided_TextChanged(object sender, EventArgs e)
+        private void TextBoxDivided_TextChanged(object sender, EventArgs e)
         {
-            int devidedCount = 0;
-            if (!int.TryParse(textBoxDevided.Text, out devidedCount)) return;
-            labelRemain.Text = (_originalCount - devidedCount).ToString();
+            int dividedCount = 0;
+            if (!int.TryParse(textBoxDivided.Text, out dividedCount)) return;
+            labelRemain.Text = (_originalCount - dividedCount).ToString();
         }
 
     }

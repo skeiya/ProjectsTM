@@ -1,6 +1,6 @@
 ﻿namespace TaskManagement.UI
 {
-    partial class DevideWorkItemForm
+    partial class DivideWorkItemForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.labelBefore = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxDevided = new System.Windows.Forms.TextBox();
+            this.textBoxDivided = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelRemain = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -76,13 +76,13 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "→";
             // 
-            // textBoxDevided
+            // textBoxDivided
             // 
-            this.textBoxDevided.Location = new System.Drawing.Point(128, 21);
-            this.textBoxDevided.Name = "textBoxDevided";
-            this.textBoxDevided.Size = new System.Drawing.Size(59, 19);
-            this.textBoxDevided.TabIndex = 2;
-            this.textBoxDevided.TextChanged += new System.EventHandler(this.TextBoxDevided_TextChanged);
+            this.textBoxDivided.Location = new System.Drawing.Point(128, 21);
+            this.textBoxDivided.Name = "textBoxDivided";
+            this.textBoxDivided.Size = new System.Drawing.Size(59, 19);
+            this.textBoxDivided.TabIndex = 2;
+            this.textBoxDivided.TextChanged += new System.EventHandler(this.TextBoxDivided_TextChanged);
             // 
             // label2
             // 
@@ -102,14 +102,14 @@
             this.labelRemain.TabIndex = 4;
             this.labelRemain.Text = "Remain";
             // 
-            // DevideWorkItemForm
+            // DivideWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(261, 96);
-            this.Controls.Add(this.textBoxDevided);
+            this.Controls.Add(this.textBoxDivided);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.labelRemain);
             this.Controls.Add(this.label1);
@@ -117,7 +117,7 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "DevideWorkItemForm";
+            this.Name = "DivideWorkItemForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "分割";
             this.ResumeLayout(false);
@@ -131,7 +131,7 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label labelBefore;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxDevided;
+        private System.Windows.Forms.TextBox textBoxDivided;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelRemain;
     }

@@ -192,7 +192,7 @@ namespace TaskManagement.UI
         {
             workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
             workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DivideMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("2分割").Click += DivideInto2PartsMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
@@ -232,12 +232,12 @@ namespace TaskManagement.UI
             workItemGrid1.MoveToToday();
         }
 
-        private void DevideMenu_Click(object sender, EventArgs e)
+        private void DivideMenu_Click(object sender, EventArgs e)
         {
-            Devide();
+            Divide();
         }
 
-        private void Devide()
+        private void Divide()
         {
             try
             {
@@ -246,10 +246,10 @@ namespace TaskManagement.UI
                 var selected = _viewData.Selected.Unique;
                 if (selected == null) return;
                 var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DevideWorkItemForm(count))
+                using (var dlg = new DivideWorkItemForm(count))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
-                    workItemGrid1.EditService.Devide(selected, dlg.Devided, dlg.Remain);
+                    workItemGrid1.EditService.Divide(selected, dlg.Divided, dlg.Remain);
                 }
             }
             catch
@@ -411,9 +411,9 @@ namespace TaskManagement.UI
             Process.Start(@".\Help\help.html");
         }
 
-        private void ToolStripMenuItemDevide_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
-            Devide();
+            Divide();
         }
 
         private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)

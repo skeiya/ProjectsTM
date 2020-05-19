@@ -47,13 +47,13 @@ namespace TaskManagement.Service
             _undoService.Push();
         }
 
-        internal void Devide(WorkItem selected, int devided, int remain)
+        internal void Divide(WorkItem selected, int divided, int remain)
         {
             var d1 = selected.Clone();
             var d2 = selected.Clone();
 
             d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
-            d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, devided);
+            d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, divided);
 
             _undoService.Delete(selected);
             _undoService.Add(d1);

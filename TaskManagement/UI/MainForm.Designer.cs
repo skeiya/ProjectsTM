@@ -44,7 +44,7 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemGenerateDummyData = new System.Windows.Forms.ToolStripMenuItem();
             this.編集ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAddWorkItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemDevide = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemDivide = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemRedo = new System.Windows.Forms.ToolStripMenuItem();
@@ -175,7 +175,7 @@ namespace TaskManagement.UI
             // 
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemAddWorkItem,
-            this.ToolStripMenuItemDevide,
+            this.ToolStripMenuItemDivide,
             this.ToolStripMenuItemSearch,
             this.ToolStripMenuItemUndo,
             this.ToolStripMenuItemRedo});
@@ -190,12 +190,12 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
-            // ToolStripMenuItemDevide
+            // ToolStripMenuItemDivide
             // 
-            this.ToolStripMenuItemDevide.Name = "ToolStripMenuItemDevide";
-            this.ToolStripMenuItemDevide.Size = new System.Drawing.Size(156, 22);
-            this.ToolStripMenuItemDevide.Text = "作業項目の分割";
-            this.ToolStripMenuItemDevide.Click += new System.EventHandler(this.ToolStripMenuItemDevide_Click);
+            this.ToolStripMenuItemDivide.Name = "ToolStripMenuItemDivide";
+            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemDivide.Text = "作業項目の分割";
+            this.ToolStripMenuItemDivide.Click += new System.EventHandler(this.ToolStripMenuItemDivide_Click);
             // 
             // ToolStripMenuItemSearch
             // 
@@ -433,7 +433,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDevide;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDivide;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGenerateDummyData;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDetail;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
