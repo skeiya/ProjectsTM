@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
@@ -158,6 +159,37 @@ namespace TaskManagement.Service
                 members.Add(s.AssignedMember);
             }
             return false;
+        }
+
+        internal void DivideInto2Parts()
+        {
+            var add = new WorkItems();
+            var divided = new WorkItems();
+            var callender = _viewData.Original.Callender;
+            foreach (var w in _viewData.Selected)
+            {
+                var period = w.Period;
+                var offset = callender.GetOffset(period.From, period.To);
+                if (offset < 1) continue;
+
+                var w1 = w.Clone();
+                w1.Period.To = callender.ApplyOffset(w.Period.From, offset / 2);
+                add.Add(w1);
+                var w2 = w.Clone();
+                w2.Period.From = callender.ApplyOffset(w.Period.From, + offset / 2 + 1);
+                add.Add(w2);
+                divided.Add(w);
+            }
+            if (!divided.Any()) return;
+
+            _undoService.Delete(divided);
+            _undoService.Add(add);
+            _undoService.Push();
+
+            var workItems = _viewData.Original.WorkItems;
+            workItems.Remove(divided);
+            workItems.Add(add);
+            _viewData.Selected = null;
         }
     }
 }

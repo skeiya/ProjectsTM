@@ -193,10 +193,17 @@ namespace TaskManagement.UI
             workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
             workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DevideMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("2分割").Click += DivideInto2PartsMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を選択").Click += SelectAfterwardMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
+        }
+
+        private void DivideInto2PartsMenu_Click(object sender, EventArgs e)
+        {
+            if (_viewData.Selected == null) return;
+            workItemGrid1.EditService.DivideInto2Parts();
         }
 
         private void AlignAfterwardMenu_Click(object sender, EventArgs e)
