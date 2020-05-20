@@ -48,6 +48,13 @@ namespace FreeGridControl
             this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
         }
 
+
+        public void MoveVisibleRowColRange(RowIndex row, int count, ColIndex col)
+        {
+            if (IsVisibleRange(row, count, col)) return;
+            MoveVisibleRowCol(row, col);
+        }
+
         public void MoveVisibleRowCol(RowIndex row, ColIndex col)
         {
             if (IsVisible(row, col)) return;
@@ -63,15 +70,20 @@ namespace FreeGridControl
             }
         }
 
-        private bool IsVisible(RowIndex row, ColIndex col)
+        private bool IsVisibleRange(RowIndex row, int count, ColIndex col)
         {
             if (row == null) return false;
             if (col == null) return false;
-            if (row.Value < VisibleNormalTopRow.Value) return false;
-            if (VisibleNormalButtomRow.Value < row.Value) return false;
+            if (row.Value + count - 1 < VisibleNormalTopRow.Value) return false;
+            if (VisibleNormalButtomRow.Value  < row.Value) return false;
             if (col.Value < VisibleNormalLeftCol.Value) return false;
             if (VisibleNormalRightCol.Value < col.Value) return false;
             return true;
+        }
+
+        private bool IsVisible(RowIndex row, ColIndex col)
+        {
+            return IsVisibleRange(row, 1, col);
         }
 
         private void GridControl_SizeChanged(object sender, EventArgs e)

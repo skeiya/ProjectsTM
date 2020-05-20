@@ -390,7 +390,11 @@ namespace TaskManagement.UI
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            if (_viewData.Selected != null && _viewData.Selected.Count() == 1) MoveVisibleRowCol(GetRowRange(_viewData.Selected.Unique).row, Member2Col(_viewData.Selected.Unique.AssignedMember, _viewData.GetFilteredMembers()));
+            if (_viewData.Selected != null && _viewData.Selected.Count() == 1)
+            {
+                var rowRange = GetRowRange(_viewData.Selected.Unique);
+                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(_viewData.Selected.Unique.AssignedMember, _viewData.GetFilteredMembers()));
+            }
             this.Invalidate();
         }
 
