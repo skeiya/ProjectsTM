@@ -309,10 +309,10 @@ namespace TaskManagement.Service
                 var m = _grid.Col2Member(c);
                 var rectCompany = _grid.GetRect(c, new RowIndex(0), 1, true, false, true);
                 g.DrawString(m.Company, font, Brushes.Black, rectCompany.Value);
-                var firstName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
-                g.DrawString(m.FirstName, font, Brushes.Black, firstName.Value);
-                var lastName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
+                var lastName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
                 g.DrawString(m.LastName, font, Brushes.Black, lastName.Value);
+                var firstName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
+                g.DrawString(m.FirstName, font, Brushes.Black, firstName.Value);
             }
         }
 
