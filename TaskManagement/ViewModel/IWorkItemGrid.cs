@@ -29,5 +29,7 @@ namespace TaskManagement.ViewModel
         RowColRange VisibleRowColRange { get; }
 
         Rectangle? GetRangeSelectBound();
+        bool IsSelected(Member m);
+        bool IsSelected(CallenderDay d);
     }
 }

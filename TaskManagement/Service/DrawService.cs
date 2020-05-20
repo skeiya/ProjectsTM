@@ -247,6 +247,14 @@ namespace TaskManagement.Service
             foreach (var r in range.Rows)
             {
                 var d = _grid.Row2Day(r);
+                if (_grid.IsSelected(d))
+                {
+                    var rectYear = _grid.GetRect(new ColIndex(0), r, 1, false, true, true);
+                    var rectMonth = _grid.GetRect(new ColIndex(1), r, 1, false, true, true);
+                    var rectDay = _grid.GetRect(new ColIndex(2), r, 1, false, true, true);
+                    var rect = new RectangleF(rectYear.Value.Left, rectYear.Value.Top, rectYear.Value.Width + rectMonth.Value.Width + rectDay.Value.Width, rectYear.Value.Height);
+                    g.FillRectangle(BrushCache.GetBrush(Color.LightSkyBlue), rect);
+                }
                 if (year != d.Year)
                 {
                     var rectYear = _grid.GetRect(new ColIndex(0), r, 1, false, true, true);
@@ -308,11 +316,16 @@ namespace TaskManagement.Service
             {
                 var m = _grid.Col2Member(c);
                 var rectCompany = _grid.GetRect(c, new RowIndex(0), 1, true, false, true);
+                var rectLastName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
+                var rectFirstName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
+                if (_grid.IsSelected(m))
+                {
+                    var rect = new RectangleF(rectCompany.Value.Left, rectCompany.Value.Top, rectCompany.Value.Width, rectCompany.Value.Height + rectLastName.Value.Height + rectFirstName.Value.Height);
+                    g.FillRectangle(BrushCache.GetBrush(Color.LightSkyBlue), rect);
+                }
                 g.DrawString(m.Company, font, Brushes.Black, rectCompany.Value);
-                var lastName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
-                g.DrawString(m.LastName, font, Brushes.Black, lastName.Value);
-                var firstName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
-                g.DrawString(m.FirstName, font, Brushes.Black, firstName.Value);
+                g.DrawString(m.LastName, font, Brushes.Black, rectLastName.Value);
+                g.DrawString(m.FirstName, font, Brushes.Black, rectFirstName.Value);
             }
         }
 

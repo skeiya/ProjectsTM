@@ -630,5 +630,17 @@ namespace TaskManagement.UI
             }
             return null;
         }
+
+        public bool IsSelected(Member m)
+        {
+            if (_viewData.Selected == null) return false;
+            return _viewData.Selected.Any(w => w.AssignedMember.Equals(m));
+        }
+
+        public bool IsSelected(CallenderDay d)
+        {
+            if (_viewData.Selected == null) return false;
+            return _viewData.Selected.Any(w => w.Period.Contains(d));
+        }
     }
 }
