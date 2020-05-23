@@ -289,7 +289,7 @@ namespace TaskManagement.UI
             return new Rectangle(x, y, w, h);
         }
 
-        private bool ScrollOneStep(ScrollDirection direction)
+        internal bool ScrollOneStep(ScrollDirection direction)
         {
             const int scrollCellCount = 5;
             switch (direction)
@@ -303,11 +303,6 @@ namespace TaskManagement.UI
             return true;
         }
 
-        public bool ScrollAndUpdate(ScrollDirection direction)
-        {
-            if (!ScrollOneStep(direction)) return false;
-            return true;
-        }
 
         private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
         {

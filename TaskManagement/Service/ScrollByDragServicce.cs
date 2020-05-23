@@ -33,7 +33,7 @@ namespace TaskManagement.Service
         {
             var direction = GetDirection(mouseLocationOnTaskGrid, wig);
             if (direction == ScrollDirection.NONE) return false;
-            return wig.ScrollAndUpdate(direction);
+            return wig.ScrollOneStep(direction);
         }
     }
 }
