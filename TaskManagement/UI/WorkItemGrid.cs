@@ -450,7 +450,7 @@ namespace TaskManagement.UI
             }
             if (e.Button == MouseButtons.Left)
             {
-                _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+                _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y),this);
             }
         }
 
