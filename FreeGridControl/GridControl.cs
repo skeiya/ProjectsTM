@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace FreeGridControl
 {
@@ -13,6 +14,7 @@ namespace FreeGridControl
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
+        public bool moveVisibleRowColRange_LOCK = false;
 
         public GridControl()
         {
@@ -51,7 +53,7 @@ namespace FreeGridControl
 
         public void MoveVisibleRowColRange(RowIndex row, int count, ColIndex col)
         {
-            if (IsVisibleRange(row, count, col)) return;
+            if (IsVisibleRange(row, count, col) || moveVisibleRowColRange_LOCK) return;
             MoveVisibleRowCol(row, col);
         }
 
@@ -68,6 +70,7 @@ namespace FreeGridControl
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
                 this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
             }
+            Thread.Sleep(250);
         }
 
         private bool IsVisibleRange(RowIndex row, int count, ColIndex col)

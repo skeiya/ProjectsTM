@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.Service;
@@ -249,7 +248,7 @@ namespace TaskManagement.UI
         {
             using (new RedrawLock(_drawService, () => this.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect);
+                _workItemDragService.End(_editService, _viewData, false, RangeSelect,this);
             }
         }
 
@@ -307,14 +306,14 @@ namespace TaskManagement.UI
         private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
         {
             if (!WorkItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
         }
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(this, e.Location, _viewData);
-            if (_workItemDragService.IsActive()) ScrollByDragToOutsideOfPanel(e.Location);
+            // if (_workItemDragService.IsActive()) ScrollByDragToOutsideOfPanel(e.Location);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (this.Cursor != Cursors.SizeNS)
