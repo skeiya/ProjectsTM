@@ -10,6 +10,7 @@ namespace TaskManagement.ViewModel
     {
         Member X2Member(int x);
         ColIndex X2Col(float x);
+        ColIndex X2CacheCol(float x);
         Member Col2Member(ColIndex c);
         ColIndex Member2Col(Member m);
         CallenderDay Y2Day(int y);

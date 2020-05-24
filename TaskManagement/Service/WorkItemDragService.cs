@@ -125,8 +125,8 @@ namespace TaskManagement.Service
         private int GetMemberOffset(IWorkItemGrid grid, Point curLocation)
         {
             if (IsOnlyMoveVirtical(curLocation)) return 0;
-            var dragged = _draggedIndex.X;;
-            var cur = grid.X2Col(curLocation.X);
+            var dragged = _draggedIndex.X;
+            var cur = grid.X2CacheCol(curLocation.X);
             return cur.Value - dragged.Value;
         }
 

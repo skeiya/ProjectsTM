@@ -293,6 +293,15 @@ namespace FreeGridControl
             return new ColIndex(ColCount - 1);
         }
 
+        public ColIndex X2CacheCol(float x)
+        {
+            foreach (var c in ColIndex.Range(0, ColCount - FixedColCount + 1))
+            {
+                if (x < _cache.GetLeft(c) - HOffset) return c.Offset(-1);
+            }
+            return new ColIndex(ColCount - 1);
+        }
+
         public RowIndex Y2Row(float y)
         {
             foreach (var r in RowIndex.Range(0, FixedRowCount))
