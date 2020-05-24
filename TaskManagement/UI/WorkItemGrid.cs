@@ -288,32 +288,10 @@ namespace TaskManagement.UI
             return new Rectangle(x, y, w, h);
         }
 
-        internal bool ScrollOneStep(ScrollDirection direction)
-        {
-            const int scrollCellCount = 5;
-            switch (direction)
-            {
-                case ScrollDirection.RIGHT: ScrollHorizontal(_viewData.Detail.ColWidth * scrollCellCount); break;
-                case ScrollDirection.LEFT: ScrollHorizontal(-_viewData.Detail.ColWidth * scrollCellCount); break;
-                case ScrollDirection.LOWER: ScrollVertical(_viewData.Detail.RowHeight * scrollCellCount); break;
-                case ScrollDirection.UPPER: ScrollVertical(-_viewData.Detail.RowHeight * scrollCellCount); break;
-                default: return false;
-            }
-            return true;
-        }
-
-
-        private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
-        {
-            if (!WorkItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
-            //Thread.Sleep(500);
-        }
-
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(this, e.Location, _viewData);
-            // if (_workItemDragService.IsActive()) ScrollByDragToOutsideOfPanel(e.Location);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (this.Cursor != Cursors.SizeNS)

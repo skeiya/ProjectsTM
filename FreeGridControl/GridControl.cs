@@ -32,25 +32,6 @@ namespace FreeGridControl
             this.SizeChanged += GridControl_SizeChanged;
         }
 
-        protected void ScrollHorizontal(int moveDistance)
-        {
-            var currentWidth = this.hScrollBar.Value * _cache.GridWidth / (this.hScrollBar.Maximum - this.hScrollBar.LargeChange);
-            var targetWidth = currentWidth + moveDistance;
-            if (targetWidth > _cache.GridWidth) targetWidth = _cache.GridWidth;
-            if (targetWidth < 0) targetWidth = 0;
-            this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
-        }
-
-        protected void ScrollVertical(int moveDistance)
-        {
-            var currentHeight = this.vScrollBar.Value * _cache.GridHeight / (this.vScrollBar.Maximum - this.vScrollBar.LargeChange);
-            var targetHeight = currentHeight + moveDistance;
-            if (targetHeight > _cache.GridHeight) targetHeight = _cache.GridHeight;
-            if (targetHeight < 0) targetHeight = 0;
-            this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
-        }
-
-
         public void MoveVisibleRowColRange(RowIndex row, int count, ColIndex col)
         {
             if (IsVisibleRange(row, count, col) || moveVisibleRowColRange_LOCK) return;

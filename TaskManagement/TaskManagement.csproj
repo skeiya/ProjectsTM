@@ -79,7 +79,6 @@
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\OldFileService.cs" />
     <Compile Include="Service\PrintService.cs" />
-    <Compile Include="Service\ScrollByDragServicce.cs" />
     <Compile Include="Service\UserSettingUIService.cs" />
     <Compile Include="Service\WorkItemDragService.cs" />
     <Compile Include="Model\AppData.cs" />

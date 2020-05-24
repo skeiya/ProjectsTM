@@ -357,10 +357,5 @@ namespace TaskManagement.Service
             workItems.Remove(_backup);
             invalidateMembers(_backup.Select(w => w.AssignedMember));
         }
-
-        public static bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
-        {
-            return ScrollByDragServicce.Scroll(mouseLocationOnTaskGrid, wig);
-        }
     }
 }
