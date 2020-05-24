@@ -16,6 +16,7 @@ namespace TaskManagement.ViewModel
         CallenderDay Y2Day(int y);
         CallenderDay Row2Day(RowIndex r);
         RowIndex Y2Row(float y);
+        RowIndex Y2CacheRow(float y);
 
         RectangleF? GetMemberDrawRect(Member m);
         RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);

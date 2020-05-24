@@ -333,6 +333,11 @@ namespace FreeGridControl
             return Y2NormalRow(y, mid, up);
         }
 
+        public RowIndex Y2CacheRow(float y)
+        {
+            return Y2NormalRow(y, new RowIndex(0), new RowIndex(RowCount - 1));
+        }
+
         public bool Row2Y(RowIndex r, out float y)
         {
             if (r == null)

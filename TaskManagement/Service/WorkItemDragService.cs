@@ -118,7 +118,7 @@ namespace TaskManagement.Service
         {
             if (IsOnlyMoveHorizontal(curLocation)) return 0;
             var dragged = _draggedIndex.Y;
-            var cur = grid.Y2Row(curLocation.Y);
+            var cur = grid.Y2CacheRow(curLocation.Y);
             return cur.Value - dragged.Value;
         }
 
