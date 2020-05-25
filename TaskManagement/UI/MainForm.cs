@@ -210,7 +210,10 @@ namespace TaskManagement.UI
         {
             var selected = _viewData.Selected;
             if (selected == null) return;
-            workItemGrid1.EditService.AlignAfterward(selected);
+            if (!workItemGrid1.EditService.AlignAfterward(selected))
+            {
+                MessageBox.Show(this, "期間を正常に更新できませんでした。");
+            }
         }
 
         private void SelectAfterwardMenu_Click(object sender, EventArgs e)

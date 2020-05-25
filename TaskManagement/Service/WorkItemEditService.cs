@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.ViewModel;
 
@@ -126,9 +127,9 @@ namespace TaskManagement.Service
             return result;
         }
 
-        internal void AlignAfterward(WorkItems starts)
+        internal bool AlignAfterward(WorkItems starts)
         {
-            if (HasSameMember(starts)) return;
+            if (HasSameMember(starts)) return false;
             var before = new WorkItems();
             var after = new WorkItems();
             var cal = _viewData.Original.Callender;
@@ -143,11 +144,16 @@ namespace TaskManagement.Service
                     var offset = cal.GetOffset(w.Period.From, nextFrom);
                     var a = w.Clone();
                     a.Period = w.Period.ApplyOffset(offset, cal);
+                    if(a.Period == null)
+                    {
+                        return false;
+                    }
                     lastTo = a.Period.To;
                     after.Add(a);
                 }
             }
             Replace(before, after);
+            return true;
         }
 
         private static bool HasSameMember(WorkItems starts)
