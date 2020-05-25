@@ -48,7 +48,7 @@
             this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(414, 184);
-            this.listBox1.TabIndex = 0;
+            this.listBox1.TabIndex = 3;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
             // textBoxPattern
@@ -59,7 +59,7 @@
             this.textBoxPattern.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxPattern.Name = "textBoxPattern";
             this.textBoxPattern.Size = new System.Drawing.Size(264, 19);
-            this.textBoxPattern.TabIndex = 1;
+            this.textBoxPattern.TabIndex = 0;
             // 
             // checkBoxOverwrapPeriod
             // 
@@ -69,7 +69,7 @@
             this.checkBoxOverwrapPeriod.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.checkBoxOverwrapPeriod.Name = "checkBoxOverwrapPeriod";
             this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(72, 16);
-            this.checkBoxOverwrapPeriod.TabIndex = 2;
+            this.checkBoxOverwrapPeriod.TabIndex = 1;
             this.checkBoxOverwrapPeriod.Text = "期間重複";
             this.checkBoxOverwrapPeriod.UseVisualStyleBackColor = true;
             this.checkBoxOverwrapPeriod.CheckedChanged += new System.EventHandler(this.CheckBoxOverwrapPeriod_CheckedChanged);
@@ -80,7 +80,7 @@
             this.buttonSearch.Location = new System.Drawing.Point(377, 6);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(47, 23);
-            this.buttonSearch.TabIndex = 3;
+            this.buttonSearch.TabIndex = 2;
             this.buttonSearch.Text = "検索";
             this.buttonSearch.UseVisualStyleBackColor = true;
             this.buttonSearch.Click += new System.EventHandler(this.ButtonSearch_Click);
