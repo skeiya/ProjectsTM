@@ -26,7 +26,8 @@ namespace TaskManagement.UI
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _viewData.Selected = new WorkItems(_list[listBox1.SelectedIndex]);
+            var found = _viewData.GetFilteredWorkItems().FirstOrDefault(w => w.Equals(_list[listBox1.SelectedIndex]));
+            _viewData.Selected = found == null ? null : new WorkItems(found);
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
