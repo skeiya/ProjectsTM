@@ -34,6 +34,8 @@
             this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelSum = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,7 +49,7 @@
             this.listBox1.Location = new System.Drawing.Point(10, 33);
             this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(414, 184);
+            this.listBox1.Size = new System.Drawing.Size(414, 172);
             this.listBox1.TabIndex = 3;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
@@ -89,12 +91,33 @@
             // 
             this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 211);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "合計";
+            // 
+            // labelSum
+            // 
+            this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelSum.AutoSize = true;
+            this.labelSum.Location = new System.Drawing.Point(45, 211);
+            this.labelSum.Name = "labelSum";
+            this.labelSum.Size = new System.Drawing.Size(0, 12);
+            this.labelSum.TabIndex = 5;
+            // 
             // SearchWorkitemForm
             // 
             this.AcceptButton = this.buttonSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 230);
+            this.Controls.Add(this.labelSum);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.checkBoxOverwrapPeriod);
             this.Controls.Add(this.textBoxPattern);
@@ -116,5 +139,7 @@
         private System.Windows.Forms.CheckBox checkBoxOverwrapPeriod;
         private System.Windows.Forms.BindingSource searchWorkitemFormBindingSource;
         private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelSum;
     }
 }

@@ -85,6 +85,7 @@ namespace TaskManagement.UI
         {
             listBox1.Items.Clear();
             listBox1.Items.AddRange(_list.Select((i) => i.ToString()).ToArray());
+            labelSum.Text = _list.Sum(w => _viewData.Original.Callender.GetPeriodDayCount(w.Period)).ToString() + "day";
         }
     }
 }
