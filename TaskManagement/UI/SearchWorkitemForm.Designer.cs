@@ -33,9 +33,10 @@
             this.textBoxPattern = new System.Windows.Forms.TextBox();
             this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
             this.buttonSearch = new System.Windows.Forms.Button();
-            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.labelSum = new System.Windows.Forms.Label();
+            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.buttonSelect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,10 +88,6 @@
             this.buttonSearch.UseVisualStyleBackColor = true;
             this.buttonSearch.Click += new System.EventHandler(this.ButtonSearch_Click);
             // 
-            // searchWorkitemFormBindingSource
-            // 
-            this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -110,12 +107,28 @@
             this.labelSum.Size = new System.Drawing.Size(0, 12);
             this.labelSum.TabIndex = 5;
             // 
+            // searchWorkitemFormBindingSource
+            // 
+            this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
+            // 
+            // buttonSelect
+            // 
+            this.buttonSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelect.Location = new System.Drawing.Point(311, 206);
+            this.buttonSelect.Name = "buttonSelect";
+            this.buttonSelect.Size = new System.Drawing.Size(111, 23);
+            this.buttonSelect.TabIndex = 6;
+            this.buttonSelect.Text = "グリッド上で選択";
+            this.buttonSelect.UseVisualStyleBackColor = true;
+            this.buttonSelect.Click += new System.EventHandler(this.buttonSelect_Click);
+            // 
             // SearchWorkitemForm
             // 
             this.AcceptButton = this.buttonSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 230);
+            this.Controls.Add(this.buttonSelect);
             this.Controls.Add(this.labelSum);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSearch);
@@ -141,5 +154,6 @@
         private System.Windows.Forms.Button buttonSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelSum;
+        private System.Windows.Forms.Button buttonSelect;
     }
 }
