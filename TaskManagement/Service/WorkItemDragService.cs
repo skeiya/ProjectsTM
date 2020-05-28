@@ -351,5 +351,11 @@ namespace TaskManagement.Service
         {
             return ScrollByDragServicce.Scroll(mouseLocationOnTaskGrid, wig);
         }
+
+        internal void StartCopy(ViewData viewData, Point location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
+        {
+            StartMove(viewData.Selected, location, draggedDay);
+            ToCopyMode(viewData.Original.WorkItems, invalidateMembers);
+        }
     }
 }

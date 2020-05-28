@@ -455,7 +455,14 @@ namespace TaskManagement.UI
             }
             if (e.Button == MouseButtons.Left)
             {
-                _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+                if (IsControlDown())
+                {
+                    _workItemDragService.StartCopy(_viewData, e.Location, Y2Day(e.Location.Y), _drawService.InvalidateMembers);
+                }
+                else
+                {
+                    _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+                }
             }
         }
 
