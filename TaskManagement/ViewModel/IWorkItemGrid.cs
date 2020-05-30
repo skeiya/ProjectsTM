@@ -10,13 +10,15 @@ namespace TaskManagement.ViewModel
     {
         Member X2Member(int x);
         ColIndex X2Col(float x);
-        ColIndex X2CacheCol(float x);
         Member Col2Member(ColIndex c);
         ColIndex Member2Col(Member m);
         CallenderDay Y2Day(int y);
         CallenderDay Row2Day(RowIndex r);
         RowIndex Y2Row(float y);
-        RowIndex Y2CacheRow(float y);
+
+        Point Raw2Client(Point raw);
+        Point Client2Raw(Point client);
+        bool IsFixedArea(Point cur);
 
         RectangleF? GetMemberDrawRect(Member m);
         RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);

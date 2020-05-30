@@ -111,8 +111,8 @@ namespace FreeGridControl
 
         private void UpdateVisibleRange()
         {
-            VisibleNormalTopRow = Y2Row(_cache.FixedHeight + 1);
-            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
+            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0 ,(int)(_cache.FixedHeight + 1))).Y);
+            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1))).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
@@ -256,8 +256,8 @@ namespace FreeGridControl
         public RowIndex VisibleNormalButtomRow { get; private set; }
         public int VisibleNormalRowCount { get; private set; }
         public int VisibleNormalColCount { get; private set; }
-        public ColIndex VisibleNormalLeftCol => X2Col(_cache.FixedWidth + 1);
-        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
+        public ColIndex VisibleNormalLeftCol => X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1),0)).X);
+        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1), 0)).X);
 
         public void Print(Graphics graphics)
         {
@@ -266,58 +266,53 @@ namespace FreeGridControl
 
         public ColIndex X2Col(float x)
         {
-            foreach (var c in ColIndex.Range(0, FixedColCount))
+            foreach (var c in ColIndex.Range(0, ColCount))
             {
                 if (x < _cache.GetLeft(c)) return c.Offset(-1);
-            }
-            foreach (var c in ColIndex.Range(FixedColCount, ColCount - FixedColCount + 1))
-            {
-                if (x < _cache.GetLeft(c) - HOffset) return c.Offset(-1);
             }
             return new ColIndex(ColCount - 1);
         }
 
-        public ColIndex X2CacheCol(float x)
+        public Point Raw2Client(Point raw)
         {
-            foreach (var c in ColIndex.Range(0, ColCount - FixedColCount + 1))
-            {
-                if (x < _cache.GetLeft(c) - HOffset) return c.Offset(-1);
-            }
-            return new ColIndex(ColCount - 1);
+            return new Point(raw.X - HOffset, raw.Y - VOffset);
+        }
+
+        public Point Client2Raw(Point client)
+        {
+            return new Point(client.X + HOffset, client.Y + VOffset);
+        }
+
+        public bool IsFixedArea(Point cur)
+        {
+            if (cur.X < _cache.FixedWidth || cur.Y < _cache.FixedHeight) return true;
+            return false;
         }
 
         public RowIndex Y2Row(float y)
         {
-            foreach (var r in RowIndex.Range(0, FixedRowCount))
-            {
-                if (y < _cache.GetTop(r)) return r.Offset(-1);
-            }
-            return Y2NormalRow(y, new RowIndex(FixedRowCount - 1), new RowIndex(RowCount - 1));
+            return Y2NormalRow(y, new RowIndex(0), new RowIndex(RowCount - 1));
         }
 
         private RowIndex Y2NormalRow(float y, RowIndex low, RowIndex up)
         {
             if (low.Value < 0) return low;
             if (up.Value < 0) return up;
-            if (y >= _cache.GetTop(new RowIndex(RowCount)) - VOffset) return new RowIndex(RowCount - 1);
+            if (y >= _cache.GetTop(new RowIndex(RowCount))) return new RowIndex(RowCount - 1);
 
             if (low.Equals(up))
             {
-                if (_cache.GetTop(low) - VOffset <= y && y < _cache.GetTop(new RowIndex(low.Value + 1)) - VOffset) return low;
+                if (_cache.GetTop(low) <= y && y < _cache.GetTop(new RowIndex(low.Value + 1))) return low;
                 return new RowIndex(-1);
             }
 
             var mid = new RowIndex((low.Value + up.Value) / 2);
-            var midButtom = _cache.GetTop(new RowIndex(mid.Value + 1)) - VOffset;
+            var midButtom = _cache.GetTop(new RowIndex(mid.Value + 1));
             if (y < midButtom) return Y2NormalRow(y, low, mid);
             if (up.Value - low.Value == 1) mid = up;
             return Y2NormalRow(y, mid, up);
         }
 
-        public RowIndex Y2CacheRow(float y)
-        {
-            return Y2NormalRow(y, new RowIndex(0), new RowIndex(RowCount - 1));
-        }
 
         public bool Row2Y(RowIndex r, out float y)
         {

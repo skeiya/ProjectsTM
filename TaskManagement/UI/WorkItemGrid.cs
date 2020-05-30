@@ -291,8 +291,8 @@ namespace TaskManagement.UI
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
-            _workItemDragService.UpdateDraggingItem(this, e.Location, _viewData);
-            if (IsWorkItemExpandArea(_viewData, e.Location))
+            _workItemDragService.UpdateDraggingItem(this, Client2Raw(e.Location), _viewData);
+            if (IsWorkItemExpandArea(_viewData, Client2Raw(e.Location)))
             {
                 if (this.Cursor != Cursors.SizeNS)
                 {
@@ -313,19 +313,24 @@ namespace TaskManagement.UI
         private void UpdateHoveringText(MouseEventArgs e)
         {
             if (_workItemDragService.IsActive()) return;
-            var wi = _viewData.PickFilterdWorkItem(X2Member(e.X), Y2Day(e.Y));
+            if (IsFixedArea(e.Location)) return;
+            Point cur = Client2Raw(e.Location);
+            var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (IsFixedArea(e.Location)) return;
+            Point curOnRaw = Client2Raw(e.Location);
+
             if (_viewData.Selected != null)
             {
                 EditSelectedWorkItem();
                 return;
             }
-            var day = Y2Day(e.Location.Y);
-            var member = X2Member(e.Location.X);
+            var day = Y2Day(curOnRaw.Y);
+            var member = X2Member(curOnRaw.X);
             if (day == null || member == null) return;
             var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active);
             AddNewWorkItem(proto);
@@ -380,21 +385,24 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
+            if (IsFixedArea(e.Location)) return;
+            Point curOnRaw = Client2Raw(e.Location);
+
             if (e.Button == MouseButtons.Right)
             {
-                _workItemDragService.StartRangeSelect(e.Location);
+                _workItemDragService.StartRangeSelect(curOnRaw);
             }
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData, e.Location))
+                if (IsWorkItemExpandArea(_viewData, curOnRaw))
                 {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, Y2Day(e.Location.Y));
+                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, curOnRaw), _viewData.Selected, Y2Day(curOnRaw.Y));
                     return;
                 }
             }
 
-            var wi = PickWorkItemFromPoint(e.Location);
+            var wi = PickWorkItemFromPoint(curOnRaw);
             if (wi == null)
             {
                 _viewData.Selected = null;
@@ -427,7 +435,7 @@ namespace TaskManagement.UI
             }
             if (e.Button == MouseButtons.Left)
             {
-                _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y),this);
+                _workItemDragService.StartMove(_viewData.Selected, Client2Raw(e.Location), Y2Day(curOnRaw.Y));
             }
         }
 
@@ -490,7 +498,7 @@ namespace TaskManagement.UI
         public Member Col2Member(ColIndex c)
         {
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
+             if (c == null) return null;
             var members = _viewData.GetFilteredMembers();
             if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
             var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);

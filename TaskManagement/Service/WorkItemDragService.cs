@@ -17,13 +17,6 @@ namespace TaskManagement.Service
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
 
-        struct DraggedIndex {
-            public FreeGridControl.ColIndex X;
-            public FreeGridControl.RowIndex Y;
-        };
-
-        private DraggedIndex _draggedIndex;
-
         private DragState _state = DragState.None;
         public DragState State
         {
@@ -117,16 +110,16 @@ namespace TaskManagement.Service
         private int GetPeriodOffset(IWorkItemGrid grid, Point curLocation)
         {
             if (IsOnlyMoveHorizontal(curLocation)) return 0;
-            var dragged = _draggedIndex.Y;
-            var cur = grid.Y2CacheRow(curLocation.Y);
+            var dragged = grid.Y2Row(_draggedLocation.Y);
+            var cur = grid.Y2Row(curLocation.Y);
             return cur.Value - dragged.Value;
         }
 
         private int GetMemberOffset(IWorkItemGrid grid, Point curLocation)
         {
             if (IsOnlyMoveVirtical(curLocation)) return 0;
-            var dragged = _draggedIndex.X;
-            var cur = grid.X2CacheCol(curLocation.X);
+            var dragged = grid.X2Col(_draggedLocation.X);
+            var cur = grid.X2Col(curLocation.X);
             return cur.Value - dragged.Value;
         }
 
@@ -206,17 +199,15 @@ namespace TaskManagement.Service
             State = DragState.BeforeExpanding;
         }
 
-        internal void StartMove(WorkItems selected, Point location, CallenderDay draggedDay, WorkItemGrid grid)
+        internal void StartMove(WorkItems selected, Point location, CallenderDay draggedDay)
         {
             if (selected == null) return;
             _backup = selected.Clone();
             _draggedLocation = location;
-            _draggedIndex.X = grid.X2Col(_draggedLocation.X);
-            _draggedIndex.Y = grid.Y2Row(_draggedLocation.Y);
             _draggedDay = draggedDay;
             State = DragState.BeforeMoving;
         }
-
+        
         internal void StartRangeSelect(Point location)
         {
             _draggedLocation = location;
