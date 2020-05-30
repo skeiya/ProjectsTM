@@ -435,7 +435,14 @@ namespace TaskManagement.UI
             }
             if (e.Button == MouseButtons.Left)
             {
-                _workItemDragService.StartMove(_viewData.Selected, Client2Raw(e.Location), Y2Day(curOnRaw.Y));
+                if (IsControlDown())
+                {
+                    _workItemDragService.StartCopy(_viewData, curOnRaw, Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
+                }
+                else
+                {
+                    _workItemDragService.StartMove(_viewData.Selected, curOnRaw, Y2Day(curOnRaw.Y));
+                }
             }
         }
 
@@ -498,7 +505,7 @@ namespace TaskManagement.UI
         public Member Col2Member(ColIndex c)
         {
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-             if (c == null) return null;
+            if (c == null) return null;
             var members = _viewData.GetFilteredMembers();
             if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
             var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);

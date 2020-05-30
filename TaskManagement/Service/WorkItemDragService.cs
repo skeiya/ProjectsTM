@@ -207,7 +207,7 @@ namespace TaskManagement.Service
             _draggedDay = draggedDay;
             State = DragState.BeforeMoving;
         }
-        
+
         internal void StartRangeSelect(Point location)
         {
             _draggedLocation = location;
@@ -347,6 +347,12 @@ namespace TaskManagement.Service
             State = DragState.Moving;
             workItems.Remove(_backup);
             invalidateMembers(_backup.Select(w => w.AssignedMember));
+        }
+
+        internal void StartCopy(ViewData viewData, Point location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
+        {
+            StartMove(viewData.Selected, location, draggedDay);
+            ToCopyMode(viewData.Original.WorkItems, invalidateMembers);
         }
     }
 }
