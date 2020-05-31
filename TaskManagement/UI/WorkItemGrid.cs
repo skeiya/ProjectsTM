@@ -256,7 +256,7 @@ namespace TaskManagement.UI
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
-            var p2 = _workItemDragService.DragedLocation;
+            var p2 = Raw2Client(_workItemDragService.DragedLocation);
             return GetRectangle(p1, p2);
         }
 
@@ -314,7 +314,7 @@ namespace TaskManagement.UI
         {
             if (_workItemDragService.IsActive()) return;
             if (IsFixedArea(e.Location)) return;
-            Point cur = Client2Raw(e.Location);
+            RawPoint cur = Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
         }
@@ -322,7 +322,7 @@ namespace TaskManagement.UI
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (IsFixedArea(e.Location)) return;
-            Point curOnRaw = Client2Raw(e.Location);
+            RawPoint curOnRaw = Client2Raw(e.Location);
 
             if (_viewData.Selected != null)
             {
@@ -386,7 +386,7 @@ namespace TaskManagement.UI
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
             if (IsFixedArea(e.Location)) return;
-            Point curOnRaw = Client2Raw(e.Location);
+            RawPoint curOnRaw = Client2Raw(e.Location);
 
             if (e.Button == MouseButtons.Right)
             {
@@ -446,20 +446,20 @@ namespace TaskManagement.UI
             }
         }
 
-        private int GetExpandDirection(ViewData viewData, Point location)
+        private int GetExpandDirection(ViewData viewData, RawPoint location)
         {
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) return 0;
-                if (IsTopBar(bounds.Value, location)) return +1;
-                if (IsBottomBar(bounds.Value, location)) return -1;
+                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return +1;
+                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return -1;
             }
             return 0;
         }
 
-        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
+        private bool IsWorkItemExpandArea(ViewData viewData, RawPoint location)
         {
             if (viewData.Selected == null) return false;
             return null != PickExpandingWorkItem(location);
@@ -513,7 +513,7 @@ namespace TaskManagement.UI
             return result;
         }
 
-        private WorkItem PickWorkItemFromPoint(Point location)
+        private WorkItem PickWorkItemFromPoint(RawPoint location)
         {
             var m = X2Member(location.X);
             var d = Y2Day(location.Y);
@@ -600,7 +600,7 @@ namespace TaskManagement.UI
             if (_day2RowCache.TryGetValue(day, out var row)) return row;
             foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
+               if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
                 {
                     _day2RowCache.Add(day, r);
                     return r;
@@ -609,15 +609,15 @@ namespace TaskManagement.UI
             return null;
         }
 
-        public WorkItem PickExpandingWorkItem(Point location)
+        public WorkItem PickExpandingWorkItem(RawPoint location)
         {
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) continue;
-                if (IsTopBar(bounds.Value, location)) return w;
-                if (IsBottomBar(bounds.Value, location)) return w;
+                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return w;
+                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return w;
             }
             return null;
         }

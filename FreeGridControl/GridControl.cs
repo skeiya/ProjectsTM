@@ -15,6 +15,12 @@ namespace FreeGridControl
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
         public bool moveVisibleRowColRange_LOCK = false;
+        public struct RawPoint
+        {
+            public int X { get;}
+            public int Y { get;}
+            public RawPoint(int x = 0,int y = 0) { X = x; Y = y;}
+        }
 
         public GridControl()
         {
@@ -273,14 +279,14 @@ namespace FreeGridControl
             return new ColIndex(ColCount - 1);
         }
 
-        public Point Raw2Client(Point raw)
+        public Point Raw2Client(RawPoint raw)
         {
             return new Point(raw.X - HOffset, raw.Y - VOffset);
         }
 
-        public Point Client2Raw(Point client)
+        public RawPoint Client2Raw(Point client)
         {
-            return new Point(client.X + HOffset, client.Y + VOffset);
+            return new RawPoint(client.X + HOffset, client.Y + VOffset);
         }
 
         public bool IsFixedArea(Point cur)
