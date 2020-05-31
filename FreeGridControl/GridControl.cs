@@ -41,12 +41,12 @@ namespace FreeGridControl
         public void MoveVisibleRowCol(RowIndex row, ColIndex col)
         {
             if (IsVisible(row, col)) return;
-            if (row != null)
+            if (row != null && !IsVisible(row, VisibleNormalLeftCol))
             {
                 var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
                 this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
             }
-            if (col != null)
+            if (col != null && !IsVisible(VisibleNormalTopRow, col))
             {
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
                 this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
@@ -312,7 +312,6 @@ namespace FreeGridControl
             if (up.Value - low.Value == 1) mid = up;
             return Y2NormalRow(y, mid, up);
         }
-
 
         public bool Row2Y(RowIndex r, out float y)
         {
