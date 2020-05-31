@@ -61,8 +61,9 @@ namespace TaskManagement.UI
 
             _editService = new WorkItemEditService(_viewData, _undoService);
 
-            LockUpdate = false;
             UpdateCache();
+            LockUpdate = false;
+            RefreshDraw();
         }
 
         DrawService _drawService;
@@ -72,7 +73,6 @@ namespace TaskManagement.UI
             _row2DayChache.Clear();
             _member2ColChache.Clear();
             _col2MemberChache.Clear();
-            RefreshDraw();
         }
 
         public void RefreshDraw()
@@ -109,6 +109,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             UpdateCache();
+            RefreshDraw();
         }
 
         internal void AdjustForPrint(Rectangle printRect)
