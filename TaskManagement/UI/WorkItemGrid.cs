@@ -248,7 +248,7 @@ namespace TaskManagement.UI
         {
             using (new RedrawLock(_drawService, () => this.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect,this);
+                _workItemDragService.End(_editService, _viewData, false, RangeSelect, this);
             }
         }
 

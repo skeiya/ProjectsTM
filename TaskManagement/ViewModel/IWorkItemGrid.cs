@@ -16,10 +16,6 @@ namespace TaskManagement.ViewModel
         CallenderDay Row2Day(RowIndex r);
         RowIndex Y2Row(float y);
 
-        Point Raw2Client(Point raw);
-        Point Client2Raw(Point client);
-        bool IsFixedArea(Point cur);
-
         RectangleF? GetMemberDrawRect(Member m);
         RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);
         RectangleF? GetWorkItemDrawRect(WorkItem wi, Members members, bool isFrontView);
