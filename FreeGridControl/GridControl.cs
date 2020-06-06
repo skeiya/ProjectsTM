@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace FreeGridControl
 {
@@ -13,6 +14,7 @@ namespace FreeGridControl
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
+        public bool moveVisibleRowColRange_LOCK = false;
 
         public GridControl()
         {
@@ -30,44 +32,25 @@ namespace FreeGridControl
             this.SizeChanged += GridControl_SizeChanged;
         }
 
-        protected void ScrollHorizontal(int moveDistance)
-        {
-            var currentWidth = this.hScrollBar.Value * _cache.GridWidth / (this.hScrollBar.Maximum - this.hScrollBar.LargeChange);
-            var targetWidth = currentWidth + moveDistance;
-            if (targetWidth > _cache.GridWidth) targetWidth = _cache.GridWidth;
-            if (targetWidth < 0) targetWidth = 0;
-            this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
-        }
-
-        protected void ScrollVertical(int moveDistance)
-        {
-            var currentHeight = this.vScrollBar.Value * _cache.GridHeight / (this.vScrollBar.Maximum - this.vScrollBar.LargeChange);
-            var targetHeight = currentHeight + moveDistance;
-            if (targetHeight > _cache.GridHeight) targetHeight = _cache.GridHeight;
-            if (targetHeight < 0) targetHeight = 0;
-            this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
-        }
-
-
         public void MoveVisibleRowColRange(RowIndex row, int count, ColIndex col)
         {
-            if (IsVisibleRange(row, count, col)) return;
+            if (IsVisibleRange(row, count, col) || moveVisibleRowColRange_LOCK) return;
             MoveVisibleRowCol(row, col);
         }
 
         public void MoveVisibleRowCol(RowIndex row, ColIndex col)
         {
-            if (IsVisible(row, col)) return;
-            if (row != null)
+            if (!IsVisible(row))
             {
                 var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
                 this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
             }
-            if (col != null)
+            if (!IsVisible(col))
             {
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
                 this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
             }
+            Thread.Sleep(250);
         }
 
         private bool IsVisibleRange(RowIndex row, int count, ColIndex col)
@@ -84,6 +67,16 @@ namespace FreeGridControl
         private bool IsVisible(RowIndex row, ColIndex col)
         {
             return IsVisibleRange(row, 1, col);
+        }
+
+        private bool IsVisible(RowIndex row)
+        {
+            return IsVisibleRange(row, 1, VisibleNormalLeftCol);
+        }
+
+        private bool IsVisible(ColIndex col)
+        {
+            return IsVisibleRange(VisibleNormalTopRow, 1, col);
         }
 
         private void GridControl_SizeChanged(object sender, EventArgs e)
@@ -127,8 +120,8 @@ namespace FreeGridControl
 
         private void UpdateVisibleRange()
         {
-            VisibleNormalTopRow = Y2Row(_cache.FixedHeight + 1);
-            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(this.Height - 1);
+            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0 ,(int)(_cache.FixedHeight + 1))).Y);
+            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1))).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
@@ -272,8 +265,8 @@ namespace FreeGridControl
         public RowIndex VisibleNormalButtomRow { get; private set; }
         public int VisibleNormalRowCount { get; private set; }
         public int VisibleNormalColCount { get; private set; }
-        public ColIndex VisibleNormalLeftCol => X2Col(_cache.FixedWidth + 1);
-        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(this.Width - 1);
+        public ColIndex VisibleNormalLeftCol => X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1),0)).X);
+        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1), 0)).X);
 
         public void Print(Graphics graphics)
         {
@@ -282,40 +275,48 @@ namespace FreeGridControl
 
         public ColIndex X2Col(float x)
         {
-            foreach (var c in ColIndex.Range(0, FixedColCount))
+            foreach (var c in ColIndex.Range(0, ColCount))
             {
                 if (x < _cache.GetLeft(c)) return c.Offset(-1);
-            }
-            foreach (var c in ColIndex.Range(FixedColCount, ColCount - FixedColCount + 1))
-            {
-                if (x < _cache.GetLeft(c) - HOffset) return c.Offset(-1);
             }
             return new ColIndex(ColCount - 1);
         }
 
+        public Point Raw2Client(RawPoint raw)
+        {
+            return new Point(raw.X - HOffset, raw.Y - VOffset);
+        }
+
+        public RawPoint Client2Raw(Point client)
+        {
+            return new RawPoint(client.X + HOffset, client.Y + VOffset);
+        }
+
+        public bool IsFixedArea(Point cur)
+        {
+            if (cur.X < _cache.FixedWidth || cur.Y < _cache.FixedHeight) return true;
+            return false;
+        }
+
         public RowIndex Y2Row(float y)
         {
-            foreach (var r in RowIndex.Range(0, FixedRowCount))
-            {
-                if (y < _cache.GetTop(r)) return r.Offset(-1);
-            }
-            return Y2NormalRow(y, new RowIndex(FixedRowCount - 1), new RowIndex(RowCount - 1));
+            return Y2NormalRow(y, new RowIndex(0), new RowIndex(RowCount - 1));
         }
 
         private RowIndex Y2NormalRow(float y, RowIndex low, RowIndex up)
         {
             if (low.Value < 0) return low;
             if (up.Value < 0) return up;
-            if (y >= _cache.GetTop(new RowIndex(RowCount)) - VOffset) return new RowIndex(RowCount - 1);
+            if (y >= _cache.GetTop(new RowIndex(RowCount))) return new RowIndex(RowCount - 1);
 
             if (low.Equals(up))
             {
-                if (_cache.GetTop(low) - VOffset <= y && y < _cache.GetTop(new RowIndex(low.Value + 1)) - VOffset) return low;
+                if (_cache.GetTop(low) <= y && y < _cache.GetTop(new RowIndex(low.Value + 1))) return low;
                 return new RowIndex(-1);
             }
 
             var mid = new RowIndex((low.Value + up.Value) / 2);
-            var midButtom = _cache.GetTop(new RowIndex(mid.Value + 1)) - VOffset;
+            var midButtom = _cache.GetTop(new RowIndex(mid.Value + 1));
             if (y < midButtom) return Y2NormalRow(y, low, mid);
             if (up.Value - low.Value == 1) mid = up;
             return Y2NormalRow(y, mid, up);

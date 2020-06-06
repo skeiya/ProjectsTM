@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using TaskManagement.Model;
 using TaskManagement.Service;
@@ -250,7 +249,7 @@ namespace TaskManagement.UI
         {
             using (new RedrawLock(_drawService, () => this.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect);
+                _workItemDragService.End(_editService, _viewData, false, RangeSelect, this);
             }
         }
 
@@ -258,7 +257,7 @@ namespace TaskManagement.UI
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
-            var p2 = _workItemDragService.DragedLocation;
+            var p2 = Raw2Client(_workItemDragService.DragedLocation);
             return GetRectangle(p1, p2);
         }
 
@@ -290,38 +289,11 @@ namespace TaskManagement.UI
             return new Rectangle(x, y, w, h);
         }
 
-        private bool ScrollOneStep(ScrollDirection direction)
-        {
-            const int scrollCellCount = 5;
-            switch (direction)
-            {
-                case ScrollDirection.RIGHT: ScrollHorizontal(_viewData.Detail.ColWidth * scrollCellCount); break;
-                case ScrollDirection.LEFT: ScrollHorizontal(-_viewData.Detail.ColWidth * scrollCellCount); break;
-                case ScrollDirection.LOWER: ScrollVertical(_viewData.Detail.RowHeight * scrollCellCount); break;
-                case ScrollDirection.UPPER: ScrollVertical(-_viewData.Detail.RowHeight * scrollCellCount); break;
-                default: return false;
-            }
-            return true;
-        }
-
-        public bool ScrollAndUpdate(ScrollDirection direction)
-        {
-            if (!ScrollOneStep(direction)) return false;
-            return true;
-        }
-
-        private void ScrollByDragToOutsideOfPanel(Point mouseLocationOnTaskGrid)
-        {
-            if (!WorkItemDragService.Scroll(mouseLocationOnTaskGrid, this)) return;
-            Thread.Sleep(500);
-        }
-
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
             UpdateHoveringText(e);
-            _workItemDragService.UpdateDraggingItem(this, e.Location, _viewData);
-            if (_workItemDragService.IsActive()) ScrollByDragToOutsideOfPanel(e.Location);
-            if (IsWorkItemExpandArea(_viewData, e.Location))
+            _workItemDragService.UpdateDraggingItem(this, Client2Raw(e.Location), _viewData);
+            if (IsWorkItemExpandArea(_viewData, Client2Raw(e.Location)))
             {
                 if (this.Cursor != Cursors.SizeNS)
                 {
@@ -342,19 +314,24 @@ namespace TaskManagement.UI
         private void UpdateHoveringText(MouseEventArgs e)
         {
             if (_workItemDragService.IsActive()) return;
-            var wi = _viewData.PickFilterdWorkItem(X2Member(e.X), Y2Day(e.Y));
+            if (IsFixedArea(e.Location)) return;
+            RawPoint cur = Client2Raw(e.Location);
+            var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (IsFixedArea(e.Location)) return;
+            RawPoint curOnRaw = Client2Raw(e.Location);
+
             if (_viewData.Selected != null)
             {
                 EditSelectedWorkItem();
                 return;
             }
-            var day = Y2Day(e.Location.Y);
-            var member = X2Member(e.Location.X);
+            var day = Y2Day(curOnRaw.Y);
+            var member = X2Member(curOnRaw.X);
             if (day == null || member == null) return;
             var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active);
             AddNewWorkItem(proto);
@@ -409,21 +386,24 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
+            if (IsFixedArea(e.Location)) return;
+            RawPoint curOnRaw = Client2Raw(e.Location);
+
             if (e.Button == MouseButtons.Right)
             {
-                _workItemDragService.StartRangeSelect(e.Location);
+                _workItemDragService.StartRangeSelect(curOnRaw);
             }
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData, e.Location))
+                if (IsWorkItemExpandArea(_viewData, curOnRaw))
                 {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, Y2Day(e.Location.Y));
+                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, curOnRaw), _viewData.Selected, Y2Day(curOnRaw.Y));
                     return;
                 }
             }
 
-            var wi = PickWorkItemFromPoint(e.Location);
+            var wi = PickWorkItemFromPoint(curOnRaw);
             if (wi == null)
             {
                 _viewData.Selected = null;
@@ -458,29 +438,29 @@ namespace TaskManagement.UI
             {
                 if (IsControlDown())
                 {
-                    _workItemDragService.StartCopy(_viewData, e.Location, Y2Day(e.Location.Y), _drawService.InvalidateMembers);
+                    _workItemDragService.StartCopy(_viewData, curOnRaw, Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
                 }
                 else
                 {
-                    _workItemDragService.StartMove(_viewData.Selected, e.Location, Y2Day(e.Location.Y));
+                    _workItemDragService.StartMove(_viewData.Selected, curOnRaw, Y2Day(curOnRaw.Y));
                 }
             }
         }
 
-        private int GetExpandDirection(ViewData viewData, Point location)
+        private int GetExpandDirection(ViewData viewData, RawPoint location)
         {
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) return 0;
-                if (IsTopBar(bounds.Value, location)) return +1;
-                if (IsBottomBar(bounds.Value, location)) return -1;
+                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return +1;
+                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return -1;
             }
             return 0;
         }
 
-        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
+        private bool IsWorkItemExpandArea(ViewData viewData, RawPoint location)
         {
             if (viewData.Selected == null) return false;
             return null != PickExpandingWorkItem(location);
@@ -534,7 +514,7 @@ namespace TaskManagement.UI
             return result;
         }
 
-        private WorkItem PickWorkItemFromPoint(Point location)
+        private WorkItem PickWorkItemFromPoint(RawPoint location)
         {
             var m = X2Member(location.X);
             var d = Y2Day(location.Y);
@@ -621,7 +601,7 @@ namespace TaskManagement.UI
             if (_day2RowCache.TryGetValue(day, out var row)) return row;
             foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
+               if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
                 {
                     _day2RowCache.Add(day, r);
                     return r;
@@ -630,15 +610,15 @@ namespace TaskManagement.UI
             return null;
         }
 
-        public WorkItem PickExpandingWorkItem(Point location)
+        public WorkItem PickExpandingWorkItem(RawPoint location)
         {
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) continue;
-                if (IsTopBar(bounds.Value, location)) return w;
-                if (IsBottomBar(bounds.Value, location)) return w;
+                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return w;
+                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return w;
             }
             return null;
         }

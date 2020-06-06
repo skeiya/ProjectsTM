@@ -10,10 +10,12 @@ using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {
+    using RawPoint = FreeGridControl.GridControl.RawPoint;
+
     class WorkItemDragService
     {
         private WorkItems _backup;
-        private Point _draggedLocation;
+        private RawPoint _draggedLocation;
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
 
@@ -32,9 +34,9 @@ namespace TaskManagement.Service
 
         public static float ExpandHeight => 5;
 
-        public Point DragedLocation => _draggedLocation;
+        public RawPoint DragedLocation => _draggedLocation;
 
-        public void UpdateDraggingItem(IWorkItemGrid grid, Point curLocation, ViewData viewData)
+        public void UpdateDraggingItem(IWorkItemGrid grid,  RawPoint curLocation, ViewData viewData)
         {
             var callender = viewData.Original.Callender;
 
@@ -74,7 +76,7 @@ namespace TaskManagement.Service
             }
         }
 
-        private void UpdateMoving(IWorkItemGrid grid, Point curLocation, Callender callender, ViewData viewData)
+        private void UpdateMoving(IWorkItemGrid grid, RawPoint curLocation, Callender callender, ViewData viewData)
         {
             var mOffset = GetMemberOffset(grid, curLocation);
             var pOffset = GetPeriodOffset(grid, curLocation);
@@ -107,7 +109,7 @@ namespace TaskManagement.Service
             return period.ApplyOffset(pOffset, cal);
         }
 
-        private int GetPeriodOffset(IWorkItemGrid grid, Point curLocation)
+        private int GetPeriodOffset(IWorkItemGrid grid, RawPoint curLocation)
         {
             if (IsOnlyMoveHorizontal(curLocation)) return 0;
             var dragged = grid.Y2Row(_draggedLocation.Y);
@@ -115,7 +117,7 @@ namespace TaskManagement.Service
             return cur.Value - dragged.Value;
         }
 
-        private int GetMemberOffset(IWorkItemGrid grid, Point curLocation)
+        private int GetMemberOffset(IWorkItemGrid grid, RawPoint curLocation)
         {
             if (IsOnlyMoveVirtical(curLocation)) return 0;
             var dragged = grid.X2Col(_draggedLocation.X);
@@ -129,7 +131,7 @@ namespace TaskManagement.Service
             return grid.Col2Member(newCol);
         }
 
-        private void UpdateExpand(ViewData viewData, IWorkItemGrid grid, Point curLocation, Callender callender)
+        private void UpdateExpand(ViewData viewData, IWorkItemGrid grid, RawPoint curLocation, Callender callender)
         {
             var curDay = grid.Y2Day(curLocation.Y);
             var isExpandingFrom = _expandDirection > 0;
@@ -167,19 +169,19 @@ namespace TaskManagement.Service
             return _expandDirection * callender.GetOffset(d, otherSideDay) < 0;
         }
 
-        private bool IsOnlyMoveHorizontal(Point curLocation)
+        private bool IsOnlyMoveHorizontal(RawPoint curLocation)
         {
             if (!IsShiftDown()) return false;
             return !IsVirticalLong(_draggedLocation, curLocation);
         }
 
-        private bool IsOnlyMoveVirtical(Point curLocation)
+        private bool IsOnlyMoveVirtical(RawPoint curLocation)
         {
             if (!IsShiftDown()) return false;
             return IsVirticalLong(_draggedLocation, curLocation);
         }
 
-        private static bool IsVirticalLong(Point a, Point b)
+        private static bool IsVirticalLong(RawPoint a, RawPoint b)
         {
             var h = Math.Abs(a.Y - b.Y);
             var w = Math.Abs(a.X - b.X);
@@ -199,7 +201,7 @@ namespace TaskManagement.Service
             State = DragState.BeforeExpanding;
         }
 
-        internal void StartMove(WorkItems selected, Point location, CallenderDay draggedDay)
+        internal void StartMove(WorkItems selected, RawPoint location, CallenderDay draggedDay)
         {
             if (selected == null) return;
             _backup = selected.Clone();
@@ -208,7 +210,7 @@ namespace TaskManagement.Service
             State = DragState.BeforeMoving;
         }
 
-        internal void StartRangeSelect(Point location)
+        internal void StartRangeSelect(RawPoint location)
         {
             _draggedLocation = location;
             State = DragState.BeforeRangeSelect;
@@ -219,7 +221,7 @@ namespace TaskManagement.Service
             return State != DragState.None;
         }
 
-        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect)
+        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect, WorkItemGrid grid = null)
         {
             switch (State)
             {
@@ -241,7 +243,7 @@ namespace TaskManagement.Service
             {
                 if (!ExistsEdit(viewData)) return;
                 var edit = BackupEdit(viewData);
-                ClearEdit(viewData);
+                ClearEdit(viewData, grid);
                 if (isCancel) return;
                 ApplyEdit(editService, viewData, edit);
             }
@@ -275,7 +277,7 @@ namespace TaskManagement.Service
             viewData.Selected = edit;
         }
 
-        private void ClearEdit(ViewData viewData)
+        private void ClearEdit(ViewData viewData, WorkItemGrid grid)
         {
             switch (State)
             {
@@ -287,7 +289,9 @@ namespace TaskManagement.Service
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
             viewData.Original.WorkItems.Add(_backup);
+            if (grid != null) grid.moveVisibleRowColRange_LOCK = true;
             viewData.Selected = _backup;
+            if (grid != null) grid.moveVisibleRowColRange_LOCK = false;
         }
 
         private static WorkItems BackupEdit(ViewData viewData)
@@ -347,12 +351,7 @@ namespace TaskManagement.Service
             invalidateMembers(_backup.Select(w => w.AssignedMember));
         }
 
-        public static bool Scroll(Point mouseLocationOnTaskGrid, WorkItemGrid wig)
-        {
-            return ScrollByDragServicce.Scroll(mouseLocationOnTaskGrid, wig);
-        }
-
-        internal void StartCopy(ViewData viewData, Point location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
+        internal void StartCopy(ViewData viewData, RawPoint location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
         {
             StartMove(viewData.Selected, location, draggedDay);
             ToCopyMode(viewData.Original.WorkItems, invalidateMembers);
