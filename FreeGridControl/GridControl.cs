@@ -40,13 +40,12 @@ namespace FreeGridControl
 
         public void MoveVisibleRowCol(RowIndex row, ColIndex col)
         {
-            if (IsVisible(row, col)) return;
-            if (row != null && !IsVisible(row, VisibleNormalLeftCol))
+            if (!IsVisible(row))
             {
                 var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
                 this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
             }
-            if (col != null && !IsVisible(VisibleNormalTopRow, col))
+            if (!IsVisible(col))
             {
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
                 this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
@@ -68,6 +67,16 @@ namespace FreeGridControl
         private bool IsVisible(RowIndex row, ColIndex col)
         {
             return IsVisibleRange(row, 1, col);
+        }
+
+        private bool IsVisible(RowIndex row)
+        {
+            return IsVisibleRange(row, 1, VisibleNormalLeftCol);
+        }
+
+        private bool IsVisible(ColIndex col)
+        {
+            return IsVisibleRange(VisibleNormalTopRow, 1, col);
         }
 
         private void GridControl_SizeChanged(object sender, EventArgs e)
