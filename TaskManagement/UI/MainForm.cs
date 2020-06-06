@@ -194,23 +194,32 @@ namespace TaskManagement.UI
             workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DivideMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("2分割").Click += DivideInto2PartsMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("半分に縮小").Click += MakeHalfMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を選択").Click += SelectAfterwardMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
+        }
+
+        private void AlignSelectedMenu_Click(object sender, EventArgs e)
+        {
+            workItemGrid1.EditService.AlignSelected();
+        }
+
+        private void MakeHalfMenu_Click(object sender, EventArgs e)
+        {
+            workItemGrid1.EditService.MakeHalf();
         }
 
         private void DivideInto2PartsMenu_Click(object sender, EventArgs e)
         {
-            if (_viewData.Selected == null) return;
             workItemGrid1.EditService.DivideInto2Parts();
         }
 
         private void AlignAfterwardMenu_Click(object sender, EventArgs e)
         {
-            var selected = _viewData.Selected;
-            if (selected == null) return;
-            if (!workItemGrid1.EditService.AlignAfterward(selected))
+            if (!workItemGrid1.EditService.AlignAfterward())
             {
                 MessageBox.Show(this, "期間を正常に更新できませんでした。");
             }
