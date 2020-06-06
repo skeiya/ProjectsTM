@@ -15,12 +15,6 @@ namespace FreeGridControl
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
         public bool moveVisibleRowColRange_LOCK = false;
-        public struct RawPoint
-        {
-            public int X { get;}
-            public int Y { get;}
-            public RawPoint(int x = 0,int y = 0) { X = x; Y = y;}
-        }
 
         public GridControl()
         {

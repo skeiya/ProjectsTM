@@ -46,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache.cs" />
+    <Compile Include="RawPoint.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ColIndex.cs" />
     <Compile Include="DrawNormalAreaEventArgs.cs" />
     <Compile Include="GridControl.cs">
