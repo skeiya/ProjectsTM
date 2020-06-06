@@ -328,11 +328,16 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), MemberHasProject))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
             }
+        }
+
+        private bool MemberHasProject(Member m , Project p)
+        {
+            return _viewData.GetFilteredWorkItemsOfMember(m).Any(w => w.Project.Equals(p));
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
