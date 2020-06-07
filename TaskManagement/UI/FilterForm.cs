@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -14,15 +15,19 @@ namespace TaskManagement.UI
         private Members _originalMembers;
         private Filter _filter;
         private Callender _callender;
+        private WorkItems _workItems;
+        private Func<Member, Project, bool> memberHasProject;
 
-        public FilterForm(Members members, Filter filter, Callender callender)
+        public FilterForm(Members members, Filter filter, Callender callender, WorkItems workItems, Func<Member, Project, bool> memberHasProject)
         {
             InitializeComponent();
             _originalMembers = members.Clone();
             _members = members.Clone();
             _filter = filter;
             _callender = callender;
+            _workItems = workItems;
             UpdateAllField();
+            this.memberHasProject = memberHasProject;
         }
 
         private void UpdateAllField()
@@ -228,10 +233,41 @@ namespace TaskManagement.UI
 
         private void ButtonAllOff_Click(object sender, EventArgs e)
         {
+            AllOff();
+        }
+
+        private void AllOff()
+        {
             for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
             {
                 checkedListBox1.SetItemCheckState(idx, CheckState.Unchecked);
             }
+        }
+
+        private void buttonGenerateFromProject_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ProjectSelectForm())
+            {
+                dlg.Projects = _workItems.Select(w => w.Project.ToString()).Distinct();
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                AllOff();
+                CheckOnProject(dlg.Selected);
+            }
+        }
+
+        private void CheckOnProject(string selected)
+        {
+            for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
+            {
+                var m = GetMember(checkedListBox1.Items[idx].ToString());
+                var state = memberHasProject(m, new Project(selected)) ? CheckState.Checked : CheckState.Unchecked;
+                checkedListBox1.SetItemCheckState(idx, state);
+            }
+        }
+
+        private Member GetMember(string v)
+        {
+            return _members.FirstOrDefault(m => m.NaturalString.Equals(v));
         }
     }
 }

@@ -127,8 +127,10 @@ namespace TaskManagement.Service
             return result;
         }
 
-        internal bool AlignAfterward(WorkItems starts)
+        internal bool AlignAfterward()
         {
+            var starts = _viewData.Selected;
+            if (starts == null) return false;
             if (HasSameMember(starts)) return false;
             var before = new WorkItems();
             var after = new WorkItems();
@@ -144,7 +146,7 @@ namespace TaskManagement.Service
                     var offset = cal.GetOffset(w.Period.From, nextFrom);
                     var a = w.Clone();
                     a.Period = w.Period.ApplyOffset(offset, cal);
-                    if(a.Period == null)
+                    if (a.Period == null)
                     {
                         return false;
                     }
@@ -154,6 +156,34 @@ namespace TaskManagement.Service
             }
             Replace(before, after);
             return true;
+        }
+
+        internal void AlignSelected()
+        {
+            if (_viewData.Selected == null) return;
+            var before = _viewData.Selected.Clone().OrderBy(w => w.Period.From);
+            var after = new WorkItems();
+            var isFirst = true;
+            CallenderDay lastTo = null;
+            var cal = _viewData.Original.Callender;
+            foreach (var w in before)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    lastTo = w.Period.To;
+                    after.Add(w);
+                    continue;
+                }
+                var nextFrom = cal.ApplyOffset(lastTo, 1);
+                var offset = cal.GetOffset(w.Period.From, nextFrom);
+                var newWorkItem = w.Clone();
+                newWorkItem.Period = w.Period.ApplyOffset(offset, cal);
+                lastTo = newWorkItem.Period.To;
+                after.Add(newWorkItem);
+            }
+            Replace(_viewData.Selected, after);
+            _viewData.Selected = after;
         }
 
         private static bool HasSameMember(WorkItems starts)
@@ -169,6 +199,17 @@ namespace TaskManagement.Service
 
         internal void DivideInto2Parts()
         {
+            DivideCore(false);
+        }
+
+        internal void MakeHalf()
+        {
+            DivideCore(true);
+        }
+
+        internal void DivideCore(bool makeHalf)
+        {
+            if (_viewData.Selected == null) return;
             var add = new WorkItems();
             var divided = new WorkItems();
             var callender = _viewData.Original.Callender;
@@ -181,9 +222,12 @@ namespace TaskManagement.Service
                 var w1 = w.Clone();
                 w1.Period.To = callender.ApplyOffset(w.Period.From, offset / 2);
                 add.Add(w1);
-                var w2 = w.Clone();
-                w2.Period.From = callender.ApplyOffset(w.Period.From, + offset / 2 + 1);
-                add.Add(w2);
+                if (!makeHalf)
+                {
+                    var w2 = w.Clone();
+                    w2.Period.From = callender.ApplyOffset(w.Period.From, +offset / 2 + 1);
+                    add.Add(w2);
+                }
                 divided.Add(w);
             }
             if (!divided.Any()) return;
@@ -195,7 +239,7 @@ namespace TaskManagement.Service
             var workItems = _viewData.Original.WorkItems;
             workItems.Remove(divided);
             workItems.Add(add);
-            _viewData.Selected = null;
+            _viewData.Selected = add;
         }
     }
 }

@@ -140,6 +140,12 @@
     <Compile Include="UI\ManageMileStoneForm.Designer.cs">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ProjectSelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ProjectSelectForm.Designer.cs">
+      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
     <Compile Include="UI\ViewDetailSettingForm.cs">
@@ -242,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ManageMileStoneForm.resx">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ProjectSelectForm.resx">
+      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>

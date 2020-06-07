@@ -46,6 +46,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.checkBoxSort = new System.Windows.Forms.CheckBox();
             this.buttonAllOff = new System.Windows.Forms.Button();
+            this.buttonGenerateFromProject = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -65,7 +66,7 @@
             this.textBoxFrom.Location = new System.Drawing.Point(22, 102);
             this.textBoxFrom.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxFrom.Name = "textBoxFrom";
-            this.textBoxFrom.Size = new System.Drawing.Size(259, 19);
+            this.textBoxFrom.Size = new System.Drawing.Size(384, 19);
             this.textBoxFrom.TabIndex = 4;
             // 
             // textBoxTo
@@ -75,7 +76,7 @@
             this.textBoxTo.Location = new System.Drawing.Point(22, 136);
             this.textBoxTo.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxTo.Name = "textBoxTo";
-            this.textBoxTo.Size = new System.Drawing.Size(259, 19);
+            this.textBoxTo.Size = new System.Drawing.Size(384, 19);
             this.textBoxTo.TabIndex = 6;
             // 
             // label2
@@ -97,13 +98,13 @@
             this.checkedListBox1.Location = new System.Drawing.Point(9, 182);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(318, 158);
+            this.checkedListBox1.Size = new System.Drawing.Size(443, 158);
             this.checkedListBox1.TabIndex = 10;
             // 
             // buttonApply
             // 
             this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonApply.Location = new System.Drawing.Point(198, 373);
+            this.buttonApply.Location = new System.Drawing.Point(323, 373);
             this.buttonApply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(62, 23);
@@ -116,7 +117,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(263, 373);
+            this.buttonCancel.Location = new System.Drawing.Point(388, 373);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(62, 23);
@@ -142,7 +143,7 @@
             this.textBoxWorkItem.Location = new System.Drawing.Point(22, 26);
             this.textBoxWorkItem.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxWorkItem.Name = "textBoxWorkItem";
-            this.textBoxWorkItem.Size = new System.Drawing.Size(259, 19);
+            this.textBoxWorkItem.Size = new System.Drawing.Size(384, 19);
             this.textBoxWorkItem.TabIndex = 1;
             // 
             // label4
@@ -158,7 +159,7 @@
             // buttonClearWorkItem
             // 
             this.buttonClearWorkItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClearWorkItem.Location = new System.Drawing.Point(285, 24);
+            this.buttonClearWorkItem.Location = new System.Drawing.Point(410, 24);
             this.buttonClearWorkItem.Margin = new System.Windows.Forms.Padding(2);
             this.buttonClearWorkItem.Name = "buttonClearWorkItem";
             this.buttonClearWorkItem.Size = new System.Drawing.Size(39, 22);
@@ -170,7 +171,7 @@
             // buttonClearPeriod
             // 
             this.buttonClearPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClearPeriod.Location = new System.Drawing.Point(286, 100);
+            this.buttonClearPeriod.Location = new System.Drawing.Point(411, 100);
             this.buttonClearPeriod.Margin = new System.Windows.Forms.Padding(2);
             this.buttonClearPeriod.Name = "buttonClearPeriod";
             this.buttonClearPeriod.Size = new System.Drawing.Size(39, 22);
@@ -182,7 +183,7 @@
             // buttonClearMembers
             // 
             this.buttonClearMembers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClearMembers.Location = new System.Drawing.Point(285, 158);
+            this.buttonClearMembers.Location = new System.Drawing.Point(410, 158);
             this.buttonClearMembers.Margin = new System.Windows.Forms.Padding(2);
             this.buttonClearMembers.Name = "buttonClearMembers";
             this.buttonClearMembers.Size = new System.Drawing.Size(39, 20);
@@ -194,7 +195,7 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(155, 348);
+            this.buttonImport.Location = new System.Drawing.Point(280, 348);
             this.buttonImport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(85, 20);
@@ -206,7 +207,7 @@
             // buttonExport
             // 
             this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExport.Location = new System.Drawing.Point(242, 349);
+            this.buttonExport.Location = new System.Drawing.Point(367, 349);
             this.buttonExport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(82, 20);
@@ -228,7 +229,7 @@
             // checkBoxSort
             // 
             this.checkBoxSort.AutoSize = true;
-            this.checkBoxSort.Location = new System.Drawing.Point(109, 160);
+            this.checkBoxSort.Location = new System.Drawing.Point(219, 161);
             this.checkBoxSort.Name = "checkBoxSort";
             this.checkBoxSort.Size = new System.Drawing.Size(85, 16);
             this.checkBoxSort.TabIndex = 13;
@@ -238,7 +239,7 @@
             // 
             // buttonAllOff
             // 
-            this.buttonAllOff.Location = new System.Drawing.Point(198, 158);
+            this.buttonAllOff.Location = new System.Drawing.Point(308, 159);
             this.buttonAllOff.Name = "buttonAllOff";
             this.buttonAllOff.Size = new System.Drawing.Size(62, 20);
             this.buttonAllOff.TabIndex = 14;
@@ -246,13 +247,24 @@
             this.buttonAllOff.UseVisualStyleBackColor = true;
             this.buttonAllOff.Click += new System.EventHandler(this.ButtonAllOff_Click);
             // 
+            // buttonGenerateFromProject
+            // 
+            this.buttonGenerateFromProject.Location = new System.Drawing.Point(87, 157);
+            this.buttonGenerateFromProject.Name = "buttonGenerateFromProject";
+            this.buttonGenerateFromProject.Size = new System.Drawing.Size(126, 23);
+            this.buttonGenerateFromProject.TabIndex = 15;
+            this.buttonGenerateFromProject.Text = "プロジェクトから生成...";
+            this.buttonGenerateFromProject.UseVisualStyleBackColor = true;
+            this.buttonGenerateFromProject.Click += new System.EventHandler(this.buttonGenerateFromProject_Click);
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.buttonApply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(330, 403);
+            this.ClientSize = new System.Drawing.Size(455, 403);
+            this.Controls.Add(this.buttonGenerateFromProject);
             this.Controls.Add(this.buttonAllOff);
             this.Controls.Add(this.checkBoxSort);
             this.Controls.Add(this.button1);
@@ -301,5 +313,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxSort;
         private System.Windows.Forms.Button buttonAllOff;
+        private System.Windows.Forms.Button buttonGenerateFromProject;
     }
 }
