@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -328,16 +329,16 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), MemberHasProject))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
             }
         }
 
-        private bool MemberHasProject(Member m , Project p)
+        private bool IsMemberMatchText(Member m , string text)
         {
-            return _viewData.GetFilteredWorkItemsOfMember(m).Any(w => w.Project.Equals(p));
+            return _viewData.GetFilteredWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
