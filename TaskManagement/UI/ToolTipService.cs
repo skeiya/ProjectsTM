@@ -16,7 +16,8 @@ namespace TaskManagement.UI
 
         public void Update(Control c, WorkItem wi)
         {
-            if (c == null || wi == null) return;
+            if (c == null) return;
+            if (wi == null) { this.Hide(c); return; }
             string s =
                 "名前:" + wi.Name + Environment.NewLine
                 + "物件:" + wi.Project.ToString() + Environment.NewLine
