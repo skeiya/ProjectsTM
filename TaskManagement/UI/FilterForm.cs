@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -14,15 +15,19 @@ namespace TaskManagement.UI
         private Members _originalMembers;
         private Filter _filter;
         private Callender _callender;
+        private WorkItems _workItems;
+        private Func<Member, string, bool> IsMemberMatchText;
 
-        public FilterForm(Members members, Filter filter, Callender callender)
+        public FilterForm(Members members, Filter filter, Callender callender, WorkItems workItems, Func<Member, string, bool> isMemberMatchText)
         {
             InitializeComponent();
             _originalMembers = members.Clone();
             _members = members.Clone();
             _filter = filter;
             _callender = callender;
+            _workItems = workItems;
             UpdateAllField();
+            this.IsMemberMatchText = isMemberMatchText;
         }
 
         private void UpdateAllField()
@@ -228,9 +233,56 @@ namespace TaskManagement.UI
 
         private void ButtonAllOff_Click(object sender, EventArgs e)
         {
+            AllOff();
+        }
+
+        private void AllOff()
+        {
             for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
             {
                 checkedListBox1.SetItemCheckState(idx, CheckState.Unchecked);
+            }
+        }
+
+        private void buttonGenerateFromProject_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ProjectSelectForm())
+            {
+                dlg.Projects = _workItems.Select(w => w.Project.ToString()).Distinct();
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                AllOff();
+                CheckOnProject(dlg.Selected);
+            }
+        }
+
+        private void CheckOnProject(string selected)
+        {
+            CheckByTextMatch(@"^\[.*?\]\[" + selected + @"\]");
+        }
+
+        private Member GetMember(string v)
+        {
+            return _members.FirstOrDefault(m => m.NaturalString.Equals(v));
+        }
+
+        private void buttonGenerateFromWorkItems_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new EditMemberForm(""))
+            {
+                dlg.Text = "作業項目の正規表現";
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                AllOff();
+                CheckByTextMatch(dlg.EditText);
+            }
+        }
+
+        private void CheckByTextMatch(string editText)
+        {
+            for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
+            {
+                var m = GetMember(checkedListBox1.Items[idx].ToString());
+                var state = IsMemberMatchText(m, editText) ? CheckState.Checked : CheckState.Unchecked;
+                checkedListBox1.SetItemCheckState(idx, state);
             }
         }
     }

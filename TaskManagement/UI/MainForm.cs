@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using TaskManagement.Logic;
@@ -140,16 +141,20 @@ namespace TaskManagement.UI
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
+        private static string DirPath => "./filters";
+        private List<string> _allPaths = new List<string>();
+
         private void InitializeFilterCombobox()
         {
             toolStripComboBoxFilter.Items.Clear();
             toolStripComboBoxFilter.Items.Add("ALL");
             try
             {
-                var filters = Directory.GetFiles("./filters");
-                foreach (var f in filters)
+                _allPaths.Clear();
+                _allPaths.AddRange(Directory.GetFiles(DirPath));
+                foreach (var f in _allPaths)
                 {
-                    toolStripComboBoxFilter.Items.Add(f);
+                    toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
                 }
             }
             catch
@@ -165,12 +170,13 @@ namespace TaskManagement.UI
         private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = null;
-            var path = toolStripComboBoxFilter.SelectedItem.ToString();
-            if (path.Equals("ALL"))
+            var idx = toolStripComboBoxFilter.SelectedIndex;
+            if (idx == 0)
             {
                 _viewData.SetFilter(null);
                 return;
             }
+            var path = _allPaths[idx - 1];
             if (!File.Exists(path)) return;
             using (var rs = StreamFactory.CreateReader(path))
             {
@@ -328,11 +334,16 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
             }
+        }
+
+        private bool IsMemberMatchText(Member m, string text)
+        {
+            return _viewData.GetFilteredWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
