@@ -30,6 +30,7 @@ namespace TaskManagement.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +68,7 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new TaskManagement.UI.WorkItemGrid();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -439,6 +441,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemReload;
         private WorkItemGrid workItemGrid1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

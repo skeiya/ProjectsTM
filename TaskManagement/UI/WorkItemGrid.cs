@@ -19,7 +19,8 @@ namespace TaskManagement.UI
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
-
+        private ToolTipService _toolTipService = new ToolTipService();
+        
         public WorkItemEditService EditService => _editService;
 
         public SizeF FullSize => new SizeF(GridWidth, GridHeight);
@@ -43,7 +44,7 @@ namespace TaskManagement.UI
         private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         public WorkItemGrid() { }
 
-        internal void Initialize(ViewData viewData)
+        internal void Initialize(ViewData viewData, ToolTip toolTip = null)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
@@ -55,6 +56,7 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
+            if (toolTip != null) this._toolTipService.InitToolTip(toolTip);
 
             ApplyDetailSetting(_viewData.Detail);
 
@@ -291,7 +293,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            UpdateHoveringText(e);
+            UpdateHoveringText((Control)sender, e);
             _workItemDragService.UpdateDraggingItem(this, Client2Raw(e.Location), _viewData);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
@@ -311,13 +313,14 @@ namespace TaskManagement.UI
             this.Invalidate();
         }
 
-        private void UpdateHoveringText(MouseEventArgs e)
+        private void UpdateHoveringText(Control c, MouseEventArgs e)
         {
             if (_workItemDragService.IsActive()) return;
-            if (IsFixedArea(e.Location)) return;
+            if (IsFixedArea(e.Location)) { _toolTipService.Hide(c); return; }
             RawPoint cur = Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
+            _toolTipService.Update(c, wi);
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
