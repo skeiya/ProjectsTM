@@ -457,7 +457,7 @@ namespace TaskManagement.UI
             if (appData == null) return;
             _viewData.Original = appData;
             _viewData.Selected = null;
-            workItemGrid1.Initialize(_viewData);
+            workItemGrid1.Initialize(_viewData, toolTip1);
             _isDirty = false;
         }
     }
