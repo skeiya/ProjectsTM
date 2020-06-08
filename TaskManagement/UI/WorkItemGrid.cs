@@ -293,7 +293,7 @@ namespace TaskManagement.UI
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(this, Client2Raw(e.Location), _viewData);
-            if (IsWorkItemExpandArea(_viewData, Client2Raw(e.Location)))
+            if (IsWorkItemExpandArea(_viewData, e.Location))
             {
                 if (this.Cursor != Cursors.SizeNS)
                 {
@@ -396,9 +396,9 @@ namespace TaskManagement.UI
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData, curOnRaw))
+                if (IsWorkItemExpandArea(_viewData, e.Location))
                 {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, curOnRaw), _viewData.Selected, Y2Day(curOnRaw.Y));
+                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, Y2Day(curOnRaw.Y));
                     return;
                 }
             }
@@ -447,20 +447,20 @@ namespace TaskManagement.UI
             }
         }
 
-        private int GetExpandDirection(ViewData viewData, RawPoint location)
+        private int GetExpandDirection(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) return 0;
-                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return +1;
-                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return -1;
+                if (IsTopBar(bounds.Value, location)) return +1;
+                if (IsBottomBar(bounds.Value, location)) return -1;
             }
             return 0;
         }
 
-        private bool IsWorkItemExpandArea(ViewData viewData, RawPoint location)
+        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
         {
             if (viewData.Selected == null) return false;
             return null != PickExpandingWorkItem(location);
@@ -610,15 +610,15 @@ namespace TaskManagement.UI
             return null;
         }
 
-        public WorkItem PickExpandingWorkItem(RawPoint location)
+        public WorkItem PickExpandingWorkItem(Point location)
         {
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
                 var bounds = GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
                 if (!bounds.HasValue) continue;
-                if (IsTopBar(bounds.Value, new PointF(location.X,location.Y))) return w;
-                if (IsBottomBar(bounds.Value, new PointF(location.X, location.Y))) return w;
+                if (IsTopBar(bounds.Value, location)) return w;
+                if (IsBottomBar(bounds.Value, location)) return w;
             }
             return null;
         }
