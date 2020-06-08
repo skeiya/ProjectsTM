@@ -35,8 +35,10 @@
             this.buttonSearch = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.labelSum = new System.Windows.Forms.Label();
-            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonSelect = new System.Windows.Forms.Button();
+            this.buttonEasyRegex = new System.Windows.Forms.Button();
+            this.checkBoxCaseDistinct = new System.Windows.Forms.CheckBox();
+            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             this.listBox1.Location = new System.Drawing.Point(10, 33);
             this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(414, 172);
+            this.listBox1.Size = new System.Drawing.Size(608, 172);
             this.listBox1.TabIndex = 3;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
@@ -61,14 +63,14 @@
             this.textBoxPattern.Location = new System.Drawing.Point(10, 8);
             this.textBoxPattern.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxPattern.Name = "textBoxPattern";
-            this.textBoxPattern.Size = new System.Drawing.Size(264, 19);
+            this.textBoxPattern.Size = new System.Drawing.Size(324, 19);
             this.textBoxPattern.TabIndex = 0;
             // 
             // checkBoxOverwrapPeriod
             // 
             this.checkBoxOverwrapPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxOverwrapPeriod.AutoSize = true;
-            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(286, 10);
+            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(495, 10);
             this.checkBoxOverwrapPeriod.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.checkBoxOverwrapPeriod.Name = "checkBoxOverwrapPeriod";
             this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(72, 16);
@@ -80,7 +82,7 @@
             // buttonSearch
             // 
             this.buttonSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearch.Location = new System.Drawing.Point(377, 6);
+            this.buttonSearch.Location = new System.Drawing.Point(571, 6);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(47, 23);
             this.buttonSearch.TabIndex = 2;
@@ -107,14 +109,10 @@
             this.labelSum.Size = new System.Drawing.Size(0, 12);
             this.labelSum.TabIndex = 5;
             // 
-            // searchWorkitemFormBindingSource
-            // 
-            this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
-            // 
             // buttonSelect
             // 
             this.buttonSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSelect.Location = new System.Drawing.Point(311, 206);
+            this.buttonSelect.Location = new System.Drawing.Point(505, 206);
             this.buttonSelect.Name = "buttonSelect";
             this.buttonSelect.Size = new System.Drawing.Size(111, 23);
             this.buttonSelect.TabIndex = 6;
@@ -122,12 +120,40 @@
             this.buttonSelect.UseVisualStyleBackColor = true;
             this.buttonSelect.Click += new System.EventHandler(this.buttonSelect_Click);
             // 
+            // buttonEasyRegex
+            // 
+            this.buttonEasyRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEasyRegex.Location = new System.Drawing.Point(338, 6);
+            this.buttonEasyRegex.Name = "buttonEasyRegex";
+            this.buttonEasyRegex.Size = new System.Drawing.Size(75, 23);
+            this.buttonEasyRegex.TabIndex = 7;
+            this.buttonEasyRegex.Text = "簡易指定...";
+            this.buttonEasyRegex.UseVisualStyleBackColor = true;
+            this.buttonEasyRegex.Click += new System.EventHandler(this.buttonEasyRegex_Click);
+            // 
+            // checkBoxCaseDistinct
+            // 
+            this.checkBoxCaseDistinct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxCaseDistinct.AutoSize = true;
+            this.checkBoxCaseDistinct.Location = new System.Drawing.Point(419, 11);
+            this.checkBoxCaseDistinct.Name = "checkBoxCaseDistinct";
+            this.checkBoxCaseDistinct.Size = new System.Drawing.Size(72, 16);
+            this.checkBoxCaseDistinct.TabIndex = 8;
+            this.checkBoxCaseDistinct.Text = "大小区別";
+            this.checkBoxCaseDistinct.UseVisualStyleBackColor = true;
+            // 
+            // searchWorkitemFormBindingSource
+            // 
+            this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
+            // 
             // SearchWorkitemForm
             // 
             this.AcceptButton = this.buttonSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 230);
+            this.ClientSize = new System.Drawing.Size(628, 230);
+            this.Controls.Add(this.checkBoxCaseDistinct);
+            this.Controls.Add(this.buttonEasyRegex);
             this.Controls.Add(this.buttonSelect);
             this.Controls.Add(this.labelSum);
             this.Controls.Add(this.label1);
@@ -155,5 +181,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelSum;
         private System.Windows.Forms.Button buttonSelect;
+        private System.Windows.Forms.Button buttonEasyRegex;
+        private System.Windows.Forms.CheckBox checkBoxCaseDistinct;
     }
 }

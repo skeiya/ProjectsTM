@@ -68,12 +68,18 @@ namespace TaskManagement.UI
             {
                 foreach (var wi in _viewData.GetFilteredWorkItems())
                 {
-                    if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text)) continue;
+                    if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
                     _list.Add(wi);
                 }
             }
             catch { }
             UpdateListView();
+        }
+
+        private RegexOptions GetOption()
+        {
+            if (checkBoxCaseDistinct.Checked) return RegexOptions.None;
+            return RegexOptions.IgnoreCase;
         }
 
         private bool IsSearchOverwrap()
@@ -96,6 +102,15 @@ namespace TaskManagement.UI
                 if (_list.Any(i => i.Equals(w))) newSelect.Add(w);
             }
             _viewData.Selected = newSelect;
+        }
+
+        private void buttonEasyRegex_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new EazyRegexForm())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                textBoxPattern.Text = dlg.RegexPattern;
+            }
         }
     }
 }
