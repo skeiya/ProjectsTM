@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FreeGridControl
 {
+    [DebuggerDisplay("Index = {Value}")]
     public class RowIndex
     {
         public RowIndex(int value)

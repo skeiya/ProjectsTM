@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FreeGridControl
 {
-    public class ColIndex
+    [DebuggerDisplay("Index = {Value}")]
+       public class ColIndex
     {
         public ColIndex(int value)
         {

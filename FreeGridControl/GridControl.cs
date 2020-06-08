@@ -58,7 +58,7 @@ namespace FreeGridControl
             if (row == null) return false;
             if (col == null) return false;
             if (row.Value + count - 1 < VisibleNormalTopRow.Value) return false;
-            if (VisibleNormalButtomRow.Value  < row.Value) return false;
+            if (VisibleNormalButtomRow.Value < row.Value) return false;
             if (col.Value < VisibleNormalLeftCol.Value) return false;
             if (VisibleNormalRightCol.Value < col.Value) return false;
             return true;
@@ -105,9 +105,13 @@ namespace FreeGridControl
             vScrollBar.LargeChange = this.Height;
             hScrollBar.LargeChange = this.Width;
             this.vScrollBar.Minimum = 0;
-            this.vScrollBar.Maximum = (int)Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
+            var vMax = (int)Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
+            if (this.vScrollBar.Value > vMax) this.vScrollBar.Value = 0;
+            this.vScrollBar.Maximum = vMax;
             this.hScrollBar.Minimum = 0;
-            this.hScrollBar.Maximum = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
+            var hMax = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
+            if (this.hScrollBar.Value > hMax) this.hScrollBar.Value = 0;
+            this.hScrollBar.Maximum = hMax;
             UpdateVisibleRange();
             this.Invalidate();
         }
@@ -120,9 +124,12 @@ namespace FreeGridControl
 
         private void UpdateVisibleRange()
         {
-            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0 ,(int)(_cache.FixedHeight + 1))).Y);
+            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0, (int)(_cache.FixedHeight + 1))).Y);
             VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1))).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
+
+            VisibleNormalLeftCol = X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1), 0)).X);
+            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1), 0)).X);
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
@@ -264,9 +271,9 @@ namespace FreeGridControl
         public RowIndex VisibleNormalTopRow { get; private set; }
         public RowIndex VisibleNormalButtomRow { get; private set; }
         public int VisibleNormalRowCount { get; private set; }
+        public ColIndex VisibleNormalLeftCol { get; private set; }
+        public ColIndex VisibleNormalRightCol { get; private set; }
         public int VisibleNormalColCount { get; private set; }
-        public ColIndex VisibleNormalLeftCol => X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1),0)).X);
-        public ColIndex VisibleNormalRightCol => (_cache.GridWidth <= this.Width) ? new ColIndex(ColCount - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1), 0)).X);
 
         public void Print(Graphics graphics)
         {
@@ -277,7 +284,7 @@ namespace FreeGridControl
         {
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                if (x < _cache.GetLeft(c)) return c.Offset(-1);
+                if (_cache.GetLeft(c) <= x && x < _cache.GetRight(c)) return c;
             }
             return new ColIndex(ColCount - 1);
         }

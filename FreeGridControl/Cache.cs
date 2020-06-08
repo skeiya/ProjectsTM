@@ -32,6 +32,7 @@ namespace FreeGridControl
 
         public float GetTop(RowIndex row) => _cacheTop.Count == 0 ? 0 : _cacheTop[row];
         public float GetLeft(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col];
+        public float GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col]+ColWidths[col.Value];
 
         public void Update()
         {
