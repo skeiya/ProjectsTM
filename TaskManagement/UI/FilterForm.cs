@@ -28,6 +28,7 @@ namespace TaskManagement.UI
             _workItems = workItems;
             UpdateAllField();
             this.IsMemberMatchText = isMemberMatchText;
+            checkedListBox1.CheckOnClick = true;
         }
 
         private void UpdateAllField()
