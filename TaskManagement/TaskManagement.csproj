@@ -148,7 +148,7 @@
     </Compile>
     <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
-    <Compile Include="UI\ToolTipService.cs" />
+    <Compile Include="Service\ToolTipService.cs" />
     <Compile Include="UI\ViewDetailSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>

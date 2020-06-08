@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using TaskManagement.Model;
 
-namespace TaskManagement.UI
+namespace TaskManagement.Service
 {
     public class ToolTipService
     {
