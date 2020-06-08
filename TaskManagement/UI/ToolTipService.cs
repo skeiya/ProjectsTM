@@ -26,7 +26,7 @@ namespace TaskManagement.UI
                 + "状態:" + wi.State.ToString() + Environment.NewLine + Environment.NewLine
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
-            _toolTip.SetToolTip(c, s);
+            if (!s.Equals(_toolTip.GetToolTip(c))) _toolTip.SetToolTip(c, s);
         }
 
         public void Hide(Control c) { _toolTip.Hide(c); }
