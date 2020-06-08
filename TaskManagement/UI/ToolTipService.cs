@@ -8,7 +8,7 @@ namespace TaskManagement.UI
     {
         private ToolTip _toolTip = null;
 
-        public void InitToolTip(ToolTip toolTip)
+        public ToolTipService(ToolTip toolTip)
         {
             if (toolTip == null) return;
             _toolTip = toolTip;

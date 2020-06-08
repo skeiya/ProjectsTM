@@ -19,7 +19,7 @@ namespace TaskManagement.UI
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
-        private ToolTipService _toolTipService = new ToolTipService();
+        private ToolTipService _toolTipService;
         
         public WorkItemEditService EditService => _editService;
 
@@ -56,7 +56,7 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
-            if (toolTip != null) this._toolTipService.InitToolTip(toolTip);
+            if (toolTip != null) this._toolTipService = new ToolTipService(toolTip);
 
             ApplyDetailSetting(_viewData.Detail);
 
