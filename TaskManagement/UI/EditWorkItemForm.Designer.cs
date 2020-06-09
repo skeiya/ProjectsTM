@@ -118,7 +118,7 @@
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(35, 22);
-            this.buttonOK.TabIndex = 14;
+            this.buttonOK.TabIndex = 17;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.Button1_Click);
@@ -131,7 +131,7 @@
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(64, 22);
-            this.buttonCancel.TabIndex = 15;
+            this.buttonCancel.TabIndex = 18;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.Button2_Click);
@@ -201,22 +201,22 @@
             // radioButtonDate
             // 
             this.radioButtonDate.AutoSize = true;
-            this.radioButtonDate.Checked = true;
-            this.radioButtonDate.Location = new System.Drawing.Point(167, 127);
+            this.radioButtonDate.Location = new System.Drawing.Point(222, 127);
             this.radioButtonDate.Name = "radioButtonDate";
             this.radioButtonDate.Size = new System.Drawing.Size(47, 16);
-            this.radioButtonDate.TabIndex = 9;
-            this.radioButtonDate.TabStop = true;
+            this.radioButtonDate.TabIndex = 10;
             this.radioButtonDate.Text = "日付";
             this.radioButtonDate.UseVisualStyleBackColor = true;
             // 
             // radioButtonDayCount
             // 
             this.radioButtonDayCount.AutoSize = true;
-            this.radioButtonDayCount.Location = new System.Drawing.Point(220, 127);
+            this.radioButtonDayCount.Checked = true;
+            this.radioButtonDayCount.Location = new System.Drawing.Point(169, 127);
             this.radioButtonDayCount.Name = "radioButtonDayCount";
             this.radioButtonDayCount.Size = new System.Drawing.Size(47, 16);
-            this.radioButtonDayCount.TabIndex = 10;
+            this.radioButtonDayCount.TabIndex = 9;
+            this.radioButtonDayCount.TabStop = true;
             this.radioButtonDayCount.Text = "人日";
             this.radioButtonDayCount.UseVisualStyleBackColor = true;
             this.radioButtonDayCount.CheckedChanged += new System.EventHandler(this.RadioButtonDayCount_CheckedChanged);
@@ -229,7 +229,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(89, 56);
-            this.textBox1.TabIndex = 17;
+            this.textBox1.TabIndex = 14;
             this.textBox1.Text = "\"|\"区切りで記述する。\r\n例：abc|xyx";
             // 
             // contextMenuStrip1
@@ -244,7 +244,7 @@
             this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 12);
-            this.label7.TabIndex = 6;
+            this.label7.TabIndex = 15;
             this.label7.Text = "状態";
             // 
             // comboBoxState
@@ -254,7 +254,7 @@
             this.comboBoxState.Location = new System.Drawing.Point(103, 278);
             this.comboBoxState.Name = "comboBoxState";
             this.comboBoxState.Size = new System.Drawing.Size(200, 20);
-            this.comboBoxState.TabIndex = 18;
+            this.comboBoxState.TabIndex = 16;
             // 
             // EditWorkItemForm
             // 

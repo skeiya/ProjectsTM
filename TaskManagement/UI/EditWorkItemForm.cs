@@ -14,6 +14,8 @@ namespace TaskManagement.UI
         {
             InitializeComponent();
             if (wi == null) wi = new WorkItem();
+            this._wi = wi;
+            this._callender = callender;
             textBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
             textBoxProject.Text = wi.Project == null ? string.Empty : wi.Project.ToString();
             textBoxMember.Text = wi.AssignedMember == null ? string.Empty : wi.AssignedMember.ToSerializeString();
@@ -21,8 +23,7 @@ namespace TaskManagement.UI
             textBoxTo.Text = wi.Period == null ? string.Empty : wi.Period.To.ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
             InitDropDownList(wi.State);
-            this._wi = wi;
-            this._callender = callender;
+            UpdateEndDay();
         }
 
         private void InitDropDownList(TaskState state)
