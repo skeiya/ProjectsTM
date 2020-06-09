@@ -526,7 +526,7 @@ namespace TaskManagement.UI
 
         internal void MoveToToday()
         {
-            var m = (_viewData.Selected != null && _viewData.Selected.Count() == 1) ? _viewData.Selected.Unique.AssignedMember : X2Member(0);
+            var m = (_viewData.Selected != null && _viewData.Selected.Count() == 1) ? _viewData.Selected.Unique.AssignedMember : X2Member((int)FixedWidth+1);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
