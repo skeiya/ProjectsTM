@@ -238,7 +238,6 @@ namespace TaskManagement.UI
             {
                 if (_viewData.Selected == null) return;
                 _editService.Delete();
-                _viewData.Selected = null;
             }
             if (e.KeyCode == Keys.ControlKey)
             {

@@ -198,6 +198,7 @@ namespace TaskManagement.UI
         {
             workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
             workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("削除").Click += DeleteMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DivideMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("2分割").Click += DivideInto2PartsMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("半分に縮小").Click += MakeHalfMenu_Click;
@@ -206,6 +207,11 @@ namespace TaskManagement.UI
             workItemGrid1.ContextMenuStrip.Items.Add("以降を選択").Click += SelectAfterwardMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
+        }
+
+        private void DeleteMenu_Click(object sender, EventArgs e)
+        {
+            workItemGrid1.EditService.Delete();
         }
 
         private void AlignSelectedMenu_Click(object sender, EventArgs e)

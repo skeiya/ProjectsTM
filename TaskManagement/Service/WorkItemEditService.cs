@@ -45,6 +45,7 @@ namespace TaskManagement.Service
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
             _undoService.Delete(_viewData.Selected);
+            _viewData.Selected = new WorkItems();
             _undoService.Push();
         }
 
