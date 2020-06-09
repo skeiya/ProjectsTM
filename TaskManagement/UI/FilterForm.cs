@@ -144,10 +144,9 @@ namespace TaskManagement.UI
 
         private void ClearPeriodFilter()
         {
-            var days = _callender.Days;
-            if (days.Count == 0) return;
-            textBoxFrom.Text = days.First().ToString();
-            textBoxTo.Text = days.Last().ToString();
+            var now = DateTime.Now;
+            textBoxFrom.Text = now.Year.ToString() + "/" + now.Month.ToString() + "/" + now.Day.ToString();
+            textBoxTo.Text = "2021/6/31";
         }
 
         private void buttonClearMembers_Click(object sender, EventArgs e)
