@@ -46,7 +46,7 @@ namespace TaskManagement.ViewModel
                 if (_selected != org)
                 {
                     var arg = new SelectedWorkItemChangedArg(org, _selected);
-                    SelectedWorkItemChanged(this, arg);
+                    SelectedWorkItemChanged?.Invoke(this, arg);
                 }
             }
         }

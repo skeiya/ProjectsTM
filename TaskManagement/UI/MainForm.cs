@@ -296,6 +296,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
+            _viewData.Selected = new WorkItems();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
