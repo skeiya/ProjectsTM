@@ -26,13 +26,17 @@ namespace TaskManagement.UI
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var found = _viewData.GetFilteredWorkItems().FirstOrDefault(w => w.Equals(_list[listBox1.SelectedIndex]));
+            var index = listBox1.SelectedIndex;
+            if (index < 0) return;
+            var found = _viewData.GetFilteredWorkItems().FirstOrDefault(w => w.Equals(_list[index]));
             _viewData.Selected = found == null ? null : new WorkItems(found);
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var wi = _list[listBox1.SelectedIndex];
+            var index = listBox1.SelectedIndex;
+            if (index < 0) return;
+            var wi = _list[index];
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
