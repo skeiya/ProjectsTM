@@ -48,6 +48,7 @@
             this.buttonAllOff = new System.Windows.Forms.Button();
             this.buttonGenerateFromProject = new System.Windows.Forms.Button();
             this.buttonGenerateFromWorkItems = new System.Windows.Forms.Button();
+            this.buttonFromTodayToSpecialDay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -67,7 +68,7 @@
             this.textBoxFrom.Location = new System.Drawing.Point(22, 102);
             this.textBoxFrom.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxFrom.Name = "textBoxFrom";
-            this.textBoxFrom.Size = new System.Drawing.Size(517, 19);
+            this.textBoxFrom.Size = new System.Drawing.Size(377, 19);
             this.textBoxFrom.TabIndex = 4;
             // 
             // textBoxTo
@@ -268,6 +269,17 @@
             this.buttonGenerateFromWorkItems.UseVisualStyleBackColor = true;
             this.buttonGenerateFromWorkItems.Click += new System.EventHandler(this.buttonGenerateFromWorkItems_Click);
             // 
+            // buttonFromTodayToSpecialDay
+            // 
+            this.buttonFromTodayToSpecialDay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFromTodayToSpecialDay.Location = new System.Drawing.Point(404, 100);
+            this.buttonFromTodayToSpecialDay.Name = "buttonFromTodayToSpecialDay";
+            this.buttonFromTodayToSpecialDay.Size = new System.Drawing.Size(135, 23);
+            this.buttonFromTodayToSpecialDay.TabIndex = 17;
+            this.buttonFromTodayToSpecialDay.Text = "今日から";
+            this.buttonFromTodayToSpecialDay.UseVisualStyleBackColor = true;
+            this.buttonFromTodayToSpecialDay.Click += new System.EventHandler(this.buttonFromTodayToSpecialDay_Click);
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.buttonApply;
@@ -275,6 +287,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(588, 403);
+            this.Controls.Add(this.buttonFromTodayToSpecialDay);
             this.Controls.Add(this.buttonGenerateFromWorkItems);
             this.Controls.Add(this.buttonGenerateFromProject);
             this.Controls.Add(this.buttonAllOff);
@@ -327,5 +340,6 @@
         private System.Windows.Forms.Button buttonAllOff;
         private System.Windows.Forms.Button buttonGenerateFromProject;
         private System.Windows.Forms.Button buttonGenerateFromWorkItems;
+        private System.Windows.Forms.Button buttonFromTodayToSpecialDay;
     }
 }

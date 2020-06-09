@@ -29,6 +29,7 @@ namespace TaskManagement.UI
             UpdateAllField();
             this.IsMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
+            buttonFromTodayToSpecialDay.Text += SpecialDay;
         }
 
         private void UpdateAllField()
@@ -144,9 +145,10 @@ namespace TaskManagement.UI
 
         private void ClearPeriodFilter()
         {
-            var now = DateTime.Now;
-            textBoxFrom.Text = now.Year.ToString() + "/" + now.Month.ToString() + "/" + now.Day.ToString();
-            textBoxTo.Text = "2021/6/31";
+            var days = _callender.Days;
+            if (days.Count == 0) return;
+            textBoxFrom.Text = days.First().ToString();
+            textBoxTo.Text = days.Last().ToString();
         }
 
         private void buttonClearMembers_Click(object sender, EventArgs e)
@@ -270,6 +272,14 @@ namespace TaskManagement.UI
                 var state = IsMemberMatchText(m, editText) ? CheckState.Checked : CheckState.Unchecked;
                 checkedListBox1.SetItemCheckState(idx, state);
             }
+        }
+
+        private static string SpecialDay => "2021/6/31";
+        private void buttonFromTodayToSpecialDay_Click(object sender, EventArgs e)
+        {
+            var now = DateTime.Now;
+            textBoxFrom.Text = now.Year.ToString() + "/" + now.Month.ToString() + "/" + now.Day.ToString();
+            textBoxTo.Text = SpecialDay;
         }
     }
 }
