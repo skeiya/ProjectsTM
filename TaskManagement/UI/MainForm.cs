@@ -303,6 +303,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _viewData.Selected = new WorkItems();
+            SearchForm?.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }

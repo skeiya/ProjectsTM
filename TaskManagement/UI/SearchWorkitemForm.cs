@@ -116,5 +116,11 @@ namespace TaskManagement.UI
                 textBoxPattern.Text = dlg.RegexPattern;
             }
         }
+
+        internal void Clear()
+        {
+            _list.Clear();
+            UpdateListView();
+        }
     }
 }
