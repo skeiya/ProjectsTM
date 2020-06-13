@@ -67,8 +67,8 @@ namespace TaskManagement.ViewModel
         private bool Changed(Filter filter)
         {
             if (Filter == null && filter == null) return false;
-            if (Filter != null) return Filter.Equals(filter);
-            return filter.Equals(Filter);
+            if (Filter != null) return !Filter.Equals(filter);
+            return !filter.Equals(Filter);
         }
 
         public int GetDaysCount()
