@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
@@ -58,8 +59,16 @@ namespace TaskManagement.ViewModel
 
         public void SetFilter(Filter filter)
         {
+            if (!Changed(filter)) return;
             Filter = filter;
             FilterChanged(this, null);
+        }
+
+        private bool Changed(Filter filter)
+        {
+            if (Filter == null && filter == null) return false;
+            if (Filter != null) return Filter.Equals(filter);
+            return filter.Equals(Filter);
         }
 
         public int GetDaysCount()

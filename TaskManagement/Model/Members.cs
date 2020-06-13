@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TaskManagement.Model
 {
-    public class Members : IEnumerable<Member>
+    public class Members : IEnumerable<Member>, IEquatable<Members>
     {
         private List<Member> _members = new List<Member>();
 
@@ -62,18 +63,6 @@ namespace TaskManagement.Model
             return _members == null || _members.Count == 0;
         }
 
-        public override bool Equals(object obj)
-        {
-            var target = obj as Members;
-            if (target == null) return false;
-            if (_members.Count != target._members.Count) return false;
-            for (int index = 0; index < _members.Count; index++)
-            {
-                if (!_members[index].Equals(target._members[index])) return false;
-            }
-            return true;
-        }
-
         internal void Down(Member m)
         {
             var index = FindIndex(m);
@@ -91,6 +80,17 @@ namespace TaskManagement.Model
         internal void SortByCompany()
         {
             _members.Sort((a, b) => a.Company.CompareTo(b.Company));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Members);
+        }
+
+        public bool Equals(Members other)
+        {
+            return other != null &&
+                   EqualityComparer<List<Member>>.Default.Equals(_members, other._members);
         }
     }
 }
