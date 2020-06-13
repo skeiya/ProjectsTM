@@ -274,7 +274,7 @@ namespace TaskManagement.UI
             }
         }
 
-        private static string SpecialDay => "2021/6/31";
+        private static string SpecialDay => "2021/3/31";
         private void buttonFromTodayToSpecialDay_Click(object sender, EventArgs e)
         {
             var now = DateTime.Now;
