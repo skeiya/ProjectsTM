@@ -92,6 +92,7 @@ namespace TaskManagement.Service
         {
             using (var dlg = new OpenFileDialog())
             {
+                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
                 if (dlg.ShowDialog() != DialogResult.OK) return null;
                 _previousFileName = dlg.FileName;
                 return OpenFile(dlg.FileName);
