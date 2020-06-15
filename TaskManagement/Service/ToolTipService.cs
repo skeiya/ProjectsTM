@@ -11,6 +11,7 @@ namespace TaskManagement.Service
         public ToolTipService(ToolTip toolTip)
         {
             if (toolTip == null) return;
+            toolTip.ShowAlways = true;
             _toolTip = toolTip;
         }
 
