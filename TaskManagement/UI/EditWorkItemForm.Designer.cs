@@ -49,6 +49,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.label7 = new System.Windows.Forms.Label();
             this.comboBoxState = new System.Windows.Forms.ComboBox();
+            this.buttonRegexEscape = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -114,10 +115,10 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(193, 306);
+            this.buttonOK.Location = new System.Drawing.Point(202, 306);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(35, 22);
+            this.buttonOK.Size = new System.Drawing.Size(35, 23);
             this.buttonOK.TabIndex = 17;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -127,10 +128,10 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(237, 306);
+            this.buttonCancel.Location = new System.Drawing.Point(239, 306);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(64, 22);
+            this.buttonCancel.Size = new System.Drawing.Size(64, 23);
             this.buttonCancel.TabIndex = 18;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -239,6 +240,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(10, 281);
             this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
@@ -249,12 +251,25 @@
             // 
             // comboBoxState
             // 
+            this.comboBoxState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxState.FormattingEnabled = true;
             this.comboBoxState.Location = new System.Drawing.Point(103, 278);
             this.comboBoxState.Name = "comboBoxState";
             this.comboBoxState.Size = new System.Drawing.Size(200, 20);
             this.comboBoxState.TabIndex = 16;
+            // 
+            // buttonRegexEscape
+            // 
+            this.buttonRegexEscape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRegexEscape.Location = new System.Drawing.Point(12, 306);
+            this.buttonRegexEscape.Name = "buttonRegexEscape";
+            this.buttonRegexEscape.Size = new System.Drawing.Size(145, 23);
+            this.buttonRegexEscape.TabIndex = 19;
+            this.buttonRegexEscape.Text = "正規表現エスケープ表示";
+            this.buttonRegexEscape.UseVisualStyleBackColor = true;
+            this.buttonRegexEscape.Click += new System.EventHandler(this.buttonRegexEscape_Click);
             // 
             // EditWorkItemForm
             // 
@@ -263,6 +278,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(310, 338);
+            this.Controls.Add(this.buttonRegexEscape);
             this.Controls.Add(this.comboBoxState);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.radioButtonDayCount);
@@ -314,5 +330,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBoxState;
+        private System.Windows.Forms.Button buttonRegexEscape;
     }
 }

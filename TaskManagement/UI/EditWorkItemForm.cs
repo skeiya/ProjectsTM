@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TaskManagement.Model;
 
@@ -138,6 +139,18 @@ namespace TaskManagement.UI
             {
                 var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, true);
                 textBoxTo.Text = period == null ? string.Empty : period.To.ToString();
+            }
+        }
+
+        private void buttonRegexEscape_Click(object sender, EventArgs e)
+        {
+            var wi = CreateWorkItem(_callender);
+            if (wi == null) return;
+            using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
+            {
+                dlg.Text = "正規表現エスケープ";
+                dlg.ReadOnly = true;
+                dlg.ShowDialog();
             }
         }
     }

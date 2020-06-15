@@ -35,18 +35,22 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(6, 9);
             this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(207, 19);
+            this.textBox1.Size = new System.Drawing.Size(371, 19);
             this.textBox1.TabIndex = 0;
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(221, 6);
+            this.buttonOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.buttonOK.Location = new System.Drawing.Point(379, 9);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(47, 20);
+            this.buttonOK.Size = new System.Drawing.Size(47, 19);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -54,8 +58,9 @@
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(277, 6);
+            this.buttonCancel.Location = new System.Drawing.Point(428, 8);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(65, 20);
@@ -70,12 +75,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(350, 38);
+            this.ClientSize = new System.Drawing.Size(503, 38);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.MaximumSize = new System.Drawing.Size(1500, 77);
+            this.MinimumSize = new System.Drawing.Size(400, 77);
             this.Name = "EditMemberForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "メンバー編集(姓/名/所属)";
