@@ -44,7 +44,7 @@ namespace TaskManagement.UI
         private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         public WorkItemGrid() { }
 
-        internal void Initialize(ViewData viewData, ToolTip toolTip = null)
+        internal void Initialize(ViewData viewData)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
@@ -56,7 +56,7 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
-            if (toolTip != null) this._toolTipService = new ToolTipService(toolTip);
+            this._toolTipService = new ToolTipService();
 
             ApplyDetailSetting(_viewData.Detail);
 
