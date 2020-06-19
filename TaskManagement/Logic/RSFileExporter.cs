@@ -139,12 +139,12 @@ namespace TaskManagement.Logic
 
         private static int GetTotalDays(int year, int month, Callender callender)
         {
-            return callender.GetDaysOfMonth(year, month);
+            return callender.GetDaysOfGetsudo(year, month);
         }
 
         private static int GetTargetDays(int year, int month, Member member, Project project, WorkItems workItems, Callender callender)
         {
-            return workItems.GetWorkItemDaysOfMonth(year, month, member, project, callender);
+            return workItems.GetWorkItemDaysOfGetsudo(year, month, member, project, callender);
         }
     }
 }

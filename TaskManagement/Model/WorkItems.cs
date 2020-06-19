@@ -47,15 +47,14 @@ namespace TaskManagement.Model
             _items[wi.AssignedMember].Add(wi);
         }
 
-        public int GetWorkItemDaysOfMonth(int year, int month, Member member, Project project, Callender callender)
+        public int GetWorkItemDaysOfGetsudo(int year, int month, Member member, Project project, Callender callender)
         {
             int result = 0;
             foreach (var wi in this.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
             {
                 foreach (var d in callender.GetPediodDays(wi.Period))
                 {
-                    if (d.Year != year) continue;
-                    if (d.Month != month) continue;
+                    if (!Callender.IsSameGetsudo(d, year, month)) continue;
                     result++;
                 }
             }
