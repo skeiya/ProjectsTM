@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TaskManagement.Model
@@ -57,18 +58,29 @@ namespace TaskManagement.Model
             return null;
         }
 
-        static public int ColCount => 3;
-
-        public int GetDaysOfMonth(int year, int month)
+        public int GetDaysOfGetsudo(int year, int month)
         {
             var count = 0;
             foreach (var d in Days)
             {
-                if (d.Year != year) continue;
-                if (d.Month != month) continue;
+                if (!IsSameGetsudo(d, year, month)) continue;
                 count++;
             }
             return count;
+        }
+
+        internal static bool IsSameGetsudo(CallenderDay d, int year, int month)
+        {
+            if (d.Year != year) return false;
+            if (d.Month == (month - 1))
+            {
+                return 20 < d.Day;
+            }
+            if(d.Month == month)
+            {
+                return d.Day < 21;
+            }
+            return false;
         }
 
         public List<CallenderDay> GetPediodDays(Period period)

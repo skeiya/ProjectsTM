@@ -95,7 +95,9 @@ namespace TaskManagement.UI
         {
             listBox1.Items.Clear();
             listBox1.Items.AddRange(_list.Select((i) => i.ToString()).ToArray());
-            labelSum.Text = _list.Sum(w => _viewData.Original.Callender.GetPeriodDayCount(w.Period)).ToString() + "day";
+            var dayCount = _list.Sum(w => _viewData.Original.Callender.GetPeriodDayCount(w.Period));
+            var monthCount = dayCount / 20;
+            labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
         }
 
         private void buttonSelect_Click(object sender, EventArgs e)

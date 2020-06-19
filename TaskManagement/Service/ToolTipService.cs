@@ -4,15 +4,14 @@ using TaskManagement.Model;
 
 namespace TaskManagement.Service
 {
-    public class ToolTipService
+    public class ToolTipService : IDisposable
     {
-        private ToolTip _toolTip = null;
+        private ToolTip _toolTip = new ToolTip();
+        private bool disposedValue;
 
-        public ToolTipService(ToolTip toolTip)
+        public ToolTipService()
         {
-            if (toolTip == null) return;
-            toolTip.ShowAlways = true;
-            _toolTip = toolTip;
+            _toolTip.ShowAlways = true;
         }
 
         public void Update(Control c, WorkItem wi)
@@ -31,5 +30,34 @@ namespace TaskManagement.Service
         }
 
         public void Hide(Control c) { _toolTip.Hide(c); }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _toolTip.Dispose();
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~ToolTipService()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

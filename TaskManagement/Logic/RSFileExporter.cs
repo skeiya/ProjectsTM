@@ -24,13 +24,27 @@ namespace TaskManagement.Logic
             var members = GetMembers(appData.Members);
             var months = GetMonths(appData.Callender);
             var projects = GetProjects(appData.WorkItems);
-            var rowCount = members.Count * projects.Count;
+            var rowCount = members.Count * projects.Count + 1;
             var colCount = months.Count + 3;
             var csv = new string[rowCount, colCount];
 
-            var r = MakeMembersAndProjectsTitle(members, projects, csv);
-            MakeMembersAndProjectsValue(appData, members, months, projects, csv, r);
+            MakeTitle(months, csv);
+            MakeMembersAndProjects(members, projects, csv);
+            MakeRatio(appData, members, months, projects, csv);
             return MakeText(rowCount, colCount, csv);
+        }
+
+        private static void MakeTitle(List<Tuple<int, int>> months, string[,] csv)
+        {
+            csv[0, 0] = "Com";
+            csv[0, 1] = "Mem";
+            csv[0, 2] = "Proj";
+            var c = 3;
+            foreach(var m in months)
+            {
+                csv[0, c] = m.Item1.ToString() + "/" + m.Item2.ToString();
+                c++;
+            }
         }
 
         private static string MakeText(int rowCount, int colCount, string[,] csv)
@@ -40,7 +54,7 @@ namespace TaskManagement.Logic
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    result += csv[row, col] + ",";
+                    result += csv[row, col] + "\t";
                 }
                 result += Environment.NewLine;
             }
@@ -48,12 +62,12 @@ namespace TaskManagement.Logic
             return result;
         }
 
-        private static void MakeMembersAndProjectsValue(AppData appData, List<Member> members, List<Tuple<int, int>> months, List<Project> projects, string[,] csv, int r)
+        private static void MakeRatio(AppData appData, List<Member> members, List<Tuple<int, int>> months, List<Project> projects, string[,] csv)
         {
             var c = 3;
             foreach (var month in months)
             {
-                r = 0;
+                var r = 1;
                 foreach (var member in members)
                 {
                     foreach (var project in projects)
@@ -66,9 +80,9 @@ namespace TaskManagement.Logic
             }
         }
 
-        private static int MakeMembersAndProjectsTitle(List<Member> members, List<Project> projects, string[,] csv)
+        private static void MakeMembersAndProjects(List<Member> members, List<Project> projects, string[,] csv)
         {
-            var r = 0;
+            var r = 1;
             foreach (var m in members)
             {
                 foreach (var p in projects)
@@ -79,8 +93,6 @@ namespace TaskManagement.Logic
                     r++;
                 }
             }
-
-            return r;
         }
 
         private static List<Project> GetProjects(WorkItems workItems)
@@ -122,17 +134,17 @@ namespace TaskManagement.Logic
 
         private static string GetRatio(int year, int month, Member member, Project project, Callender callender, WorkItems workItems)
         {
-            return string.Format("{0:f1}", GetTargetDays(year, month, member, project, workItems, callender) / (float)GetTotalDays(year, month, callender));
+            return string.Format("{0:f2}", GetTargetDays(year, month, member, project, workItems, callender) / (float)GetTotalDays(year, month, callender));
         }
 
         private static int GetTotalDays(int year, int month, Callender callender)
         {
-            return callender.GetDaysOfMonth(year, month);
+            return callender.GetDaysOfGetsudo(year, month);
         }
 
         private static int GetTargetDays(int year, int month, Member member, Project project, WorkItems workItems, Callender callender)
         {
-            return workItems.GetWorkItemDaysOfMonth(year, month, member, project, callender);
+            return workItems.GetWorkItemDaysOfGetsudo(year, month, member, project, callender);
         }
     }
 }
