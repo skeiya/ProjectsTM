@@ -14,13 +14,13 @@ namespace TaskManagement.UI
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private ViewData _viewData;
-
+        private Cursor _originalCursor;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
-        private Cursor _originalCursor;
-        private ToolTipService _toolTipService;
-        
+        private ToolTipService _toolTipService = new ToolTipService();
+        private DrawService _drawService;
+
         public WorkItemEditService EditService => _editService;
 
         public SizeF FullSize => new SizeF(GridWidth, GridHeight);
@@ -34,7 +34,6 @@ namespace TaskManagement.UI
         public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
 
         public event EventHandler<EditedEventArgs> UndoChanged;
-
         public event EventHandler<string> HoveringTextChanged;
         public event EventHandler<float> RatioChanged;
 
@@ -56,7 +55,6 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
-            this._toolTipService = new ToolTipService();
 
             ApplyDetailSetting(_viewData.Detail);
 
@@ -67,7 +65,6 @@ namespace TaskManagement.UI
             RefreshDraw();
         }
 
-        DrawService _drawService;
         private void UpdateCache()
         {
             _day2RowCache.Clear();
