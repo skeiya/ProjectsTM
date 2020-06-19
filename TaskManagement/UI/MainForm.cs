@@ -479,5 +479,13 @@ namespace TaskManagement.UI
             workItemGrid1.Initialize(_viewData, toolTip1);
             _isDirty = false;
         }
+
+        private void toolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new TaskList(_viewData))
+            {
+                dlg.ShowDialog();
+            }
+        }
     }
 }
