@@ -67,8 +67,6 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new TaskManagement.UI.WorkItemGrid();
-            this.toolStripMenuItemTaskList = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -299,9 +297,7 @@ namespace TaskManagement.UI
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember,
-            this.ToolStripMenuItemMileStone,
-            this.toolStripSeparator1,
-            this.toolStripMenuItemTaskList});
+            this.ToolStripMenuItemMileStone});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
             this.管理ToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
             this.管理ToolStripMenuItem.Text = "管理";
@@ -373,13 +369,6 @@ namespace TaskManagement.UI
             this.toolStripStatusLabelViewRatio.Size = new System.Drawing.Size(43, 17);
             this.toolStripStatusLabelViewRatio.Text = "拡大率";
             // 
-            // toolStripMenuItemTaskList
-            // 
-            this.toolStripMenuItemTaskList.Name = "toolStripMenuItemTaskList";
-            this.toolStripMenuItemTaskList.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItemTaskList.Text = "タスクリストを確認";
-            this.toolStripMenuItemTaskList.Click += new System.EventHandler(this.toolStripMenuItemTaskList_Click);
-            // 
             // workItemGrid1
             // 
             this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -390,11 +379,6 @@ namespace TaskManagement.UI
             this.workItemGrid1.Name = "workItemGrid1";
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
             this.workItemGrid1.TabIndex = 12;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // MainForm
             // 
@@ -455,8 +439,6 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemReload;
         private WorkItemGrid workItemGrid1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTaskList;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
