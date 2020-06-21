@@ -22,7 +22,10 @@ namespace TaskManagement.Logic
         public static string MakeText(AppData appData)
         {
             var members = GetMembers(appData.Members);
-            var months = GetMonths(appData.Callender);
+            //todo sakamoto UI作ってここにつなげる
+            //var months = GetMonths(appData.Callender);
+            var months = new List<Tuple<int, int>>();
+            months.Add(new Tuple<int, int>(2020, 7));
             var projects = GetProjects(appData.WorkItems);
             var rowCount = members.Count * projects.Count + 1;
             var colCount = months.Count + 3;

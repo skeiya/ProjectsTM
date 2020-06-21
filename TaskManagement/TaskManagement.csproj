@@ -126,6 +126,12 @@
     <Compile Include="UI\EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\RsExportSelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RsExportSelectForm.Designer.cs">
+      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ProjectSelectForm.resx">
       <DependentUpon>ProjectSelectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RsExportSelectForm.resx">
+      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>

@@ -316,6 +316,13 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
         {
+
+            using (var dlg = new RsExportSelectForm())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+            }
+
+            //Todo sakamoto UIの結果を受けてIF呼び分け
             RSFileExporter.Export(_viewData.Original);
         }
 
