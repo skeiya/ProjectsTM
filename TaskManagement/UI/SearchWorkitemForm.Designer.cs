@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBoxPattern = new System.Windows.Forms.TextBox();
             this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
             this.buttonSearch = new System.Windows.Forms.Button();
@@ -38,23 +37,11 @@
             this.buttonSelect = new System.Windows.Forms.Button();
             this.buttonEasyRegex = new System.Windows.Forms.Button();
             this.checkBoxCaseDistinct = new System.Windows.Forms.CheckBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // listBox1
-            // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(10, 33);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(608, 172);
-            this.listBox1.TabIndex = 3;
-            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
             // textBoxPattern
             // 
@@ -142,6 +129,22 @@
             this.checkBoxCaseDistinct.Text = "大小区別";
             this.checkBoxCaseDistinct.UseVisualStyleBackColor = true;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(10, 35);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowTemplate.Height = 21;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(608, 170);
+            this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
             // searchWorkitemFormBindingSource
             // 
             this.searchWorkitemFormBindingSource.DataSource = typeof(TaskManagement.UI.SearchWorkitemForm);
@@ -152,6 +155,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 230);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.checkBoxCaseDistinct);
             this.Controls.Add(this.buttonEasyRegex);
             this.Controls.Add(this.buttonSelect);
@@ -160,11 +164,12 @@
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.checkBoxOverwrapPeriod);
             this.Controls.Add(this.textBoxPattern);
-            this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "SearchWorkitemForm";
             this.Text = "検索";
+            this.Load += new System.EventHandler(this.SearchWorkitemForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -172,8 +177,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox textBoxPattern;
         private System.Windows.Forms.CheckBox checkBoxOverwrapPeriod;
         private System.Windows.Forms.BindingSource searchWorkitemFormBindingSource;
@@ -183,5 +186,6 @@
         private System.Windows.Forms.Button buttonSelect;
         private System.Windows.Forms.Button buttonEasyRegex;
         private System.Windows.Forms.CheckBox checkBoxCaseDistinct;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
