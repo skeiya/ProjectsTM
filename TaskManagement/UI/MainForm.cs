@@ -320,10 +320,17 @@ namespace TaskManagement.UI
             using (var dlg = new RsExportSelectForm())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
+                if (dlg.allPeriod)
+                {
+                    RSFileExporter.Export(_viewData.Original);
+                } else
+                {
+                    RSFileExporter.ExportSelectGetsudo(_viewData.Original, dlg.selectGetsudo);
+                }
             }
 
-            //Todo sakamoto UIの結果を受けてIF呼び分け
-            RSFileExporter.Export(_viewData.Original);
+
+
         }
 
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)

@@ -28,34 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioAll = new System.Windows.Forms.RadioButton();
+            this.radioSelect = new System.Windows.Forms.RadioButton();
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textSelectGetsudo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // radioButton1
+            // radioAll
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(25, 13);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(59, 16);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "全期間";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioAll.AutoSize = true;
+            this.radioAll.Checked = true;
+            this.radioAll.Location = new System.Drawing.Point(25, 13);
+            this.radioAll.Name = "radioAll";
+            this.radioAll.Size = new System.Drawing.Size(59, 16);
+            this.radioAll.TabIndex = 0;
+            this.radioAll.TabStop = true;
+            this.radioAll.Text = "全期間";
+            this.radioAll.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // radioSelect
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(25, 38);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(71, 16);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "月度指定";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioSelect.AutoSize = true;
+            this.radioSelect.Location = new System.Drawing.Point(25, 38);
+            this.radioSelect.Name = "radioSelect";
+            this.radioSelect.Size = new System.Drawing.Size(71, 16);
+            this.radioSelect.TabIndex = 1;
+            this.radioSelect.Text = "月度指定";
+            this.radioSelect.UseVisualStyleBackColor = true;
             // 
             // OK
             // 
@@ -77,24 +77,24 @@
             this.Cancel.UseVisualStyleBackColor = true;
             this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
-            // textBox1
+            // textSelectGetsudo
             // 
-            this.textBox1.Location = new System.Drawing.Point(139, 38);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(173, 19);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "2020/04";
+            this.textSelectGetsudo.Location = new System.Drawing.Point(139, 38);
+            this.textSelectGetsudo.Name = "textSelectGetsudo";
+            this.textSelectGetsudo.Size = new System.Drawing.Size(173, 19);
+            this.textSelectGetsudo.TabIndex = 4;
+            this.textSelectGetsudo.Text = "2020/04";
             // 
             // RsExportSelectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(338, 120);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textSelectGetsudo);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.radioSelect);
+            this.Controls.Add(this.radioAll);
             this.Name = "RsExportSelectForm";
             this.Text = "EditRsSelectForm";
             this.ResumeLayout(false);
@@ -104,10 +104,10 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioAll;
+        private System.Windows.Forms.RadioButton radioSelect;
         private System.Windows.Forms.Button OK;
         private System.Windows.Forms.Button Cancel;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textSelectGetsudo;
     }
 }

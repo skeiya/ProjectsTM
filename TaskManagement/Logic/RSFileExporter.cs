@@ -10,7 +10,7 @@ namespace TaskManagement.Logic
     {
         public static void Export(AppData appData)
         {
-            string result = MakeText(appData);
+            string result = MakeText(appData, null);
 
             using (var dlg = new SaveFileDialog())
             {
@@ -19,13 +19,31 @@ namespace TaskManagement.Logic
             }
         }
 
-        public static string MakeText(AppData appData)
+        public static void ExportSelectGetsudo(AppData appData, string selectGetsudo)
+        {
+            string result = MakeText(appData, selectGetsudo);
+
+            using (var dlg = new SaveFileDialog())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                File.WriteAllText(dlg.FileName, result);
+            }
+        }
+
+
+
+        public static string MakeText(AppData appData, string selectGetsudo)
         {
             var members = GetMembers(appData.Members);
-            //todo sakamoto UI作ってここにつなげる
-            //var months = GetMonths(appData.Callender);
             var months = new List<Tuple<int, int>>();
-            months.Add(new Tuple<int, int>(2020, 7));
+            if (selectGetsudo == null)
+            {
+                months = GetMonths(appData.Callender);
+            } else
+            {
+                // todo sakamoto 文字列のパース
+                months.Add(new Tuple<int, int>(2020, 7));
+            }
             var projects = GetProjects(appData.WorkItems);
             var rowCount = members.Count * projects.Count + 1;
             var colCount = months.Count + 3;
@@ -149,5 +167,7 @@ namespace TaskManagement.Logic
         {
             return workItems.GetWorkItemDaysOfGetsudo(year, month, member, project, callender);
         }
+
+
     }
 }
