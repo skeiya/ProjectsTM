@@ -79,6 +79,7 @@ namespace TaskManagement.UI
             if (index < 0) return;
             _list[index] = wi;
             UpdateDataGridView();
+            dataGridView1.Rows[index].Selected = true;
         }
     }
 }
