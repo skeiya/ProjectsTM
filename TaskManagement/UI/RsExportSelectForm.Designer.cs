@@ -59,7 +59,7 @@
             // 
             // OK
             // 
-            this.OK.Location = new System.Drawing.Point(139, 83);
+            this.OK.Location = new System.Drawing.Point(139, 72);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 2;
@@ -69,7 +69,7 @@
             // 
             // Cancel
             // 
-            this.Cancel.Location = new System.Drawing.Point(237, 83);
+            this.Cancel.Location = new System.Drawing.Point(237, 72);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 3;
@@ -89,7 +89,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(338, 120);
+            this.ClientSize = new System.Drawing.Size(338, 115);
             this.Controls.Add(this.textSelectGetsudo);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);

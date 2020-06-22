@@ -128,8 +128,7 @@ namespace UnitTestProject1
         public void RSExport()
         {
             var appData = new AppData();
-            //todo sakamoto publicの必要ある？
-            var result = RSFileExporter.MakeText(appData, "");
+            var result = RSFileExporter.MakeTextAllData(appData);
             var expect = "";
             Assert.AreEqual(expect, result);
         }

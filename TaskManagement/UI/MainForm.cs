@@ -323,14 +323,12 @@ namespace TaskManagement.UI
                 if (dlg.allPeriod)
                 {
                     RSFileExporter.Export(_viewData.Original);
-                } else
+                }
+                else
                 {
                     RSFileExporter.ExportSelectGetsudo(_viewData.Original, dlg.selectGetsudo);
                 }
             }
-
-
-
         }
 
         private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)

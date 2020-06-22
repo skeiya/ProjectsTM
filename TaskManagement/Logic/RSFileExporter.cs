@@ -10,7 +10,7 @@ namespace TaskManagement.Logic
     {
         public static void Export(AppData appData)
         {
-            string result = MakeText(appData, null);
+            string result = MakeTextAllData(appData);
 
             using (var dlg = new SaveFileDialog())
             {
@@ -21,7 +21,7 @@ namespace TaskManagement.Logic
 
         public static void ExportSelectGetsudo(AppData appData, string selectGetsudo)
         {
-            string result = MakeText(appData, selectGetsudo);
+            string result = MakeTextCore(appData, selectGetsudo);
 
             using (var dlg = new SaveFileDialog())
             {
@@ -30,19 +30,30 @@ namespace TaskManagement.Logic
             }
         }
 
+        public static string MakeTextAllData(AppData appData)
+        {
+            return MakeTextCore(appData, "");
+        }
 
-
-        public static string MakeText(AppData appData, string selectGetsudo)
+        private static string MakeTextCore(AppData appData, string selectGetsudo)
         {
             var members = GetMembers(appData.Members);
             var months = new List<Tuple<int, int>>();
-            if (selectGetsudo == null)
+            if (selectGetsudo.Length == 0)
             {
                 months = GetMonths(appData.Callender);
             } else
             {
-                // todo sakamoto 文字列のパース
-                months.Add(new Tuple<int, int>(2020, 7));
+                try
+                {
+                    var words = selectGetsudo.Split('/');
+                    months.Add(new Tuple<int, int>(int.Parse(words[0]), int.Parse(words[1])));
+                }
+                catch
+                {
+                    return null;
+                }
+
             }
             var projects = GetProjects(appData.WorkItems);
             var rowCount = members.Count * projects.Count + 1;
@@ -167,7 +178,5 @@ namespace TaskManagement.Logic
         {
             return workItems.GetWorkItemDaysOfGetsudo(year, month, member, project, callender);
         }
-
-
     }
 }
