@@ -30,7 +30,6 @@ namespace TaskManagement.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -306,21 +305,21 @@ namespace TaskManagement.UI
             // ToolStripMenuItemWorkingDas
             // 
             this.ToolStripMenuItemWorkingDas.Name = "ToolStripMenuItemWorkingDas";
-            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(136, 22);
+            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemWorkingDas.Text = "稼働日";
             this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDas_Click);
             // 
             // ToolStripMenuItemManageMember
             // 
             this.ToolStripMenuItemManageMember.Name = "ToolStripMenuItemManageMember";
-            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(136, 22);
+            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemManageMember.Text = "メンバー";
             this.ToolStripMenuItemManageMember.Click += new System.EventHandler(this.ToolStripMenuItemManageMember_Click);
             // 
             // ToolStripMenuItemMileStone
             // 
             this.ToolStripMenuItemMileStone.Name = "ToolStripMenuItemMileStone";
-            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(136, 22);
+            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemMileStone.Text = "マイルストーン";
             this.ToolStripMenuItemMileStone.Click += new System.EventHandler(this.ToolStripMenuItemMileStone_Click);
             // 
