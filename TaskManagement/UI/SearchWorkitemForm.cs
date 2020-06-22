@@ -26,6 +26,8 @@ namespace TaskManagement.UI
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count <= 0) return;
+            if (dataGridView1.RowCount - 1 <= dataGridView1.SelectedRows[0].Index) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var found = _viewData.GetFilteredWorkItems().FirstOrDefault(w => w.Equals(_list[index]));
@@ -34,7 +36,8 @@ namespace TaskManagement.UI
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (e.ColumnIndex < 0 || dataGridView1.ColumnCount - 1 <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
+            if (dataGridView1.SelectedRows.Count <= 0) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var wi = _list[index];
