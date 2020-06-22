@@ -155,6 +155,9 @@
     <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
     <Compile Include="Service\ToolTipService.cs" />
+    <Compile Include="UI\SearchWorkItemDataViewGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\ViewDetailSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,6 +321,9 @@
     <Analyzer Include="packages\Microsoft.NetCore.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -21,20 +21,21 @@ namespace TaskManagement.UI
             InitializeComponent();
             this._viewData = viewData;
             this._editService = editService;
-            listBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
         }
 
-        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            var index = listBox1.SelectedIndex;
+            var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var found = _viewData.GetFilteredWorkItems().FirstOrDefault(w => w.Equals(_list[index]));
             _viewData.Selected = found == null ? null : new WorkItems(found);
         }
 
-        private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var index = listBox1.SelectedIndex;
+
+            var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var wi = _list[index];
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
@@ -44,6 +45,7 @@ namespace TaskManagement.UI
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
                 _viewData.UpdateCallenderAndMembers(wi);
+                EditDataGridView(index, newWi);
             }
         }
 
@@ -57,7 +59,7 @@ namespace TaskManagement.UI
 
             textBoxPattern.Text = string.Empty;
             _list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems);
-            UpdateListView();
+            UpdateDataGridView();
         }
 
         private void ButtonSearch_Click(object sender, EventArgs e)
@@ -77,7 +79,7 @@ namespace TaskManagement.UI
                 }
             }
             catch { }
-            UpdateListView();
+            UpdateDataGridView();
         }
 
         private RegexOptions GetOption()
@@ -89,12 +91,12 @@ namespace TaskManagement.UI
         private bool IsSearchOverwrap()
         {
             return checkBoxOverwrapPeriod.Checked;
-        }
+        }      
 
-        private void UpdateListView()
+        private void UpdateDataGridView()
         {
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(_list.Select((i) => i.ToString()).ToArray());
+            dataGridView1.Rows.Clear();
+            SetGridViewRows();
             var dayCount = _list.Sum(w => _viewData.Original.Callender.GetPeriodDayCount(w.Period));
             var monthCount = dayCount / 20;
             labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
@@ -122,7 +124,12 @@ namespace TaskManagement.UI
         internal void Clear()
         {
             _list.Clear();
-            UpdateListView();
+            UpdateDataGridView();
+        }
+
+         private void SearchWorkitemForm_Load(object sender, EventArgs e)
+        {
+            SetGridViewColumns();
         }
     }
 }
