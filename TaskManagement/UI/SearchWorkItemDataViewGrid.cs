@@ -23,13 +23,20 @@ namespace TaskManagement.UI
         {
             dataGridView1.ColumnCount = (int)GridCols.Count;
             dataGridView1.Columns[(int)GridCols.Name].HeaderText = "名前";
+            dataGridView1.Columns[(int)GridCols.Name].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.Proj].HeaderText = "物件";
+            dataGridView1.Columns[(int)GridCols.Proj].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.Assigned].HeaderText = "担当";
+            dataGridView1.Columns[(int)GridCols.Assigned].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.Tag].HeaderText = "タグ";
             dataGridView1.Columns[(int)GridCols.State].HeaderText = "状態";
+            dataGridView1.Columns[(int)GridCols.State].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.From].HeaderText = "開始";
+            dataGridView1.Columns[(int)GridCols.From].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.Days].HeaderText = "人日";
+            dataGridView1.Columns[(int)GridCols.Days].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.To].HeaderText = "終了";
+            dataGridView1.Columns[(int)GridCols.To].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
         private void SetGridViewRows()
