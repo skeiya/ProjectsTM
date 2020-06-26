@@ -155,9 +155,6 @@
     <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
     <Compile Include="Service\ToolTipService.cs" />
-    <Compile Include="UI\SearchWorkItemDataViewGrid.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ViewDetailSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
