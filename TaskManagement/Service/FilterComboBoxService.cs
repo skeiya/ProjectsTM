@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using System.Xml.Serialization;
+using TaskManagement.Logic;
+using TaskManagement.ViewModel;
+
+namespace TaskManagement.Service
+{
+    class FilterComboBoxService
+    {
+        private ViewData _viewData;
+        private ToolStripComboBox toolStripComboBoxFilter;
+        private static string DirPath => "./filters";
+        private List<string> _allPaths = new List<string>();
+
+        public string Text
+        {
+            get
+            {
+                return toolStripComboBoxFilter.Text;
+            }
+            set
+            {
+                toolStripComboBoxFilter.Text = value;
+            }
+        }
+
+
+        public FilterComboBoxService(ViewData viewData, ToolStripComboBox toolStripComboBoxFilter)
+        {
+            _viewData = viewData;
+            this.toolStripComboBoxFilter = toolStripComboBoxFilter;
+        }
+
+        internal void Initialize()
+        {
+            toolStripComboBoxFilter.Items.Clear();
+            toolStripComboBoxFilter.Items.Add("ALL");
+            try
+            {
+                _allPaths.Clear();
+                _allPaths.AddRange(Directory.GetFiles(DirPath));
+                foreach (var f in _allPaths)
+                {
+                    toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                toolStripComboBoxFilter.SelectedIndex = 0;
+                toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+            }
+        }
+
+        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _viewData.Selected = null;
+            var idx = toolStripComboBoxFilter.SelectedIndex;
+            if (idx == 0)
+            {
+                _viewData.SetFilter(null);
+                return;
+            }
+            var path = _allPaths[idx - 1];
+            if (!File.Exists(path)) return;
+            using (var rs = StreamFactory.CreateReader(path))
+            {
+                var x = new XmlSerializer(typeof(Filter));
+                var filter = (Filter)x.Deserialize(rs);
+                _viewData.SetFilter(filter);
+            }
+        }
+    }
+}
