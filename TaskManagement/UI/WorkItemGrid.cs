@@ -278,6 +278,27 @@ namespace TaskManagement.UI
             _viewData.Selected = selected;
         }
 
+        internal void Divide()
+        {
+            try
+            {
+                if (_viewData.Selected == null) return;
+                if (_viewData.Selected.Count() != 1) return;
+                var selected = _viewData.Selected.Unique;
+                if (selected == null) return;
+                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+                using (var dlg = new DivideWorkItemForm(count))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    EditService.Divide(selected, dlg.Divided, dlg.Remain);
+                }
+            }
+            catch
+            {
+                return;
+            }
+        }
+
         private static Rectangle GetRectangle(Point p1, Point p2)
         {
             var x = Math.Min(p1.X, p2.X);
