@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
@@ -24,6 +23,8 @@ namespace TaskManagement.UI
         private FileDragService _fileDragService = new FileDragService();
         private OldFileService _oldFileService = new OldFileService();
         private CalculateSumService _calculateSumService = new CalculateSumService();
+        private FilterComboBoxService _filterComboBoxService;
+        private ContextMenuService _contextMenuService;
         private bool _isDirty = false;
 
         public MainForm()
@@ -31,14 +32,15 @@ namespace TaskManagement.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
-
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
+            _filterComboBoxService.Initialize();
+            _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
-            InitializeFilterCombobox();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += JumpTodayAtFirstDraw;
+            this.Shown += (a, b) => workItemGrid1.MoveToToday();
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
@@ -75,17 +77,12 @@ namespace TaskManagement.UI
             }));
         }
 
-        private void JumpTodayAtFirstDraw(object sender, System.EventArgs e)
-        {
-            JumpTodayMenu_Click(null, null);
-        }
-
         private void LoadUserSetting()
         {
             try
             {
                 var setting = UserSettingUIService.Load(UserSettingPath);
-                toolStripComboBoxFilter.Text = setting.FilterName;
+                _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
@@ -109,7 +106,7 @@ namespace TaskManagement.UI
         {
             var setting = new UserSetting
             {
-                FilterName = toolStripComboBoxFilter.Text,
+                FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail
@@ -134,159 +131,17 @@ namespace TaskManagement.UI
             UpdateDisplayOfSum(null);
         }
 
-
         private void UpdateDisplayOfSum(List<Member> updatedMembers)
         {
             var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
-        private static string DirPath => "./filters";
-        private List<string> _allPaths = new List<string>();
-
-        private void InitializeFilterCombobox()
-        {
-            toolStripComboBoxFilter.Items.Clear();
-            toolStripComboBoxFilter.Items.Add("ALL");
-            try
-            {
-                _allPaths.Clear();
-                _allPaths.AddRange(Directory.GetFiles(DirPath));
-                foreach (var f in _allPaths)
-                {
-                    toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
-                }
-            }
-            catch
-            {
-            }
-            finally
-            {
-                toolStripComboBoxFilter.SelectedIndex = 0;
-                toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
-            }
-        }
-
-        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _viewData.Selected = null;
-            var idx = toolStripComboBoxFilter.SelectedIndex;
-            if (idx == 0)
-            {
-                _viewData.SetFilter(null);
-                return;
-            }
-            var path = _allPaths[idx - 1];
-            if (!File.Exists(path)) return;
-            using (var rs = StreamFactory.CreateReader(path))
-            {
-                var x = new XmlSerializer(typeof(Filter));
-                var filter = (Filter)x.Deserialize(rs);
-                _viewData.SetFilter(filter);
-            }
-        }
-
         void InitializeTaskDrawArea()
         {
-            InitializeContextMenu();
             workItemGrid1.AllowDrop = true;
             workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-        }
-
-        private void InitializeContextMenu()
-        {
-            workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
-            workItemGrid1.ContextMenuStrip.Items.Add("編集...").Click += EditMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("削除").Click += DeleteMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DivideMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
-            var manageItem = new ToolStripMenuItem("管理用");
-            workItemGrid1.ContextMenuStrip.Items.Add(manageItem);
-            manageItem.DropDownItems.Add("2分割").Click += DivideInto2PartsMenu_Click;
-            manageItem.DropDownItems.Add("半分に縮小").Click += MakeHalfMenu_Click;
-            manageItem.DropDownItems.Add("以降を選択").Click += SelectAfterwardMenu_Click;
-            manageItem.DropDownItems.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
-            manageItem.DropDownItems.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
-        }
-
-        private void DeleteMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.EditService.Delete();
-        }
-
-        private void AlignSelectedMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.EditService.AlignSelected();
-        }
-
-        private void MakeHalfMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.EditService.MakeHalf();
-        }
-
-        private void DivideInto2PartsMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.EditService.DivideInto2Parts();
-        }
-
-        private void AlignAfterwardMenu_Click(object sender, EventArgs e)
-        {
-            if (!workItemGrid1.EditService.AlignAfterward())
-            {
-                MessageBox.Show(this, "期間を正常に更新できませんでした。");
-            }
-        }
-
-        private void SelectAfterwardMenu_Click(object sender, EventArgs e)
-        {
-            var selected = _viewData.Selected;
-            if (selected == null) return;
-            workItemGrid1.EditService.SelectAfterward(selected);
-        }
-
-        private void DoneMenu_Click(object sender, EventArgs e)
-        {
-            var selected = _viewData.Selected;
-            if (selected == null) return;
-            workItemGrid1.EditService.Done(selected);
-        }
-
-        private void JumpTodayMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.MoveToToday();
-        }
-
-        private void DivideMenu_Click(object sender, EventArgs e)
-        {
-            Divide();
-        }
-
-        private void Divide()
-        {
-            try
-            {
-                if (_viewData.Selected == null) return;
-                if (_viewData.Selected.Count() != 1) return;
-                var selected = _viewData.Selected.Unique;
-                if (selected == null) return;
-                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DivideWorkItemForm(count))
-                {
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    workItemGrid1.EditService.Divide(selected, dlg.Divided, dlg.Remain);
-                }
-            }
-            catch
-            {
-                return;
-            }
-        }
-
-        private void EditMenu_Click(object sender, EventArgs e)
-        {
-            workItemGrid1.EditSelectedWorkItem();
         }
 
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
@@ -458,7 +313,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
-            Divide();
+            workItemGrid1.Divide();
         }
 
         private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)

@@ -69,6 +69,7 @@
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
     <Compile Include="Service\CalculateSumService.cs" />
+    <Compile Include="Service\ContextMenuService.cs" />
     <Compile Include="Service\DragState.cs" />
     <Compile Include="Service\DrawService.cs" />
     <Compile Include="Service\DummyDataService.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Service\EditedEventArgs.cs" />
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
+    <Compile Include="Service\FilterComboBoxService.cs" />
     <Compile Include="Service\OldFileService.cs" />
     <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\UserSettingUIService.cs" />
