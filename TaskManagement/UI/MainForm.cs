@@ -265,23 +265,7 @@ namespace TaskManagement.UI
 
         private void Divide()
         {
-            try
-            {
-                if (_viewData.Selected == null) return;
-                if (_viewData.Selected.Count() != 1) return;
-                var selected = _viewData.Selected.Unique;
-                if (selected == null) return;
-                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DivideWorkItemForm(count))
-                {
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    workItemGrid1.EditService.Divide(selected, dlg.Divided, dlg.Remain);
-                }
-            }
-            catch
-            {
-                return;
-            }
+            workItemGrid1.Divide();
         }
 
         private void EditMenu_Click(object sender, EventArgs e)
