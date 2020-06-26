@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
@@ -24,6 +23,7 @@ namespace TaskManagement.UI
         private FileDragService _fileDragService = new FileDragService();
         private OldFileService _oldFileService = new OldFileService();
         private CalculateSumService _calculateSumService = new CalculateSumService();
+        private FilterComboBoxService _filterComboBoxService;
         private bool _isDirty = false;
 
         public MainForm()
@@ -31,10 +31,11 @@ namespace TaskManagement.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
+            _filterComboBoxService.Initialize();
 
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
-            InitializeFilterCombobox();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
@@ -85,7 +86,7 @@ namespace TaskManagement.UI
             try
             {
                 var setting = UserSettingUIService.Load(UserSettingPath);
-                toolStripComboBoxFilter.Text = setting.FilterName;
+                _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
@@ -109,7 +110,7 @@ namespace TaskManagement.UI
         {
             var setting = new UserSetting
             {
-                FilterName = toolStripComboBoxFilter.Text,
+                FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail
@@ -134,56 +135,10 @@ namespace TaskManagement.UI
             UpdateDisplayOfSum(null);
         }
 
-
         private void UpdateDisplayOfSum(List<Member> updatedMembers)
         {
             var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
-        }
-
-        private static string DirPath => "./filters";
-        private List<string> _allPaths = new List<string>();
-
-        private void InitializeFilterCombobox()
-        {
-            toolStripComboBoxFilter.Items.Clear();
-            toolStripComboBoxFilter.Items.Add("ALL");
-            try
-            {
-                _allPaths.Clear();
-                _allPaths.AddRange(Directory.GetFiles(DirPath));
-                foreach (var f in _allPaths)
-                {
-                    toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
-                }
-            }
-            catch
-            {
-            }
-            finally
-            {
-                toolStripComboBoxFilter.SelectedIndex = 0;
-                toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
-            }
-        }
-
-        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _viewData.Selected = null;
-            var idx = toolStripComboBoxFilter.SelectedIndex;
-            if (idx == 0)
-            {
-                _viewData.SetFilter(null);
-                return;
-            }
-            var path = _allPaths[idx - 1];
-            if (!File.Exists(path)) return;
-            using (var rs = StreamFactory.CreateReader(path))
-            {
-                var x = new XmlSerializer(typeof(Filter));
-                var filter = (Filter)x.Deserialize(rs);
-                _viewData.SetFilter(filter);
-            }
         }
 
         void InitializeTaskDrawArea()
