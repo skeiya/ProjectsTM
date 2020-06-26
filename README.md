@@ -1,5 +1,5 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+カレンダー表示ベースでの多人数・複数プロジェクトの作業項目管理ツール。
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
