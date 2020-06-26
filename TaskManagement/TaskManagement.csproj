@@ -69,6 +69,7 @@
     <Compile Include="Model\UserSetting.cs" />
     <Compile Include="Service\AtomicAction.cs" />
     <Compile Include="Service\CalculateSumService.cs" />
+    <Compile Include="Service\ContextMenuService.cs" />
     <Compile Include="Service\DragState.cs" />
     <Compile Include="Service\DrawService.cs" />
     <Compile Include="Service\DummyDataService.cs" />
