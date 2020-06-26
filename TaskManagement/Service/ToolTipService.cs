@@ -14,7 +14,7 @@ namespace TaskManagement.Service
             _toolTip.ShowAlways = true;
         }
 
-        public void Update(Control c, WorkItem wi)
+        public void Update(Control c, WorkItem wi, int days = -1)
         {
             if (c == null) return;
             if (wi == null) { this.Hide(c); return; }
@@ -26,6 +26,7 @@ namespace TaskManagement.Service
                 + "状態:" + wi.State.ToString() + Environment.NewLine + Environment.NewLine
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
+            if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
             if (!s.Equals(_toolTip.GetToolTip(c))) _toolTip.SetToolTip(c, s);
         }
 

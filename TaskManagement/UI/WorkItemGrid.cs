@@ -337,7 +337,7 @@ namespace TaskManagement.UI
             RawPoint cur = Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-            _toolTipService.Update(c, wi);
+            _toolTipService.Update(c, wi, wi == null ? -1 : _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
