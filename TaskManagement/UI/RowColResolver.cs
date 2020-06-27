@@ -29,7 +29,7 @@ namespace TaskManagement.UI
             _col2MemberChache.Clear();
         }
 
-        internal CallenderDay Row2Dary(RowIndex r)
+        internal CallenderDay Row2Day(RowIndex r)
         {
             if (_row2DayChache.TryGetValue(r, out var day)) return day;
             if (r == null) return null;

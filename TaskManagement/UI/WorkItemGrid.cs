@@ -478,7 +478,7 @@ namespace TaskManagement.UI
 
         public CallenderDay Row2Day(RowIndex r)
         {
-            return _rowColResolver.Row2Dary(r);
+            return _rowColResolver.Row2Day(r);
         }
 
         public Member X2Member(int x)
