@@ -46,12 +46,10 @@ namespace TaskManagement.UI
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
-            var fixedRows = 3;
-            var fixedCols = 3;
-            this.RowCount = _viewData.GetFilteredDays().Count + fixedRows;
-            this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
-            this.FixedRowCount = fixedRows;
-            this.FixedColCount = fixedCols;
+            this.FixedRowCount = WorkItemGridConstants.FixedRows;
+            this.FixedColCount = WorkItemGridConstants.FixedCols;
+            this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
+            this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             ApplyDetailSetting(_viewData.Detail);
 
