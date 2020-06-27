@@ -14,7 +14,7 @@ namespace FreeGridControl
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
-        public bool moveVisibleRowColRange_LOCK = false;
+        public bool moveVisibleRowColRange_LOCK { get; set; } = false;
 
         public GridControl()
         {

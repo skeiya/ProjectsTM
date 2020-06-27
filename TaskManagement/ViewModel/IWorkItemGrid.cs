@@ -27,9 +27,18 @@ namespace TaskManagement.ViewModel
         SizeF FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
+        bool moveVisibleRowColRange_LOCK { get; set; }
 
         Rectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
+        void Invalidate();
+        WorkItem PickWorkItemFromPoint(GridControl.RawPoint curOnRaw);
+        bool IsFixedArea(Point location);
+        GridControl.RawPoint Client2Raw(Point location);
+        void IncRatio();
+        void DecRatio();
+        void EditSelectedWorkItem();
+        void AddNewWorkItem(WorkItem proto);
     }
 }
