@@ -62,7 +62,11 @@ namespace TaskManagement.UI
 
             UpdateCache();
             LockUpdate = false;
-            RefreshDraw();
+            _drawService = new DrawService(
+                _viewData,
+                this,
+                () => _workItemDragService.IsActive(),
+                this.Font);
         }
 
         private void UpdateCache()
@@ -71,21 +75,6 @@ namespace TaskManagement.UI
             _row2DayChache.Clear();
             _member2ColChache.Clear();
             _col2MemberChache.Clear();
-        }
-
-        public void RefreshDraw()
-        {
-            if (_drawService != null)
-            {
-                _drawService.Dispose();
-                _drawService = null;
-            }
-            _drawService = new DrawService(
-                _viewData,
-                this,
-                () => _workItemDragService.IsActive(),
-                this.Font);
-            this.Invalidate();
         }
 
         public IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
@@ -107,7 +96,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             UpdateCache();
-            RefreshDraw();
+            _drawService.Clear();
         }
 
         internal void AdjustForPrint(Rectangle printRect)
@@ -197,7 +186,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
-            RefreshDraw();
+            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
@@ -241,6 +230,11 @@ namespace TaskManagement.UI
                 _workItemDragService.ToMoveMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);
             }
             this.Invalidate();
+        }
+
+        internal void Clear()
+        {
+            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)

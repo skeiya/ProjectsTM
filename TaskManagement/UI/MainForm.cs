@@ -229,7 +229,7 @@ namespace TaskManagement.UI
             {
                 dlg.ShowDialog();
             }
-            workItemGrid1.RefreshDraw();
+            workItemGrid1.Clear();
         }
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
