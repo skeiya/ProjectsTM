@@ -32,6 +32,12 @@ namespace TaskManagement.Service
         {
             _viewData = viewData;
             this.toolStripComboBoxFilter = toolStripComboBoxFilter;
+            this.toolStripComboBoxFilter.GotFocus += ToolStripComboBoxFilter_GotFocus;
+        }
+
+        private void ToolStripComboBoxFilter_GotFocus(object sender, EventArgs e)
+        {
+            Initialize();
         }
 
         internal void Initialize()
@@ -46,7 +52,7 @@ namespace TaskManagement.Service
             {
                 toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
             }
-            if (selectedIndex < 0) toolStripComboBoxFilter.SelectedIndex = 0;
+            toolStripComboBoxFilter.SelectedIndex = selectedIndex < 0 ? 0 : selectedIndex;
             AttachEvent();
         }
 
