@@ -20,6 +20,7 @@ namespace TaskManagement.UI
         private WorkItemEditService _editService;
         private ToolTipService _toolTipService = new ToolTipService();
         private DrawService _drawService;
+        private RowColResolver _rowColResolver;
 
         public WorkItemEditService EditService => _editService;
 
@@ -36,11 +37,6 @@ namespace TaskManagement.UI
         public event EventHandler<EditedEventArgs> UndoChanged;
         public event EventHandler<string> HoveringTextChanged;
         public event EventHandler<float> RatioChanged;
-
-        private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
-        private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
-        private Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
-        private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -55,22 +51,14 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
-
+            _rowColResolver = new RowColResolver(this, _viewData);
             ApplyDetailSetting(_viewData.Detail);
 
             _editService = new WorkItemEditService(_viewData, _undoService);
 
-            UpdateCache();
+            _rowColResolver.UpdateCache();
             LockUpdate = false;
             RefreshDraw();
-        }
-
-        private void UpdateCache()
-        {
-            _day2RowCache.Clear();
-            _row2DayChache.Clear();
-            _member2ColChache.Clear();
-            _col2MemberChache.Clear();
         }
 
         public void RefreshDraw()
@@ -106,7 +94,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            UpdateCache();
+            _rowColResolver.UpdateCache();
             RefreshDraw();
         }
 
@@ -507,13 +495,7 @@ namespace TaskManagement.UI
 
         public CallenderDay Row2Day(RowIndex r)
         {
-            if (_row2DayChache.TryGetValue(r, out var day)) return day;
-            if (r == null) return null;
-            var days = _viewData.GetFilteredDays();
-            if (r.Value - FixedRowCount < 0 || days.Count <= r.Value - FixedRowCount) return null;
-            day = days.ElementAt(r.Value - FixedRowCount);
-            _row2DayChache.Add(r, day);
-            return day;
+            return _rowColResolver.Row2Dary(r);
         }
 
         public Member X2Member(int x)
@@ -525,13 +507,7 @@ namespace TaskManagement.UI
 
         public Member Col2Member(ColIndex c)
         {
-            if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
-            var members = _viewData.GetFilteredMembers();
-            if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
-            var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
-            _col2MemberChache.Add(c, result);
-            return result;
+            return _rowColResolver.Col2Member(c);
         }
 
         private WorkItem PickWorkItemFromPoint(RawPoint location)
@@ -576,18 +552,7 @@ namespace TaskManagement.UI
 
         private ColIndex Member2Col(Member m, Members members)
         {
-            if (_member2ColChache.TryGetValue(m, out var col)) return col;
-            foreach (var c in ColIndex.Range(0, ColCount))
-            {
-                if (members.ElementAt(c.Value).Equals(m))
-                {
-                    var result = c.Offset(FixedColCount);
-                    _member2ColChache.Add(m, result);
-                    return result;
-                }
-            }
-            Debug.Assert(false);
-            return null;
+            return _rowColResolver.Member2Col(m, members);
         }
 
         private (RowIndex row, int count) GetRowRange(WorkItem wi)
@@ -618,16 +583,7 @@ namespace TaskManagement.UI
 
         private RowIndex Day2Row(CallenderDay day)
         {
-            if (_day2RowCache.TryGetValue(day, out var row)) return row;
-            foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
-            {
-               if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
-                {
-                    _day2RowCache.Add(day, r);
-                    return r;
-                }
-            }
-            return null;
+            return _rowColResolver.Day2Row(day);
         }
 
         public WorkItem PickExpandingWorkItem(Point location)
