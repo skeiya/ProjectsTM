@@ -50,6 +50,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.comboBoxState = new System.Windows.Forms.ComboBox();
             this.buttonRegexEscape = new System.Windows.Forms.Button();
+            this.textBoxDescription = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -115,7 +117,7 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(202, 306);
+            this.buttonOK.Location = new System.Drawing.Point(202, 388);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(35, 23);
@@ -128,7 +130,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(239, 306);
+            this.buttonCancel.Location = new System.Drawing.Point(239, 388);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(64, 23);
@@ -146,7 +148,7 @@
             this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTags.Multiline = true;
             this.textBoxTags.Name = "textBoxTags";
-            this.textBoxTags.Size = new System.Drawing.Size(200, 91);
+            this.textBoxTags.Size = new System.Drawing.Size(200, 71);
             this.textBoxTags.TabIndex = 13;
             // 
             // textBoxFrom
@@ -242,7 +244,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 281);
+            this.label7.Location = new System.Drawing.Point(10, 363);
             this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 12);
@@ -255,7 +257,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxState.FormattingEnabled = true;
-            this.comboBoxState.Location = new System.Drawing.Point(103, 278);
+            this.comboBoxState.Location = new System.Drawing.Point(103, 360);
             this.comboBoxState.Name = "comboBoxState";
             this.comboBoxState.Size = new System.Drawing.Size(200, 20);
             this.comboBoxState.TabIndex = 16;
@@ -263,7 +265,7 @@
             // buttonRegexEscape
             // 
             this.buttonRegexEscape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRegexEscape.Location = new System.Drawing.Point(12, 306);
+            this.buttonRegexEscape.Location = new System.Drawing.Point(12, 388);
             this.buttonRegexEscape.Name = "buttonRegexEscape";
             this.buttonRegexEscape.Size = new System.Drawing.Size(145, 23);
             this.buttonRegexEscape.TabIndex = 19;
@@ -271,13 +273,38 @@
             this.buttonRegexEscape.UseVisualStyleBackColor = true;
             this.buttonRegexEscape.Click += new System.EventHandler(this.buttonRegexEscape_Click);
             // 
+            // textBoxDescription
+            // 
+            this.textBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDescription.Location = new System.Drawing.Point(103, 257);
+            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.textBoxDescription.Multiline = true;
+            this.textBoxDescription.Name = "textBoxDescription";
+            this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxDescription.Size = new System.Drawing.Size(200, 98);
+            this.textBoxDescription.TabIndex = 20;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(10, 260);
+            this.label8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(70, 12);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "作業項目メモ";
+            // 
             // EditWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(310, 338);
+            this.ClientSize = new System.Drawing.Size(310, 420);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.textBoxDescription);
             this.Controls.Add(this.buttonRegexEscape);
             this.Controls.Add(this.comboBoxState);
             this.Controls.Add(this.textBox1);
@@ -331,5 +358,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBoxState;
         private System.Windows.Forms.Button buttonRegexEscape;
+        private System.Windows.Forms.TextBox textBoxDescription;
+        private System.Windows.Forms.Label label8;
     }
 }

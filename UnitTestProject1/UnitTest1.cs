@@ -53,7 +53,7 @@ namespace UnitTestProject1
         public void TestWorkItemFormat()
         {
             var callender = new Callender();
-            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C"), TaskState.Active);
+            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C"), TaskState.Active, "TestDescription");
             callender.Add(new CallenderDay(2019, 3, 20));
             callender.Add(new CallenderDay(2019, 3, 21));
             callender.Add(new CallenderDay(2019, 3, 22));
@@ -110,13 +110,13 @@ namespace UnitTestProject1
                 "対エンジェルス",
                 Tags.Parse("a|b"),
                 new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
-                ichiro, TaskState.Active));
+                ichiro, TaskState.Active, "解説：オープン戦　vsエンジェルス"));
             orgApp.WorkItems.Add(new WorkItem(
                 new Project("シーズン"),
                 "対カブス",
                 Tags.Parse("c|d"),
                 new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
-                gozzila, TaskState.Active));
+                gozzila, TaskState.Active, "解説：シーズン　vsカブス"));
 
             orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue, Color.Black));
 
