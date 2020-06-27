@@ -376,7 +376,6 @@ namespace TaskManagement.UI
             this.workItemGrid1.FixedRowCount = 0;
             this.workItemGrid1.Location = new System.Drawing.Point(0, 25);
             this.workItemGrid1.LockUpdate = true;
-            this.workItemGrid1.moveVisibleRowColRange_LOCK = false;
             this.workItemGrid1.Name = "workItemGrid1";
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
             this.workItemGrid1.TabIndex = 12;
