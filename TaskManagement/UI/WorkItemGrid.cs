@@ -267,24 +267,22 @@ namespace TaskManagement.UI
             _viewData.Selected = selected;
         }
 
+        internal WorkItem GetUniqueSelect()
+        {
+            if (_viewData.Selected == null) return null;
+            if (_viewData.Selected.Count() != 1) return null;
+            return _viewData.Selected.Unique;
+        }
+
         internal void Divide()
         {
-            try
+            var selected = GetUniqueSelect();
+            if (selected == null) return;
+            var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+            using (var dlg = new DivideWorkItemForm(count))
             {
-                if (_viewData.Selected == null) return;
-                if (_viewData.Selected.Count() != 1) return;
-                var selected = _viewData.Selected.Unique;
-                if (selected == null) return;
-                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DivideWorkItemForm(count))
-                {
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    EditService.Divide(selected, dlg.Divided, dlg.Remain);
-                }
-            }
-            catch
-            {
-                return;
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                EditService.Divide(selected, dlg.Divided, dlg.Remain);
             }
         }
 
@@ -351,9 +349,7 @@ namespace TaskManagement.UI
 
         public void EditSelectedWorkItem()
         {
-            if (_viewData.Selected == null) return;
-            if (_viewData.Selected.Count() != 1) return;
-            var wi = _viewData.Selected.Unique;
+            var wi = GetUniqueSelect();
             if (wi == null) return;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
@@ -368,10 +364,11 @@ namespace TaskManagement.UI
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            if (_viewData.Selected != null && _viewData.Selected.Count() == 1)
+            var wi = GetUniqueSelect();
+            if (wi != null)
             {
-                var rowRange = GetRowRange(_viewData.Selected.Unique);
-                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(_viewData.Selected.Unique.AssignedMember, _viewData.GetFilteredMembers()));
+                var rowRange = GetRowRange(wi);
+                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
             }
             this.Invalidate();
         }
@@ -512,7 +509,8 @@ namespace TaskManagement.UI
 
         internal void MoveToToday()
         {
-            var m = (_viewData.Selected != null && _viewData.Selected.Count() == 1) ? _viewData.Selected.Unique.AssignedMember : X2Member((int)FixedWidth);
+            var wi = GetUniqueSelect();
+            var m = wi != null ? wi.AssignedMember : X2Member((int)FixedWidth);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
