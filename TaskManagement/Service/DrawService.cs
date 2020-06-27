@@ -143,6 +143,7 @@ namespace TaskManagement.Service
         {
             if (count <= 0) yield break;
             var topDay = _grid.Row2Day(top);
+            if(topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
@@ -256,15 +257,15 @@ namespace TaskManagement.Service
                 var d = _grid.Row2Day(r);
                 if (_grid.IsSelected(d))
                 {
-                    var rectYear = _grid.GetRect(new ColIndex(0), r, 1, false, true, true);
-                    var rectMonth = _grid.GetRect(new ColIndex(1), r, 1, false, true, true);
-                    var rectDay = _grid.GetRect(new ColIndex(2), r, 1, false, true, true);
+                    var rectYear = _grid.GetRect(WorkItemGridConstants.YearCol, r, 1, false, true, true);
+                    var rectMonth = _grid.GetRect(WorkItemGridConstants.MonthCol, r, 1, false, true, true);
+                    var rectDay = _grid.GetRect(WorkItemGridConstants.DayCol, r, 1, false, true, true);
                     var rect = new RectangleF(rectYear.Value.Left, rectYear.Value.Top, rectYear.Value.Width + rectMonth.Value.Width + rectDay.Value.Width, rectYear.Value.Height);
                     g.FillRectangle(BrushCache.GetBrush(Color.LightSkyBlue), rect);
                 }
                 if (year != d.Year)
                 {
-                    var rectYear = _grid.GetRect(new ColIndex(0), r, 1, false, true, true);
+                    var rectYear = _grid.GetRect(WorkItemGridConstants.YearCol, r, 1, false, true, true);
                     if (rectYear.HasValue)
                     {
                         month = 0;
@@ -274,7 +275,7 @@ namespace TaskManagement.Service
                 }
                 if (month != d.Month)
                 {
-                    var rectMonth = _grid.GetRect(new ColIndex(1), r, 1, false, true, true);
+                    var rectMonth = _grid.GetRect(WorkItemGridConstants.MonthCol, r, 1, false, true, true);
                     if (rectMonth.HasValue)
                     {
                         day = 0;
@@ -283,7 +284,7 @@ namespace TaskManagement.Service
                 }
                 if (day != d.Day)
                 {
-                    var rectDay = _grid.GetRect(new ColIndex(2), r, 1, false, true, true);
+                    var rectDay = _grid.GetRect(WorkItemGridConstants.DayCol, r, 1, false, true, true);
                     if (rectDay.HasValue)
                     {
                         day = d.Day;
@@ -322,9 +323,9 @@ namespace TaskManagement.Service
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
-                var rectCompany = _grid.GetRect(c, new RowIndex(0), 1, true, false, true);
-                var rectLastName = _grid.GetRect(c, new RowIndex(1), 1, true, false, true);
-                var rectFirstName = _grid.GetRect(c, new RowIndex(2), 1, true, false, true);
+                var rectCompany = _grid.GetRect(c, WorkItemGridConstants.CompanyRow, 1, true, false, true);
+                var rectLastName = _grid.GetRect(c, WorkItemGridConstants.LastNameRow, 1, true, false, true);
+                var rectFirstName = _grid.GetRect(c, WorkItemGridConstants.FirstNameRow, 1, true, false, true);
                 if (_grid.IsSelected(m))
                 {
                     var rect = new RectangleF(rectCompany.Value.Left, rectCompany.Value.Top, rectCompany.Value.Width, rectCompany.Value.Height + rectLastName.Value.Height + rectFirstName.Value.Height);

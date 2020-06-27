@@ -1,10 +1,10 @@
 ﻿using FreeGridControl;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
@@ -14,12 +14,12 @@ namespace TaskManagement.UI
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private ViewData _viewData;
-        private Cursor _originalCursor;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
-        private ToolTipService _toolTipService = new ToolTipService();
         private DrawService _drawService;
+        private KeyAndMouseHandleService _keyAndMouseHandleService;
+        private RowColResolver _rowColResolver;
 
         public WorkItemEditService EditService => _editService;
 
@@ -34,13 +34,8 @@ namespace TaskManagement.UI
         public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
 
         public event EventHandler<EditedEventArgs> UndoChanged;
-        public event EventHandler<string> HoveringTextChanged;
         public event EventHandler<float> RatioChanged;
-
-        private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
-        private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
-        private Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
-        private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
+        public event EventHandler<string> HoveringTextChanged;
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -49,18 +44,15 @@ namespace TaskManagement.UI
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
-            var fixedRows = 3;
-            var fixedCols = 3;
-            this.RowCount = _viewData.GetFilteredDays().Count + fixedRows;
-            this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
-            this.FixedRowCount = fixedRows;
-            this.FixedColCount = fixedCols;
-
+            this.FixedRowCount = WorkItemGridConstants.FixedRows;
+            this.FixedColCount = WorkItemGridConstants.FixedCols;
+            this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
+            this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
+            _rowColResolver = new RowColResolver(this, _viewData);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService);
+            _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting(_viewData.Detail);
-
             _editService = new WorkItemEditService(_viewData, _undoService);
-
-            UpdateCache();
             LockUpdate = false;
             _drawService = new DrawService(
                 _viewData,
@@ -69,12 +61,9 @@ namespace TaskManagement.UI
                 this.Font);
         }
 
-        private void UpdateCache()
+        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, string e)
         {
-            _day2RowCache.Clear();
-            _row2DayChache.Clear();
-            _member2ColChache.Clear();
-            _col2MemberChache.Clear();
+            this.HoveringTextChanged?.Invoke(sender, e);
         }
 
         public IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
@@ -95,7 +84,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            UpdateCache();
+            _rowColResolver.ClearCache();
             _drawService.Clear();
         }
 
@@ -117,16 +106,16 @@ namespace TaskManagement.UI
 
         private void ApplyDetailSetting(Detail detail)
         {
-            this.ColWidths[0] = detail.DateWidth / 2;
-            this.ColWidths[1] = detail.DateWidth / 4;
-            this.ColWidths[2] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = detail.DateWidth / 2;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = detail.DateWidth / 4;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = detail.ColWidth;
             }
-            this.RowHeights[0] = detail.CompanyHeight;
-            this.RowHeights[1] = detail.NameHeight;
-            this.RowHeights[2] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = detail.CompanyHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = detail.NameHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
                 this.RowHeights[r] = detail.RowHeight;
@@ -191,44 +180,18 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (IsControlDown())
-            {
-                if (e.Delta > 0)
-                {
-                    IncRatio();
-                }
-                else
-                {
-                    DecRatio();
-                }
-            }
+            _keyAndMouseHandleService.MouseWheel(e);
         }
 
         private void WorkItemGrid_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);
-            }
-            if (e.KeyCode == Keys.Escape)
-            {
-                _workItemDragService.End(_editService, _viewData, true, null);
-                _viewData.Selected = null;
-            }
+            _keyAndMouseHandleService.KeyDown(e);
             this.Invalidate();
         }
 
         private void WorkItemGrid_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete)
-            {
-                if (_viewData.Selected == null) return;
-                _editService.Delete();
-            }
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                _workItemDragService.ToMoveMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);
-            }
+            _keyAndMouseHandleService.KeyUp(e);
             this.Invalidate();
         }
 
@@ -239,10 +202,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
         {
-            using (new RedrawLock(_drawService, () => this.Invalidate()))
-            {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect, this);
-            }
+            _keyAndMouseHandleService.MouseUp();
         }
 
         public Rectangle? GetRangeSelectBound()
@@ -250,105 +210,37 @@ namespace TaskManagement.UI
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
             var p2 = Raw2Client(_workItemDragService.DragedLocation);
-            return GetRectangle(p1, p2);
+            return Point2Rect.GetRectangle(p1, p2);
         }
 
-        void RangeSelect()
+        internal WorkItem GetUniqueSelect()
         {
-            var range = GetRangeSelectBound();
-            if (!range.HasValue) return;
-            var members = _viewData.GetFilteredMembers();
-            var selected = new WorkItems();
-            foreach (var c in VisibleRowColRange.Cols)
-            {
-                var m = Col2Member(c);
-                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
-                {
-                    var rect = GetWorkItemDrawRect(w, members, true);
-                    if (!rect.HasValue) continue;
-                    if (range.Value.Contains(Rectangle.Round(rect.Value))) selected.Add(w);
-                }
-            }
-            _viewData.Selected = selected;
+            if (_viewData.Selected == null) return null;
+            if (_viewData.Selected.Count() != 1) return null;
+            return _viewData.Selected.Unique;
         }
 
         internal void Divide()
         {
-            try
+            var selected = GetUniqueSelect();
+            if (selected == null) return;
+            var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+            using (var dlg = new DivideWorkItemForm(count))
             {
-                if (_viewData.Selected == null) return;
-                if (_viewData.Selected.Count() != 1) return;
-                var selected = _viewData.Selected.Unique;
-                if (selected == null) return;
-                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DivideWorkItemForm(count))
-                {
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    EditService.Divide(selected, dlg.Divided, dlg.Remain);
-                }
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                EditService.Divide(selected, dlg.Divided, dlg.Remain);
             }
-            catch
-            {
-                return;
-            }
-        }
-
-        private static Rectangle GetRectangle(Point p1, Point p2)
-        {
-            var x = Math.Min(p1.X, p2.X);
-            var w = Math.Abs(p1.X - p2.X);
-            var y = Math.Min(p1.Y, p2.Y);
-            var h = Math.Abs(p1.Y - p2.Y);
-            return new Rectangle(x, y, w, h);
         }
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            UpdateHoveringText((Control)sender, e);
-            _workItemDragService.UpdateDraggingItem(this, Client2Raw(e.Location), _viewData);
-            if (IsWorkItemExpandArea(_viewData, e.Location))
-            {
-                if (this.Cursor != Cursors.SizeNS)
-                {
-                    _originalCursor = this.Cursor;
-                    this.Cursor = Cursors.SizeNS;
-                }
-            }
-            else
-            {
-                if (this.Cursor == Cursors.SizeNS)
-                {
-                    this.Cursor = _originalCursor;
-                }
-            }
+            _keyAndMouseHandleService.MouseMove(sender, e, this);
             this.Invalidate();
-        }
-
-        private void UpdateHoveringText(Control c, MouseEventArgs e)
-        {
-            if (_workItemDragService.IsActive()) return;
-            if (IsFixedArea(e.Location)) { _toolTipService.Hide(c); return; }
-            RawPoint cur = Client2Raw(e.Location);
-            var wi = _viewData.PickFilterdWorkItem(X2Member(cur.X), Y2Day(cur.Y));
-            HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-            _toolTipService.Update(c, wi);
         }
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = Client2Raw(e.Location);
-
-            if (_viewData.Selected != null)
-            {
-                EditSelectedWorkItem();
-                return;
-            }
-            var day = Y2Day(curOnRaw.Y);
-            var member = X2Member(curOnRaw.X);
-            if (day == null || member == null) return;
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active);
-            AddNewWorkItem(proto);
+            _keyAndMouseHandleService.DoubleClick(e);
         }
 
         public void AddNewWorkItem(WorkItem proto)
@@ -365,9 +257,7 @@ namespace TaskManagement.UI
 
         public void EditSelectedWorkItem()
         {
-            if (_viewData.Selected == null) return;
-            if (_viewData.Selected.Count() != 1) return;
-            var wi = _viewData.Selected.Unique;
+            var wi = GetUniqueSelect();
             if (wi == null) return;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
@@ -382,10 +272,11 @@ namespace TaskManagement.UI
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            if (_viewData.Selected != null && _viewData.Selected.Count() == 1)
+            var wi = GetUniqueSelect();
+            if (wi != null)
             {
-                var rowRange = GetRowRange(_viewData.Selected.Unique);
-                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(_viewData.Selected.Unique.AssignedMember, _viewData.GetFilteredMembers()));
+                var rowRange = GetRowRange(wi);
+                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
             }
             this.Invalidate();
         }
@@ -400,96 +291,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            if (IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = Client2Raw(e.Location);
-
-            if (e.Button == MouseButtons.Right)
-            {
-                _workItemDragService.StartRangeSelect(curOnRaw);
-            }
-
-            if (e.Button == MouseButtons.Left)
-            {
-                if (IsWorkItemExpandArea(_viewData, e.Location))
-                {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, Y2Day(curOnRaw.Y));
-                    return;
-                }
-            }
-
-            var wi = PickWorkItemFromPoint(curOnRaw);
-            if (wi == null)
-            {
-                _viewData.Selected = null;
-                return;
-            }
-            if (_viewData.Selected == null)
-            {
-                _viewData.Selected = new WorkItems(wi);
-            }
-            else
-            {
-                if (e.Button == MouseButtons.Left && IsControlDown())
-                {
-                    if (!_viewData.Selected.Contains(wi))
-                    {
-                        _viewData.Selected.Add(wi);
-                    }
-                    else
-                    {
-                        _viewData.Selected.Remove(wi);
-                    }
-                }
-                else
-                {
-                    if (!_viewData.Selected.Contains(wi))
-                    {
-                        _viewData.Selected = new WorkItems(wi);
-                    }
-                }
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                if (IsControlDown())
-                {
-                    _workItemDragService.StartCopy(_viewData, curOnRaw, Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
-                }
-                else
-                {
-                    _workItemDragService.StartMove(_viewData.Selected, curOnRaw, Y2Day(curOnRaw.Y));
-                }
-            }
-        }
-
-        private int GetExpandDirection(ViewData viewData, Point location)
-        {
-            if (viewData.Selected == null) return 0;
-            foreach (var w in viewData.Selected)
-            {
-                var bounds = GetWorkItemDrawRect(w, viewData.GetFilteredMembers(), true);
-                if (!bounds.HasValue) return 0;
-                if (IsTopBar(bounds.Value, location)) return +1;
-                if (IsBottomBar(bounds.Value, location)) return -1;
-            }
-            return 0;
-        }
-
-        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
-        {
-            if (viewData.Selected == null) return false;
-            return null != PickExpandingWorkItem(location);
-        }
-
-        internal static bool IsTopBar(RectangleF workItemBounds, PointF point)
-        {
-            var topBar = WorkItemDragService.GetTopBarRect(workItemBounds);
-            return topBar.Contains(point);
-        }
-
-        internal static bool IsBottomBar(RectangleF workItemBounds, PointF point)
-        {
-            var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds);
-            return bottomBar.Contains(point);
+            _keyAndMouseHandleService.MouseDown(e);
         }
 
         public CallenderDay Y2Day(int y)
@@ -501,13 +303,7 @@ namespace TaskManagement.UI
 
         public CallenderDay Row2Day(RowIndex r)
         {
-            if (_row2DayChache.TryGetValue(r, out var day)) return day;
-            if (r == null) return null;
-            var days = _viewData.GetFilteredDays();
-            if (r.Value - FixedRowCount < 0 || days.Count <= r.Value - FixedRowCount) return null;
-            day = days.ElementAt(r.Value - FixedRowCount);
-            _row2DayChache.Add(r, day);
-            return day;
+            return _rowColResolver.Row2Day(r);
         }
 
         public Member X2Member(int x)
@@ -519,26 +315,13 @@ namespace TaskManagement.UI
 
         public Member Col2Member(ColIndex c)
         {
-            if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
-            var members = _viewData.GetFilteredMembers();
-            if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
-            var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
-            _col2MemberChache.Add(c, result);
-            return result;
-        }
-
-        private WorkItem PickWorkItemFromPoint(RawPoint location)
-        {
-            var m = X2Member(location.X);
-            var d = Y2Day(location.Y);
-            if (m == null || d == null) return null;
-            return _viewData.PickFilterdWorkItem(m, d);
+            return _rowColResolver.Col2Member(c);
         }
 
         internal void MoveToToday()
         {
-            var m = (_viewData.Selected != null && _viewData.Selected.Count() == 1) ? _viewData.Selected.Unique.AssignedMember : X2Member((int)FixedWidth);
+            var wi = GetUniqueSelect();
+            var m = wi != null ? wi.AssignedMember : X2Member((int)FixedWidth);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
@@ -549,13 +332,13 @@ namespace TaskManagement.UI
             _drawService.Draw(e.Graphics, e.IsPrint);
         }
 
-        internal void DecRatio()
+        public void DecRatio()
         {
             _viewData.DecRatio();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        internal void IncRatio()
+        public void IncRatio()
         {
             _viewData.IncRatio();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
@@ -570,18 +353,7 @@ namespace TaskManagement.UI
 
         private ColIndex Member2Col(Member m, Members members)
         {
-            if (_member2ColChache.TryGetValue(m, out var col)) return col;
-            foreach (var c in ColIndex.Range(0, ColCount))
-            {
-                if (members.ElementAt(c.Value).Equals(m))
-                {
-                    var result = c.Offset(FixedColCount);
-                    _member2ColChache.Add(m, result);
-                    return result;
-                }
-            }
-            Debug.Assert(false);
-            return null;
+            return _rowColResolver.Member2Col(m, members);
         }
 
         private (RowIndex row, int count) GetRowRange(WorkItem wi)
@@ -612,29 +384,7 @@ namespace TaskManagement.UI
 
         private RowIndex Day2Row(CallenderDay day)
         {
-            if (_day2RowCache.TryGetValue(day, out var row)) return row;
-            foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
-            {
-               if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
-                {
-                    _day2RowCache.Add(day, r);
-                    return r;
-                }
-            }
-            return null;
-        }
-
-        public WorkItem PickExpandingWorkItem(Point location)
-        {
-            if (_viewData.Selected == null) return null;
-            foreach (var w in _viewData.Selected)
-            {
-                var bounds = GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
-                if (!bounds.HasValue) continue;
-                if (IsTopBar(bounds.Value, location)) return w;
-                if (IsBottomBar(bounds.Value, location)) return w;
-            }
-            return null;
+            return _rowColResolver.Day2Row(day);
         }
 
         public bool IsSelected(Member m)
@@ -647,6 +397,14 @@ namespace TaskManagement.UI
         {
             if (_viewData.Selected == null) return false;
             return _viewData.Selected.Any(w => w.Period.Contains(d));
+        }
+
+        public WorkItem PickWorkItemFromPoint(RawPoint location)
+        {
+            var m = X2Member(location.X);
+            var d = Y2Day(location.Y);
+            if (m == null || d == null) return null;
+            return _viewData.PickFilterdWorkItem(m, d);
         }
     }
 }

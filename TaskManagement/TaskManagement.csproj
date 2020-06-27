@@ -60,7 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\ColorSerializer.cs" />
+    <Compile Include="Logic\KeyState.cs" />
     <Compile Include="Logic\OverwrapedWorkItemsGetter.cs" />
+    <Compile Include="Logic\Point2Rect.cs" />
     <Compile Include="Logic\StreamFactory.cs" />
     <Compile Include="Model\MembersWorkItems.cs" />
     <Compile Include="Model\MileStone.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Service\FileDragService.cs" />
     <Compile Include="Service\AppDataFileIOService.cs" />
     <Compile Include="Service\FilterComboBoxService.cs" />
+    <Compile Include="Service\KeyAndMouseHandleService.cs" />
     <Compile Include="Service\OldFileService.cs" />
     <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\UserSettingUIService.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="UI\EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\RowColResolver.cs" />
     <Compile Include="UI\RsExportSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +170,7 @@
     <Compile Include="UI\WorkItemGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\WorkItemGridConstants.cs" />
     <Compile Include="ViewModel\Detail.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="UI\FilterForm.cs">
