@@ -23,7 +23,7 @@ namespace TaskManagement.UI
             textBoxFrom.Text = wi.Period == null ? string.Empty : wi.Period.From.ToString();
             textBoxTo.Text = wi.Period == null ? string.Empty : wi.Period.To.ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
-            textBoxDescription.Text = wi.Description == null ? string.Empty : wi.Description;
+            textBoxDescription.Text = wi.Description == null ? string.Empty : wi.Description.Replace("\n","\r\n");
             InitDropDownList(wi.State);
             UpdateEndDay();
         }
