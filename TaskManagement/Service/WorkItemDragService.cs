@@ -265,7 +265,7 @@ namespace TaskManagement.Service
             {
                 case DragState.Expanding:
                 case DragState.Moving:
-                    editService.Replace(viewData.Selected, edit);
+                    editService.Replace(_backup, edit);
                     break;
                 case DragState.Copying:
                     editService.Add(edit);
@@ -289,9 +289,6 @@ namespace TaskManagement.Service
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
             viewData.Original.WorkItems.Add(_backup);
-            if (grid != null) grid.moveVisibleRowColRange_LOCK = true;
-            viewData.Selected = _backup;
-            if (grid != null) grid.moveVisibleRowColRange_LOCK = false;
         }
 
         private static WorkItems BackupEdit(ViewData viewData)
