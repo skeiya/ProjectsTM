@@ -33,8 +33,6 @@ namespace TaskManagement.Model
             return result;
         }
 
-        public static int RowCount => 3;
-
         internal void Up(Member m)
         {
             var index = FindIndex(m);
