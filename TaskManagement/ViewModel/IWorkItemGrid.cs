@@ -27,8 +27,6 @@ namespace TaskManagement.ViewModel
         SizeF FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
-        bool moveVisibleRowColRange_LOCK { get; set; }
-
         Rectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
