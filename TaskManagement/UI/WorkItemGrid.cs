@@ -1,7 +1,6 @@
 ﻿using FreeGridControl;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -46,18 +45,13 @@ namespace TaskManagement.UI
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
-            var fixedRows = 3;
-            var fixedCols = 3;
-            this.RowCount = _viewData.GetFilteredDays().Count + fixedRows;
-            this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
-            this.FixedRowCount = fixedRows;
-            this.FixedColCount = fixedCols;
+            this.FixedRowCount = WorkItemGridConstants.FixedRows;
+            this.FixedColCount = WorkItemGridConstants.FixedCols;
+            this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
+            this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             ApplyDetailSetting(_viewData.Detail);
-
             _editService = new WorkItemEditService(_viewData, _undoService);
-
-            _rowColResolver.UpdateCache();
             LockUpdate = false;
             RefreshDraw();
         }
@@ -95,7 +89,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            _rowColResolver.UpdateCache();
+            _rowColResolver.ClearCache();
             RefreshDraw();
         }
 
@@ -117,16 +111,16 @@ namespace TaskManagement.UI
 
         private void ApplyDetailSetting(Detail detail)
         {
-            this.ColWidths[0] = detail.DateWidth / 2;
-            this.ColWidths[1] = detail.DateWidth / 4;
-            this.ColWidths[2] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = detail.DateWidth / 2;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = detail.DateWidth / 4;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = detail.ColWidth;
             }
-            this.RowHeights[0] = detail.CompanyHeight;
-            this.RowHeights[1] = detail.NameHeight;
-            this.RowHeights[2] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = detail.CompanyHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = detail.NameHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
                 this.RowHeights[r] = detail.RowHeight;

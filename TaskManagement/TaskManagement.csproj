@@ -168,6 +168,7 @@
     <Compile Include="UI\WorkItemGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\WorkItemGridConstants.cs" />
     <Compile Include="ViewModel\Detail.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="UI\FilterForm.cs">

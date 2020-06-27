@@ -21,7 +21,7 @@ namespace TaskManagement.UI
             this._grid = grid;
             this._viewData = viewData;
         }
-        public void UpdateCache()
+        public void ClearCache()
         {
             _day2RowCache.Clear();
             _row2DayChache.Clear();
