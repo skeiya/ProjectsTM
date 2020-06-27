@@ -98,6 +98,7 @@ namespace TaskManagement.Service
         private void AppendByFiles()
         {
             _allPaths.Clear();
+            if (!Directory.Exists(DirPath)) return;
             _allPaths.AddRange(Directory.GetFiles(DirPath));
             foreach (var f in _allPaths)
             {
