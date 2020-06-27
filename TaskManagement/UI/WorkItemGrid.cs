@@ -111,16 +111,16 @@ namespace TaskManagement.UI
 
         private void ApplyDetailSetting(Detail detail)
         {
-            this.ColWidths[0] = detail.DateWidth / 2;
-            this.ColWidths[1] = detail.DateWidth / 4;
-            this.ColWidths[2] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = detail.DateWidth / 2;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = detail.DateWidth / 4;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = detail.DateWidth / 4;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = detail.ColWidth;
             }
-            this.RowHeights[0] = detail.CompanyHeight;
-            this.RowHeights[1] = detail.NameHeight;
-            this.RowHeights[2] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = detail.CompanyHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = detail.NameHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
                 this.RowHeights[r] = detail.RowHeight;
