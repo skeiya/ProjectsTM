@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
@@ -20,6 +21,7 @@ namespace TaskManagement.UI
         private WorkItemEditService _editService;
         private ToolTipService _toolTipService = new ToolTipService();
         private DrawService _drawService;
+        private RowColResolver _rowColResolver;
 
         public WorkItemEditService EditService => _editService;
 
@@ -36,11 +38,6 @@ namespace TaskManagement.UI
         public event EventHandler<EditedEventArgs> UndoChanged;
         public event EventHandler<string> HoveringTextChanged;
         public event EventHandler<float> RatioChanged;
-
-        private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
-        private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
-        private Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
-        private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -55,22 +52,14 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + fixedCols;
             this.FixedRowCount = fixedRows;
             this.FixedColCount = fixedCols;
-
+            _rowColResolver = new RowColResolver(this, _viewData);
             ApplyDetailSetting(_viewData.Detail);
 
             _editService = new WorkItemEditService(_viewData, _undoService);
 
-            UpdateCache();
+            _rowColResolver.UpdateCache();
             LockUpdate = false;
             RefreshDraw();
-        }
-
-        private void UpdateCache()
-        {
-            _day2RowCache.Clear();
-            _row2DayChache.Clear();
-            _member2ColChache.Clear();
-            _col2MemberChache.Clear();
         }
 
         public void RefreshDraw()
@@ -106,7 +95,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            UpdateCache();
+            _rowColResolver.UpdateCache();
             RefreshDraw();
         }
 
@@ -256,7 +245,7 @@ namespace TaskManagement.UI
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
             var p2 = Raw2Client(_workItemDragService.DragedLocation);
-            return GetRectangle(p1, p2);
+            return Point2Rect.GetRectangle(p1, p2);
         }
 
         void RangeSelect()
@@ -278,34 +267,23 @@ namespace TaskManagement.UI
             _viewData.Selected = selected;
         }
 
-        internal void Divide()
+        internal WorkItem GetUniqueSelect()
         {
-            try
-            {
-                if (_viewData.Selected == null) return;
-                if (_viewData.Selected.Count() != 1) return;
-                var selected = _viewData.Selected.Unique;
-                if (selected == null) return;
-                var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
-                using (var dlg = new DivideWorkItemForm(count))
-                {
-                    if (dlg.ShowDialog() != DialogResult.OK) return;
-                    EditService.Divide(selected, dlg.Divided, dlg.Remain);
-                }
-            }
-            catch
-            {
-                return;
-            }
+            if (_viewData.Selected == null) return null;
+            if (_viewData.Selected.Count() != 1) return null;
+            return _viewData.Selected.Unique;
         }
 
-        private static Rectangle GetRectangle(Point p1, Point p2)
+        internal void Divide()
         {
-            var x = Math.Min(p1.X, p2.X);
-            var w = Math.Abs(p1.X - p2.X);
-            var y = Math.Min(p1.Y, p2.Y);
-            var h = Math.Abs(p1.Y - p2.Y);
-            return new Rectangle(x, y, w, h);
+            var selected = GetUniqueSelect();
+            if (selected == null) return;
+            var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
+            using (var dlg = new DivideWorkItemForm(count))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                EditService.Divide(selected, dlg.Divided, dlg.Remain);
+            }
         }
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
@@ -371,9 +349,7 @@ namespace TaskManagement.UI
 
         public void EditSelectedWorkItem()
         {
-            if (_viewData.Selected == null) return;
-            if (_viewData.Selected.Count() != 1) return;
-            var wi = _viewData.Selected.Unique;
+            var wi = GetUniqueSelect();
             if (wi == null) return;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
@@ -388,10 +364,11 @@ namespace TaskManagement.UI
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            if (_viewData.Selected != null && _viewData.Selected.Count() == 1)
+            var wi = GetUniqueSelect();
+            if (wi != null)
             {
-                var rowRange = GetRowRange(_viewData.Selected.Unique);
-                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(_viewData.Selected.Unique.AssignedMember, _viewData.GetFilteredMembers()));
+                var rowRange = GetRowRange(wi);
+                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
             }
             this.Invalidate();
         }
@@ -507,13 +484,7 @@ namespace TaskManagement.UI
 
         public CallenderDay Row2Day(RowIndex r)
         {
-            if (_row2DayChache.TryGetValue(r, out var day)) return day;
-            if (r == null) return null;
-            var days = _viewData.GetFilteredDays();
-            if (r.Value - FixedRowCount < 0 || days.Count <= r.Value - FixedRowCount) return null;
-            day = days.ElementAt(r.Value - FixedRowCount);
-            _row2DayChache.Add(r, day);
-            return day;
+            return _rowColResolver.Row2Dary(r);
         }
 
         public Member X2Member(int x)
@@ -525,13 +496,7 @@ namespace TaskManagement.UI
 
         public Member Col2Member(ColIndex c)
         {
-            if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
-            var members = _viewData.GetFilteredMembers();
-            if (c.Value - FixedColCount < 0 || members.Count <= c.Value - FixedColCount) return null;
-            var result = _viewData.GetFilteredMembers().ElementAt(c.Value - FixedColCount);
-            _col2MemberChache.Add(c, result);
-            return result;
+            return _rowColResolver.Col2Member(c);
         }
 
         private WorkItem PickWorkItemFromPoint(RawPoint location)
@@ -544,7 +509,8 @@ namespace TaskManagement.UI
 
         internal void MoveToToday()
         {
-            var m = (_viewData.Selected != null && _viewData.Selected.Count() == 1) ? _viewData.Selected.Unique.AssignedMember : X2Member((int)FixedWidth);
+            var wi = GetUniqueSelect();
+            var m = wi != null ? wi.AssignedMember : X2Member((int)FixedWidth);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
@@ -576,18 +542,7 @@ namespace TaskManagement.UI
 
         private ColIndex Member2Col(Member m, Members members)
         {
-            if (_member2ColChache.TryGetValue(m, out var col)) return col;
-            foreach (var c in ColIndex.Range(0, ColCount))
-            {
-                if (members.ElementAt(c.Value).Equals(m))
-                {
-                    var result = c.Offset(FixedColCount);
-                    _member2ColChache.Add(m, result);
-                    return result;
-                }
-            }
-            Debug.Assert(false);
-            return null;
+            return _rowColResolver.Member2Col(m, members);
         }
 
         private (RowIndex row, int count) GetRowRange(WorkItem wi)
@@ -618,16 +573,7 @@ namespace TaskManagement.UI
 
         private RowIndex Day2Row(CallenderDay day)
         {
-            if (_day2RowCache.TryGetValue(day, out var row)) return row;
-            foreach (var r in RowIndex.Range(FixedRowCount, RowCount - FixedRowCount))
-            {
-               if (_viewData.GetFilteredDays().ElementAt(r.Value - FixedRowCount).Equals(day))
-                {
-                    _day2RowCache.Add(day, r);
-                    return r;
-                }
-            }
-            return null;
+            return _rowColResolver.Day2Row(day);
         }
 
         public WorkItem PickExpandingWorkItem(Point location)
