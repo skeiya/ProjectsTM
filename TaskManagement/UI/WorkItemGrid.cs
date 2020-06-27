@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using TaskManagement.Logic;
 using TaskManagement.Model;
 using TaskManagement.Service;
 using TaskManagement.ViewModel;
@@ -244,7 +245,7 @@ namespace TaskManagement.UI
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
             var p2 = Raw2Client(_workItemDragService.DragedLocation);
-            return GetRectangle(p1, p2);
+            return Point2Rect.GetRectangle(p1, p2);
         }
 
         void RangeSelect()
@@ -285,15 +286,6 @@ namespace TaskManagement.UI
             {
                 return;
             }
-        }
-
-        private static Rectangle GetRectangle(Point p1, Point p2)
-        {
-            var x = Math.Min(p1.X, p2.X);
-            var w = Math.Abs(p1.X - p2.X);
-            var y = Math.Min(p1.Y, p2.Y);
-            var h = Math.Abs(p1.Y - p2.Y);
-            return new Rectangle(x, y, w, h);
         }
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)

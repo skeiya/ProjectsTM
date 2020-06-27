@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Logic\ColorSerializer.cs" />
     <Compile Include="Logic\OverwrapedWorkItemsGetter.cs" />
+    <Compile Include="Logic\Point2Rect.cs" />
     <Compile Include="Logic\StreamFactory.cs" />
     <Compile Include="Model\MembersWorkItems.cs" />
     <Compile Include="Model\MileStone.cs" />
