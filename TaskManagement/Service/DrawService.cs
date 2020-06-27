@@ -136,6 +136,7 @@ namespace TaskManagement.Service
         {
             if (count <= 0) yield break;
             var topDay = _grid.Row2Day(top);
+            if(topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
