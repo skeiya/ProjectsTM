@@ -54,27 +54,16 @@ namespace TaskManagement.UI
             ApplyDetailSetting(_viewData.Detail);
             _editService = new WorkItemEditService(_viewData, _undoService);
             LockUpdate = false;
-            RefreshDraw();
-        }
-
-        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, string e)
-        {
-            this.HoveringTextChanged?.Invoke(sender, e);
-        }
-
-        public void RefreshDraw()
-        {
-            if (_drawService != null)
-            {
-                _drawService.Dispose();
-                _drawService = null;
-            }
             _drawService = new DrawService(
                 _viewData,
                 this,
                 () => _workItemDragService.IsActive(),
                 this.Font);
-            this.Invalidate();
+        }
+
+        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, string e)
+        {
+            this.HoveringTextChanged?.Invoke(sender, e);
         }
 
         public IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
@@ -96,7 +85,7 @@ namespace TaskManagement.UI
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _rowColResolver.ClearCache();
-            RefreshDraw();
+            _drawService.Clear();
         }
 
         internal void AdjustForPrint(Rectangle printRect)
@@ -186,7 +175,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FontChanged(object sender, EventArgs e)
         {
-            RefreshDraw();
+            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
@@ -204,6 +193,11 @@ namespace TaskManagement.UI
         {
             _keyAndMouseHandleService.KeyUp(e);
             this.Invalidate();
+        }
+
+        internal void Clear()
+        {
+            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
