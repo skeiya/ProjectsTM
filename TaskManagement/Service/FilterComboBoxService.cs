@@ -36,25 +36,28 @@ namespace TaskManagement.Service
 
         internal void Initialize()
         {
+            var selectedIndex = toolStripComboBoxFilter.SelectedIndex;
+            if (toolStripComboBoxFilter.Items.Count != 0) DetachEvent();
             toolStripComboBoxFilter.Items.Clear();
             toolStripComboBoxFilter.Items.Add("ALL");
-            try
+            _allPaths.Clear();
+            _allPaths.AddRange(Directory.GetFiles(DirPath));
+            foreach (var f in _allPaths)
             {
-                _allPaths.Clear();
-                _allPaths.AddRange(Directory.GetFiles(DirPath));
-                foreach (var f in _allPaths)
-                {
-                    toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
-                }
+                toolStripComboBoxFilter.Items.Add(Path.GetFileNameWithoutExtension(f));
             }
-            catch
-            {
-            }
-            finally
-            {
-                toolStripComboBoxFilter.SelectedIndex = 0;
-                toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
-            }
+            if (selectedIndex < 0) toolStripComboBoxFilter.SelectedIndex = 0;
+            AttachEvent();
+        }
+
+        private void AttachEvent()
+        {
+            toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+        }
+
+        private void DetachEvent()
+        {
+            toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
         private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
