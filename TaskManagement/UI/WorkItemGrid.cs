@@ -51,10 +51,7 @@ namespace TaskManagement.UI
             this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             ApplyDetailSetting(_viewData.Detail);
-
             _editService = new WorkItemEditService(_viewData, _undoService);
-
-            _rowColResolver.UpdateCache();
             LockUpdate = false;
             RefreshDraw();
         }
@@ -92,7 +89,7 @@ namespace TaskManagement.UI
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            _rowColResolver.UpdateCache();
+            _rowColResolver.ClearCache();
             RefreshDraw();
         }
 
