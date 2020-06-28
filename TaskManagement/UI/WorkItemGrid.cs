@@ -54,6 +54,7 @@ namespace TaskManagement.UI
             ApplyDetailSetting(_viewData.Detail);
             _editService = new WorkItemEditService(_viewData, _undoService);
             LockUpdate = false;
+            if (_drawService != null) _drawService.Dispose();
             _drawService = new DrawService(
                 _viewData,
                 this,
