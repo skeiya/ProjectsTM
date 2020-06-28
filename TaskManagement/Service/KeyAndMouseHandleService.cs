@@ -236,7 +236,7 @@ namespace TaskManagement.Service
         {
             using (new RedrawLock(_drawService, () => _grid.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect, _grid);
+                _workItemDragService.End(_editService, _viewData, false, RangeSelect);
             }
         }
 
