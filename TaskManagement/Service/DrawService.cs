@@ -40,12 +40,26 @@ namespace TaskManagement.Service
         internal void Draw(Graphics g, bool isPrint)
         {
             if (_redrawLock) return;
-            if (!isPrint) DrawWorkItemAreaBase(g);
-            DrawAroundAndOverlay(g, isPrint);
+            DrawImageBufferBase();
+            using (var transferImage = new Bitmap(_grid.VisibleSize.Width, _grid.VisibleSize.Height))
+            {
+                var transferGraphics = Graphics.FromImage(transferImage);
+                TransferImage(transferGraphics);
+                DrawAroundAndOverlay(isPrint, transferGraphics);
+                TransferScale(g, transferImage);
+            }
         }
 
-        private void DrawAroundAndOverlay(Graphics g, bool isPrint)
+        private void TransferScale(Graphics g, Image transferImage)
         {
+            var dst = new RectangleF(0, 0, _grid.VisibleSize.Width, _grid.VisibleSize.Height);// GetVisibleNormalRect();
+            var src = dst;
+            g.DrawImage(transferImage, dst, src, GraphicsUnit.Pixel);
+        }
+
+        private void DrawAroundAndOverlay(bool isPrint, Graphics transferGraphics)
+        {
+            var g = transferGraphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
@@ -85,7 +99,7 @@ namespace TaskManagement.Service
 
         internal void Clear()
         {
-            var size =_imageBuffer.Image.Size;
+            var size = _imageBuffer.Image.Size;
             _imageBuffer.Dispose();
             _imageBuffer = new ImageBuffer(size.Width, size.Height);
         }
@@ -96,18 +110,12 @@ namespace TaskManagement.Service
             return c.Equals(range.LeftCol) ? range.RowCount : 1;
         }
 
-        private void DrawWorkItemAreaBase(Graphics g)
-        {
-            var image = DrawImageBuffer();
-            TransferImage(g, image);
-        }
-
-        private void TransferImage(Graphics g, Image image)
+        private void TransferImage(Graphics transferGraphics)
         {
             var dst = GetVisibleNormalRect();
             var src = dst;
             src.Offset(_grid.ScrollOffset);
-            g.DrawImage(image, dst, src, GraphicsUnit.Pixel);
+            transferGraphics.DrawImage(_imageBuffer.Image, dst, src, GraphicsUnit.Pixel);
         }
 
         private RectangleF GetVisibleNormalRect()
@@ -117,7 +125,7 @@ namespace TaskManagement.Service
             return new RectangleF(fixedSize.Width, fixedSize.Height, visibleSize.Width - fixedSize.Width, visibleSize.Height - fixedSize.Height);
         }
 
-        private Image DrawImageBuffer()
+        private void DrawImageBufferBase()
         {
             var g = _imageBuffer.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -136,14 +144,13 @@ namespace TaskManagement.Service
                     DrawWorkItem(wi, Pens.Black, font, g, members, false);
                 }
             }
-            return _imageBuffer.Image;
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
         {
             if (count <= 0) yield break;
             var topDay = _grid.Row2Day(top);
-            if(topDay == null) yield break;
+            if (topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
