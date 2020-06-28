@@ -109,13 +109,13 @@ namespace TaskManagement.UI
         {
             var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
             var g = this.CreateGraphics();
-            var calWidth = g.MeasureString("2000/12/31", font).Width;
-            var memberHeight = g.MeasureString("NAME", font).Height;
-            var height = memberHeight * detail.ViewRatio;
-            var width = this.CreateGraphics().MeasureString("ABCDEF", font).Width * detail.ViewRatio;
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = calWidth / 2;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = calWidth / 4;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = calWidth / 4;
+            var calWidth = (int)Math.Ceiling(g.MeasureString("2000/12/31", font).Width);
+            var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
+            var height = (int)(memberHeight * detail.ViewRatio);
+            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) * detail.ViewRatio);
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2) + 1;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4) + 1;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4) + 1;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = width;
