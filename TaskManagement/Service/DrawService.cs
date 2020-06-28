@@ -259,6 +259,7 @@ namespace TaskManagement.Service
             var month = 0;
             var day = 0;
             var range = _grid.VisibleRowColRange;
+            var rowHeight = g.MeasureString("A", font).Height;
             foreach (var r in range.Rows)
             {
                 var d = _grid.Row2Day(r);
@@ -277,7 +278,7 @@ namespace TaskManagement.Service
                     {
                         month = 0;
                         day = 0;
-                        year = DrawYear(font, g, d, rectYear.Value);
+                        year = DrawYear(font, g, d, rectYear.Value, rowHeight);
                     }
                 }
                 if (month != d.Month)
@@ -286,7 +287,7 @@ namespace TaskManagement.Service
                     if (rectMonth.HasValue)
                     {
                         day = 0;
-                        month = DrawMonth(font, g, d, rectMonth.Value);
+                        month = DrawMonth(font, g, d, rectMonth.Value, rowHeight);
                     }
                 }
                 if (day != d.Day)
@@ -306,20 +307,20 @@ namespace TaskManagement.Service
             _imageBuffer.Invalidate(updatedMembers, _grid);
         }
 
-        private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)
+        private static int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth, float height)
         {
             int month = d.Month;
-            rectMonth.Offset(0, _viewData.Detail.RowHeight);
-            rectMonth.Inflate(0, _viewData.Detail.RowHeight);
+            rectMonth.Offset(0, height);
+            rectMonth.Inflate(0, height);
             g.DrawString(month.ToString(), font, Brushes.Black, rectMonth);
             return month;
         }
 
-        private int DrawYear(Font font, Graphics g, CallenderDay d, RectangleF rectYear)
+        private static int DrawYear(Font font, Graphics g, CallenderDay d, RectangleF rectYear, float height)
         {
             int year = d.Year;
-            rectYear.Offset(0, _viewData.Detail.RowHeight);
-            rectYear.Inflate(0, _viewData.Detail.RowHeight);
+            rectYear.Offset(0, height);
+            rectYear.Inflate(0, height);
             g.DrawString(year.ToString(), font, Brushes.Black, rectYear);
             return year;
         }

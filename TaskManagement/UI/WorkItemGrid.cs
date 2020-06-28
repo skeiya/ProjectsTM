@@ -107,19 +107,25 @@ namespace TaskManagement.UI
 
         private void ApplyDetailSetting(Detail detail)
         {
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = detail.DateWidth / 2;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = detail.DateWidth / 4;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = detail.DateWidth / 4;
+            var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
+            var g = this.CreateGraphics();
+            var calWidth = g.MeasureString("2000/12/31", font).Width;
+            var memberHeight = g.MeasureString("NAME", font).Height;
+            var height = memberHeight * detail.ViewRatio;
+            var width = this.CreateGraphics().MeasureString("ABCDEF", font).Width * detail.ViewRatio;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = calWidth / 2;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = calWidth / 4;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = calWidth / 4;
             for (var c = FixedColCount; c < ColCount; c++)
             {
-                this.ColWidths[c] = detail.ColWidth;
+                this.ColWidths[c] = width;
             }
-            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = detail.CompanyHeight;
-            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = detail.NameHeight;
-            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = memberHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
-                this.RowHeights[r] = detail.RowHeight;
+                this.RowHeights[r] = height;
             }
         }
 

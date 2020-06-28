@@ -47,8 +47,14 @@ namespace TaskManagement.UI
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+            _viewData.FontChanged += _viewData_FontChanged;
             FileIOService.FileChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
+        }
+
+        private void _viewData_FontChanged(object sender, EventArgs e)
+        {
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
