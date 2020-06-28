@@ -221,7 +221,7 @@ namespace TaskManagement.Service
             return State != DragState.None;
         }
 
-        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect, WorkItemGrid grid = null)
+        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect)
         {
             switch (State)
             {
@@ -243,7 +243,7 @@ namespace TaskManagement.Service
             {
                 if (!ExistsEdit(viewData)) return;
                 var edit = BackupEdit(viewData);
-                ClearEdit(viewData, grid);
+                ClearEdit(viewData);
                 if (isCancel) return;
                 ApplyEdit(editService, viewData, edit);
             }
@@ -265,7 +265,7 @@ namespace TaskManagement.Service
             {
                 case DragState.Expanding:
                 case DragState.Moving:
-                    editService.Replace(viewData.Selected, edit);
+                    editService.Replace(_backup, edit);
                     break;
                 case DragState.Copying:
                     editService.Add(edit);
@@ -277,7 +277,7 @@ namespace TaskManagement.Service
             viewData.Selected = edit;
         }
 
-        private void ClearEdit(ViewData viewData, WorkItemGrid grid)
+        private void ClearEdit(ViewData viewData)
         {
             switch (State)
             {
@@ -289,9 +289,6 @@ namespace TaskManagement.Service
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
             viewData.Original.WorkItems.Add(_backup);
-            if (grid != null) grid.moveVisibleRowColRange_LOCK = true;
-            viewData.Selected = _backup;
-            if (grid != null) grid.moveVisibleRowColRange_LOCK = false;
         }
 
         private static WorkItems BackupEdit(ViewData viewData)

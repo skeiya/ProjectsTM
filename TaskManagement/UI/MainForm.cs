@@ -32,7 +32,7 @@ namespace TaskManagement.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
-            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _filterComboBoxService.Initialize();
             _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
@@ -229,7 +229,7 @@ namespace TaskManagement.UI
             {
                 dlg.ShowDialog();
             }
-            workItemGrid1.RefreshDraw();
+            workItemGrid1.Clear();
         }
 
         private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)

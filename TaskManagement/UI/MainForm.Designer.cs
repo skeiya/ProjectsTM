@@ -305,21 +305,21 @@ namespace TaskManagement.UI
             // ToolStripMenuItemWorkingDas
             // 
             this.ToolStripMenuItemWorkingDas.Name = "ToolStripMenuItemWorkingDas";
-            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(136, 22);
             this.ToolStripMenuItemWorkingDas.Text = "稼働日";
             this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDas_Click);
             // 
             // ToolStripMenuItemManageMember
             // 
             this.ToolStripMenuItemManageMember.Name = "ToolStripMenuItemManageMember";
-            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(136, 22);
             this.ToolStripMenuItemManageMember.Text = "メンバー";
             this.ToolStripMenuItemManageMember.Click += new System.EventHandler(this.ToolStripMenuItemManageMember_Click);
             // 
             // ToolStripMenuItemMileStone
             // 
             this.ToolStripMenuItemMileStone.Name = "ToolStripMenuItemMileStone";
-            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(136, 22);
             this.ToolStripMenuItemMileStone.Text = "マイルストーン";
             this.ToolStripMenuItemMileStone.Click += new System.EventHandler(this.ToolStripMenuItemMileStone_Click);
             // 
@@ -328,7 +328,7 @@ namespace TaskManagement.UI
             this.toolStripComboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toolStripComboBoxFilter.DropDownWidth = 150;
             this.toolStripComboBoxFilter.Name = "toolStripComboBoxFilter";
-            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(75, 23);
+            this.toolStripComboBoxFilter.Size = new System.Drawing.Size(150, 23);
             // 
             // ToolStripMenuItemHelp
             // 
