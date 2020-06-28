@@ -49,7 +49,8 @@ namespace TaskManagement.UI
             this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
             this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService);
+            if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
+             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting(_viewData.Detail);
             _editService = new WorkItemEditService(_viewData, _undoService);
