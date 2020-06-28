@@ -109,10 +109,10 @@ namespace TaskManagement.UI
         {
             var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
             var g = this.CreateGraphics();
-            var calWidth = (int)Math.Ceiling(g.MeasureString("2000/12/31", font).Width);
+            var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
             var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            var height = (int)(memberHeight * detail.ViewRatio);
-            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) * detail.ViewRatio);
+            var height = (int)(memberHeight);
+            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
             this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2) + 1;
             this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4) + 1;
             this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4) + 1;
@@ -342,12 +342,14 @@ namespace TaskManagement.UI
         public void DecRatio()
         {
             _viewData.DecRatio();
+            _viewData.DecFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         public void IncRatio()
         {
             _viewData.IncRatio();
+            _viewData.IncFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
