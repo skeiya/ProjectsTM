@@ -238,16 +238,6 @@ namespace TaskManagement.UI
             workItemGrid1.Clear();
         }
 
-        private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
-        {
-            _viewData.IncFont();
-        }
-
-        private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
-        {
-            _viewData.DecFont();
-        }
-
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
 
@@ -328,16 +318,6 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 DummyDataService.Save(dlg.FileName);
-            }
-        }
-
-        private void ToolStripMenuItemDetail_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new ViewDetailSettingForm(_viewData.Detail.Clone()))
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Detail = dlg.Detail;
-                workItemGrid1.Initialize(_viewData);
             }
         }
 
