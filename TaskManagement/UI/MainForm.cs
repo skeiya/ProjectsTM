@@ -47,8 +47,14 @@ namespace TaskManagement.UI
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+            _viewData.FontChanged += _viewData_FontChanged;
             FileIOService.FileChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
+        }
+
+        private void _viewData_FontChanged(object sender, EventArgs e)
+        {
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
@@ -232,16 +238,6 @@ namespace TaskManagement.UI
             workItemGrid1.Clear();
         }
 
-        private void ToolStripMenuItemLargerFont_Click(object sender, EventArgs e)
-        {
-            _viewData.IncFont();
-        }
-
-        private void ToolStripMenuItemSmallFont_Click(object sender, EventArgs e)
-        {
-            _viewData.DecFont();
-        }
-
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
 
@@ -322,16 +318,6 @@ namespace TaskManagement.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 DummyDataService.Save(dlg.FileName);
-            }
-        }
-
-        private void ToolStripMenuItemDetail_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new ViewDetailSettingForm(_viewData.Detail.Clone()))
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                _viewData.Detail = dlg.Detail;
-                workItemGrid1.Initialize(_viewData);
             }
         }
 

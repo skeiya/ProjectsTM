@@ -40,12 +40,26 @@ namespace TaskManagement.Service
         internal void Draw(Graphics g, bool isPrint)
         {
             if (_redrawLock) return;
-            if (!isPrint) DrawWorkItemAreaBase(g);
-            DrawAroundAndOverlay(g, isPrint);
+            DrawImageBufferBase();
+            using (var transferImage = new Bitmap(_grid.VisibleSize.Width, _grid.VisibleSize.Height))
+            {
+                var transferGraphics = Graphics.FromImage(transferImage);
+                TransferImage(transferGraphics);
+                DrawAroundAndOverlay(isPrint, transferGraphics);
+                TransferScale(g, transferImage);
+            }
         }
 
-        private void DrawAroundAndOverlay(Graphics g, bool isPrint)
+        private void TransferScale(Graphics g, Image transferImage)
         {
+            var dst = new RectangleF(0, 0, _grid.VisibleSize.Width, _grid.VisibleSize.Height);// GetVisibleNormalRect();
+            var src = dst;
+            g.DrawImage(transferImage, dst, src, GraphicsUnit.Pixel);
+        }
+
+        private void DrawAroundAndOverlay(bool isPrint, Graphics transferGraphics)
+        {
+            var g = transferGraphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
@@ -85,7 +99,7 @@ namespace TaskManagement.Service
 
         internal void Clear()
         {
-            var size =_imageBuffer.Image.Size;
+            var size = _imageBuffer.Image.Size;
             _imageBuffer.Dispose();
             _imageBuffer = new ImageBuffer(size.Width, size.Height);
         }
@@ -96,18 +110,12 @@ namespace TaskManagement.Service
             return c.Equals(range.LeftCol) ? range.RowCount : 1;
         }
 
-        private void DrawWorkItemAreaBase(Graphics g)
-        {
-            var image = DrawImageBuffer();
-            TransferImage(g, image);
-        }
-
-        private void TransferImage(Graphics g, Image image)
+        private void TransferImage(Graphics transferGraphics)
         {
             var dst = GetVisibleNormalRect();
             var src = dst;
             src.Offset(_grid.ScrollOffset);
-            g.DrawImage(image, dst, src, GraphicsUnit.Pixel);
+            transferGraphics.DrawImage(_imageBuffer.Image, dst, src, GraphicsUnit.Pixel);
         }
 
         private RectangleF GetVisibleNormalRect()
@@ -117,7 +125,7 @@ namespace TaskManagement.Service
             return new RectangleF(fixedSize.Width, fixedSize.Height, visibleSize.Width - fixedSize.Width, visibleSize.Height - fixedSize.Height);
         }
 
-        private Image DrawImageBuffer()
+        private void DrawImageBufferBase()
         {
             var g = _imageBuffer.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -136,14 +144,13 @@ namespace TaskManagement.Service
                     DrawWorkItem(wi, Pens.Black, font, g, members, false);
                 }
             }
-            return _imageBuffer.Image;
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
         {
             if (count <= 0) yield break;
             var topDay = _grid.Row2Day(top);
-            if(topDay == null) yield break;
+            if (topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
             foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
             {
@@ -252,6 +259,7 @@ namespace TaskManagement.Service
             var month = 0;
             var day = 0;
             var range = _grid.VisibleRowColRange;
+            var rowHeight = g.MeasureString("A", font).Height;
             foreach (var r in range.Rows)
             {
                 var d = _grid.Row2Day(r);
@@ -270,7 +278,7 @@ namespace TaskManagement.Service
                     {
                         month = 0;
                         day = 0;
-                        year = DrawYear(font, g, d, rectYear.Value);
+                        year = DrawYear(font, g, d, rectYear.Value, rowHeight);
                     }
                 }
                 if (month != d.Month)
@@ -279,7 +287,7 @@ namespace TaskManagement.Service
                     if (rectMonth.HasValue)
                     {
                         day = 0;
-                        month = DrawMonth(font, g, d, rectMonth.Value);
+                        month = DrawMonth(font, g, d, rectMonth.Value, rowHeight);
                     }
                 }
                 if (day != d.Day)
@@ -299,20 +307,20 @@ namespace TaskManagement.Service
             _imageBuffer.Invalidate(updatedMembers, _grid);
         }
 
-        private int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth)
+        private static int DrawMonth(Font font, Graphics g, CallenderDay d, RectangleF rectMonth, float height)
         {
             int month = d.Month;
-            rectMonth.Offset(0, _viewData.Detail.RowHeight);
-            rectMonth.Inflate(0, _viewData.Detail.RowHeight);
+            rectMonth.Offset(0, height);
+            rectMonth.Inflate(0, height);
             g.DrawString(month.ToString(), font, Brushes.Black, rectMonth);
             return month;
         }
 
-        private int DrawYear(Font font, Graphics g, CallenderDay d, RectangleF rectYear)
+        private static int DrawYear(Font font, Graphics g, CallenderDay d, RectangleF rectYear, float height)
         {
             int year = d.Year;
-            rectYear.Offset(0, _viewData.Detail.RowHeight);
-            rectYear.Inflate(0, _viewData.Detail.RowHeight);
+            rectYear.Offset(0, height);
+            rectYear.Inflate(0, height);
             g.DrawString(year.ToString(), font, Brushes.Black, rectYear);
             return year;
         }
