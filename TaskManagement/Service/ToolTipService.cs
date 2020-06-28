@@ -6,10 +6,13 @@ namespace TaskManagement.Service
 {
     public class ToolTipService : IDisposable
     {
+        private static ToolTipService _toolTipService = new ToolTipService();
+        public static ToolTipService GetInstance() { return _toolTipService; }
+
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
 
-        public ToolTipService()
+        private ToolTipService()
         {
             _toolTip.ShowAlways = true;
         }
