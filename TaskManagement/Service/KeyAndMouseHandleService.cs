@@ -23,7 +23,7 @@ namespace TaskManagement.Service
         private Cursor _originalCursor;
 
         public event EventHandler<string> HoveringTextChanged;
-        private ToolTipService _toolTipService = ToolTipService.GetInstance();
+        private ToolTipService _toolTipService = new ToolTipService();
         private bool disposedValue;
 
         public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService)

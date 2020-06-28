@@ -12,7 +12,7 @@ namespace TaskManagement.Service
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
 
-        private ToolTipService()
+        public ToolTipService()
         {
             _toolTip.ShowAlways = true;
         }
