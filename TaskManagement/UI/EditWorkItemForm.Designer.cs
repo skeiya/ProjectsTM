@@ -141,8 +141,7 @@
             // 
             // textBoxTags
             // 
-            this.textBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxTags.Location = new System.Drawing.Point(103, 182);
             this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -281,7 +280,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDescription.Location = new System.Drawing.Point(103, 257);
             this.textBoxDescription.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textBoxDescription.MaxLength = 256;
+            this.textBoxDescription.MaxLength = 0;
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
