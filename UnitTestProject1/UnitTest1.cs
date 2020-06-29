@@ -1,5 +1,6 @@
 ﻿using FreeGridControl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -149,6 +150,15 @@ namespace UnitTestProject1
                 var loadedApp = (AppData)xmlSerializer1.Deserialize(reader);
                 Assert.AreEqual(orgApp, loadedApp);
             }
+        }
+
+        [TestMethod]
+        public void DesirializeReternCode()
+        {
+            var w = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C"), TaskState.Active, "TestDescription");
+            w.Description = "aaa" + Environment.NewLine + "bbb";
+            var c = w.Clone();
+            Assert.AreEqual(w.Description, c.Description);
         }
     }
 }

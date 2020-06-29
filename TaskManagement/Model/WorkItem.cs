@@ -110,7 +110,7 @@ namespace TaskManagement.Model
             }
         }
 
-        internal WorkItem Clone()
+        public WorkItem Clone()
         {
             return Deserialize(Serialize());
         }
