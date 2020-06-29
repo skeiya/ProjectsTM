@@ -108,19 +108,25 @@ namespace TaskManagement.UI
 
         private void ApplyDetailSetting(Detail detail)
         {
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = detail.DateWidth / 2;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = detail.DateWidth / 4;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = detail.DateWidth / 4;
+            var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
+            var g = this.CreateGraphics();
+            var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
+            var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
+            var height = (int)(memberHeight);
+            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2) + 1;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4) + 1;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4) + 1;
             for (var c = FixedColCount; c < ColCount; c++)
             {
-                this.ColWidths[c] = detail.ColWidth;
+                this.ColWidths[c] = width;
             }
-            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = detail.CompanyHeight;
-            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = detail.NameHeight;
-            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = detail.NameHeight;
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = memberHeight;
             for (var r = FixedRowCount; r < RowCount; r++)
             {
-                this.RowHeights[r] = detail.RowHeight;
+                this.RowHeights[r] = height;
             }
         }
 
@@ -337,12 +343,14 @@ namespace TaskManagement.UI
         public void DecRatio()
         {
             _viewData.DecRatio();
+            _viewData.DecFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         public void IncRatio()
         {
             _viewData.IncRatio();
+            _viewData.IncFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 

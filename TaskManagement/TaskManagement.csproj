@@ -161,12 +161,6 @@
     <Compile Include="UI\RedrawLock.cs" />
     <Compile Include="UI\RowColRange.cs" />
     <Compile Include="Service\ToolTipService.cs" />
-    <Compile Include="UI\ViewDetailSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ViewDetailSettingForm.Designer.cs">
-      <DependentUpon>ViewDetailSettingForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\WorkItemGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -272,9 +266,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ViewDetailSettingForm.resx">
-      <DependentUpon>ViewDetailSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

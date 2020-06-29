@@ -27,6 +27,13 @@ namespace TaskManagement.Service
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
             if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
+
+            if (!string.IsNullOrEmpty(wi.Description))
+            {
+                s += Environment.NewLine
+                    + "---作業項目メモ---" + Environment.NewLine
+                    + wi.Description + Environment.NewLine;
+            }
             if (!s.Equals(_toolTip.GetToolTip(c))) _toolTip.SetToolTip(c, s);
         }
 

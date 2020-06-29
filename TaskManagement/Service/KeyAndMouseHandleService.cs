@@ -187,7 +187,7 @@ namespace TaskManagement.Service
             var day = _grid.Y2Day(curOnRaw.Y);
             var member = _grid.X2Member(curOnRaw.X);
             if (day == null || member == null) return;
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active);
+            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active, string.Empty);
             _grid.AddNewWorkItem(proto);
         }
 
