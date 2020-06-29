@@ -171,7 +171,12 @@ namespace TaskManagement.Service
             RawPoint cur = _grid.Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-            _toolTipService.Update(c, wi, wi == null ? -1 : _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+            if (wi == null)
+            {
+                _toolTipService.Hide(c);
+                return;
+            }
+            _toolTipService.Update(c, wi, _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
         }
 
         public void DoubleClick(MouseEventArgs e)

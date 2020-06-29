@@ -14,7 +14,7 @@ namespace TaskManagement.Service
             _toolTip.ShowAlways = true;
         }
 
-        public void Update(Control c, WorkItem wi, int days = -1)
+        public void Update(Control c, WorkItem wi, int days)
         {
             if (c == null) return;
             if (wi == null) { this.Hide(c); return; }
