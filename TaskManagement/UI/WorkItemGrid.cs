@@ -248,19 +248,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = Client2Raw(e.Location);
-
-            if (_viewData.Selected != null)
-            {
-                EditSelectedWorkItem();
-                return;
-            }
-            var day = Y2Day(curOnRaw.Y);
-            var member = X2Member(curOnRaw.X);
-            if (day == null || member == null) return;
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active, string.Empty);
-            AddNewWorkItem(proto);
+            _keyAndMouseHandleService.DoubleClick(e);
         }
 
         public void AddNewWorkItem(WorkItem proto)
