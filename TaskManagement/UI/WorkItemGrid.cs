@@ -35,7 +35,7 @@ namespace TaskManagement.UI
 
         public event EventHandler<EditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
-        public event EventHandler<string> HoveringTextChanged;
+        public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -63,7 +63,7 @@ namespace TaskManagement.UI
                 this.Font);
         }
 
-        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, string e)
+        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
         {
             this.HoveringTextChanged?.Invoke(sender, e);
         }

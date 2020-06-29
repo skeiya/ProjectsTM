@@ -63,9 +63,9 @@ namespace TaskManagement.UI
             workItemGrid1.Initialize(_viewData);
         }
 
-        private void WorkItemGrid1_HoveringTextChanged(object sender, string e)
+        private void WorkItemGrid1_HoveringTextChanged(object sender, WorkItem e)
         {
-            toolStripStatusLabelSelect.Text = e;
+            toolStripStatusLabelSelect.Text = e == null ? string.Empty : e.ToString();
         }
 
         private void _fileIOService_FileSaved(object sender, EventArgs e)

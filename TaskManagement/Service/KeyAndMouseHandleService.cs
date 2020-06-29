@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -22,7 +20,7 @@ namespace TaskManagement.Service
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
 
-        public event EventHandler<string> HoveringTextChanged;
+        public event EventHandler<WorkItem> HoveringTextChanged;
         private ToolTipService _toolTipService;
         private bool disposedValue;
 
@@ -34,6 +32,17 @@ namespace TaskManagement.Service
             this._drawService = drawService;
             this._editService = editService;
             this._toolTipService = new ToolTipService(parentControl);
+            HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
+        }
+
+        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
+        {
+            if (e == null)
+            {
+                _toolTipService.Hide();
+                return;
+            }
+            _toolTipService.Update(e, _viewData.Original.Callender.GetPeriodDayCount(e.Period));
         }
 
         public void MouseDown(MouseEventArgs e)
@@ -171,13 +180,7 @@ namespace TaskManagement.Service
             if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(); return; }
             RawPoint cur = _grid.Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
-            HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-            if (wi == null)
-            {
-                _toolTipService.Hide();
-                return;
-            }
-            _toolTipService.Update(wi, _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+            HoveringTextChanged?.Invoke(this, wi);
         }
 
         public void DoubleClick(MouseEventArgs e)
