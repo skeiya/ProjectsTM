@@ -23,16 +23,17 @@ namespace TaskManagement.Service
         private Cursor _originalCursor;
 
         public event EventHandler<string> HoveringTextChanged;
-        private ToolTipService _toolTipService = new ToolTipService();
+        private ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService, Control parentControl)
         {
             this._viewData = viewData;
             this._grid = grid;
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
+            this._toolTipService = new ToolTipService(parentControl);
         }
 
         public void MouseDown(MouseEventArgs e)
@@ -113,7 +114,7 @@ namespace TaskManagement.Service
 
         public void MouseMove(object sender, MouseEventArgs e, Control control)
         {
-            UpdateHoveringText((Control)sender, e);
+            UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(e.Location), _viewData);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
@@ -164,19 +165,19 @@ namespace TaskManagement.Service
             return bottomBar.Contains(point);
         }
 
-        private void UpdateHoveringText(Control c, MouseEventArgs e)
+        private void UpdateHoveringText(MouseEventArgs e)
         {
             if (_workItemDragService.IsActive()) return;
-            if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(c); return; }
+            if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(); return; }
             RawPoint cur = _grid.Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
             if (wi == null)
             {
-                _toolTipService.Hide(c);
+                _toolTipService.Hide();
                 return;
             }
-            _toolTipService.Update(c, wi, _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+            _toolTipService.Update(wi, _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
         }
 
         public void DoubleClick(MouseEventArgs e)
