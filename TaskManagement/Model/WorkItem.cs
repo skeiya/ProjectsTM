@@ -17,6 +17,7 @@ namespace TaskManagement.Model
         public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
+        public string Description { set; get; } = string.Empty;
 
         [XmlElement]
         public string ProjectElement
@@ -36,7 +37,7 @@ namespace TaskManagement.Model
 
         public WorkItem() { }
 
-        public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state)
+        public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state, string description)
         {
             this.Project = project;
             this.Name = name;
@@ -44,6 +45,7 @@ namespace TaskManagement.Model
             Period = period;
             AssignedMember = assignedMember;
             State = state;
+            Description = description;
         }
 
         public string ToDrawString(Callender callender, bool isAppendDays)
@@ -76,6 +78,7 @@ namespace TaskManagement.Model
             if (!Name.Equals(target.Name)) return false;
             if (!Period.Equals(target.Period)) return false;
             if (!State.Equals(target.State)) return false;
+            if (!Description.Equals(target.Description)) return false;
             return AssignedMember.Equals(target.AssignedMember);
         }
 
@@ -88,6 +91,7 @@ namespace TaskManagement.Model
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<Member>.Default.GetHashCode(AssignedMember);
             hashCode = hashCode * -1521134295 + EqualityComparer<TaskState>.Default.GetHashCode(State);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
             return hashCode;
         }
 
@@ -106,7 +110,7 @@ namespace TaskManagement.Model
             }
         }
 
-        internal WorkItem Clone()
+        public WorkItem Clone()
         {
             return Deserialize(Serialize());
         }
@@ -119,8 +123,15 @@ namespace TaskManagement.Model
                 w.Write(text);
                 w.Flush();
                 s.Position = 0;
-                var x = new XmlSerializer(typeof(WorkItem));
-                return (WorkItem)x.Deserialize(s);
+
+                XmlDocument doc = new XmlDocument();
+                doc.PreserveWhitespace = false;
+                doc.Load(s);
+                using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+                {
+                    var x = new XmlSerializer(typeof(WorkItem));
+                    return (WorkItem)x.Deserialize(nodeReader);
+                }
             }
         }
 

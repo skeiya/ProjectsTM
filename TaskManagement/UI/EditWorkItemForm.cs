@@ -23,6 +23,7 @@ namespace TaskManagement.UI
             textBoxFrom.Text = wi.Period == null ? string.Empty : wi.Period.From.ToString();
             textBoxTo.Text = wi.Period == null ? string.Empty : wi.Period.To.ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
+            textBoxDescription.Text = wi.Description == null ? string.Empty : wi.Description;
             InitDropDownList(wi.State);
             UpdateEndDay();
         }
@@ -40,8 +41,10 @@ namespace TaskManagement.UI
         public WorkItem GetWorkItem()
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, radioButtonDayCount.Checked);
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState());
+            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState(), GetDescrption());
         }
+
+        private string GetDescrption() { return textBoxDescription.Text; }
 
         private TaskState GetState()
         {
@@ -70,7 +73,7 @@ namespace TaskManagement.UI
             if (period == null) return null;
             var m = GetAssignedMember();
             if (m == null) return null;
-            return new WorkItem(p, w, GetTags(), period, m, GetState());
+            return new WorkItem(p, w, GetTags(), period, m, GetState(), GetDescrption());
         }
 
         private Member GetAssignedMember()
