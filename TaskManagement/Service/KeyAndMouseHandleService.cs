@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TaskManagement.Logic;
 using TaskManagement.Model;
@@ -22,17 +20,29 @@ namespace TaskManagement.Service
         private WorkItemEditService _editService;
         private Cursor _originalCursor;
 
-        public event EventHandler<string> HoveringTextChanged;
-        private ToolTipService _toolTipService = new ToolTipService();
+        public event EventHandler<WorkItem> HoveringTextChanged;
+        private ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService, Control parentControl)
         {
             this._viewData = viewData;
             this._grid = grid;
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
+            this._toolTipService = new ToolTipService(parentControl);
+            HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
+        }
+
+        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
+        {
+            if (e == null)
+            {
+                _toolTipService.Hide();
+                return;
+            }
+            _toolTipService.Update(e, _viewData.Original.Callender.GetPeriodDayCount(e.Period));
         }
 
         public void MouseDown(MouseEventArgs e)
@@ -111,9 +121,9 @@ namespace TaskManagement.Service
             return 0;
         }
 
-        public void MouseMove(object sender, MouseEventArgs e, Control control)
+        public void MouseMove(MouseEventArgs e, Control control)
         {
-            UpdateHoveringText((Control)sender, e);
+            UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(e.Location), _viewData);
             if (IsWorkItemExpandArea(_viewData, e.Location))
             {
@@ -164,14 +174,13 @@ namespace TaskManagement.Service
             return bottomBar.Contains(point);
         }
 
-        private void UpdateHoveringText(Control c, MouseEventArgs e)
+        private void UpdateHoveringText(MouseEventArgs e)
         {
             if (_workItemDragService.IsActive()) return;
-            if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(c); return; }
+            if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(); return; }
             RawPoint cur = _grid.Client2Raw(e.Location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
-            HoveringTextChanged?.Invoke(this, wi == null ? string.Empty : wi.ToString());
-            _toolTipService.Update(c, wi);
+            HoveringTextChanged?.Invoke(this, wi);
         }
 
         public void DoubleClick(MouseEventArgs e)

@@ -8,16 +8,17 @@ namespace TaskManagement.Service
     {
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
+        private readonly Control _parentControl;
 
-        public ToolTipService()
+        public ToolTipService(Control c)
         {
             _toolTip.ShowAlways = true;
+            this._parentControl = c;
         }
 
-        public void Update(Control c, WorkItem wi)
+        public void Update(WorkItem wi, int days)
         {
-            if (c == null) return;
-            if (wi == null) { this.Hide(c); return; }
+            if (wi == null) { this.Hide(); return; }
             string s =
                 "名前:" + wi.Name + Environment.NewLine
                 + "物件:" + wi.Project.ToString() + Environment.NewLine
@@ -26,6 +27,7 @@ namespace TaskManagement.Service
                 + "状態:" + wi.State.ToString() + Environment.NewLine + Environment.NewLine
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
+            if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
 
             if (!string.IsNullOrEmpty(wi.Description))
             {
@@ -33,10 +35,10 @@ namespace TaskManagement.Service
                     + "---作業項目メモ---" + Environment.NewLine
                     + wi.Description + Environment.NewLine;
             }
-            if (!s.Equals(_toolTip.GetToolTip(c))) _toolTip.SetToolTip(c, s);
+            if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
-        public void Hide(Control c) { _toolTip.Hide(c); }
+        public void Hide() { _toolTip.Hide(_parentControl); }
 
         protected virtual void Dispose(bool disposing)
         {
