@@ -123,8 +123,15 @@ namespace TaskManagement.Model
                 w.Write(text);
                 w.Flush();
                 s.Position = 0;
-                var x = new XmlSerializer(typeof(WorkItem));
-                return (WorkItem)x.Deserialize(s);
+
+                XmlDocument doc = new XmlDocument();
+                doc.PreserveWhitespace = false;
+                doc.Load(s);
+                using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+                {
+                    var x = new XmlSerializer(typeof(WorkItem));
+                    return (WorkItem)x.Deserialize(nodeReader);
+                }
             }
         }
 
