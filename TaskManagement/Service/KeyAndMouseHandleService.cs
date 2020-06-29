@@ -112,7 +112,7 @@ namespace TaskManagement.Service
             return 0;
         }
 
-        public void MouseMove(object sender, MouseEventArgs e, Control control)
+        public void MouseMove(MouseEventArgs e, Control control)
         {
             UpdateHoveringText(e);
             _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(e.Location), _viewData);

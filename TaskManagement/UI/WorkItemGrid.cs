@@ -52,7 +52,7 @@ namespace TaskManagement.UI
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
              _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
-            ApplyDetailSetting(_viewData.Detail);
+            ApplyDetailSetting();
             _editService = new WorkItemEditService(_viewData, _undoService);
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
@@ -106,7 +106,7 @@ namespace TaskManagement.UI
             LockUpdate = false;
         }
 
-        private void ApplyDetailSetting(Detail detail)
+        private void ApplyDetailSetting()
         {
             var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
             var g = this.CreateGraphics();
@@ -242,7 +242,7 @@ namespace TaskManagement.UI
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseMove(sender, e, this);
+            _keyAndMouseHandleService.MouseMove(e, this);
             this.Invalidate();
         }
 
