@@ -8,6 +8,7 @@ namespace TaskManagement.Model
         private List<WorkItem> _items = new List<WorkItem>();
         private int _sumCache = 0;
         public int Sum => _sumCache;
+        public int Count => _items.Count;
 
         public MembersWorkItems()
         {

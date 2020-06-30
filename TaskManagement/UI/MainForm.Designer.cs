@@ -53,6 +53,7 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargeRatio = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSmallRatio = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemEnableFreeTimeMember = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
@@ -183,14 +184,14 @@ namespace TaskManagement.UI
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
             // ToolStripMenuItemDivide
             // 
             this.ToolStripMenuItemDivide.Name = "ToolStripMenuItemDivide";
-            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemDivide.Text = "作業項目の分割";
             this.ToolStripMenuItemDivide.Click += new System.EventHandler(this.ToolStripMenuItemDivide_Click);
             // 
@@ -198,7 +199,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -206,7 +207,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
             this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemUndo.Text = "Undo";
             this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
             // 
@@ -214,7 +215,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
             this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(156, 22);
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemRedo.Text = "Redo";
             this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
             // 
@@ -224,7 +225,8 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemFilter,
             this.ToolStripMenuItemColor,
             this.ToolStripMenuItemLargeRatio,
-            this.ToolStripMenuItemSmallRatio});
+            this.ToolStripMenuItemSmallRatio,
+            this.ToolStripMenuItemEnableFreeTimeMember});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
             this.表示ToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
             this.表示ToolStripMenuItem.Text = "表示";
@@ -233,7 +235,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemFilter.Image = global::TaskManagement.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(208, 38);
             this.ToolStripMenuItemFilter.Text = "フィルター";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
@@ -241,7 +243,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemColor.Image = global::TaskManagement.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(208, 38);
             this.ToolStripMenuItemColor.Text = "色";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -250,7 +252,7 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemLargeRatio.Name = "ToolStripMenuItemLargeRatio";
             this.ToolStripMenuItemLargeRatio.ShortcutKeyDisplayString = "Ctrl++";
             this.ToolStripMenuItemLargeRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(208, 38);
             this.ToolStripMenuItemLargeRatio.Text = "倍率(→大)";
             this.ToolStripMenuItemLargeRatio.Click += new System.EventHandler(this.ToolStripMenuItemLargeRatio_Click);
             // 
@@ -259,9 +261,19 @@ namespace TaskManagement.UI
             this.ToolStripMenuItemSmallRatio.Name = "ToolStripMenuItemSmallRatio";
             this.ToolStripMenuItemSmallRatio.ShortcutKeyDisplayString = "Ctrl+ー";
             this.ToolStripMenuItemSmallRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(196, 38);
+            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(208, 38);
             this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
             this.ToolStripMenuItemSmallRatio.Click += new System.EventHandler(this.ToolStripMenuItemSmallRatio_Click);
+            // 
+            // ToolStripMenuItemEnableFreeTimeMember
+            // 
+            this.ToolStripMenuItemEnableFreeTimeMember.Checked = true;
+            this.ToolStripMenuItemEnableFreeTimeMember.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ToolStripMenuItemEnableFreeTimeMember.Name = "ToolStripMenuItemEnableFreeTimeMember";
+            this.ToolStripMenuItemEnableFreeTimeMember.ShowShortcutKeys = false;
+            this.ToolStripMenuItemEnableFreeTimeMember.Size = new System.Drawing.Size(208, 38);
+            this.ToolStripMenuItemEnableFreeTimeMember.Text = "タスクがないメンバーを表示";
+            this.ToolStripMenuItemEnableFreeTimeMember.Click += new System.EventHandler(this.ToolStripMenuItemEnableFreeTimeMember_Click);
             // 
             // 管理ToolStripMenuItem
             // 
@@ -406,6 +418,7 @@ namespace TaskManagement.UI
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGenerateDummyData;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemReload;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemEnableFreeTimeMember;
         private WorkItemGrid workItemGrid1;
     }
 }

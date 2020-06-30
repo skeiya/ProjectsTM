@@ -10,6 +10,7 @@ namespace TaskManagement.ViewModel
     {
         public Filter Filter { get; private set; }
         public Detail Detail { get; set; } = new Detail();
+        public bool EnableFreeTimeMember = true;
 
         public AppData Original
         {
@@ -84,6 +85,7 @@ namespace TaskManagement.ViewModel
             {
                 foreach (var m in this.Original.Members)
                 {
+                    if (!EnableFreeTimeMember && Original.WorkItems.OfMember(m).Count == 0) continue;
                     result.Add(m);
                 }
                 return result;
@@ -92,6 +94,7 @@ namespace TaskManagement.ViewModel
             foreach (var m in Original.Members)
             {
                 if (Filter.HideMembers.Contain(m)) continue;
+                if (EnableFreeTimeMember && Original.WorkItems.OfMember(m).Count == 0) continue;
                 result.Add(m);
             }
             return result;
