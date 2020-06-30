@@ -130,7 +130,7 @@ namespace UnitTestProject1
         {
             var appData = new AppData();
             var result = RSFileExporter.MakeTextAllData(appData);
-            var expect = "";
+            var expect = "Com\tMem\tProj\t" + Environment.NewLine;
             Assert.AreEqual(expect, result);
         }
 
