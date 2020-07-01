@@ -10,6 +10,20 @@ namespace TaskManagement.Model
         public int Sum => _sumCache;
         public int Count => _items.Count;
 
+        public int CountInPeriod(Period period)
+        {
+            if (period == null) return Count;
+            System.Diagnostics.Debug.Assert((period.From != null) && (period.To != null));
+
+            int countInPeriod = 0;
+            foreach (var w in _items)
+            {
+                if (period.Contains(w.Period.From) ||
+                    period.Contains(w.Period.To)) countInPeriod++;
+            }
+            return countInPeriod;
+        }
+
         public MembersWorkItems()
         {
         }

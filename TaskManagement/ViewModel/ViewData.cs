@@ -85,7 +85,8 @@ namespace TaskManagement.ViewModel
             {
                 foreach (var m in this.Original.Members)
                 {
-                    if (!EnableFreeTimeMember && Original.WorkItems.OfMember(m).Count == 0) continue;
+                    if (!EnableFreeTimeMember &&
+                        Original.WorkItems.OfMember(m).CountInPeriod(null) == 0) continue;
                     result.Add(m);
                 }
                 return result;
@@ -94,7 +95,8 @@ namespace TaskManagement.ViewModel
             foreach (var m in Original.Members)
             {
                 if (Filter.HideMembers.Contain(m)) continue;
-                if (EnableFreeTimeMember && Original.WorkItems.OfMember(m).Count == 0) continue;
+                if (!EnableFreeTimeMember &&
+                    Original.WorkItems.OfMember(m).CountInPeriod(Filter.Period) == 0) continue;
                 result.Add(m);
             }
             return result;
