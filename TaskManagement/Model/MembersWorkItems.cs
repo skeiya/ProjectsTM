@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TaskManagement.Model
 {
@@ -13,7 +14,7 @@ namespace TaskManagement.Model
         public int CountInPeriod(Period period)
         {
             if (period == null) return Count;
-            System.Diagnostics.Debug.Assert((period.From != null) && (period.To != null));
+            Debug.Assert((period.From != null) && (period.To != null));
 
             int countInPeriod = 0;
             foreach (var w in _items)
@@ -22,6 +23,11 @@ namespace TaskManagement.Model
                     period.Contains(w.Period.To)) countInPeriod++;
             }
             return countInPeriod;
+        }
+
+        public bool IsNoWorkItem(Period period)
+        {
+            return CountInPeriod(period) == 0;
         }
 
         public MembersWorkItems()
