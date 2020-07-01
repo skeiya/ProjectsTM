@@ -8,7 +8,8 @@ namespace TaskManagement.Service
 {
     class AppDataFileIOService : IDisposable
     {
-        public event EventHandler FileChanged;
+        public event EventHandler FileWatchChanged;
+        public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
         private DateTime _last;
 
@@ -21,7 +22,7 @@ namespace TaskManagement.Service
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (!IsEnoughTerm()) return;
-            FileChanged?.Invoke(sender, e);
+            FileWatchChanged?.Invoke(sender, e);
         }
 
         private bool IsEnoughTerm()
@@ -112,6 +113,7 @@ namespace TaskManagement.Service
             _watcher.NotifyFilter = NotifyFilters.LastWrite;
             _watcher.IncludeSubdirectories = false;
             _watcher.EnableRaisingEvents = true;
+            FileOpened?.Invoke(this, fileName);
             return AppDataSerializer.Deserialize(fileName);
         }
 

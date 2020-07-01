@@ -14,7 +14,7 @@ namespace TaskManagement.Service
     {
         private ViewData _viewData;
         private ToolStripComboBox toolStripComboBoxFilter;
-        private static string DirPath => "./filters";
+        private string DirPath => Path.Combine(Path.GetDirectoryName(_filepPath), "filters");
         private List<string> _allPaths = new List<string>();
         private Func<Member, string, bool> IsMemberMatchText;
 
@@ -41,11 +41,13 @@ namespace TaskManagement.Service
 
         private void ToolStripComboBoxFilter_DropDown(object sender, EventArgs e)
         {
-            Initialize();
+            Initialize(_filepPath);
         }
 
-        internal void Initialize()
+        private string _filepPath = string.Empty;
+        internal void Initialize(string filePath)
         {
+            _filepPath = filePath;
             var selectedItem = toolStripComboBoxFilter.SelectedItem;
             var selectedText = selectedItem == null ? null : toolStripComboBoxFilter.SelectedItem.ToString();
             if (toolStripComboBoxFilter.Items.Count != 0) DetachEvent();
@@ -98,6 +100,7 @@ namespace TaskManagement.Service
         private void AppendByFiles()
         {
             _allPaths.Clear();
+            if (string.IsNullOrEmpty(_filepPath)) return;
             if (!Directory.Exists(DirPath)) return;
             _allPaths.AddRange(Directory.GetFiles(DirPath));
             foreach (var f in _allPaths)
