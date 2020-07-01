@@ -73,13 +73,17 @@ namespace TaskManagement.UI
             _isDirty = false;
         }
 
+        static bool _alreadyShow = false;
         private void _fileIOService_FileChanged(object sender, EventArgs e)
         {
             this.BeginInvoke((Action)(() =>
             {
+                if (_alreadyShow) return;
+                _alreadyShow = true;
                 var msg = "開いているファイルが外部で変更されました。リロードしますか？";
                 if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
                 ToolStripMenuItemReload_Click(null, null);
+                _alreadyShow = false;
             }));
         }
 
