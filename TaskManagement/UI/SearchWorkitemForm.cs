@@ -80,6 +80,22 @@ namespace TaskManagement.UI
                     if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
                     _list.Add(wi);
                 }
+                if (checkBoxIncludeMilestone.Checked)
+                {
+                    foreach (var ms in _viewData.Original.MileStones)
+                    {
+                        var w = new WorkItem(
+                            new Project("noProj"),
+                            "↑" + ms.Name,
+                            new Tags(new List<string>() { "" }),
+                            new Period(ms.Day, ms.Day),
+                            new Member(string.Empty, string.Empty, string.Empty),
+                            TaskState.Active,
+                            string.Empty
+                            );
+                        _list.Add(w);
+                    }
+                }
             }
             catch { }
             UpdateDataGridView();
@@ -145,6 +161,7 @@ namespace TaskManagement.UI
             From,
             To,
             Days,
+            Description,
             Count,
         }
 
@@ -166,6 +183,9 @@ namespace TaskManagement.UI
             dataGridView1.Columns[(int)GridCols.Days].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.To].HeaderText = "終了";
             dataGridView1.Columns[(int)GridCols.To].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].HeaderText = "備考";
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         }
 
         private void SetGridViewRows()
@@ -181,7 +201,9 @@ namespace TaskManagement.UI
                     wi.State,
                     wi.Period.From,
                     wi.Period.To,
-                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period),
+                    wi.Description
+                    );
             }
         }
 
