@@ -145,6 +145,7 @@ namespace TaskManagement.UI
             From,
             To,
             Days,
+            Description,
             Count,
         }
 
@@ -166,6 +167,9 @@ namespace TaskManagement.UI
             dataGridView1.Columns[(int)GridCols.Days].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.To].HeaderText = "終了";
             dataGridView1.Columns[(int)GridCols.To].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].HeaderText = "備考";
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         }
 
         private void SetGridViewRows()
@@ -181,7 +185,9 @@ namespace TaskManagement.UI
                     wi.State,
                     wi.Period.From,
                     wi.Period.To,
-                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period),
+                    wi.Description
+                    );
             }
         }
 
