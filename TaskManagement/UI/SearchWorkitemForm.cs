@@ -80,6 +80,22 @@ namespace TaskManagement.UI
                     if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
                     _list.Add(wi);
                 }
+                if (checkBoxIncludeMilestone.Checked)
+                {
+                    foreach (var ms in _viewData.Original.MileStones)
+                    {
+                        var w = new WorkItem(
+                            new Project("noProj"),
+                            "↑" + ms.Name,
+                            new Tags(new List<string>() { "" }),
+                            new Period(ms.Day, ms.Day),
+                            new Member(string.Empty, string.Empty, string.Empty),
+                            TaskState.Active,
+                            string.Empty
+                            );
+                        _list.Add(w);
+                    }
+                }
             }
             catch { }
             UpdateDataGridView();
