@@ -87,7 +87,7 @@ namespace TaskManagement.ViewModel
                 {
                     var workItems = Original.WorkItems.OfMember(m);
                     if (!EnableFreeTimeMember &&
-                        workItems.IsNoWorkItem(Filter == null ? null : Filter.Period)) continue;
+                        !workItems.HasWorkItem(Filter == null ? null : Filter.Period)) continue;
                     result.Add(m);
                 }
                 return result;
@@ -97,7 +97,7 @@ namespace TaskManagement.ViewModel
             {
                 if (Filter.HideMembers.Contain(m)) continue;
                 var workItems = Original.WorkItems.OfMember(m);
-                if (!EnableFreeTimeMember && workItems.IsNoWorkItem(Filter.Period)) continue;
+                if (!EnableFreeTimeMember && !workItems.HasWorkItem(Filter.Period)) continue;
                 result.Add(m);
             }
             return result;
