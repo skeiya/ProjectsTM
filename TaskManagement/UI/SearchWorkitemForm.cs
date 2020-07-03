@@ -264,6 +264,9 @@ namespace TaskManagement.UI
         private void checkBoxIncludeMilestone_CheckedChanged(object sender, EventArgs e)
         {
             checkBoxOverwrapPeriod.Enabled = !checkBoxIncludeMilestone.Checked;
+            if (!checkBoxIncludeMilestone.Checked) return;
+            UpdateList(_viewData.GetFilteredWorkItems());
+            dataGridView1.Sort(dataGridView1.Columns[(int)GridCols.To], System.ComponentModel.ListSortDirection.Ascending);
         }
     }
 }
