@@ -58,8 +58,12 @@ namespace TaskManagement.UI
             textBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
             if (!checkBoxOverwrapPeriod.Checked)
             {
+                checkBoxIncludeMilestone.Enabled = true;
+                checkBoxCaseDistinct.Enabled = true;
                 return;
             }
+            checkBoxIncludeMilestone.Enabled = false;
+            checkBoxCaseDistinct.Enabled = false;
 
             textBoxPattern.Text = string.Empty;
             UpdateList(OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems));
@@ -255,6 +259,11 @@ namespace TaskManagement.UI
             _list[index] = new Tuple<WorkItem, Color>(wi, GetColor(wi));
             UpdateDataGridView();
             dataGridView1.Rows[index].Selected = true;
+        }
+
+        private void checkBoxIncludeMilestone_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxOverwrapPeriod.Enabled = !checkBoxIncludeMilestone.Checked;
         }
     }
 }
