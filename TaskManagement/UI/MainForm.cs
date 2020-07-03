@@ -311,11 +311,6 @@ namespace TaskManagement.UI
             workItemGrid1.Refresh();
         }
 
-        private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
-        {
-            Process.Start(@".\Help\help.html");
-        }
-
         private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
             workItemGrid1.Divide();
@@ -342,6 +337,19 @@ namespace TaskManagement.UI
             _viewData.Selected = null;
             workItemGrid1.Initialize(_viewData);
             _isDirty = false;
+        }
+
+        private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
+        {
+            Process.Start(@".\Help\help.html");
+        }
+
+        private void ToolStripMenuItemVersion_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new VersionForm())
+            {
+                dlg.ShowDialog(this);
+            }
         }
     }
 }
