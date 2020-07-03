@@ -85,7 +85,7 @@ namespace TaskManagement.ViewModel
             {
                 foreach (var m in this.Original.Members)
                 {
-                    var workItems = Original.WorkItems.OfMember(m);
+                    var workItems = GetFilteredWorkItemsOfMember(m);
                     if (!EnableFreeTimeMember &&
                         !workItems.HasWorkItem(Filter == null ? null : Filter.Period)) continue;
                     result.Add(m);
@@ -96,7 +96,7 @@ namespace TaskManagement.ViewModel
             foreach (var m in Original.Members)
             {
                 if (Filter.HideMembers.Contain(m)) continue;
-                var workItems = Original.WorkItems.OfMember(m);
+                var workItems = GetFilteredWorkItemsOfMember(m);
                 if (!EnableFreeTimeMember && !workItems.HasWorkItem(Filter.Period)) continue;
                 result.Add(m);
             }
