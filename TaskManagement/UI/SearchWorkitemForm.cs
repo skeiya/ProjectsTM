@@ -186,6 +186,7 @@ namespace TaskManagement.UI
             dataGridView1.Columns[(int)GridCols.Description].HeaderText = "備考";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.Columns[(int)GridCols.Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[(int)GridCols.Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void SetGridViewRows()
