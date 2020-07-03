@@ -36,7 +36,7 @@ namespace TaskManagement.UI
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex < 0 || dataGridView1.ColumnCount - 1 <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
+            if (e.ColumnIndex < 0 || dataGridView1.ColumnCount <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
             if (dataGridView1.SelectedRows.Count <= 0) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
