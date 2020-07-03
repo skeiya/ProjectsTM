@@ -85,25 +85,29 @@ namespace TaskManagement.UI
                     if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
                     _list.Add(new Tuple<WorkItem, Color>(wi, GetColor(wi)));
                 }
-                if (checkBoxIncludeMilestone.Checked)
-                {
-                    foreach (var ms in _viewData.Original.MileStones)
-                    {
-                        var w = new WorkItem(
-                            new Project("noProj"),
-                            "↑" + ms.Name,
-                            new Tags(new List<string>() { "" }),
-                            new Period(ms.Day, ms.Day),
-                            new Member(string.Empty, string.Empty, string.Empty),
-                            TaskState.Active,
-                            string.Empty
-                            );
-                        _list.Add(new Tuple<WorkItem, Color>(w, ms.Color));
-                    }
-                }
+                AddMilestones();
             }
             catch { }
             UpdateDataGridView();
+        }
+
+        private void AddMilestones()
+        {
+            if (checkBoxOverwrapPeriod.Checked) return;
+            if (!checkBoxIncludeMilestone.Checked) return;
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                var w = new WorkItem(
+                    new Project("noProj"),
+                    "↑" + ms.Name,
+                    new Tags(new List<string>() { "" }),
+                    new Period(ms.Day, ms.Day),
+                    new Member(string.Empty, string.Empty, string.Empty),
+                    TaskState.Active,
+                    string.Empty
+                    );
+                _list.Add(new Tuple<WorkItem, Color>(w, ms.Color));
+            }
         }
 
         private static Color GetColor(WorkItem wi)
