@@ -10,7 +10,7 @@ namespace TaskManagement.ViewModel
     {
         public Filter Filter { get; private set; }
         public Detail Detail { get; set; } = new Detail();
-        public bool EnableFreeTimeMember = true;
+        public bool EnableFreeTimeMember = false;
 
         public AppData Original
         {
