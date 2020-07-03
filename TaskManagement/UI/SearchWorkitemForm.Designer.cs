@@ -152,6 +152,7 @@
             // 
             // checkBoxIncludeMilestone
             // 
+            this.checkBoxIncludeMilestone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxIncludeMilestone.AutoSize = true;
             this.checkBoxIncludeMilestone.Location = new System.Drawing.Point(591, 10);
             this.checkBoxIncludeMilestone.Name = "checkBoxIncludeMilestone";
