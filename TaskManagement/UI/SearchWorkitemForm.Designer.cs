@@ -160,6 +160,7 @@
             this.checkBoxIncludeMilestone.TabIndex = 9;
             this.checkBoxIncludeMilestone.Text = "MS含む";
             this.checkBoxIncludeMilestone.UseVisualStyleBackColor = true;
+            this.checkBoxIncludeMilestone.CheckedChanged += new System.EventHandler(this.checkBoxIncludeMilestone_CheckedChanged);
             // 
             // SearchWorkitemForm
             // 
