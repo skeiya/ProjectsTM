@@ -25,7 +25,8 @@ namespace TaskManagement.ViewModel
             return other != null &&
                    EqualityComparer<Members>.Default.Equals(HideMembers, other.HideMembers) &&
                    EqualityComparer<Period>.Default.Equals(Period, other.Period) &&
-                   WorkItem == other.WorkItem;
+                   WorkItem == other.WorkItem &&
+                   EnableFreeTimeMember == other.EnableFreeTimeMember;
         }
 
         public override int GetHashCode()
