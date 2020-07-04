@@ -30,7 +30,7 @@ namespace TaskManagement.UI
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(@" https://github.com/skeiya/TaskManagement/graphs/contributors");
+            Process.Start(@"https://github.com/skeiya/TaskManagement/graphs/contributors");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
