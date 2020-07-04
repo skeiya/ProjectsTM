@@ -8,12 +8,39 @@ namespace TaskManagement.Service
     {
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
+        private WorkItems _workItems;
         private readonly Control _parentControl;
 
-        public ToolTipService(Control c)
+        public ToolTipService(Control c, WorkItems workitems)
         {
             _toolTip.ShowAlways = true;
             this._parentControl = c;
+            _workItems = workitems;
+        }
+
+        private string MakeDescriptionForTooltip(WorkItem selectedWorkItem)
+        {
+            if (!string.IsNullOrEmpty(selectedWorkItem.Description)) return selectedWorkItem.Description;
+            foreach (var w in _workItems)
+            {
+                if (w.Name == selectedWorkItem.Name &&
+                    !string.IsNullOrEmpty(w.Description))
+                {
+                    return w.Description + 
+                        Environment.NewLine + 
+                        "※同名作業項目のメモ※";
+                }
+            }
+            return null;
+        }
+
+        private void UpdateDescription(ref string s, WorkItem selectedWorkItem)
+        {
+            string result = MakeDescriptionForTooltip(selectedWorkItem);
+            if (result == null) return;
+            s += Environment.NewLine
+                + "---作業項目メモ---" + Environment.NewLine
+                + result + Environment.NewLine;
         }
 
         public void Update(WorkItem wi, int days)
@@ -28,13 +55,7 @@ namespace TaskManagement.Service
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
             if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
-
-            if (!string.IsNullOrEmpty(wi.Description))
-            {
-                s += Environment.NewLine
-                    + "---作業項目メモ---" + Environment.NewLine
-                    + wi.Description + Environment.NewLine;
-            }
+            UpdateDescription(ref s, wi);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
