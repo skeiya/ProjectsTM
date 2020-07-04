@@ -40,7 +40,7 @@ namespace TaskManagement.UI
             return day;
         }
 
-        internal ColIndex Member2Col(Member m, Members members)
+        internal ColIndex Member2Col(Member m, IEnumerable<Member> members)
         {
             if (_member2ColChache.TryGetValue(m, out var col)) return col;
             foreach (var c in ColIndex.Range(0, _grid.ColCount))
@@ -75,7 +75,7 @@ namespace TaskManagement.UI
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
             if (c == null) return null;
             var members = _viewData.GetFilteredMembers();
-            if (c.Value - _grid.FixedColCount < 0 || members.Count <= c.Value - _grid.FixedColCount) return null;
+            if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return null;
             var result = _viewData.GetFilteredMembers().ElementAt(c.Value - _grid.FixedColCount);
             _col2MemberChache.Add(c, result);
             return result;

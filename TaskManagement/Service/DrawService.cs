@@ -159,7 +159,7 @@ namespace TaskManagement.Service
             }
         }
 
-        private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, Members members, bool isFrontView)
+        private void DrawWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members, bool isFrontView)
         {
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
             var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : BrushCache.GetBrush(cond.BackColor);

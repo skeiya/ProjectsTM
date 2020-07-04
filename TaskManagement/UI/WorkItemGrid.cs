@@ -47,7 +47,7 @@ namespace TaskManagement.UI
             this.FixedRowCount = WorkItemGridConstants.FixedRows;
             this.FixedColCount = WorkItemGridConstants.FixedCols;
             this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
-            this.ColCount = _viewData.GetFilteredMembers().Count + this.FixedColCount;
+            this.ColCount = _viewData.GetFilteredMembers().Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
              _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
@@ -354,14 +354,14 @@ namespace TaskManagement.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        public RectangleF? GetWorkItemDrawRect(WorkItem wi, Members members, bool isFrontView)
+        public RectangleF? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
             return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
         }
 
-        private ColIndex Member2Col(Member m, Members members)
+        private ColIndex Member2Col(Member m, IEnumerable<Member> members)
         {
             return _rowColResolver.Member2Col(m, members);
         }

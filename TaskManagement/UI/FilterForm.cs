@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -15,10 +16,10 @@ namespace TaskManagement.UI
         private Members _originalMembers;
         private Filter _filter;
         private Callender _callender;
-        private WorkItems _workItems;
+        private IEnumerable<WorkItem> _workItems;
         private Func<Member, string, bool> IsMemberMatchText;
 
-        public FilterForm(Members members, Filter filter, Callender callender, WorkItems workItems, Func<Member, string, bool> isMemberMatchText)
+        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText)
         {
             InitializeComponent();
             _originalMembers = members.Clone();
@@ -45,9 +46,11 @@ namespace TaskManagement.UI
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contain(m);
+                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
+
+            checkBox_IsFreeTimeMemberShow.Checked = _filter == null ? false : _filter.IsFreeTimeMemberShow;
         }
 
         private void UpdateWorkItemText()
@@ -98,7 +101,7 @@ namespace TaskManagement.UI
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers());
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked);
         }
 
         private string GetWorkItemFilter()
