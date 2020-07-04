@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -15,10 +16,10 @@ namespace TaskManagement.UI
         private Members _originalMembers;
         private Filter _filter;
         private Callender _callender;
-        private WorkItems _workItems;
+        private IEnumerable<WorkItem> _workItems;
         private Func<Member, string, bool> IsMemberMatchText;
 
-        public FilterForm(Members members, Filter filter, Callender callender, WorkItems workItems, Func<Member, string, bool> isMemberMatchText)
+        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText)
         {
             InitializeComponent();
             _originalMembers = members.Clone();

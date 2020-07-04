@@ -133,7 +133,7 @@ namespace TaskManagement.ViewModel
             return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
-        public WorkItems GetFilteredWorkItems()
+        public IEnumerable<WorkItem> GetFilteredWorkItems()
         {
             if (Filter == null) return Original.WorkItems;
             var filteredMembers = GetFilteredMembers();
