@@ -4,5 +4,6 @@
     {
         Active,
         Done,
+        Background,
     }
 }
