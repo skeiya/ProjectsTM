@@ -51,11 +51,12 @@
             // labelVersion
             // 
             this.labelVersion.AutoSize = true;
+            this.labelVersion.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.labelVersion.Location = new System.Drawing.Point(14, 9);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(36, 12);
+            this.labelVersion.Size = new System.Drawing.Size(52, 16);
             this.labelVersion.TabIndex = 3;
-            this.labelVersion.Text = "vX.X.X";
+            this.labelVersion.Text = "v0.2.0";
             // 
             // linkLabel1
             // 
