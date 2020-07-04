@@ -50,7 +50,7 @@ namespace TaskManagement.UI
                 checkedListBox1.Items.Add(m, check);
             }
 
-            checkBox_EnableFreeTimeMember.Checked = _filter == null ? false : _filter.EnableFreeTimeMember;
+            checkBox_IsFreeTimeMemberShow.Checked = _filter == null ? false : _filter.IsFreeTimeMemberShow;
         }
 
         private void UpdateWorkItemText()
@@ -101,7 +101,7 @@ namespace TaskManagement.UI
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_EnableFreeTimeMember.Checked);
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked);
         }
 
         private string GetWorkItemFilter()

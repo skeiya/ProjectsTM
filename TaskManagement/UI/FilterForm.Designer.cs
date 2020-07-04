@@ -49,7 +49,7 @@
             this.buttonGenerateFromProject = new System.Windows.Forms.Button();
             this.buttonGenerateFromWorkItems = new System.Windows.Forms.Button();
             this.buttonFromTodayToSpecialDay = new System.Windows.Forms.Button();
-            this.checkBox_EnableFreeTimeMember = new System.Windows.Forms.CheckBox();
+            this.checkBox_IsFreeTimeMemberShow = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -281,16 +281,16 @@
             this.buttonFromTodayToSpecialDay.UseVisualStyleBackColor = true;
             this.buttonFromTodayToSpecialDay.Click += new System.EventHandler(this.buttonFromTodayToSpecialDay_Click);
             // 
-            // checkBox_EnableFreeTimeMember
+            // checkBox_IsFreeTimeMemberShow
             // 
-            this.checkBox_EnableFreeTimeMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox_EnableFreeTimeMember.AutoSize = true;
-            this.checkBox_EnableFreeTimeMember.Location = new System.Drawing.Point(22, 348);
-            this.checkBox_EnableFreeTimeMember.Name = "checkBox_EnableFreeTimeMember";
-            this.checkBox_EnableFreeTimeMember.Size = new System.Drawing.Size(168, 16);
-            this.checkBox_EnableFreeTimeMember.TabIndex = 18;
-            this.checkBox_EnableFreeTimeMember.Text = "タスクがないメンバーを表示する";
-            this.checkBox_EnableFreeTimeMember.UseVisualStyleBackColor = true;
+            this.checkBox_IsFreeTimeMemberShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox_IsFreeTimeMemberShow.AutoSize = true;
+            this.checkBox_IsFreeTimeMemberShow.Location = new System.Drawing.Point(22, 348);
+            this.checkBox_IsFreeTimeMemberShow.Name = "checkBox_IsFreeTimeMemberShow";
+            this.checkBox_IsFreeTimeMemberShow.Size = new System.Drawing.Size(168, 16);
+            this.checkBox_IsFreeTimeMemberShow.TabIndex = 18;
+            this.checkBox_IsFreeTimeMemberShow.Text = "タスクがないメンバーを表示する";
+            this.checkBox_IsFreeTimeMemberShow.UseVisualStyleBackColor = true;
             // 
             // FilterForm
             // 
@@ -299,7 +299,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(588, 403);
-            this.Controls.Add(this.checkBox_EnableFreeTimeMember);
+            this.Controls.Add(this.checkBox_IsFreeTimeMemberShow);
             this.Controls.Add(this.buttonFromTodayToSpecialDay);
             this.Controls.Add(this.buttonGenerateFromWorkItems);
             this.Controls.Add(this.buttonGenerateFromProject);
@@ -354,6 +354,6 @@
         private System.Windows.Forms.Button buttonGenerateFromProject;
         private System.Windows.Forms.Button buttonGenerateFromWorkItems;
         private System.Windows.Forms.Button buttonFromTodayToSpecialDay;
-        private System.Windows.Forms.CheckBox checkBox_EnableFreeTimeMember;
+        private System.Windows.Forms.CheckBox checkBox_IsFreeTimeMemberShow;
     }
 }

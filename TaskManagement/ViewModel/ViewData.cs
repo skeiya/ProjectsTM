@@ -80,7 +80,7 @@ namespace TaskManagement.ViewModel
 
         private IEnumerable<Member> RemoveFreeTimeMembers(IEnumerable<Member> members)
         {
-            if (Filter == null || Filter.EnableFreeTimeMember) return members;
+            if (Filter == null || Filter.IsFreeTimeMemberShow) return members;
             return members.Where(m => GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
         }
 
