@@ -34,7 +34,7 @@ namespace TaskManagement.Service
             return null;
         }
 
-        private void UpdateDescription(ref string s, WorkItem hoveringWorkItem)
+        private void AddDescription(ref string s, WorkItem hoveringWorkItem)
         {
             string result = MakeDescriptionForTooltip(hoveringWorkItem);
             if (result == null) return;
@@ -55,7 +55,7 @@ namespace TaskManagement.Service
                 + "開始:" + wi.Period.From.ToString() + Environment.NewLine
                 + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
             if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
-            UpdateDescription(ref s, wi);
+            AddDescription(ref s, wi);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
