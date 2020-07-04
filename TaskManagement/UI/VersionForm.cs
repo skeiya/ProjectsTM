@@ -37,5 +37,10 @@ namespace TaskManagement.UI
         {
             Process.Start(@"https://github.com/skeiya/TaskManagement/issues");
         }
+
+        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(@"https://github.com/skeiya/TaskManagement/blob/master/LICENSE");
+        }
     }
 }
