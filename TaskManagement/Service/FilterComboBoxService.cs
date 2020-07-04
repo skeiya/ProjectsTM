@@ -69,7 +69,7 @@ namespace TaskManagement.Service
         }
         private IEnumerable<string> GetCompanies()
         {
-            return _viewData.GetFilteredWorkItems().Select(w => w.AssignedMember.Company).Distinct();
+            return _viewData.Original.WorkItems.Select(w => w.AssignedMember.Company).Distinct();
         }
 
         private void AppendByProjects()
@@ -82,7 +82,7 @@ namespace TaskManagement.Service
 
         private IEnumerable<Project> GetProjects()
         {
-            return _viewData.GetFilteredWorkItems().Select(w => w.Project).Distinct();
+            return _viewData.Original.WorkItems.Select(w => w.Project).Distinct();
         }
 
         private int GetIndexBinder(string selectedText)
@@ -151,17 +151,11 @@ namespace TaskManagement.Service
             }
             var com = companies.ElementAt(idx);
             var members = new Members();
-            var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contains(m))
-                {
-                    members.Add(m);
-                    continue;
-                }
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, _viewData.Filter.IsFreeTimeMemberShow);
+            return new Filter(null, null, members, false);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -174,17 +168,11 @@ namespace TaskManagement.Service
             }
             var pro = projects.ElementAt(idx);
             var members = new Members();
-            var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contains(m))
-                {
-                    members.Add(m);
-                    continue;
-                }
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members, _viewData.Filter.IsFreeTimeMemberShow);
+            return new Filter(null, null, members, false);
         }
 
         private Filter GetFilterByFiles(ref int idx)
