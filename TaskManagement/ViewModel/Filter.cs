@@ -35,6 +35,7 @@ namespace TaskManagement.ViewModel
             hashCode = hashCode * -1521134295 + EqualityComparer<Members>.Default.GetHashCode(HideMembers);
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(WorkItem);
+            hashCode = hashCode * -1521134295 + EqualityComparer<bool>.Default.GetHashCode(EnableFreeTimeMember);
             return hashCode;
         }
 
