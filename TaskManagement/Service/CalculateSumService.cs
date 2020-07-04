@@ -13,7 +13,7 @@ namespace TaskManagement.Service
         {
             UpdateCache(viewData, updatedMembers);
             var filteredMembers = viewData.GetFilteredMembers();
-            return _sumCache.Where((i) => filteredMembers.Contain(i.Key)).Sum((i) => i.Value);
+            return _sumCache.Where((i) => filteredMembers.Contains(i.Key)).Sum((i) => i.Value);
         }
 
         private void UpdateCache(ViewData _viewData, List<Member> updatedMembers)

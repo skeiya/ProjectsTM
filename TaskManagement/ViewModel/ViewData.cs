@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
@@ -77,7 +77,7 @@ namespace TaskManagement.ViewModel
             return Original.Callender.GetPeriodDayCount(Filter.Period);
         }
 
-        public Members GetFilteredMembers()
+        public IEnumerable<Member> GetFilteredMembers()
         {
             var result = new Members();
             if (Filter == null || Filter.HideMembers == null)
@@ -140,7 +140,7 @@ namespace TaskManagement.ViewModel
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)
             {
-                if (!filteredMembers.Contain(w.AssignedMember)) continue;
+                if (!filteredMembers.Contains(w.AssignedMember)) continue;
                 if (!string.IsNullOrEmpty(Filter.WorkItem))
                 {
                     if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;

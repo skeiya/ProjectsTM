@@ -154,7 +154,7 @@ namespace TaskManagement.Service
             var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contain(m))
+                if (!filteredMembers.Contains(m))
                 {
                     members.Add(m);
                     continue;
@@ -177,7 +177,7 @@ namespace TaskManagement.Service
             var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contain(m))
+                if (!filteredMembers.Contains(m))
                 {
                     members.Add(m);
                     continue;
