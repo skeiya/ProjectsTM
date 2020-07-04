@@ -158,7 +158,7 @@ namespace TaskManagement.Service
                 }
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members);
+            return new Filter(null, null, members, _viewData.Filter.EnableFreeTimeMember);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -181,7 +181,7 @@ namespace TaskManagement.Service
                 }
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members);
+            return new Filter(null, null, members, _viewData.Filter.EnableFreeTimeMember);
         }
 
         private Filter GetFilterByFiles(ref int idx)

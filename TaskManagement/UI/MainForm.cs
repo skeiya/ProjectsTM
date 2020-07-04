@@ -46,7 +46,6 @@ namespace TaskManagement.UI
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            ToolStripMenuItemEnableFreeTimeMember.Checked = _viewData.EnableFreeTimeMember;
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
             _viewData.FontChanged += _viewData_FontChanged;
             FileIOService.FileChanged += _fileIOService_FileChanged;
@@ -334,13 +333,6 @@ namespace TaskManagement.UI
             _viewData.Selected = null;
             workItemGrid1.Initialize(_viewData);
             _isDirty = false;
-        }
-
-        private void ToolStripMenuItemEnableFreeTimeMember_Click(object sender, EventArgs e)
-        {
-            _viewData.EnableFreeTimeMember = !_viewData.EnableFreeTimeMember;
-            ToolStripMenuItemEnableFreeTimeMember.Checked = _viewData.EnableFreeTimeMember;
-            workItemGrid1.Initialize(_viewData);
         }
     }
 }
