@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TaskManagement.Model;
 
@@ -71,30 +71,28 @@ namespace TaskManagement.ViewModel
             return !filter.Equals(Filter);
         }
 
-        public int GetDaysCount()
+        public IEnumerable<Member> GetFilteredMembers()
         {
-            if (Filter == null || Filter.Period == null) return Original.Callender.Days.Count;
-            return Original.Callender.GetPeriodDayCount(Filter.Period);
+            var result = CreateAllMembersList();
+            result = RemoveFilterSettingMembers(result);
+            return RemoveFreeTimeMembers(result);
         }
 
-        public Members GetFilteredMembers()
+        private IEnumerable<Member> RemoveFreeTimeMembers(IEnumerable<Member> members)
         {
-            var result = new Members();
-            if (Filter == null || Filter.HideMembers == null)
-            {
-                foreach (var m in this.Original.Members)
-                {
-                    result.Add(m);
-                }
-                return result;
-            }
+            if (Filter == null || Filter.IsFreeTimeMemberShow) return members;
+            return members.Where(m => GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
+        }
 
-            foreach (var m in Original.Members)
-            {
-                if (Filter.HideMembers.Contain(m)) continue;
-                result.Add(m);
-            }
-            return result;
+        private List<Member> RemoveFilterSettingMembers(List<Member> members)
+        {
+            if (Filter == null || Filter.HideMembers == null) return members;
+            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
+        }
+
+        private List<Member> CreateAllMembersList()
+        {
+            return this.Original.Members.ToList();
         }
 
         internal WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
@@ -128,14 +126,14 @@ namespace TaskManagement.ViewModel
             return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
-        public WorkItems GetFilteredWorkItems()
+        public IEnumerable<WorkItem> GetFilteredWorkItems()
         {
             if (Filter == null) return Original.WorkItems;
             var filteredMembers = GetFilteredMembers();
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)
             {
-                if (!filteredMembers.Contain(w.AssignedMember)) continue;
+                if (!filteredMembers.Contains(w.AssignedMember)) continue;
                 if (!string.IsNullOrEmpty(Filter.WorkItem))
                 {
                     if (!Regex.IsMatch(w.ToString(), Filter.WorkItem)) continue;
@@ -167,7 +165,7 @@ namespace TaskManagement.ViewModel
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
-            if (!Original.Members.Contain(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
         internal void IncFont()

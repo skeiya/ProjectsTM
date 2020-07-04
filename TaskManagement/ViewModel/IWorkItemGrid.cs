@@ -18,7 +18,7 @@ namespace TaskManagement.ViewModel
 
         RectangleF? GetMemberDrawRect(Member m);
         RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);
-        RectangleF? GetWorkItemDrawRect(WorkItem wi, Members members, bool isFrontView);
+        RectangleF? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);
 
 

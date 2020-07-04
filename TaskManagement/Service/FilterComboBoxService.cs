@@ -154,14 +154,14 @@ namespace TaskManagement.Service
             var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contain(m))
+                if (!filteredMembers.Contains(m))
                 {
                     members.Add(m);
                     continue;
                 }
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members);
+            return new Filter(null, null, members, _viewData.Filter.IsFreeTimeMemberShow);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -177,14 +177,14 @@ namespace TaskManagement.Service
             var filteredMembers = _viewData.GetFilteredMembers();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!filteredMembers.Contain(m))
+                if (!filteredMembers.Contains(m))
                 {
                     members.Add(m);
                     continue;
                 }
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members);
+            return new Filter(null, null, members, _viewData.Filter.IsFreeTimeMemberShow);
         }
 
         private Filter GetFilterByFiles(ref int idx)
