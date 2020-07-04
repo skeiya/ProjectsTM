@@ -183,14 +183,14 @@ namespace TaskManagement.UI
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(156, 22);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
             // ToolStripMenuItemDivide
             // 
             this.ToolStripMenuItemDivide.Name = "ToolStripMenuItemDivide";
-            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(156, 22);
             this.ToolStripMenuItemDivide.Text = "作業項目の分割";
             this.ToolStripMenuItemDivide.Click += new System.EventHandler(this.ToolStripMenuItemDivide_Click);
             // 
@@ -198,7 +198,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
             this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(156, 22);
             this.ToolStripMenuItemSearch.Text = "検索";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
@@ -206,7 +206,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
             this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(156, 22);
             this.ToolStripMenuItemUndo.Text = "Undo";
             this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
             // 
@@ -214,7 +214,7 @@ namespace TaskManagement.UI
             // 
             this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
             this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(156, 22);
             this.ToolStripMenuItemRedo.Text = "Redo";
             this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
             // 
