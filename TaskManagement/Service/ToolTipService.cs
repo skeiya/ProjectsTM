@@ -18,12 +18,12 @@ namespace TaskManagement.Service
             _workItems = workitems;
         }
 
-        private string MakeDescriptionForTooltip(WorkItem selectedWorkItem)
+        private string MakeDescriptionForTooltip(WorkItem hoveringWorkItem)
         {
-            if (!string.IsNullOrEmpty(selectedWorkItem.Description)) return selectedWorkItem.Description;
+            if (!string.IsNullOrEmpty(hoveringWorkItem.Description)) return hoveringWorkItem.Description;
             foreach (var w in _workItems)
             {
-                if (w.Name == selectedWorkItem.Name &&
+                if (w.Name == hoveringWorkItem.Name &&
                     !string.IsNullOrEmpty(w.Description))
                 {
                     return w.Description + 
@@ -34,9 +34,9 @@ namespace TaskManagement.Service
             return null;
         }
 
-        private void UpdateDescription(ref string s, WorkItem selectedWorkItem)
+        private void UpdateDescription(ref string s, WorkItem hoveringWorkItem)
         {
-            string result = MakeDescriptionForTooltip(selectedWorkItem);
+            string result = MakeDescriptionForTooltip(hoveringWorkItem);
             if (result == null) return;
             s += Environment.NewLine
                 + "---作業項目メモ---" + Environment.NewLine
