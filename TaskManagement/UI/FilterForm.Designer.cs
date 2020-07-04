@@ -283,6 +283,7 @@
             // 
             // checkBox_EnableFreeTimeMember
             // 
+            this.checkBox_EnableFreeTimeMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_EnableFreeTimeMember.AutoSize = true;
             this.checkBox_EnableFreeTimeMember.Location = new System.Drawing.Point(22, 348);
             this.checkBox_EnableFreeTimeMember.Name = "checkBox_EnableFreeTimeMember";
