@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace TaskManagement.UI
@@ -16,6 +9,13 @@ namespace TaskManagement.UI
         public VersionForm()
         {
             InitializeComponent();
+            labelVersion.Text = GetVersion();
+        }
+
+        private string GetVersion()
+        {
+            var ver = Assembly.GetEntryAssembly().GetName().Version;
+            return "v" + ver.Major.ToString() + "." + ver.Minor.ToString() + "." + ver.Build.ToString();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
