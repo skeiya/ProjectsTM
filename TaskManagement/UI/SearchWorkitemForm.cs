@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace TaskManagement.UI
     {
         private readonly ViewData _viewData;
         private readonly WorkItemEditService _editService;
-        private List<WorkItem> _list = new List<WorkItem>();
+        private List<Tuple<WorkItem, Color>> _list = new List<Tuple<WorkItem, Color>>();
 
         public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService)
         {
@@ -36,11 +37,11 @@ namespace TaskManagement.UI
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex < 0 || dataGridView1.ColumnCount - 1 <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
+            if (e.ColumnIndex < 0 || dataGridView1.ColumnCount <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
             if (dataGridView1.SelectedRows.Count <= 0) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
-            var wi = _list[index];
+            var wi = _list[index].Item1;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
@@ -57,12 +58,15 @@ namespace TaskManagement.UI
             textBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
             if (!checkBoxOverwrapPeriod.Checked)
             {
+                checkBoxIncludeMilestone.Enabled = true;
+                checkBoxCaseDistinct.Enabled = true;
                 return;
             }
+            checkBoxIncludeMilestone.Enabled = false;
+            checkBoxCaseDistinct.Enabled = false;
 
             textBoxPattern.Text = string.Empty;
-            _list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems);
-            UpdateDataGridView();
+            UpdateList(OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems));
         }
 
         private void ButtonSearch_Click(object sender, EventArgs e)
@@ -72,17 +76,47 @@ namespace TaskManagement.UI
                 CheckBoxOverwrapPeriod_CheckedChanged(null, null);
                 return;
             }
+            UpdateList(_viewData.GetFilteredWorkItems());
+        }
+
+        private void UpdateList(IEnumerable<WorkItem> workItems)
+        {
             _list.Clear();
             try
             {
-                foreach (var wi in _viewData.GetFilteredWorkItems())
+                foreach (var wi in workItems)
                 {
                     if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
-                    _list.Add(wi);
+                    _list.Add(new Tuple<WorkItem, Color>(wi, GetColor(wi)));
                 }
+                AddMilestones();
             }
             catch { }
             UpdateDataGridView();
+        }
+
+        private void AddMilestones()
+        {
+            if (checkBoxOverwrapPeriod.Checked) return;
+            if (!checkBoxIncludeMilestone.Checked) return;
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                var w = new WorkItem(
+                    new Project("noProj"),
+                    "↑" + ms.Name,
+                    new Tags(new List<string>() { "" }),
+                    new Period(ms.Day, ms.Day),
+                    new Member(string.Empty, string.Empty, string.Empty),
+                    TaskState.Active,
+                    string.Empty
+                    );
+                _list.Add(new Tuple<WorkItem, Color>(w, ms.Color));
+            }
+        }
+
+        private static Color GetColor(WorkItem wi)
+        {
+            return wi.State == TaskState.Done ? Color.Gray : Color.White;
         }
 
         private RegexOptions GetOption()
@@ -100,7 +134,7 @@ namespace TaskManagement.UI
         {
             dataGridView1.Rows.Clear();
             SetGridViewRows();
-            var dayCount = _list.Sum(w => _viewData.Original.Callender.GetPeriodDayCount(w.Period));
+            var dayCount = _list.Sum(item => _viewData.Original.Callender.GetPeriodDayCount(item.Item1.Period));
             var monthCount = dayCount / 20;
             labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
         }
@@ -145,6 +179,7 @@ namespace TaskManagement.UI
             From,
             To,
             Days,
+            Description,
             Count,
         }
 
@@ -166,14 +201,19 @@ namespace TaskManagement.UI
             dataGridView1.Columns[(int)GridCols.Days].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView1.Columns[(int)GridCols.To].HeaderText = "終了";
             dataGridView1.Columns[(int)GridCols.To].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].HeaderText = "備考";
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.Columns[(int)GridCols.Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[(int)GridCols.Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void SetGridViewRows()
         {
             for (int i = 0; i < _list.Count; i++)
             {
-                WorkItem wi = _list.ElementAt(i);
-                dataGridView1.Rows.Add(
+                var wi = _list.ElementAt(i).Item1;
+                var color = _list.ElementAt(i).Item2;
+                var row = dataGridView1.Rows.Add(
                     wi.Name,
                     wi.Project,
                     wi.AssignedMember,
@@ -181,7 +221,10 @@ namespace TaskManagement.UI
                     wi.State,
                     wi.Period.From,
                     wi.Period.To,
-                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period));
+                    _viewData.Original.Callender.GetPeriodDayCount(wi.Period),
+                    wi.Description
+                    );
+                dataGridView1.Rows[row].DefaultCellStyle.BackColor = color;
             }
         }
 
@@ -205,7 +248,7 @@ namespace TaskManagement.UI
             if (selectedRows.Count <= 0) return -1;
             for (int result = 0; result < _list.Count; result++)
             {
-                if (Equal(_list[result], selectedRows[0].Cells)) return result;
+                if (Equal(_list[result].Item1, selectedRows[0].Cells)) return result;
             }
             return -1;
         }
@@ -213,9 +256,17 @@ namespace TaskManagement.UI
         private void EditDataGridView(int index, WorkItem wi)
         {
             if (index < 0) return;
-            _list[index] = wi;
+            _list[index] = new Tuple<WorkItem, Color>(wi, GetColor(wi));
             UpdateDataGridView();
             dataGridView1.Rows[index].Selected = true;
+        }
+
+        private void checkBoxIncludeMilestone_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxOverwrapPeriod.Enabled = !checkBoxIncludeMilestone.Checked;
+            if (!checkBoxIncludeMilestone.Checked) return;
+            UpdateList(_viewData.GetFilteredWorkItems());
+            dataGridView1.Sort(dataGridView1.Columns[(int)GridCols.To], System.ComponentModel.ListSortDirection.Ascending);
         }
     }
 }

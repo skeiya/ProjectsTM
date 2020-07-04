@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using TaskManagement.Model;
 
@@ -30,8 +31,14 @@ namespace TaskManagement.Logic
 
         public static AppData LoadFromStream(StreamReader reader)
         {
-            var serializer = new XmlSerializer(typeof(AppData));
-            return (AppData)serializer.Deserialize(reader);
+            XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = false;
+            doc.Load(reader);
+            using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+            {
+                var x = new XmlSerializer(typeof(AppData));
+                return (AppData)x.Deserialize(nodeReader);
+            }
         }
     }
 }

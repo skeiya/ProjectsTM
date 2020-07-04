@@ -33,7 +33,6 @@ namespace TaskManagement.UI
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
-            _filterComboBoxService.Initialize();
             _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
@@ -41,6 +40,9 @@ namespace TaskManagement.UI
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToToday();
+            FileIOService.FileWatchChanged += _fileIOService_FileChanged;
+            FileIOService.FileSaved += _fileIOService_FileSaved;
+            FileIOService.FileOpened += FileIOService_FileOpened;
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
@@ -48,8 +50,11 @@ namespace TaskManagement.UI
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
             _viewData.FontChanged += _viewData_FontChanged;
-            FileIOService.FileChanged += _fileIOService_FileChanged;
-            FileIOService.FileSaved += _fileIOService_FileSaved;
+        }
+
+        private void FileIOService_FileOpened(object sender, string e)
+        {
+            _filterComboBoxService.Initialize(e);
         }
 
         private void _viewData_FontChanged(object sender, EventArgs e)
@@ -73,13 +78,17 @@ namespace TaskManagement.UI
             _isDirty = false;
         }
 
+        static bool _alreadyShow = false;
         private void _fileIOService_FileChanged(object sender, EventArgs e)
         {
             this.BeginInvoke((Action)(() =>
             {
+                if (_alreadyShow) return;
+                _alreadyShow = true;
                 var msg = "開いているファイルが外部で変更されました。リロードしますか？";
                 if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
                 ToolStripMenuItemReload_Click(null, null);
+                _alreadyShow = false;
             }));
         }
 
@@ -302,11 +311,6 @@ namespace TaskManagement.UI
             workItemGrid1.Refresh();
         }
 
-        private void ToolStripMenuItemHelp_Click_1(object sender, EventArgs e)
-        {
-            Process.Start(@".\Help\help.html");
-        }
-
         private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
             workItemGrid1.Divide();
@@ -333,6 +337,19 @@ namespace TaskManagement.UI
             _viewData.Selected = null;
             workItemGrid1.Initialize(_viewData);
             _isDirty = false;
+        }
+
+        private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
+        {
+            Process.Start(@".\Help\help.html");
+        }
+
+        private void ToolStripMenuItemVersion_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new VersionForm())
+            {
+                dlg.ShowDialog(this);
+            }
         }
     }
 }

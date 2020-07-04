@@ -1,3 +1,5 @@
+![Build&UnitTest](https://github.com/skeiya/TaskManagement/workflows/Build&UnitTest/badge.svg)
+
 # Introduction 
 Windows用のデスクトップアプリケーション。
 カレンダー表示ベースでの多人数・複数プロジェクトの作業項目管理ツール。
