@@ -71,35 +71,28 @@ namespace TaskManagement.ViewModel
             return !filter.Equals(Filter);
         }
 
-        public int GetDaysCount()
-        {
-            if (Filter == null || Filter.Period == null) return Original.Callender.Days.Count;
-            return Original.Callender.GetPeriodDayCount(Filter.Period);
-        }
-
         public IEnumerable<Member> GetFilteredMembers()
         {
-            var result = new Members();
-            if (Filter == null || Filter.HideMembers == null)
-            {
-                foreach (var m in this.Original.Members)
-                {
-                    var workItems = GetFilteredWorkItemsOfMember(m);
-                    if (!(Filter == null ? false : Filter.EnableFreeTimeMember) &&
-                        !workItems.HasWorkItem(Filter == null ? null : Filter.Period)) continue;
-                    result.Add(m);
-                }
-                return result;
-            }
+            var result = CreateAllMembersList();
+            result = RemoveFilterSettingMembers(result);
+            return RemoveFreeTimeMembers(result);
+        }
 
-            foreach (var m in Original.Members)
-            {
-                if (Filter.HideMembers.Contain(m)) continue;
-                var workItems = GetFilteredWorkItemsOfMember(m);
-                if (!Filter.EnableFreeTimeMember && !workItems.HasWorkItem(Filter.Period)) continue;
-                result.Add(m);
-            }
-            return result;
+        private IEnumerable<Member> RemoveFreeTimeMembers(IEnumerable<Member> members)
+        {
+            if (Filter == null || Filter.EnableFreeTimeMember) return members;
+            return members.Where(m => GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
+        }
+
+        private List<Member> RemoveFilterSettingMembers(List<Member> members)
+        {
+            if (Filter == null || Filter.HideMembers == null) return members;
+            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
+        }
+
+        private List<Member> CreateAllMembersList()
+        {
+            return this.Original.Members.ToList();
         }
 
         internal WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
@@ -172,7 +165,7 @@ namespace TaskManagement.ViewModel
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
-            if (!Original.Members.Contain(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
         internal void IncFont()
