@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using TaskManagement.Model;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {
@@ -10,19 +10,19 @@ namespace TaskManagement.Service
     {
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
-        private IEnumerable<WorkItem> _workItems;
+        private readonly ViewData _viewData;
         private readonly Control _parentControl;
 
-        public ToolTipService(Control c, IEnumerable<WorkItem> workitems)
+        public ToolTipService(Control c, ViewData viewData)
         {
-            _toolTip.ShowAlways = true;
+            this._toolTip.ShowAlways = true;
             this._parentControl = c;
-            _workItems = workitems;
+            this._viewData = viewData;
         }
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
         {
-            foreach (var w in _workItems)
+            foreach (var w in _viewData.GetFilteredWorkItems())
             {
                 if (w.Name != hoveringWorkItem.Name) continue;
                 if (w.Equals(hoveringWorkItem)) continue;
