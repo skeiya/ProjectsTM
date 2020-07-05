@@ -2,10 +2,9 @@
 
 namespace TaskManagement.Service
 {
-    class FileDragService
+    static class FileDragService
     {
-
-        public string Drop(DragEventArgs e)
+        public static string Drop(DragEventArgs e)
         {
             string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (fileName.Length == 0) return null;
@@ -13,7 +12,7 @@ namespace TaskManagement.Service
             return fileName[0];
         }
 
-        internal void DragEnter(DragEventArgs e)
+        internal static void DragEnter(DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {

@@ -5,10 +5,10 @@ using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {
-    class OldFileService
+    static class OldFileService
     {
 
-        public void ImportMemberAndWorkItems(ViewData viewData)
+        public static void ImportMemberAndWorkItems(ViewData viewData)
         {
             try
             {

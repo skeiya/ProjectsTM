@@ -12,7 +12,7 @@ namespace TaskManagement.UI
             labelVersion.Text = GetVersion();
         }
 
-        private string GetVersion()
+        private static string GetVersion()
         {
             var ver = Assembly.GetEntryAssembly().GetName().Version;
             return "v" + ver.Major.ToString() + "." + ver.Minor.ToString() + "." + ver.Build.ToString();
