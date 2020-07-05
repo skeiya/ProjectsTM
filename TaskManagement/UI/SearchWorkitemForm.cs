@@ -42,7 +42,7 @@ namespace TaskManagement.UI
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var wi = _list[index].Item1;
-            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender))
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
