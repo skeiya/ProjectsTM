@@ -33,7 +33,7 @@ jobs:
     
     - name: Download inno
       shell: powershell
-      run: (new-object net.webclient).DownloadFile('http://www.jrsoftware.org/download.php/is.exe#innosetup-6.0.3.exe', "./downloads/innosetup-6.0.3.exe")
+      run: mkdir downloads; (new-object net.webclient).DownloadFile('http://www.jrsoftware.org/download.php/is.exe#innosetup-6.0.3.exe', "./downloads/innosetup-6.0.3.exe")
         
     - name: Setup inno
       shell: powershell
