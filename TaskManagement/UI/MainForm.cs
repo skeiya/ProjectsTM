@@ -19,9 +19,6 @@ namespace TaskManagement.UI
         private SearchWorkitemForm SearchForm { get; set; }
         private PrintService PrintService { get; set; }
         private AppDataFileIOService FileIOService { get; } = new AppDataFileIOService();
-
-        private FileDragService _fileDragService = new FileDragService();
-        private OldFileService _oldFileService = new OldFileService();
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
         private ContextMenuService _contextMenuService;
@@ -161,7 +158,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
-            var fileName = _fileDragService.Drop(e);
+            var fileName = FileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
             var appData = FileIOService.OpenFile(fileName);
             OpenAppData(appData);
@@ -169,7 +166,7 @@ namespace TaskManagement.UI
 
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
         {
-            _fileDragService.DragEnter(e);
+            FileDragService.DragEnter(e);
         }
 
         private void _viewData_FilterChanged(object sender, EventArgs e)
@@ -182,7 +179,7 @@ namespace TaskManagement.UI
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
-            _oldFileService.ImportMemberAndWorkItems(_viewData);
+            OldFileService.ImportMemberAndWorkItems(_viewData);
             workItemGrid1.Initialize(_viewData);
         }
 
