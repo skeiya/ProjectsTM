@@ -18,29 +18,40 @@ namespace TaskManagement.Service
             _workItems = workitems;
         }
 
-        private string MakeDescriptionForTooltip(WorkItem hoveringWorkItem)
+        private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
         {
-            if (!string.IsNullOrEmpty(hoveringWorkItem.Description)) return hoveringWorkItem.Description;
             foreach (var w in _workItems)
             {
                 if (w.Name == hoveringWorkItem.Name &&
                     !string.IsNullOrEmpty(w.Description))
                 {
-                    return w.Description + 
-                        Environment.NewLine + 
+                    return w.Description +
+                        Environment.NewLine +
                         "※同名作業項目のメモ※";
                 }
             }
             return null;
         }
 
-        private void AddDescription(ref string s, WorkItem hoveringWorkItem)
+        private string CreateDescriptionContent(WorkItem hoveringWorkItem)
         {
-            string result = MakeDescriptionForTooltip(hoveringWorkItem);
-            if (result == null) return;
-            s += Environment.NewLine
+            if (!string.IsNullOrEmpty(hoveringWorkItem.Description)) return hoveringWorkItem.Description;
+            return GetDescrptionFromOtherWorkItem(hoveringWorkItem);
+        }
+
+        private void SetDescriptionContent(ref string allStrForTooltip, string strDescription)
+        {
+            if (strDescription == null) return;
+            allStrForTooltip += 
+                Environment.NewLine
                 + "---作業項目メモ---" + Environment.NewLine
-                + result + Environment.NewLine;
+                + strDescription + Environment.NewLine;
+        }
+
+        private void AddDescription(ref string allStringForTooltip, WorkItem hoveringWorkItem)
+        {
+            string result = CreateDescriptionContent(hoveringWorkItem);
+            SetDescriptionContent(ref allStringForTooltip, result);
         }
 
         public void Update(WorkItem wi, int days)
