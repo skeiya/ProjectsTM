@@ -10,10 +10,6 @@ jobs:
 
   build:
 
-#    strategy:
-#      matrix:
-#        configuration: [Debug, Release]
-
     runs-on: windows-latest  # For a list of available runner types, refer to 
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
@@ -35,6 +31,14 @@ jobs:
     - name: Setup VSTest.console.exe
       uses: darenm/Setup-VSTest@v1
     
+    - name: Download inno
+      shell: powershell
+      run: mkdir downloads; (new-object net.webclient).DownloadFile('http://www.jrsoftware.org/download.php/is.exe#innosetup-6.0.3.exe', "./downloads/innosetup-6.0.3.exe")
+        
+    - name: Setup inno
+      shell: powershell
+      run: ./downloads/innosetup-6.0.3.exe /verysilent /norestart /currentuser
+      
     - name: nuget restore
       run: nuget restore $Env:GITHUB_WORKSPACE\TaskManagement\TaskManagement.sln
       
@@ -44,8 +48,18 @@ jobs:
     - name: VSTest
       run: VSTest.Console.exe UnitTestProject1\bin\Release\*Test*.dll
     
+    - name: Build Installer
+      shell: powershell
+      run: $icss = (Join-Path (Join-path ${env:ProgramFiles(x86)} "Inno Setup 6") "ISCC.exe"); &$icss InnoSetupScripts.iss
+      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
           name: artifacts
           path: TaskManagement\bin\Release\*
+
+    - name: Upload a Installer Artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: installer
+          path: Output\Setup.exe

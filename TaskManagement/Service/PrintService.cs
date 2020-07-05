@@ -17,6 +17,12 @@ namespace TaskManagement.Service
         {
             _font = font;
             _viewData = viewData;
+            _printDocument.DefaultPageSettings.Landscape = true;
+            _printDocument.PrintPage += PrintDocument_PrintPage;
+        }
+
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
             foreach (PaperSize s in _printDocument.DefaultPageSettings.PrinterSettings.PaperSizes)
             {
                 if (s.Kind == PaperKind.A3)
@@ -24,12 +30,6 @@ namespace TaskManagement.Service
                     _printDocument.DefaultPageSettings.PaperSize = s;
                 }
             }
-            _printDocument.DefaultPageSettings.Landscape = true;
-            _printDocument.PrintPage += PrintDocument_PrintPage;
-        }
-
-        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-        {
             using (var grid = new WorkItemGrid())
             {
                 grid.Size = e.PageBounds.Size;
