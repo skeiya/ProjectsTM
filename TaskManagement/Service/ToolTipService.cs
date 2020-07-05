@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using TaskManagement.Model;
 
 namespace TaskManagement.Service
@@ -23,13 +24,13 @@ namespace TaskManagement.Service
         {
             foreach (var w in _workItems)
             {
-                if (w.Name == hoveringWorkItem.Name &&
-                    !string.IsNullOrEmpty(w.Description))
-                {
-                    return w.Description +
-                        Environment.NewLine +
-                        "※同名作業項目のメモ※";
-                }
+                if (w.Name != hoveringWorkItem.Name) continue;
+                if (w.Equals(hoveringWorkItem)) continue;
+                if (string.IsNullOrEmpty(w.Description)) continue;
+
+                return w.Description +
+                    Environment.NewLine +
+                    "※同名作業項目のメモ※";
             }
             return null;
         }
