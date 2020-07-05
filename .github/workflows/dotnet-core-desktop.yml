@@ -48,6 +48,10 @@ jobs:
     - name: VSTest
       run: VSTest.Console.exe UnitTestProject1\bin\Release\*Test*.dll
     
+    - name: Build Installer
+      shell: powershell
+      run:  &(Join-Path (Join-path ${env:ProgramFiles(x86)} "Inno Setup 6") "ISCC.exe") InnoSetupScripts.iss
+      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
