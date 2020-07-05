@@ -50,10 +50,16 @@ jobs:
     
     - name: Build Installer
       shell: powershell
-      run: $icss = (Join-Path (Join-path ${env:ProgramFiles(x86)} "Inno Setup 6") "ISCC.exe"); &icss InnoSetupScripts.iss
+      run: $icss = (Join-Path (Join-path ${env:ProgramFiles(x86)} "Inno Setup 6") "ISCC.exe"); &$icss InnoSetupScripts.iss
       
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
           name: artifacts
           path: TaskManagement\bin\Release\*
+
+    - name: Upload a Installer Artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: installer
+          path: Output\Setup.exe
