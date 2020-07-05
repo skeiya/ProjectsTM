@@ -315,14 +315,14 @@ namespace ProjectsTM.UI
             // ToolStripMenuItemHowToUse
             // 
             this.ToolStripMenuItemHowToUse.Name = "ToolStripMenuItemHowToUse";
-            this.ToolStripMenuItemHowToUse.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemHowToUse.Size = new System.Drawing.Size(151, 22);
             this.ToolStripMenuItemHowToUse.Text = "使い方...";
             this.ToolStripMenuItemHowToUse.Click += new System.EventHandler(this.ToolStripMenuItemHowToUse_Click);
             // 
             // ToolStripMenuItemVersion
             // 
             this.ToolStripMenuItemVersion.Name = "ToolStripMenuItemVersion";
-            this.ToolStripMenuItemVersion.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemVersion.Size = new System.Drawing.Size(151, 22);
             this.ToolStripMenuItemVersion.Text = "バージョン情報...";
             this.ToolStripMenuItemVersion.Click += new System.EventHandler(this.ToolStripMenuItemVersion_Click);
             // 
@@ -381,7 +381,7 @@ namespace ProjectsTM.UI
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "MainForm";
-            this.Text = "日程表ツール";
+            this.Text = "ProjectsTM";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
