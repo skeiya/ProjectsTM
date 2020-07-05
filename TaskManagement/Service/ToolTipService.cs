@@ -10,10 +10,10 @@ namespace TaskManagement.Service
     {
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
-        private WorkItems _workItems;
+        private IEnumerable<WorkItem> _workItems;
         private readonly Control _parentControl;
 
-        public ToolTipService(Control c, WorkItems workitems)
+        public ToolTipService(Control c, IEnumerable<WorkItem> workitems)
         {
             _toolTip.ShowAlways = true;
             this._parentControl = c;

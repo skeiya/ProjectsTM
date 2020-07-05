@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TaskManagement.Model
 {
@@ -8,6 +9,19 @@ namespace TaskManagement.Model
         private List<WorkItem> _items = new List<WorkItem>();
         private int _sumCache = 0;
         public int Sum => _sumCache;
+        public int Count => _items.Count;
+
+        public bool HasWorkItem(Period period)
+        {
+            if (period == null) return Count != 0;
+            Debug.Assert((period.From != null) && (period.To != null));
+            foreach (var w in _items)
+            {
+                if (((period.From <= w.Period.From) && (w.Period.From <= period.To)) ||
+                   ((period.From <= w.Period.To) && (w.Period.To <= period.To))) return true;
+            }
+            return false;
+        }
 
         public MembersWorkItems()
         {

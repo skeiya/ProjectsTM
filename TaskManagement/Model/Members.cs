@@ -47,20 +47,6 @@ namespace TaskManagement.Model
             return _members.FindIndex((x) => x.Equals(m));
         }
 
-        public bool Contain(Member m)
-        {
-            foreach (var f in _members)
-            {
-                if (f.Equals(m)) return true;
-            }
-            return false;
-        }
-
-        public bool IsEmpty()
-        {
-            return _members == null || _members.Count == 0;
-        }
-
         internal void Down(Member m)
         {
             var index = FindIndex(m);
