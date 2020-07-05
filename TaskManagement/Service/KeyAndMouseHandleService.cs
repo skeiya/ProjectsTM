@@ -31,7 +31,7 @@ namespace TaskManagement.Service
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
-            this._toolTipService = new ToolTipService(parentControl, _viewData.GetFilteredWorkItems());
+            this._toolTipService = new ToolTipService(parentControl, _viewData);
             HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
         }
 
