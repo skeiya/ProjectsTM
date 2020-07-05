@@ -40,10 +40,10 @@ jobs:
       run: ./downloads/innosetup-6.0.3.exe /verysilent /norestart /currentuser
       
     - name: nuget restore
-      run: nuget restore $Env:GITHUB_WORKSPACE\TaskManagement\TaskManagement.sln
+      run: nuget restore $Env:GITHUB_WORKSPACE\ProjectsTM\ProjectsTM.sln
       
     - name: MSBuild
-      run: msbuild $Env:GITHUB_WORKSPACE\TaskManagement\TaskManagement.sln /property:Configuration=Release
+      run: msbuild $Env:GITHUB_WORKSPACE\ProjectsTM\ProjectsTM.sln /property:Configuration=Release
     
     - name: VSTest
       run: VSTest.Console.exe UnitTestProject1\bin\Release\*Test*.dll
@@ -56,7 +56,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
           name: artifacts
-          path: TaskManagement\bin\Release\*
+          path: ProjectsTM\bin\Release\*
 
     - name: Upload a Installer Artifact
       uses: actions/upload-artifact@v2
