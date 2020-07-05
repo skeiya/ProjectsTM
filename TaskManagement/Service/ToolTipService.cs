@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using TaskManagement.Model;
+using TaskManagement.ViewModel;
 
 namespace TaskManagement.Service
 {
@@ -8,33 +10,72 @@ namespace TaskManagement.Service
     {
         private ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
+        private readonly ViewData _viewData;
         private readonly Control _parentControl;
 
-        public ToolTipService(Control c)
+        public ToolTipService(Control c, ViewData viewData)
         {
-            _toolTip.ShowAlways = true;
+            this._toolTip.ShowAlways = true;
             this._parentControl = c;
+            this._viewData = viewData;
+        }
+
+        private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
+        {
+            foreach (var w in _viewData.GetFilteredWorkItems())
+            {
+                if (w.Name != hoveringWorkItem.Name) continue;
+                if (w.Equals(hoveringWorkItem)) continue;
+                if (string.IsNullOrEmpty(w.Description)) continue;
+
+                return w.Description +
+                    Environment.NewLine +
+                    "※同名作業項目のメモ※";
+            }
+            return null;
+        }
+
+        private string CreateDescriptionContent(WorkItem hoveringWorkItem)
+        {
+            if (!string.IsNullOrEmpty(hoveringWorkItem.Description)) return hoveringWorkItem.Description;
+            return GetDescrptionFromOtherWorkItem(hoveringWorkItem);
+        }
+
+        private void SetDescriptionContent(StringBuilder allStrForTooltip, string strDescription)
+        {
+            if (strDescription == null) return;
+            allStrForTooltip.AppendLine();
+            allStrForTooltip.AppendLine("---作業項目メモ---");
+            allStrForTooltip.AppendLine(strDescription);
+        }
+
+        private void AddDescription(StringBuilder allStringForTooltip, WorkItem hoveringWorkItem)
+        {
+            string result = CreateDescriptionContent(hoveringWorkItem);
+            SetDescriptionContent(allStringForTooltip, result);
+        }
+
+        private string CreateStrForTooltip(WorkItem wi, int days)
+        {
+            StringBuilder s = new StringBuilder();
+            s.Append("名前:"); s.AppendLine(wi.Name);
+            s.Append("物件:"); s.AppendLine(wi.Project.ToString());
+            s.Append("担当:"); s.AppendLine(wi.AssignedMember.ToString());
+            s.Append("タグ:"); s.AppendLine(wi.Tags.ToString());
+            s.Append("状態:"); s.AppendLine(wi.State.ToString());
+            s.AppendLine();
+            s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
+            s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
+            if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
+            AddDescription(s, wi);
+
+            return s.ToString();
         }
 
         public void Update(WorkItem wi, int days)
         {
             if (wi == null) { this.Hide(); return; }
-            string s =
-                "名前:" + wi.Name + Environment.NewLine
-                + "物件:" + wi.Project.ToString() + Environment.NewLine
-                + "担当:" + wi.AssignedMember.ToString() + Environment.NewLine
-                + "タグ:" + wi.Tags.ToString() + Environment.NewLine
-                + "状態:" + wi.State.ToString() + Environment.NewLine + Environment.NewLine
-                + "開始:" + wi.Period.From.ToString() + Environment.NewLine
-                + "終了:" + wi.Period.To.ToString() + Environment.NewLine;
-            if(days > 0) s += "人日:" + days.ToString() + Environment.NewLine;
-
-            if (!string.IsNullOrEmpty(wi.Description))
-            {
-                s += Environment.NewLine
-                    + "---作業項目メモ---" + Environment.NewLine
-                    + wi.Description + Environment.NewLine;
-            }
+            string s = CreateStrForTooltip(wi, days);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
