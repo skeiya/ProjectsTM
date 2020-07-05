@@ -10,10 +10,6 @@ jobs:
 
   build:
 
-#    strategy:
-#      matrix:
-#        configuration: [Debug, Release]
-
     runs-on: windows-latest  # For a list of available runner types, refer to 
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
@@ -35,6 +31,22 @@ jobs:
     - name: Setup VSTest.console.exe
       uses: darenm/Setup-VSTest@v1
     
+    - name: Setup inno
+      uses: Amadevus/pwsh-script@v1.0.0
+      with:
+        # PowerShell script to execute in Actions-hydrated context
+        script: (new-object net.webclient).DownloadFile('http://www.jrsoftware.org/download.php/is.exe#innosetup-6.0.3.exe', "$Env:APPVEYOR_BUILD_FOLDER/innosetup-6.0.3.exe") & $Env:APPVEYOR_BUILD_FOLDER/innosetup-6.0.3.exe /verysilent /norestart /currentuser 
+        # 'github' workflow context
+        #github: # optional, default is ${{ toJson(github) }}
+        # 'job' workflow context
+        #job: # optional, default is ${{ toJson(job) }}
+        # 'runner' workflow context
+        #runner: # optional, default is ${{ toJson(runner) }}
+        # 'strategy' workflow context
+        #strategy: # optional, default is ${{ toJson(strategy) }}
+        # 'matrix' workflow context
+        #matrix: # optional, default is ${{ toJson(matrix) }}
+      
     - name: nuget restore
       run: nuget restore $Env:GITHUB_WORKSPACE\TaskManagement\TaskManagement.sln
       
