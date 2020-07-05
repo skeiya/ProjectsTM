@@ -6,8 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using TaskManagement.Logic;
-using TaskManagement.Model;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
 
 namespace UnitTestProject1
 {
