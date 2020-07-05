@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using ProjectsTM.Model;
 
 namespace ProjectsTM.UI
@@ -10,13 +11,15 @@ namespace ProjectsTM.UI
     {
         private readonly WorkItem _wi;
         private readonly Callender _callender;
+        private readonly IEnumerable<Member> _members;
 
-        public EditWorkItemForm(WorkItem wi, Callender callender)
+        public EditWorkItemForm(WorkItem wi, Callender callender, IEnumerable<Member> members)
         {
             InitializeComponent();
             if (wi == null) wi = new WorkItem();
             this._wi = wi;
             this._callender = callender;
+            this._members = members;
             textBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
             textBoxProject.Text = wi.Project == null ? string.Empty : wi.Project.ToString();
             textBoxMember.Text = wi.AssignedMember == null ? string.Empty : wi.AssignedMember.ToSerializeString();
@@ -58,11 +61,21 @@ namespace ProjectsTM.UI
             Close();
         }
 
-        bool CheckEdit()
+        private bool ValidateAssignedMember()
         {
-            return CreateWorkItem(_callender) != null;
+            return _members.Contains(Member.Parse(textBoxMember.Text));
         }
 
+        bool CheckEdit()
+        {
+            if(!ValidateAssignedMember())
+            {
+                MessageBox.Show("担当者が存在しません。", "不正な入力", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            return CreateWorkItem(_callender) != null;
+        }
+ 
         private WorkItem CreateWorkItem(Callender callender)
         {
             var p = GetProject();
