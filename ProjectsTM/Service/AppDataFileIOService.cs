@@ -13,13 +13,13 @@ namespace ProjectsTM.Service
         public event EventHandler FileSaved;
         public delegate void Search_Click(object sender, EventArgs e);
         private DateTime _last;
-        private static Search_Click _Search_Click;
+        private static Search_Click _search_Click;
 
-        public AppDataFileIOService(Search_Click Search_Click)
+        public AppDataFileIOService(Search_Click search_Click)
         {
             _watcher = new FileSystemWatcher();
             _watcher.Changed += _watcher_Changed;
-            _Search_Click = Search_Click;
+            _search_Click = search_Click;
         }
 
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
@@ -93,7 +93,7 @@ namespace ProjectsTM.Service
                 if (MessageBox.Show(
                     "期間重複チェックボックスをONすると、" + Environment.NewLine + 
                     "重複している項目を検索できます。検索しますか？",
-                    "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) _Search_Click(null, null);
+                    "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) _search_Click(null, null);
                 return false;
             }
             return true;
