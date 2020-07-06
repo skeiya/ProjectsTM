@@ -144,7 +144,7 @@ namespace ProjectsTM.UI
             var newSelect = new WorkItems();
             foreach (var w in _viewData.GetFilteredWorkItems())
             {
-                if (_list.Any(i => i.Equals(w))) newSelect.Add(w);
+                if (_list.Any(i => i.Item1.Equals(w))) newSelect.Add(w);
             }
             _viewData.Selected = newSelect;
         }
