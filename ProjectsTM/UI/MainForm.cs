@@ -18,7 +18,7 @@ namespace ProjectsTM.UI
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm SearchForm { get; set; }
         private PrintService PrintService { get; set; }
-        private AppDataFileIOService FileIOService { get; } = new AppDataFileIOService();
+        private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
         private ContextMenuService _contextMenuService;
@@ -31,6 +31,7 @@ namespace ProjectsTM.UI
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
+            FileIOService = new AppDataFileIOService(this.ToolStripMenuItemSearch_Click);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
