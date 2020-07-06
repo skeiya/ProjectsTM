@@ -102,6 +102,7 @@ namespace ProjectsTM.Service
 
         internal AppData ReOpen()
         {
+            if (!File.Exists(_previousFileName)) return null;
             return OpenFile(_previousFileName);
         }
 
