@@ -29,9 +29,9 @@ namespace ProjectsTM.UI
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
+            FileIOService = new AppDataFileIOService(this.ToolStripMenuItemSearch_Click);
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
-            FileIOService = new AppDataFileIOService(this.ToolStripMenuItemSearch_Click);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
