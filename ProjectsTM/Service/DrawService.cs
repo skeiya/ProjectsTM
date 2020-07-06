@@ -83,6 +83,14 @@ namespace ProjectsTM.Service
             }
         }
 
+        private bool SelectedIsSame(WorkItem wi)
+        {
+            if (_viewData.Selected == null) return false;
+            if (_viewData.Selected.Count() != 1) return false;
+            if (_viewData.Selected.Unique.Equals(wi)) return false;
+            return _viewData.Selected.Unique.Name == wi.Name;
+        }
+
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
         {
             var range = _grid.VisibleRowColRange;
@@ -231,6 +239,19 @@ namespace ProjectsTM.Service
             }
         }
 
+        private void DrawSameNameWorkItem(Graphics g, Font font)
+        {
+            var range = _grid.VisibleRowColRange;
+            var members = _viewData.GetFilteredMembers();
+            foreach (var c in range.Cols)
+            {
+                var m = _grid.Col2Member(c);
+                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
+                {
+                    if (SelectedIsSame(wi)) DrawWorkItem(wi, Pens.LightGreen, font, g, members, true);
+                }
+            }
+        }
         private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
             if (_viewData.Selected == null) return;
@@ -238,6 +259,8 @@ namespace ProjectsTM.Service
             {
                 DrawWorkItem(w, Pens.LightGreen, font, g, _viewData.GetFilteredMembers(), true);
             }
+
+            DrawSameNameWorkItem(g, font);
 
             if (!_isDragActive())
             {
