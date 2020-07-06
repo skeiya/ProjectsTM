@@ -11,12 +11,15 @@ namespace ProjectsTM.Service
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
+        public delegate void Search_Click(object sender, EventArgs e);
         private DateTime _last;
+        private static Search_Click _Search_Click;
 
-        public AppDataFileIOService()
+        public AppDataFileIOService(Search_Click Search_Click)
         {
             _watcher = new FileSystemWatcher();
             _watcher.Changed += _watcher_Changed;
+            _Search_Click = Search_Click;
         }
 
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
@@ -85,7 +88,14 @@ namespace ProjectsTM.Service
         private static bool CheckOverwrap(AppData appData)
         {
             if (OverwrapedWorkItemsGetter.Get(appData.WorkItems).Count == 0) return true;
-            if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes) return false;
+            if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+            {
+                if (MessageBox.Show(
+                    "期間重複チェックボックスをONすると、" + Environment.NewLine + 
+                    "重複している項目を検索できます。検索しますか？",
+                    "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) _Search_Click(null, null);
+                return false;
+            }
             return true;
         }
 
