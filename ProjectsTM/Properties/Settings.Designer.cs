@@ -12,7 +12,7 @@ namespace ProjectsTM.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,6 +20,102 @@ namespace ProjectsTM.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("727, 230")]
+        public global::System.Drawing.Size SearchWorkitemFormUserSize {
+            get {
+                return ((global::System.Drawing.Size)(this["SearchWorkitemFormUserSize"]));
+            }
+            set {
+                this["SearchWorkitemFormUserSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("705, 165")]
+        public global::System.Drawing.Size dataGridView1UserSize {
+            get {
+                return ((global::System.Drawing.Size)(this["dataGridView1UserSize"]));
+            }
+            set {
+                this["dataGridView1UserSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("670, 6")]
+        public global::System.Drawing.Point buttonSearchUserLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["buttonSearchUserLocation"]));
+            }
+            set {
+                this["buttonSearchUserLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("344, 19")]
+        public global::System.Drawing.Size textBoxPatternUserSize {
+            get {
+                return ((global::System.Drawing.Size)(this["textBoxPatternUserSize"]));
+            }
+            set {
+                this["textBoxPatternUserSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("358, 6")]
+        public global::System.Drawing.Point buttonEasyRegexUserLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["buttonEasyRegexUserLocation"]));
+            }
+            set {
+                this["buttonEasyRegexUserLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("439, 11")]
+        public global::System.Drawing.Point checkBoxCaseDistinctUserLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["checkBoxCaseDistinctUserLocation"]));
+            }
+            set {
+                this["checkBoxCaseDistinctUserLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("515, 10")]
+        public global::System.Drawing.Point checkBoxOverwrapPeriodUserLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["checkBoxOverwrapPeriodUserLocation"]));
+            }
+            set {
+                this["checkBoxOverwrapPeriodUserLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("591, 10")]
+        public global::System.Drawing.Point checkBoxIncludeMilestoneUserLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["checkBoxIncludeMilestoneUserLocation"]));
+            }
+            set {
+                this["checkBoxIncludeMilestoneUserLocation"] = value;
             }
         }
     }

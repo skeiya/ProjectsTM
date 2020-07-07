@@ -1,7 +1,30 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ProjectsTM.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SearchWorkitemFormUserSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">727, 230</Value>
+    </Setting>
+    <Setting Name="dataGridView1UserSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">705, 165</Value>
+    </Setting>
+    <Setting Name="buttonSearchUserLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">670, 6</Value>
+    </Setting>
+    <Setting Name="textBoxPatternUserSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">344, 19</Value>
+    </Setting>
+    <Setting Name="buttonEasyRegexUserLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">358, 6</Value>
+    </Setting>
+    <Setting Name="checkBoxCaseDistinctUserLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">439, 11</Value>
+    </Setting>
+    <Setting Name="checkBoxOverwrapPeriodUserLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">515, 10</Value>
+    </Setting>
+    <Setting Name="checkBoxIncludeMilestoneUserLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">591, 10</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
