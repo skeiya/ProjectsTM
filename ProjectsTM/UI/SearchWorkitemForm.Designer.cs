@@ -188,6 +188,7 @@
             this.DataBindings.Add(new System.Windows.Forms.Binding("ClientSize", global::ProjectsTM.Properties.Settings.Default, "SearchWorkitemFormUserSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.MinimumSize = new System.Drawing.Size(743, 269);
             this.Name = "SearchWorkitemForm";
             this.Text = "検索";
             this.Load += new System.EventHandler(this.SearchWorkitemForm_Load);
