@@ -13,13 +13,11 @@ namespace ProjectsTM.Service
         public event EventHandler FileSaved;
         public delegate void Search_Click(object sender, EventArgs e);
         private DateTime _last;
-        private static Search_Click _search_Click;
 
-        public AppDataFileIOService(Search_Click search_Click)
+        public AppDataFileIOService()
         {
             _watcher = new FileSystemWatcher();
             _watcher.Changed += _watcher_Changed;
-            _search_Click = search_Click;
         }
 
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
