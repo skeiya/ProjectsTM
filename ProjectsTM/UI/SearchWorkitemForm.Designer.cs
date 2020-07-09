@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBoxPattern = new System.Windows.Forms.TextBox();
             this.checkBoxOverwrapPeriod = new System.Windows.Forms.CheckBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,21 +37,12 @@
             this.buttonEasyRegex = new System.Windows.Forms.Button();
             this.checkBoxCaseDistinct = new System.Windows.Forms.CheckBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxIncludeMilestone = new System.Windows.Forms.CheckBox();
+            this.comboBoxPattern = new System.Windows.Forms.ComboBox();
+            this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // textBoxPattern
-            // 
-            this.textBoxPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPattern.Location = new System.Drawing.Point(10, 8);
-            this.textBoxPattern.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textBoxPattern.Name = "textBoxPattern";
-            this.textBoxPattern.Size = new System.Drawing.Size(344, 19);
-            this.textBoxPattern.TabIndex = 0;
             // 
             // checkBoxOverwrapPeriod
             // 
@@ -146,10 +136,6 @@
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
-            // searchWorkitemFormBindingSource
-            // 
-            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.SearchWorkitemForm);
-            // 
             // checkBoxIncludeMilestone
             // 
             this.checkBoxIncludeMilestone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -162,12 +148,26 @@
             this.checkBoxIncludeMilestone.UseVisualStyleBackColor = true;
             this.checkBoxIncludeMilestone.CheckedChanged += new System.EventHandler(this.checkBoxIncludeMilestone_CheckedChanged);
             // 
+            // comboBoxPattern
+            // 
+            this.comboBoxPattern.FormattingEnabled = true;
+            this.comboBoxPattern.Location = new System.Drawing.Point(10, 8);
+            this.comboBoxPattern.Name = "comboBoxPattern";
+            this.comboBoxPattern.Size = new System.Drawing.Size(342, 20);
+            this.comboBoxPattern.TabIndex = 10;
+            this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
+            // 
+            // searchWorkitemFormBindingSource
+            // 
+            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.SearchWorkitemForm);
+            // 
             // SearchWorkitemForm
             // 
             this.AcceptButton = this.buttonSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(727, 230);
+            this.Controls.Add(this.comboBoxPattern);
             this.Controls.Add(this.checkBoxIncludeMilestone);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.checkBoxCaseDistinct);
@@ -177,7 +177,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.checkBoxOverwrapPeriod);
-            this.Controls.Add(this.textBoxPattern);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "SearchWorkitemForm";
@@ -191,7 +190,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox textBoxPattern;
         private System.Windows.Forms.CheckBox checkBoxOverwrapPeriod;
         private System.Windows.Forms.BindingSource searchWorkitemFormBindingSource;
         private System.Windows.Forms.Button buttonSearch;
@@ -202,5 +200,6 @@
         private System.Windows.Forms.CheckBox checkBoxCaseDistinct;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.CheckBox checkBoxIncludeMilestone;
+        private System.Windows.Forms.ComboBox comboBoxPattern;
     }
 }
