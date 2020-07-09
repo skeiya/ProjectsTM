@@ -11,7 +11,6 @@ namespace ProjectsTM.Service
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
-        public delegate void Search_Click(object sender, EventArgs e);
         private DateTime _last;
 
         public AppDataFileIOService()
