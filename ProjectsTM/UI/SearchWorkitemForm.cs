@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.ComponentModel;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
@@ -101,7 +102,13 @@ namespace ProjectsTM.UI
                 AddMilestones();
             }
             catch { }
+            // ↓TODO:matsukage 暫定対策
+            ResortDataGridView resorter = new ResortDataGridView(dataGridView1);
+            // ↑TODO:matsukage 暫定対策
             UpdateDataGridView();
+            // ↓TODO:matsukage 暫定対策
+            resorter.Resort();
+            // ↑TODO:matsukage 暫定対策
         }
 
         private void AddMilestones()
@@ -139,10 +146,47 @@ namespace ProjectsTM.UI
             return checkBoxOverwrapPeriod.Checked;
         }
 
+        // ↓TODO:matsukage 暫定対策
+        private class ResortDataGridView
+        {
+            private DataGridView _dataGridView;
+            private DataGridViewColumn _sortedColumn;
+            private SortOrder _sortOrder;         
+
+            public ResortDataGridView(DataGridView dataGridView)
+            {
+                _dataGridView = dataGridView;
+                _sortedColumn = dataGridView.SortedColumn;
+                _sortOrder = dataGridView.SortOrder;
+            }
+
+            internal void Resort()
+            {
+                switch(_sortOrder)
+                {
+                    case SortOrder.Ascending:
+                        _dataGridView.Sort(_sortedColumn, ListSortDirection.Ascending);
+                        return;
+                    case SortOrder.Descending:
+                        _dataGridView.Sort(_sortedColumn, ListSortDirection.Descending);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        // ↑TODO:matsukage 暫定対策
+
         private void UpdateDataGridView()
         {
+            // ↓TODO:matsukage 暫定対策
+            ResortDataGridView resorter = new ResortDataGridView(dataGridView1);
+            // ↑TODO:matsukage 暫定対策
             dataGridView1.Rows.Clear();
             SetGridViewRows();
+            // ↓TODO:matsukage 暫定対策
+            resorter.Resort();
+            // ↑TODO:matsukage 暫定対策
             var dayCount = _list.Sum(item => _viewData.Original.Callender.GetPeriodDayCount(item.Item1.Period));
             var monthCount = dayCount / 20;
             labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
