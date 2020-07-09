@@ -268,6 +268,10 @@ namespace ProjectsTM.UI
             {
                 SearchForm.Visible = false;
             }
+            if (checkOverWrap)
+            {
+                SearchForm.Visible = false;
+            }
             if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
 
         }
