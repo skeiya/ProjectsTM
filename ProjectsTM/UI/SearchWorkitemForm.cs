@@ -97,7 +97,9 @@ namespace ProjectsTM.UI
             ResortDataGridView resorter = new ResortDataGridView(dataGridView1);
             // ↑TODO;matsukage 暫定対策
             UpdateDataGridView();
+            // ↓TODO;matsukage 暫定対策
             resorter.Resort();
+            // ↑TODO;matsukage 暫定対策
         }
 
         private void AddMilestones()
