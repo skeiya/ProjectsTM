@@ -41,7 +41,7 @@ namespace ProjectsTM.Service
             return GetDescrptionFromOtherWorkItem(hoveringWorkItem);
         }
 
-        private void SetDescriptionContent(StringBuilder allStrForTooltip, string strDescription)
+        private static void SetDescriptionContent(StringBuilder allStrForTooltip, string strDescription)
         {
             if (strDescription == null) return;
             allStrForTooltip.AppendLine();

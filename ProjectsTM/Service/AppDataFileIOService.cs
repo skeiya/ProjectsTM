@@ -42,13 +42,13 @@ namespace ProjectsTM.Service
         private string _previousFileName;
         public string FilePath => _previousFileName;
 
-        internal bool Save(AppData appData)
+        internal bool Save(AppData appData, Action showOverwrapCheck)
         {
             if (string.IsNullOrEmpty(_previousFileName))
             {
-                return SaveOtherName(appData);
+                return SaveOtherName(appData, showOverwrapCheck);
             }
-            if (!CheckOverwrap(appData)) return false;
+            if (!CheckOverwrap(appData, showOverwrapCheck)) return false;
             _watcher.EnableRaisingEvents = false;
             try
             {
@@ -62,9 +62,9 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        internal bool SaveOtherName(AppData appData)
+        internal bool SaveOtherName(AppData appData, Action showOverwrapCheck)
         {
-            if (!CheckOverwrap(appData)) return false;
+            if (!CheckOverwrap(appData, showOverwrapCheck)) return false;
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return false;
@@ -85,18 +85,12 @@ namespace ProjectsTM.Service
             }
         }
 
-        private static bool CheckOverwrap(AppData appData)
+        private static bool CheckOverwrap(AppData appData, Action showOverwrapCheck)
         {
             if (OverwrapedWorkItemsGetter.Get(appData.WorkItems).Count == 0) return true;
-            if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
-            {
-                if (MessageBox.Show(
-                    "期間重複チェックボックスをONすると、" + Environment.NewLine + 
-                    "重複している項目を検索できます。検索しますか？",
-                    "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) _search_Click(null, null);
-                return false;
-            }
-            return true;
+            if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
+            showOverwrapCheck();
+            return false;
         }
 
         internal AppData Open()

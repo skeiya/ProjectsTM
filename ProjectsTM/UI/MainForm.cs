@@ -112,7 +112,7 @@ namespace ProjectsTM.UI
         {
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original)) e.Cancel = true;
+            if (!FileIOService.Save(_viewData.Original, ShowOverwrapCheck)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -214,7 +214,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original);
+            FileIOService.Save(_viewData.Original, ShowOverwrapCheck);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -247,12 +247,26 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
+            ShowSearchForm(false);
+        }
 
+        private void ShowOverwrapCheck()
+        {
+            ShowSearchForm(true);
+        }
+
+        private void ShowSearchForm(bool checkOverWrap)
+        {
             if (SearchForm == null || SearchForm.IsDisposed)
             {
                 SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
             }
-            if (!SearchForm.Visible) SearchForm.Show(this);
+            if (checkOverWrap)
+            {
+                SearchForm.Visible = false;
+            }
+            if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
+
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -286,7 +300,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original);
+            FileIOService.SaveOtherName(_viewData.Original, ShowOverwrapCheck);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -344,7 +358,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemVersion_Click(object sender, EventArgs e)
         {
-            using(var dlg = new VersionForm())
+            using (var dlg = new VersionForm())
             {
                 dlg.ShowDialog(this);
             }
