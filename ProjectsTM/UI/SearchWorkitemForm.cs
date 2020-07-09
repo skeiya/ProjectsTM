@@ -243,6 +243,15 @@ namespace ProjectsTM.UI
             return false;
         }
 
+        internal void Show(MainForm parent, bool checkOverWrap)
+        {
+            Show(parent);
+            if (checkOverWrap)
+            {
+                checkBoxOverwrapPeriod.Checked = true;
+            }
+        }
+
         private int GetListIndexSelected(DataGridViewSelectedRowCollection selectedRows)
         {
             if (selectedRows.Count <= 0) return -1;
