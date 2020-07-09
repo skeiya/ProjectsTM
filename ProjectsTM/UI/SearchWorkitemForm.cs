@@ -93,13 +93,13 @@ namespace ProjectsTM.UI
                 AddMilestones();
             }
             catch { }
-            // ↓TODO;matsukage 暫定対策
+            // ↓TODO:matsukage 暫定対策
             ResortDataGridView resorter = new ResortDataGridView(dataGridView1);
-            // ↑TODO;matsukage 暫定対策
+            // ↑TODO:matsukage 暫定対策
             UpdateDataGridView();
-            // ↓TODO;matsukage 暫定対策
+            // ↓TODO:matsukage 暫定対策
             resorter.Resort();
-            // ↑TODO;matsukage 暫定対策
+            // ↑TODO:matsukage 暫定対策
         }
 
         private void AddMilestones()
@@ -137,7 +137,7 @@ namespace ProjectsTM.UI
             return checkBoxOverwrapPeriod.Checked;
         }
 
-        // ↓TODO;matsukage 暫定対策
+        // ↓TODO:matsukage 暫定対策
         private class ResortDataGridView
         {
             private DataGridView _dataGridView;
@@ -166,18 +166,18 @@ namespace ProjectsTM.UI
                 }
             }
         }
-        // ↑TODO;matsukage 暫定対策
+        // ↑TODO:matsukage 暫定対策
 
         private void UpdateDataGridView()
         {
-            // ↓TODO;matsukage 暫定対策
+            // ↓TODO:matsukage 暫定対策
             ResortDataGridView resorter = new ResortDataGridView(dataGridView1);
-            // ↑TODO;matsukage 暫定対策
+            // ↑TODO:matsukage 暫定対策
             dataGridView1.Rows.Clear();
             SetGridViewRows();
-            // ↓TODO;matsukage 暫定対策
+            // ↓TODO:matsukage 暫定対策
             resorter.Resort();
-            // ↑TODO;matsukage 暫定対策
+            // ↑TODO:matsukage 暫定対策
             var dayCount = _list.Sum(item => _viewData.Original.Callender.GetPeriodDayCount(item.Item1.Period));
             var monthCount = dayCount / 20;
             labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
