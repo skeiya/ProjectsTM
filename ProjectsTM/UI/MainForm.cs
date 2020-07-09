@@ -23,6 +23,7 @@ namespace ProjectsTM.UI
         private FilterComboBoxService _filterComboBoxService;
         private ContextMenuService _contextMenuService;
         private bool _isDirty = false;
+        private PatternHistory _patternHistory = new PatternHistory();
 
         public MainForm()
         {
@@ -98,6 +99,7 @@ namespace ProjectsTM.UI
                 _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
+                _patternHistory = setting.PatternHistory;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -122,7 +124,8 @@ namespace ProjectsTM.UI
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
-                Detail = _viewData.Detail
+                Detail = _viewData.Detail,
+                PatternHistory = _patternHistory
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }
@@ -224,7 +227,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText, _patternHistory))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
@@ -259,7 +262,11 @@ namespace ProjectsTM.UI
         {
             if (SearchForm == null || SearchForm.IsDisposed)
             {
-                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
+                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory);
+            }
+            if (checkOverWrap)
+            {
+                SearchForm.Visible = false;
             }
             if (checkOverWrap)
             {

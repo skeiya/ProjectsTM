@@ -15,14 +15,22 @@ namespace ProjectsTM.UI
     {
         private readonly ViewData _viewData;
         private readonly WorkItemEditService _editService;
+        private readonly PatternHistory _history;
         private List<Tuple<WorkItem, Color>> _list = new List<Tuple<WorkItem, Color>>();
 
-        public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService)
+        public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService, PatternHistory history)
         {
             InitializeComponent();
             this._viewData = viewData;
             this._editService = editService;
+            this._history = history;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+        }
+
+        private void UpdatePatternHistory()
+        {
+            comboBoxPattern.Items.Clear();
+            comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -55,7 +63,7 @@ namespace ProjectsTM.UI
 
         private void CheckBoxOverwrapPeriod_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
+            comboBoxPattern.Enabled = !checkBoxOverwrapPeriod.Checked;
             if (!checkBoxOverwrapPeriod.Checked)
             {
                 checkBoxIncludeMilestone.Enabled = true;
@@ -65,7 +73,7 @@ namespace ProjectsTM.UI
             checkBoxIncludeMilestone.Enabled = false;
             checkBoxCaseDistinct.Enabled = false;
 
-            textBoxPattern.Text = string.Empty;
+            comboBoxPattern.Text = string.Empty;
             UpdateList(OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems));
         }
 
@@ -77,6 +85,7 @@ namespace ProjectsTM.UI
                 return;
             }
             UpdateList(_viewData.GetFilteredWorkItems());
+            _history.Append(comboBoxPattern.Text);
         }
 
         private void UpdateList(IEnumerable<WorkItem> workItems)
@@ -86,7 +95,7 @@ namespace ProjectsTM.UI
             {
                 foreach (var wi in workItems)
                 {
-                    if (!Regex.IsMatch(wi.ToString(), textBoxPattern.Text, GetOption())) continue;
+                    if (!Regex.IsMatch(wi.ToString(), comboBoxPattern.Text, GetOption())) continue;
                     _list.Add(new Tuple<WorkItem, Color>(wi, GetColor(wi)));
                 }
                 AddMilestones();
@@ -154,7 +163,7 @@ namespace ProjectsTM.UI
             using (var dlg = new EazyRegexForm())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                textBoxPattern.Text = dlg.RegexPattern;
+                comboBoxPattern.Text = dlg.RegexPattern;
             }
         }
 
@@ -276,6 +285,12 @@ namespace ProjectsTM.UI
             if (!checkBoxIncludeMilestone.Checked) return;
             UpdateList(_viewData.GetFilteredWorkItems());
             dataGridView1.Sort(dataGridView1.Columns[(int)GridCols.To], System.ComponentModel.ListSortDirection.Ascending);
+            _history.Append(comboBoxPattern.Text);
+        }
+
+        private void comboBoxPattern_DropDown(object sender, EventArgs e)
+        {
+            UpdatePatternHistory();
         }
     }
 }
