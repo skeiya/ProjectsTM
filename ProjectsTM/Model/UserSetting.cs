@@ -10,5 +10,6 @@ namespace ProjectsTM.Model
         public int FontSize { set; get; }
         public string FilePath { get; set; }
         public Detail Detail { set; get; } = new Detail();
+        public PatternHistory PatternHistory { set; get; } = new PatternHistory();
     }
 }

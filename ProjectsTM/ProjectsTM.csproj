@@ -135,7 +135,7 @@
     <Compile Include="UI\EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PatternHistory.cs" />
+    <Compile Include="Model\PatternHistory.cs" />
     <Compile Include="UI\RowColResolver.cs" />
     <Compile Include="UI\RsExportSelectForm.cs">
       <SubType>Form</SubType>

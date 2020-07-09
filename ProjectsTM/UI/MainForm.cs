@@ -99,6 +99,7 @@ namespace ProjectsTM.UI
                 _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
+                _patternHistory = setting.PatternHistory;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -123,7 +124,8 @@ namespace ProjectsTM.UI
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
-                Detail = _viewData.Detail
+                Detail = _viewData.Detail,
+                PatternHistory = _patternHistory
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }
