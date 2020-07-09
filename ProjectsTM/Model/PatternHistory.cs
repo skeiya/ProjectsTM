@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -8,10 +9,10 @@ namespace ProjectsTM.Model
     public class PatternHistory
     {
         [XmlIgnore]
-        public string[] Items => ListCore.Reverse<string>().ToArray();
+        public ReadOnlyCollection<string> Items => ListCore.Reverse<string>().ToList().AsReadOnly();
 
         [XmlElement]
-        public List<string> ListCore { set; get; } = new List<string>();
+        public List<string> ListCore { get; } = new List<string>();
 
         private static int Depth => 20;
 

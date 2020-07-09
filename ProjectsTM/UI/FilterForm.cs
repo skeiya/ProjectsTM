@@ -290,7 +290,7 @@ namespace ProjectsTM.UI
         private void comboBoxPattern_DropDown(object sender, EventArgs e)
         {
             comboBoxPattern.Items.Clear();
-            comboBoxPattern.Items.AddRange(_history.Items);
+            comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
     }
 }

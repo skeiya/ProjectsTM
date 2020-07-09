@@ -30,7 +30,7 @@ namespace ProjectsTM.UI
         private void UpdatePatternHistory()
         {
             comboBoxPattern.Items.Clear();
-            comboBoxPattern.Items.AddRange(_history.Items);
+            comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
