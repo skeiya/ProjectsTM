@@ -62,7 +62,7 @@ namespace ProjectsTM.UI
             {
                 rest += ColWidths[idx];
             }
-            return Width - rest - 17/*スクロールバーの幅*/ - 2;
+            return Math.Max(Width - rest - 17/*スクロールバーの幅*/ - 2, 200);
         }
 
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)
@@ -70,6 +70,7 @@ namespace ProjectsTM.UI
             var range = this.VisibleRowColRange;
             foreach (var c in range.Cols)
             {
+                DrawTitleRow(e, c);
                 foreach (var r in range.Rows)
                 {
                     var res = GetRect(c, r, 1, false, false, true);
@@ -77,6 +78,21 @@ namespace ProjectsTM.UI
                     e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 }
             }
+        }
+
+        private void DrawTitleRow(DrawNormalAreaEventArgs e, ColIndex c)
+        {
+            var res = GetRect(c, new RowIndex(0), 1, true, false, true);
+            if (!res.HasValue) return;
+            e.Graphics.FillRectangle(Brushes.Gray, res.Value);
+            e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+            e.Graphics.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value.Location);
+        }
+
+        private static string GetTitle(ColIndex c)
+        {
+            string[] titles = new string[] { "1", "2", "3", "4", "5", "6", "7", "8" };
+            return titles[c.Value];
         }
     }
 }

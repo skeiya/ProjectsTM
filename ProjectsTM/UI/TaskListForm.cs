@@ -22,6 +22,7 @@ namespace ProjectsTM.UI
 
             this._viewData = viewData;
             gridControl1.ColCount = 8;
+            gridControl1.FixedRowCount = 1;
             gridControl1.RowCount = GetRowCount();
 
             gridControl1.Initialize(viewData);
