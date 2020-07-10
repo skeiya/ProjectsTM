@@ -31,8 +31,6 @@ namespace ProjectsTM.UI
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
-
         public event EventHandler<EditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;

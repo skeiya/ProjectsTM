@@ -1,7 +1,6 @@
-﻿using FreeGridControl;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ProjectsTM.UI
+namespace FreeGridControl
 {
     public class RowColRange
     {

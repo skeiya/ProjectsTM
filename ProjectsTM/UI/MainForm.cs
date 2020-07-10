@@ -370,5 +370,13 @@ namespace ProjectsTM.UI
                 dlg.ShowDialog(this);
             }
         }
+
+        private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            using(var form = new TaskListForm(_viewData))
+            {
+                form.ShowDialog();
+            }
+        }
     }
 }
