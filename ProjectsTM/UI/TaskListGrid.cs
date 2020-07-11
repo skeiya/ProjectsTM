@@ -22,19 +22,6 @@ namespace ProjectsTM.UI
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
-            this.Resize += TaskListGrid_Resize;
-        }
-
-        private void TaskListGrid_Resize(object sender, EventArgs e)
-        {
-            UpdateLastColWidth();
-        }
-
-        private void UpdateLastColWidth()
-        {
-            if (ColWidths.Count == 0) return;
-            if (ColWidths.Count < ColCount) return;
-            ColWidths[ColCount - 1] = GetLastColWidth();
         }
 
         internal void Initialize(ViewData viewData)
@@ -45,50 +32,28 @@ namespace ProjectsTM.UI
             ColCount = 9;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
-
-            var font = this.Font;
-            var g = this.CreateGraphics();
-            var colWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
-            foreach (var c in ColIndex.Range(0, ColCount - 1))
-            {
-                ColWidths[c.Value] = colWidth;
-            }
-            UpdateLastColWidth();
-            foreach (var r in RowIndex.Range(0, RowCount))
-            {
-                RowHeights[r.Value] = CalculateRowHeight(g, font, r);
-            }
+            SetHeightAndWidth();
             LockUpdate = false;
         }
 
-        private float CalculateRowHeight(Graphics g, Font font, RowIndex r)
+        private void SetHeightAndWidth()
         {
-            var height = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            if (r.Value < FixedRowCount) return height;
-
+            var font = this.Font;
+            var g = this.CreateGraphics();
+            var calculator = new HeightAndWidthCalcultor(font, g, _listItems, GetText, ColCount);
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                var tmp = g.MeasureString(GetText(_listItems[r.Value - FixedRowCount], c), font, (int)ColWidths[c.Value], StringFormat.GenericTypographic).Height;
-                height = Math.Max(height, (int)Math.Ceiling(tmp));
+                ColWidths[c.Value] = calculator.GetWidth(c);
             }
-            return height;
+            foreach (var r in RowIndex.Range(0, RowCount))
+            {
+                RowHeights[r.Value] = calculator.GetHeight(r);
+            }
         }
 
         private void UpdateListItem()
         {
             _listItems = _viewData.GetFilteredWorkItems().OrderBy(w => w.Period.To).ToList();
-        }
-
-        private float GetLastColWidth()
-        {
-            if (ColCount == 0) return 0;
-            if (ColCount == 1) return Width;
-            var rest = 0f;
-            for (var idx = 0; idx < ColCount - 1; idx++)
-            {
-                rest += ColWidths[idx];
-            }
-            return Math.Max(Width - rest - 17/*スクロールバーの幅*/ - 2, 200);
         }
 
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)

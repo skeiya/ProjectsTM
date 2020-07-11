@@ -136,6 +136,7 @@
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PatternHistory.cs" />
+    <Compile Include="UI\HeightAndWidthCalcultor.cs" />
     <Compile Include="UI\RowColResolver.cs" />
     <Compile Include="UI\RsExportSelectForm.cs">
       <SubType>Form</SubType>
