@@ -30,7 +30,7 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(e.Y);
+            var r = Y2Row(Client2Raw(e.Location).Y);
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
             {
@@ -45,7 +45,7 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(e.Y);
+            var r = Y2Row(Client2Raw(e.Location).Y);
             var item = _listItems[r.Value - FixedRowCount];
             if (r.Value < FixedRowCount) return; using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
