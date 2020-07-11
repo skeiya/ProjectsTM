@@ -16,7 +16,7 @@ namespace ProjectsTM.UI
 {
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
-        private List<WorkItem> _listItems;
+        private List<TaskListItem> _listItems;
         private ViewData _viewData;
         private WorkItemEditService _editService;
 
@@ -36,13 +36,13 @@ namespace ProjectsTM.UI
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var r = Y2Row(e.Y);
-            var wi = _listItems[r.Value - FixedRowCount];
-            if (r.Value < FixedRowCount) return; using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            var item = _listItems[r.Value - FixedRowCount];
+            if (r.Value < FixedRowCount) return; using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
                 _viewData.UpdateCallenderAndMembers(newWi);
-                _editService.Replace(wi, newWi);
+                _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
         }
@@ -100,7 +100,38 @@ namespace ProjectsTM.UI
 
         private void UpdateListItem()
         {
-            _listItems = _viewData.GetFilteredWorkItems().OrderBy(w => w.Period.To).ToList();
+            var list = new List<TaskListItem>();
+            foreach (var wi in _viewData.GetFilteredWorkItems())
+            {
+                list.Add(new TaskListItem(wi, GetColor(wi.State)));
+            }
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color));
+            }
+            _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
+        }
+
+        private WorkItem ConvertWorkItem(MileStone ms)
+        {
+            return new WorkItem(new Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
+        }
+
+        private static Color GetColor(TaskState state)
+        {
+            switch (state)
+            {
+                case TaskState.Active:
+                    return Color.White;
+                case TaskState.Background:
+                    return Color.LightGreen;
+                case TaskState.Done:
+                    return Color.LightGray;
+                case TaskState.New:
+                    return Color.LightBlue;
+                default:
+                    return Color.White;
+            }
         }
 
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)
@@ -121,8 +152,9 @@ namespace ProjectsTM.UI
             {
                 var res = GetRect(c, r, 1, false, false, true);
                 if (!res.HasValue) continue;
+                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                var text = GetText(item, c);
+                var text = GetText(item.WorkItem, c);
                 g.DrawString(text, this.Font, Brushes.Black, res.Value);
             }
         }

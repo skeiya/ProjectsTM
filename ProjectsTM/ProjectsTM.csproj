@@ -178,6 +178,7 @@
     <Compile Include="UI\TaskListGrid.Designer.cs">
       <DependentUpon>TaskListGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\TaskListItem.cs" />
     <Compile Include="UI\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
