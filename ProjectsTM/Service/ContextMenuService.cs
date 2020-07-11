@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using ProjectsTM.Model;
 using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
 
@@ -21,7 +22,7 @@ namespace ProjectsTM.Service
             workItemGrid1.ContextMenuStrip.Items.Add("削除").Click += DeleteMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("分割...").Click += DivideMenu_Click;
             workItemGrid1.ContextMenuStrip.Items.Add("今日にジャンプ").Click += JumpTodayMenu_Click;
-            workItemGrid1.ContextMenuStrip.Items.Add("→Done").Click += DoneMenu_Click;
+            workItemGrid1.ContextMenuStrip.Items.Add("→状態；Done").Click += DoneMenu_Click;
             var manageItem = new ToolStripMenuItem("管理用");
             workItemGrid1.ContextMenuStrip.Items.Add(manageItem);
             manageItem.DropDownItems.Add("2分割").Click += DivideInto2PartsMenu_Click;
@@ -29,6 +30,12 @@ namespace ProjectsTM.Service
             manageItem.DropDownItems.Add("以降を選択").Click += SelectAfterwardMenu_Click;
             manageItem.DropDownItems.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
             manageItem.DropDownItems.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
+            manageItem.DropDownItems.Add("→状態：Background").Click += BackgroundMenu_Click;
+        }
+
+        private void BackgroundMenu_Click(object sender, EventArgs e)
+        {
+            ChangeState(TaskState.Background);
         }
 
         private void EditMenu_Click(object sender, EventArgs e)
@@ -66,9 +73,14 @@ namespace ProjectsTM.Service
 
         private void DoneMenu_Click(object sender, EventArgs e)
         {
+            ChangeState(TaskState.Done);
+        }
+
+        private void ChangeState(TaskState state)
+        {
             var selected = _viewData.Selected;
             if (selected == null) return;
-            workItemGrid1.EditService.Done(selected);
+            workItemGrid1.EditService.ChangeState(selected, state);
         }
 
         private void DivideMenu_Click(object sender, EventArgs e)

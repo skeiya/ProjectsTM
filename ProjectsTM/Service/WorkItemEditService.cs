@@ -91,20 +91,20 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
-        internal void Done(WorkItems selected)
+        internal void ChangeState(WorkItems selected, TaskState state)
         {
-            var done = selected.Clone();
+            var newWis = selected.Clone();
 
-            foreach (var w in done) w.State = TaskState.Done;
+            foreach (var w in newWis) w.State = state;
 
             _viewData.UndoService.Delete(selected);
-            _viewData.UndoService.Add(done);
+            _viewData.UndoService.Add(newWis);
             _viewData.UndoService.Push();
 
             var workItems = _viewData.Original.WorkItems;
             _viewData.Selected = null;
             workItems.Remove(selected);
-            workItems.Add(done);
+            workItems.Add(newWis);
         }
 
         internal void SelectAfterward(WorkItems starts)
