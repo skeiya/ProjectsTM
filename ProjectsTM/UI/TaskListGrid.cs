@@ -76,7 +76,7 @@ namespace ProjectsTM.UI
                 if (!res.HasValue) continue;
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 var text = GetText(item, c);
-                g.DrawString(text, this.Font, Brushes.Black, res.Value.Location);
+                g.DrawString(text, this.Font, Brushes.Black, res.Value);
             }
         }
 
@@ -130,7 +130,7 @@ namespace ProjectsTM.UI
                 if (!res.HasValue) return;
                 g.FillRectangle(Brushes.Gray, res.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                g.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value.Location);
+                g.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value);
             }
         }
 
