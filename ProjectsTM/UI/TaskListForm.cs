@@ -22,6 +22,8 @@ namespace ProjectsTM.UI
 
             this._viewData = viewData;
             gridControl1.Initialize(viewData);
+            var offset = gridControl1.GridWidth - gridControl1.Width;
+            this.Width += (int)offset;
         }
 
         internal void Clear()
