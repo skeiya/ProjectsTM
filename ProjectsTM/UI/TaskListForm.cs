@@ -23,5 +23,10 @@ namespace ProjectsTM.UI
             this._viewData = viewData;
             gridControl1.Initialize(viewData);
         }
+
+        internal void Clear()
+        {
+            gridControl1.Initialize(_viewData);
+        }
     }
 }
