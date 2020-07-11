@@ -18,40 +18,64 @@ namespace ProjectsTM.UI
     {
         private List<WorkItem> _listItems;
         private ViewData _viewData;
+        private UndoService _undoService = new UndoService();
+        private WorkItemEditService _editService;
 
         public TaskListGrid()
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
-            //this._editService = editService;
         }
 
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var r = Y2Row(e.Y);
-            var wi = _listItems[r.Value-FixedRowCount];
+            var wi = _listItems[r.Value - FixedRowCount];
             if (r.Value < FixedRowCount) return; using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
                 _viewData.UpdateCallenderAndMembers(newWi);
-                //_editService.Replace(wi, newWi);
+                _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
-
         }
 
         internal void Initialize(ViewData viewData)
         {
+            this._editService = new WorkItemEditService(viewData, _undoService);
+            if (_viewData != null) DetatchEvents();
+            this._viewData = viewData;
+            AttachEvents();
+            InitializeGrid();
+        }
+
+        private void InitializeGrid()
+        {
             LockUpdate = true;
-            _viewData = viewData;
             UpdateListItem();
             ColCount = 9;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
             LockUpdate = false;
+        }
+
+        private void AttachEvents()
+        {
+            _undoService.Changed += _undoService_Changed;
+        }
+
+        private void DetatchEvents()
+        {
+            _undoService.Changed -= _undoService_Changed;
+        }
+
+        private void _undoService_Changed(object sender, EditedEventArgs e)
+        {
+            InitializeGrid();
+            this.Invalidate();
         }
 
         private void SetHeightAndWidth()
