@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ProjectsTM.ViewModel;
 using FreeGridControl;
 using ProjectsTM.Model;
+using ProjectsTM.Service;
 
 namespace ProjectsTM.UI
 {
@@ -22,6 +23,23 @@ namespace ProjectsTM.UI
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
+            this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
+            //this._editService = editService;
+        }
+
+        private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var r = Y2Row(e.Y);
+            var wi = _listItems[r.Value-FixedRowCount];
+            if (r.Value < FixedRowCount) return; using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                var newWi = dlg.GetWorkItem();
+                _viewData.UpdateCallenderAndMembers(newWi);
+                //_editService.Replace(wi, newWi);
+                _viewData.Selected = new WorkItems(newWi);
+            }
+
         }
 
         internal void Initialize(ViewData viewData)
