@@ -44,13 +44,11 @@ namespace ProjectsTM.UI
             UpdateListItem();
             ColCount = 9;
             FixedRowCount = 1;
-            RowCount = _listItems.Count() + FixedRowCount;
+            RowCount = _listItems.Count + FixedRowCount;
 
             var font = this.Font;
             var g = this.CreateGraphics();
             var colWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
-            var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            var height = (int)(memberHeight);
             foreach (var c in ColIndex.Range(0, ColCount - 1))
             {
                 ColWidths[c.Value] = colWidth;
@@ -58,9 +56,22 @@ namespace ProjectsTM.UI
             UpdateLastColWidth();
             foreach (var r in RowIndex.Range(0, RowCount))
             {
-                RowHeights[r.Value] = height;
+                RowHeights[r.Value] = CalculateRowHeight(g, font, r);
             }
             LockUpdate = false;
+        }
+
+        private float CalculateRowHeight(Graphics g, Font font, RowIndex r)
+        {
+            var height = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
+            if (r.Value < FixedRowCount) return height;
+
+            foreach (var c in ColIndex.Range(0, ColCount))
+            {
+                var tmp = g.MeasureString(GetText(_listItems[r.Value - FixedRowCount], c), font, (int)ColWidths[c.Value], StringFormat.GenericTypographic).Height;
+                height = Math.Max(height, (int)Math.Ceiling(tmp));
+            }
+            return height;
         }
 
         private void UpdateListItem()
