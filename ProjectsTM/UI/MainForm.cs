@@ -17,6 +17,7 @@ namespace ProjectsTM.UI
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm SearchForm { get; set; }
+        private TaskListForm TaskListForm { get; set; }
         private PrintService PrintService { get; set; }
         private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
@@ -177,6 +178,7 @@ namespace ProjectsTM.UI
         {
             _viewData.Selected = new WorkItems();
             SearchForm?.Clear();
+            TaskListForm?.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
@@ -273,7 +275,6 @@ namespace ProjectsTM.UI
                 SearchForm.Visible = false;
             }
             if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
-
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -369,6 +370,15 @@ namespace ProjectsTM.UI
             {
                 dlg.ShowDialog(this);
             }
+        }
+
+        private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            if (TaskListForm == null || TaskListForm.IsDisposed)
+            {
+                TaskListForm = new TaskListForm(_viewData, _patternHistory);
+            }
+            if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
     }
 }
