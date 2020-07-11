@@ -376,7 +376,7 @@ namespace ProjectsTM.UI
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI
@@ -15,6 +16,7 @@ namespace ProjectsTM.UI
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
+        private string _pattern;
         private WorkItemEditService _editService;
 
         public TaskListGrid()
@@ -55,8 +57,9 @@ namespace ProjectsTM.UI
             }
         }
 
-        internal void Initialize(ViewData viewData)
+        internal void Initialize(ViewData viewData, string pattern)
         {
+            this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
@@ -118,6 +121,7 @@ namespace ProjectsTM.UI
             var list = new List<TaskListItem>();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
+                if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
                 list.Add(new TaskListItem(wi, GetColor(wi.State), false));
             }
             foreach (var ms in _viewData.Original.MileStones)
