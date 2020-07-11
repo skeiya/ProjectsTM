@@ -134,11 +134,27 @@ namespace ProjectsTM.UI
             {
                 if (IsOverwrapError(wi))
                 {
-                    list.Add(CreateErrorItem(wi));
+                    list.Add(CreateErrorItem(wi, "期間重複"));
+                    continue;
+                }
+                if (IsNotStartedError(wi))
+                {
+                    list.Add(CreateErrorItem(wi, "未開始"));
                     continue;
                 }
             }
             return list;
+        }
+
+        private static bool IsNotStartedError(WorkItem wi)
+        {
+            if (IsStarted(wi)) return false;
+            return CallenderDay.ToDay() >= wi.Period.From;
+        }
+
+        private static bool IsStarted(WorkItem wi)
+        {
+            return wi.State != TaskState.New || wi.State == TaskState.Background;
         }
 
         private bool IsOverwrapError(WorkItem wi)
@@ -152,9 +168,9 @@ namespace ProjectsTM.UI
             return false;
         }
 
-        private static TaskListItem CreateErrorItem(WorkItem wi)
+        private static TaskListItem CreateErrorItem(WorkItem wi, string msg)
         {
-            return new TaskListItem(wi, Color.White, false, "期間重複");
+            return new TaskListItem(wi, Color.White, false, msg);
         }
 
         private List<TaskListItem> GetFilterList()

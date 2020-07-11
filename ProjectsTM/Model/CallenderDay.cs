@@ -38,6 +38,12 @@ namespace ProjectsTM.Model
             Day = day;
         }
 
+        public static CallenderDay ToDay()
+        {
+            var date = DateTime.Now;
+            return new CallenderDay(date.Year, date.Month, date.Day);
+        }
+
         public static CallenderDay Parse(string text)
         {
             try
