@@ -15,7 +15,6 @@ namespace ProjectsTM.UI
     {
         private ViewData _viewData;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
-        private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
         private DrawService _drawService;
         private KeyAndMouseHandleService _keyAndMouseHandleService;
@@ -51,7 +50,7 @@ namespace ProjectsTM.UI
              _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
-            _editService = new WorkItemEditService(_viewData, _undoService);
+            _editService = new WorkItemEditService(_viewData);
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
             _drawService = new DrawService(
@@ -158,7 +157,7 @@ namespace ProjectsTM.UI
             this.MouseUp += WorkItemGrid_MouseUp;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this.MouseWheel += WorkItemGrid_MouseWheel;
-            this._undoService.Changed += _undoService_Changed;
+            this._viewData.UndoService.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
             this.KeyDown += WorkItemGrid_KeyDown;
             this.KeyUp += WorkItemGrid_KeyUp;
@@ -174,7 +173,7 @@ namespace ProjectsTM.UI
             this.MouseUp -= WorkItemGrid_MouseDown;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this.MouseWheel -= WorkItemGrid_MouseWheel;
-            this._undoService.Changed -= _undoService_Changed;
+            this._viewData.UndoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
         }
@@ -257,7 +256,7 @@ namespace ProjectsTM.UI
                 var wi = dlg.GetWorkItem();
                 _viewData.UpdateCallenderAndMembers(wi);
                 _editService.Add(wi);
-                _undoService.Push();
+                _viewData.UndoService.Push();
             }
         }
 
@@ -382,12 +381,12 @@ namespace ProjectsTM.UI
 
         internal void Redo()
         {
-            _undoService.Redo(_viewData);
+            _viewData.UndoService.Redo(_viewData);
         }
 
         internal void Undo()
         {
-            _undoService.Undo(_viewData);
+            _viewData.UndoService.Undo(_viewData);
         }
 
         private RowIndex Day2Row(CallenderDay day)

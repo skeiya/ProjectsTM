@@ -18,7 +18,6 @@ namespace ProjectsTM.UI
     {
         private List<WorkItem> _listItems;
         private ViewData _viewData;
-        private UndoService _undoService = new UndoService();
         private WorkItemEditService _editService;
 
         public TaskListGrid()
@@ -26,6 +25,12 @@ namespace ProjectsTM.UI
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
+            this.Disposed += TaskListGrid_Disposed;
+        }
+
+        private void TaskListGrid_Disposed(object sender, EventArgs e)
+        {
+            DetatchEvents();
         }
 
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -44,7 +49,7 @@ namespace ProjectsTM.UI
 
         internal void Initialize(ViewData viewData)
         {
-            this._editService = new WorkItemEditService(viewData, _undoService);
+            this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
@@ -64,12 +69,12 @@ namespace ProjectsTM.UI
 
         private void AttachEvents()
         {
-            _undoService.Changed += _undoService_Changed;
+            _viewData.UndoService.Changed += _undoService_Changed;
         }
 
         private void DetatchEvents()
         {
-            _undoService.Changed -= _undoService_Changed;
+            _viewData.UndoService.Changed -= _undoService_Changed;
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)
