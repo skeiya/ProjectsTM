@@ -21,16 +21,7 @@ namespace ProjectsTM.UI
             InitializeComponent();
 
             this._viewData = viewData;
-            gridControl1.ColCount = 8;
-            gridControl1.FixedRowCount = 1;
-            gridControl1.RowCount = GetRowCount();
-
             gridControl1.Initialize(viewData);
-        }
-
-        private int GetRowCount()
-        {
-            return _viewData.GetFilteredWorkItems().Count() + _viewData.Original.MileStones.Count();
         }
     }
 }

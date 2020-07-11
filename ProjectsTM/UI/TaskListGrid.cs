@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProjectsTM.ViewModel;
 using FreeGridControl;
+using ProjectsTM.Model;
 
 namespace ProjectsTM.UI
 {
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
+        private List<WorkItem> _listItems;
+        private ViewData _viewData;
+
         public TaskListGrid()
         {
             InitializeComponent();
@@ -36,6 +40,12 @@ namespace ProjectsTM.UI
         internal void Initialize(ViewData viewData)
         {
             LockUpdate = true;
+            _viewData = viewData;
+            UpdateListItem();
+            ColCount = 9;
+            FixedRowCount = 1;
+            RowCount = _listItems.Count() + FixedRowCount;
+
             var font = this.Font;
             var g = this.CreateGraphics();
             var colWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
@@ -53,6 +63,11 @@ namespace ProjectsTM.UI
             LockUpdate = false;
         }
 
+        private void UpdateListItem()
+        {
+            _listItems = _viewData.GetFilteredWorkItems().OrderBy(w => w.Period.To).ToList();
+        }
+
         private float GetLastColWidth()
         {
             if (ColCount == 0) return 0;
@@ -67,31 +82,85 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)
         {
+            var g = e.Graphics;
             var range = this.VisibleRowColRange;
-            foreach (var c in range.Cols)
+            DrawTitleRow(g);
+            foreach (var r in RowIndex.Range(VisibleNormalTopRow.Value, VisibleNormalRowCount))
             {
-                DrawTitleRow(e, c);
-                foreach (var r in range.Rows)
-                {
-                    var res = GetRect(c, r, 1, false, false, true);
-                    if (!res.HasValue) continue;
-                    e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                }
+                DrawItemRow(g, r);
             }
         }
 
-        private void DrawTitleRow(DrawNormalAreaEventArgs e, ColIndex c)
+        private void DrawItemRow(Graphics g, RowIndex r)
         {
-            var res = GetRect(c, new RowIndex(0), 1, true, false, true);
-            if (!res.HasValue) return;
-            e.Graphics.FillRectangle(Brushes.Gray, res.Value);
-            e.Graphics.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-            e.Graphics.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value.Location);
+            var item = _listItems[r.Value - FixedRowCount];
+            foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+            {
+                var res = GetRect(c, r, 1, false, false, true);
+                if (!res.HasValue) continue;
+                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                var text = GetText(item, c);
+                g.DrawString(text, this.Font, Brushes.Black, res.Value.Location);
+            }
+        }
+
+        private string GetText(WorkItem item, ColIndex c)
+        {
+            var colIndex = c.Value;
+            if (colIndex == 0)
+            {
+                return item.Name;
+            }
+            else if (colIndex == 1)
+            {
+                return item.Project.ToString();
+            }
+            else if (colIndex == 2)
+            {
+                return item.AssignedMember.ToString();
+            }
+            else if (colIndex == 3)
+            {
+                return item.Tags.ToString();
+            }
+            else if (colIndex == 4)
+            {
+                return item.State.ToString();
+            }
+            else if (colIndex == 5)
+            {
+                return item.Period.From.ToString();
+            }
+            else if (colIndex == 6)
+            {
+                return item.Period.To.ToString();
+            }
+            else if (colIndex == 7)
+            {
+                return _viewData.Original.Callender.GetPeriodDayCount(item.Period).ToString();
+            }
+            else if (colIndex == 8)
+            {
+                return item.Description;
+            }
+            return string.Empty;
+        }
+
+        private void DrawTitleRow(Graphics g)
+        {
+            foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+            {
+                var res = GetRect(c, new RowIndex(0), 1, true, false, true);
+                if (!res.HasValue) return;
+                g.FillRectangle(Brushes.Gray, res.Value);
+                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                g.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value.Location);
+            }
         }
 
         private static string GetTitle(ColIndex c)
         {
-            string[] titles = new string[] { "1", "2", "3", "4", "5", "6", "7", "8" };
+            string[] titles = new string[] { "名前", "プロジェクト", "担当", "タグ", "状態", "開始", "終了", "人日", "備考" };
             return titles[c.Value];
         }
     }
