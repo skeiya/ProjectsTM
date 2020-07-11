@@ -11,13 +11,13 @@ namespace ProjectsTM.UI
     {
         private Font _font;
         private Graphics _graphics;
-        private Func<WorkItem, ColIndex, string> _getText;
+        private Func<TaskListItem, ColIndex, string> _getText;
         private int _colCount;
         private readonly List<TaskListItem> _listItems;
         private Dictionary<RowIndex, float> _heights = new Dictionary<RowIndex, float>();
         private Dictionary<ColIndex, float> _widthds = new Dictionary<ColIndex, float>();
 
-        public HeightAndWidthCalcultor(Font font, Graphics g, List<TaskListItem> listItems, Func<WorkItem, ColIndex, string> getText, int colCount)
+        public HeightAndWidthCalcultor(Font font, Graphics g, List<TaskListItem> listItems, Func<TaskListItem, ColIndex, string> getText, int colCount)
         {
             this._font = font;
             this._graphics = g;
@@ -46,7 +46,7 @@ namespace ProjectsTM.UI
             {
                 foreach (var c in ColIndex.Range(0, _colCount))
                 {
-                    var tmp = _graphics.MeasureString(_getText(_listItems[r.Value - 1].WorkItem, c), _font);
+                    var tmp = _graphics.MeasureString(_getText(_listItems[r.Value - 1], c), _font);
                     _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
                     _heights[r] = (float)Math.Ceiling(Math.Max(GetHeight(r), tmp.Height));
                 }
