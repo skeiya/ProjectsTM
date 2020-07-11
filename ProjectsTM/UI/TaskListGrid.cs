@@ -112,7 +112,7 @@ namespace ProjectsTM.UI
             _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
         }
 
-        private WorkItem ConvertWorkItem(MileStone ms)
+        private static WorkItem ConvertWorkItem(MileStone ms)
         {
             return new WorkItem(new Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
         }
@@ -156,6 +156,14 @@ namespace ProjectsTM.UI
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 var text = GetText(item.WorkItem, c);
                 g.DrawString(text, this.Font, Brushes.Black, res.Value);
+
+            }
+            if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
+            {
+                var res = GetRect(new ColIndex(0), r, 1, false, false, true);
+                if (!res.HasValue) return;
+                var rect = new Rectangle(0, (int)res.Value.Top, (int)GridWidth, (int)res.Value.Height);
+                g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
             }
         }
 
