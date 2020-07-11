@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ProjectsTM.ViewModel;
-using FreeGridControl;
+﻿using FreeGridControl;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ProjectsTM.UI
 {
@@ -25,7 +22,18 @@ namespace ProjectsTM.UI
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
+            this.MouseClick += TaskListGrid_MouseClick;
             this.Disposed += TaskListGrid_Disposed;
+        }
+
+        private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
+        {
+            var r = Y2Row(e.Y);
+            var item = _listItems[r.Value - FixedRowCount];
+            if (!item.IsMilestone)
+            {
+                _viewData.Selected = new WorkItems(item.WorkItem);
+            }
         }
 
         private void TaskListGrid_Disposed(object sender, EventArgs e)
@@ -70,11 +78,18 @@ namespace ProjectsTM.UI
         private void AttachEvents()
         {
             _viewData.UndoService.Changed += _undoService_Changed;
+            _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
         }
 
         private void DetatchEvents()
         {
             _viewData.UndoService.Changed -= _undoService_Changed;
+            _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
+        }
+
+        private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
+        {
+            this.Invalidate();
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)
@@ -103,11 +118,11 @@ namespace ProjectsTM.UI
             var list = new List<TaskListItem>();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                list.Add(new TaskListItem(wi, GetColor(wi.State)));
+                list.Add(new TaskListItem(wi, GetColor(wi.State), false));
             }
             foreach (var ms in _viewData.Original.MileStones)
             {
-                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color));
+                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color, true));
             }
             _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
         }
