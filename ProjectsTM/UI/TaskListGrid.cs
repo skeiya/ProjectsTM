@@ -142,14 +142,37 @@ namespace ProjectsTM.UI
                     list.Add(CreateErrorItem(wi, "未開始"));
                     continue;
                 }
+                if (IsTooBigError(wi))
+                {
+                    list.Add(CreateErrorItem(wi, "要分解"));
+                    continue;
+                }
             }
             return list;
+        }
+
+        private bool IsTooBigError(WorkItem wi)
+        {
+            if (wi.State == TaskState.Background) return false;
+            if (!IsStartSoon(wi)) return false;
+            return IsTooBig(wi);
+        }
+
+        private bool IsTooBig(WorkItem wi)
+        {
+            return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
+        }
+
+        private bool IsStartSoon(WorkItem wi)
+        {
+            var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
+            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 20;
         }
 
         private static bool IsNotStartedError(WorkItem wi)
         {
             if (IsStarted(wi)) return false;
-            return CallenderDay.ToDay() >= wi.Period.From;
+            return CallenderDay.Today >= wi.Period.From;
         }
 
         private static bool IsStarted(WorkItem wi)

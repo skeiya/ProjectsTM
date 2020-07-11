@@ -213,7 +213,7 @@ namespace ProjectsTM.Service
         private static MileStones GetMileStonesWithToday(ViewData viewData)
         {
             var result = viewData.Original.MileStones.Clone();
-            var today = CallenderDay.ToDay();
+            var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
                 result.Add(new MileStone("Today", today, Color.Red));
