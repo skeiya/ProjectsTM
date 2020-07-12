@@ -17,18 +17,21 @@ namespace ProjectsTM.UI
     {
         private ViewData _viewData = new ViewData(new AppData());
         private SearchWorkitemForm SearchForm { get; set; }
+        private TaskListForm TaskListForm { get; set; }
         private PrintService PrintService { get; set; }
-        private AppDataFileIOService FileIOService { get; } = new AppDataFileIOService();
+        private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
         private ContextMenuService _contextMenuService;
         private bool _isDirty = false;
+        private PatternHistory _patternHistory = new PatternHistory();
 
         public MainForm()
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font);
+            FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
@@ -97,6 +100,7 @@ namespace ProjectsTM.UI
                 _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
+                _patternHistory = setting.PatternHistory;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -111,7 +115,7 @@ namespace ProjectsTM.UI
         {
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original)) e.Cancel = true;
+            if (!FileIOService.Save(_viewData.Original, ShowOverwrapCheck)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -121,7 +125,8 @@ namespace ProjectsTM.UI
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
-                Detail = _viewData.Detail
+                Detail = _viewData.Detail,
+                PatternHistory = _patternHistory
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }
@@ -173,6 +178,7 @@ namespace ProjectsTM.UI
         {
             _viewData.Selected = new WorkItems();
             SearchForm?.Clear();
+            TaskListForm?.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
@@ -213,7 +219,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original);
+            FileIOService.Save(_viewData.Original, ShowOverwrapCheck);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -223,7 +229,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter == null ? new Filter() : _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText, _patternHistory))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
@@ -246,12 +252,29 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
+            ShowSearchForm(false);
+        }
 
+        private void ShowOverwrapCheck()
+        {
+            ShowSearchForm(true);
+        }
+
+        private void ShowSearchForm(bool checkOverWrap)
+        {
             if (SearchForm == null || SearchForm.IsDisposed)
             {
-                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService);
+                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory);
             }
-            if (!SearchForm.Visible) SearchForm.Show(this);
+            if (checkOverWrap)
+            {
+                SearchForm.Visible = false;
+            }
+            if (checkOverWrap)
+            {
+                SearchForm.Visible = false;
+            }
+            if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -285,7 +308,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original);
+            FileIOService.SaveOtherName(_viewData.Original, ShowOverwrapCheck);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -343,10 +366,19 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemVersion_Click(object sender, EventArgs e)
         {
-            using(var dlg = new VersionForm())
+            using (var dlg = new VersionForm())
             {
                 dlg.ShowDialog(this);
             }
+        }
+
+        private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            if (TaskListForm == null || TaskListForm.IsDisposed)
+            {
+                TaskListForm = new TaskListForm(_viewData, _patternHistory);
+            }
+            if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
     }
 }

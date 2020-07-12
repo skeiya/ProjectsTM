@@ -96,6 +96,7 @@
     <Compile Include="Model\CallenderDay.cs" />
     <Compile Include="Model\ColorCondition.cs" />
     <Compile Include="Service\WorkItemEditService.cs" />
+    <Compile Include="UI\PenCache.cs" />
     <Compile Include="UI\BrushCache.cs" />
     <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
@@ -135,6 +136,8 @@
     <Compile Include="UI\EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\PatternHistory.cs" />
+    <Compile Include="UI\HeightAndWidthCalcultor.cs" />
     <Compile Include="UI\RowColResolver.cs" />
     <Compile Include="UI\RsExportSelectForm.cs">
       <SubType>Form</SubType>
@@ -163,8 +166,20 @@
       <DependentUpon>ProjectSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\RedrawLock.cs" />
-    <Compile Include="UI\RowColRange.cs" />
     <Compile Include="Service\ToolTipService.cs" />
+    <Compile Include="UI\TaskListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TaskListForm.Designer.cs">
+      <DependentUpon>TaskListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TaskListGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TaskListGrid.Designer.cs">
+      <DependentUpon>TaskListGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TaskListItem.cs" />
     <Compile Include="UI\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TaskListForm.resx">
+      <DependentUpon>TaskListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\VersionForm.resx">
       <DependentUpon>VersionForm.cs</DependentUpon>

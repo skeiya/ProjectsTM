@@ -36,7 +36,6 @@
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxWorkItem = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.buttonClearWorkItem = new System.Windows.Forms.Button();
             this.buttonClearPeriod = new System.Windows.Forms.Button();
@@ -50,6 +49,7 @@
             this.buttonGenerateFromWorkItems = new System.Windows.Forms.Button();
             this.buttonFromTodayToSpecialDay = new System.Windows.Forms.Button();
             this.checkBox_IsFreeTimeMemberShow = new System.Windows.Forms.CheckBox();
+            this.comboBoxPattern = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -138,16 +138,6 @@
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "作業項目";
-            // 
-            // textBoxWorkItem
-            // 
-            this.textBoxWorkItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxWorkItem.Location = new System.Drawing.Point(22, 26);
-            this.textBoxWorkItem.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxWorkItem.Name = "textBoxWorkItem";
-            this.textBoxWorkItem.Size = new System.Drawing.Size(517, 19);
-            this.textBoxWorkItem.TabIndex = 1;
             // 
             // label4
             // 
@@ -292,6 +282,17 @@
             this.checkBox_IsFreeTimeMemberShow.Text = "タスクがないメンバーを表示する";
             this.checkBox_IsFreeTimeMemberShow.UseVisualStyleBackColor = true;
             // 
+            // comboBoxPattern
+            // 
+            this.comboBoxPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxPattern.FormattingEnabled = true;
+            this.comboBoxPattern.Location = new System.Drawing.Point(22, 26);
+            this.comboBoxPattern.Name = "comboBoxPattern";
+            this.comboBoxPattern.Size = new System.Drawing.Size(517, 20);
+            this.comboBoxPattern.TabIndex = 19;
+            this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.buttonApply;
@@ -299,6 +300,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(588, 403);
+            this.Controls.Add(this.comboBoxPattern);
             this.Controls.Add(this.checkBox_IsFreeTimeMemberShow);
             this.Controls.Add(this.buttonFromTodayToSpecialDay);
             this.Controls.Add(this.buttonGenerateFromWorkItems);
@@ -316,7 +318,6 @@
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxTo);
-            this.Controls.Add(this.textBoxWorkItem);
             this.Controls.Add(this.textBoxFrom);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
@@ -341,7 +342,6 @@
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxWorkItem;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonClearWorkItem;
         private System.Windows.Forms.Button buttonClearPeriod;
@@ -355,5 +355,6 @@
         private System.Windows.Forms.Button buttonGenerateFromWorkItems;
         private System.Windows.Forms.Button buttonFromTodayToSpecialDay;
         private System.Windows.Forms.CheckBox checkBox_IsFreeTimeMemberShow;
+        private System.Windows.Forms.ComboBox comboBoxPattern;
     }
 }

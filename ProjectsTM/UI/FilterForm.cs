@@ -18,8 +18,9 @@ namespace ProjectsTM.UI
         private Callender _callender;
         private IEnumerable<WorkItem> _workItems;
         private Func<Member, string, bool> IsMemberMatchText;
+        private PatternHistory _history;
 
-        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText)
+        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText, PatternHistory patternHistory)
         {
             InitializeComponent();
             _originalMembers = members.Clone();
@@ -31,6 +32,7 @@ namespace ProjectsTM.UI
             this.IsMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
             buttonFromTodayToSpecialDay.Text += SpecialDay;
+            _history = patternHistory;
         }
 
         private void UpdateAllField()
@@ -55,7 +57,7 @@ namespace ProjectsTM.UI
 
         private void UpdateWorkItemText()
         {
-            textBoxWorkItem.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
+            comboBoxPattern.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
         }
 
         private void UpdatePeriodText()
@@ -106,8 +108,8 @@ namespace ProjectsTM.UI
 
         private string GetWorkItemFilter()
         {
-            if (string.IsNullOrEmpty(textBoxWorkItem.Text)) return null;
-            return textBoxWorkItem.Text;
+            if (string.IsNullOrEmpty(comboBoxPattern.Text)) return null;
+            return comboBoxPattern.Text;
         }
 
         private Period GetPeriodFilter()
@@ -138,7 +140,7 @@ namespace ProjectsTM.UI
 
         private void buttonClearWorkItem_Click(object sender, EventArgs e)
         {
-            textBoxWorkItem.Text = string.Empty;
+            comboBoxPattern.Text = string.Empty;
         }
 
         private void buttonClearPeriod_Click(object sender, EventArgs e)
@@ -204,7 +206,7 @@ namespace ProjectsTM.UI
             using (var dlg = new EazyRegexForm())
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                textBoxWorkItem.Text = dlg.RegexPattern;
+                comboBoxPattern.Text = dlg.RegexPattern;
             }
         }
 
@@ -283,6 +285,12 @@ namespace ProjectsTM.UI
             var now = DateTime.Now;
             textBoxFrom.Text = now.Year.ToString() + "/" + now.Month.ToString() + "/" + now.Day.ToString();
             textBoxTo.Text = SpecialDay;
+        }
+
+        private void comboBoxPattern_DropDown(object sender, EventArgs e)
+        {
+            comboBoxPattern.Items.Clear();
+            comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
     }
 }

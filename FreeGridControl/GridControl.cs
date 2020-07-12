@@ -273,6 +273,8 @@ namespace FreeGridControl
         public ColIndex VisibleNormalRightCol { get; private set; }
         public int VisibleNormalColCount { get; private set; }
 
+        public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
+
         public void Print(Graphics graphics)
         {
             DrawGrid(graphics, true);

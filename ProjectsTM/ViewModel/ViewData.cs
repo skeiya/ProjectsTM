@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ProjectsTM.Model;
+using ProjectsTM.Service;
 
 namespace ProjectsTM.ViewModel
 {
@@ -17,11 +18,13 @@ namespace ProjectsTM.ViewModel
             set
             {
                 _appData = value;
+                UndoService = new UndoService();
                 if (AppDataChanged != null) AppDataChanged(this, null);
             }
         }
 
         private AppData _appData;
+        public UndoService UndoService { get; private set; }
         private WorkItems _selected;
 
         internal void ClearCallenderAndMembers()

@@ -2,6 +2,7 @@
 {
     public enum TaskState
     {
+        New,
         Active,
         Done,
         Background,
