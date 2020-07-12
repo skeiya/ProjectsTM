@@ -1,4 +1,5 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
@@ -129,14 +130,10 @@ namespace ProjectsTM.UI
 
         private List<TaskListItem> GetAuditList()
         {
-            var list = new List<TaskListItem>();
+            var list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (IsOverwrapError(wi))
-                {
-                    list.Add(CreateErrorItem(wi, "期間重複"));
-                    continue;
-                }
+                if (list.Any(l => l.WorkItem.Equals(wi))) continue;
                 if (IsNotStartedError(wi))
                 {
                     list.Add(CreateErrorItem(wi, "未開始"));
