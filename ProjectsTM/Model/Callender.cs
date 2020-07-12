@@ -7,6 +7,14 @@ namespace ProjectsTM.Model
     public class Callender
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
+        public CallenderDay NearestFromToday
+        {
+            get
+            {
+                var today = CallenderDay.Today;
+                return Days.FirstOrDefault(d => today <= d);
+            }
+        }
 
         public void Delete(CallenderDay d)
         {
@@ -76,7 +84,7 @@ namespace ProjectsTM.Model
             {
                 return 20 < d.Day;
             }
-            if(d.Month == month)
+            if (d.Month == month)
             {
                 return d.Day < 21;
             }
