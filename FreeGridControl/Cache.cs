@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace FreeGridControl
 {
@@ -32,24 +33,32 @@ namespace FreeGridControl
 
         public float GetTop(RowIndex row) => _cacheTop.Count == 0 ? 0 : _cacheTop[row];
         public float GetLeft(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col];
-        public float GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col]+ColWidths[col.Value];
+        public float GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col] + ColWidths[col.Value];
 
         public void Update()
         {
             if (_lockUpdate) return;
-            FixedHeight = RowHeights.Sum(FixedRows);
             FixedWidth = ColWidths.Sum(FixedCols);
-            _cacheTop.Clear();
-            _cacheLeft.Clear();
-            foreach (var r in RowIndex.Range(0, RowHeights.Count + 1))
+            var virtical = Task.Run(() =>
             {
-                _cacheTop.Add(r, RowHeights.Sum(r.Value));
-            }
-            foreach (var c in ColIndex.Range(0, ColWidths.Count + 1))
+                FixedHeight = RowHeights.Sum(FixedRows);
+                _cacheTop.Clear();
+                foreach (var r in RowIndex.Range(0, RowHeights.Count + 1))
+                {
+                    _cacheTop.Add(r, RowHeights.Sum(r.Value));
+                }
+            });
+            var horizontal = Task.Run(() =>
             {
-                _cacheLeft.Add(c, ColWidths.Sum(c.Value));
-            }
-            _chacheRect.Clear();
+                _cacheLeft.Clear();
+                foreach (var c in ColIndex.Range(0, ColWidths.Count + 1))
+                {
+                    _cacheLeft.Add(c, ColWidths.Sum(c.Value));
+                }
+                _chacheRect.Clear();
+            });
+            virtical.Wait();
+            horizontal.Wait();
             foreach (var r in RowIndex.Range(0, RowHeights.Count))
             {
                 foreach (var c in ColIndex.Range(0, ColWidths.Count))
