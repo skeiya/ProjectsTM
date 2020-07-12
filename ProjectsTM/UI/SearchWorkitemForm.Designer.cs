@@ -38,8 +38,8 @@
             this.buttonEasyRegex = new System.Windows.Forms.Button();
             this.checkBoxCaseDistinct = new System.Windows.Forms.CheckBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.checkBoxIncludeMilestone = new System.Windows.Forms.CheckBox();
             this.searchWorkitemFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.checkBoxIncludeMilestone = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchWorkitemFormBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -48,19 +48,17 @@
             // 
             this.textBoxPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPattern.DataBindings.Add(new System.Windows.Forms.Binding("Size", global::ProjectsTM.Properties.Settings.Default, "textBoxPatternUserSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBoxPattern.Location = new System.Drawing.Point(10, 8);
             this.textBoxPattern.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxPattern.Name = "textBoxPattern";
-            this.textBoxPattern.Size = global::ProjectsTM.Properties.Settings.Default.textBoxPatternUserSize;
+            this.textBoxPattern.Size = new System.Drawing.Size(344, 19);
             this.textBoxPattern.TabIndex = 0;
             // 
             // checkBoxOverwrapPeriod
             // 
             this.checkBoxOverwrapPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxOverwrapPeriod.AutoSize = true;
-            this.checkBoxOverwrapPeriod.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::ProjectsTM.Properties.Settings.Default, "checkBoxOverwrapPeriodUserLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxOverwrapPeriod.Location = global::ProjectsTM.Properties.Settings.Default.checkBoxOverwrapPeriodUserLocation;
+            this.checkBoxOverwrapPeriod.Location = new System.Drawing.Point(515, 10);
             this.checkBoxOverwrapPeriod.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.checkBoxOverwrapPeriod.Name = "checkBoxOverwrapPeriod";
             this.checkBoxOverwrapPeriod.Size = new System.Drawing.Size(72, 16);
@@ -72,8 +70,7 @@
             // buttonSearch
             // 
             this.buttonSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearch.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::ProjectsTM.Properties.Settings.Default, "buttonSearchUserLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.buttonSearch.Location = global::ProjectsTM.Properties.Settings.Default.buttonSearchUserLocation;
+            this.buttonSearch.Location = new System.Drawing.Point(670, 6);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(47, 23);
             this.buttonSearch.TabIndex = 2;
@@ -114,8 +111,7 @@
             // buttonEasyRegex
             // 
             this.buttonEasyRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEasyRegex.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::ProjectsTM.Properties.Settings.Default, "buttonEasyRegexUserLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.buttonEasyRegex.Location = global::ProjectsTM.Properties.Settings.Default.buttonEasyRegexUserLocation;
+            this.buttonEasyRegex.Location = new System.Drawing.Point(358, 6);
             this.buttonEasyRegex.Name = "buttonEasyRegex";
             this.buttonEasyRegex.Size = new System.Drawing.Size(75, 23);
             this.buttonEasyRegex.TabIndex = 7;
@@ -127,8 +123,7 @@
             // 
             this.checkBoxCaseDistinct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxCaseDistinct.AutoSize = true;
-            this.checkBoxCaseDistinct.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::ProjectsTM.Properties.Settings.Default, "checkBoxCaseDistinctUserLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxCaseDistinct.Location = global::ProjectsTM.Properties.Settings.Default.checkBoxCaseDistinctUserLocation;
+            this.checkBoxCaseDistinct.Location = new System.Drawing.Point(439, 11);
             this.checkBoxCaseDistinct.Name = "checkBoxCaseDistinct";
             this.checkBoxCaseDistinct.Size = new System.Drawing.Size(72, 16);
             this.checkBoxCaseDistinct.TabIndex = 8;
@@ -141,23 +136,25 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.DataBindings.Add(new System.Windows.Forms.Binding("Size", global::ProjectsTM.Properties.Settings.Default, "dataGridView1UserSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.dataGridView1.Location = new System.Drawing.Point(10, 35);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 21;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = global::ProjectsTM.Properties.Settings.Default.dataGridView1UserSize;
+            this.dataGridView1.Size = new System.Drawing.Size(707, 170);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
+            // searchWorkitemFormBindingSource
+            // 
+            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.SearchWorkitemForm);
             // 
             // checkBoxIncludeMilestone
             // 
             this.checkBoxIncludeMilestone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxIncludeMilestone.AutoSize = true;
-            this.checkBoxIncludeMilestone.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::ProjectsTM.Properties.Settings.Default, "checkBoxIncludeMilestoneUserLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxIncludeMilestone.Location = global::ProjectsTM.Properties.Settings.Default.checkBoxIncludeMilestoneUserLocation;
+            this.checkBoxIncludeMilestone.Location = new System.Drawing.Point(591, 10);
             this.checkBoxIncludeMilestone.Name = "checkBoxIncludeMilestone";
             this.checkBoxIncludeMilestone.Size = new System.Drawing.Size(62, 16);
             this.checkBoxIncludeMilestone.TabIndex = 9;
@@ -165,16 +162,12 @@
             this.checkBoxIncludeMilestone.UseVisualStyleBackColor = true;
             this.checkBoxIncludeMilestone.CheckedChanged += new System.EventHandler(this.checkBoxIncludeMilestone_CheckedChanged);
             // 
-            // searchWorkitemFormBindingSource
-            // 
-            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.SearchWorkitemForm);
-            // 
             // SearchWorkitemForm
             // 
             this.AcceptButton = this.buttonSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = global::ProjectsTM.Properties.Settings.Default.SearchWorkitemFormUserSize;
+            this.ClientSize = new System.Drawing.Size(727, 230);
             this.Controls.Add(this.checkBoxIncludeMilestone);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.checkBoxCaseDistinct);
@@ -185,7 +178,6 @@
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.checkBoxOverwrapPeriod);
             this.Controls.Add(this.textBoxPattern);
-            this.DataBindings.Add(new System.Windows.Forms.Binding("ClientSize", global::ProjectsTM.Properties.Settings.Default, "SearchWorkitemFormUserSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.MinimumSize = new System.Drawing.Size(743, 269);

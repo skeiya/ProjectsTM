@@ -23,12 +23,6 @@ namespace ProjectsTM.UI
             this._viewData = viewData;
             this._editService = editService;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
-            this.FormClosed += SearchWorkitemForm_FormClosed;
-        }
-
-        private void SearchWorkitemForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Properties.Settings.Default.Save();
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
