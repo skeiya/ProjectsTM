@@ -67,6 +67,7 @@
     <Compile Include="Logic\OverwrapedWorkItemsGetter.cs" />
     <Compile Include="Logic\Point2Rect.cs" />
     <Compile Include="Logic\StreamFactory.cs" />
+    <Compile Include="Model\FormSize.cs" />
     <Compile Include="Model\MembersWorkItems.cs" />
     <Compile Include="Model\MileStone.cs" />
     <Compile Include="Model\MileStones.cs" />

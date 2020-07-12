@@ -18,14 +18,23 @@ namespace ProjectsTM.UI
         private readonly WorkItemEditService _editService;
         private readonly PatternHistory _history;
         private List<Tuple<WorkItem, Color>> _list = new List<Tuple<WorkItem, Color>>();
+        private FormSize _formSize;
 
-        public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService, PatternHistory history)
+        public SearchWorkitemForm(ViewData viewData, WorkItemEditService editService, PatternHistory history, FormSize formSize)
         {
             InitializeComponent();
             this._viewData = viewData;
             this._editService = editService;
             this._history = history;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            this.Height = formSize?.SearchWorkitemFormHeight > this.Height ? formSize.SearchWorkitemFormHeight : this.Height;
+            this._formSize = formSize;
+            this.FormClosed += SearchWorkitemForm_FormClosed;
+        }
+
+        private void SearchWorkitemForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _formSize.SearchWorkitemFormHeight = this.Height;
         }
 
         private void UpdatePatternHistory()

@@ -9,8 +9,9 @@ namespace ProjectsTM.UI
     {
         private readonly ViewData _viewData;
         private PatternHistory _history;
+        private FormSize _formSize;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, FormSize formSize)
         {
             InitializeComponent();
 
@@ -19,6 +20,14 @@ namespace ProjectsTM.UI
             gridControl1.Initialize(viewData, comboBoxPattern.Text, IsAudit());
             var offset = gridControl1.GridWidth - gridControl1.Width;
             this.Width += (int)offset;
+            this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
+            this._formSize = formSize;
+            this.FormClosed += TaskListForm_FormClosed;
+        }
+
+        private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _formSize.TaskListFormHeight = this.Height;
         }
 
         private bool IsAudit()
