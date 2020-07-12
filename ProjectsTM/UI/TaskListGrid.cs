@@ -177,17 +177,6 @@ namespace ProjectsTM.UI
             return wi.State != TaskState.New || wi.State == TaskState.Background;
         }
 
-        private bool IsOverwrapError(WorkItem wi)
-        {
-            foreach (var other in _viewData.GetFilteredWorkItems())
-            {
-                if (!other.AssignedMember.Equals(wi.AssignedMember)) continue;
-                if (other.Equals(wi)) continue;
-                if (other.Period.HasInterSection(wi.Period)) return true;
-            }
-            return false;
-        }
-
         private static TaskListItem CreateErrorItem(WorkItem wi, string msg)
         {
             return new TaskListItem(wi, Color.White, false, msg);
@@ -233,7 +222,6 @@ namespace ProjectsTM.UI
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)
         {
             var g = e.Graphics;
-            var range = this.VisibleRowColRange;
             DrawTitleRow(g);
             foreach (var r in RowIndex.Range(VisibleNormalTopRow.Value, VisibleNormalRowCount))
             {
