@@ -150,7 +150,6 @@ namespace ProjectsTM.UI
         private void AttachEvents()
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-            this._viewData.FontChanged += _viewData_FontChanged;
             this._viewData.FilterChanged += _viewData_FilterChanged;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
@@ -166,7 +165,6 @@ namespace ProjectsTM.UI
         private void DetatchEvents()
         {
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
-            this._viewData.FontChanged -= _viewData_FontChanged;
             this._viewData.FilterChanged -= _viewData_FilterChanged;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
@@ -340,14 +338,12 @@ namespace ProjectsTM.UI
         public void DecRatio()
         {
             _viewData.DecRatio();
-            _viewData.DecFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         public void IncRatio()
         {
             _viewData.IncRatio();
-            _viewData.IncFont();
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
