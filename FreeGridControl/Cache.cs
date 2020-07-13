@@ -38,7 +38,6 @@ namespace FreeGridControl
         public void Update()
         {
             if (_lockUpdate) return;
-            FixedWidth = ColWidths.Sum(FixedCols);
             var virtical = Task.Run(() =>
             {
                 FixedHeight = RowHeights.Sum(FixedRows);
@@ -50,15 +49,16 @@ namespace FreeGridControl
             });
             var horizontal = Task.Run(() =>
             {
+                FixedWidth = ColWidths.Sum(FixedCols);
                 _cacheLeft.Clear();
                 foreach (var c in ColIndex.Range(0, ColWidths.Count + 1))
                 {
                     _cacheLeft.Add(c, ColWidths.Sum(c.Value));
                 }
-                _chacheRect.Clear();
             });
             virtical.Wait();
             horizontal.Wait();
+            _chacheRect.Clear();
             foreach (var r in RowIndex.Range(0, RowHeights.Count))
             {
                 foreach (var c in ColIndex.Range(0, ColWidths.Count))
