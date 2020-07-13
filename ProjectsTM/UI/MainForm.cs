@@ -25,6 +25,7 @@ namespace ProjectsTM.UI
         private ContextMenuService _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
+        private FormSize _formSize = new FormSize();
 
         public MainForm()
         {
@@ -95,6 +96,7 @@ namespace ProjectsTM.UI
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
+                _formSize = setting.FormSize;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -120,7 +122,8 @@ namespace ProjectsTM.UI
                 FontSize = _viewData.FontSize,
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
-                PatternHistory = _patternHistory
+                PatternHistory = _patternHistory,
+                FormSize = _formSize 
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }
@@ -258,7 +261,7 @@ namespace ProjectsTM.UI
         {
             if (SearchForm == null || SearchForm.IsDisposed)
             {
-                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory);
+                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory, _formSize);
             }
             if (checkOverWrap)
             {
@@ -370,7 +373,7 @@ namespace ProjectsTM.UI
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
