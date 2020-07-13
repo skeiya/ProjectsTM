@@ -21,7 +21,7 @@ namespace ProjectsTM.ViewModel
         {
             if (_bitmap == null)
             {
-                _bitmap = new Bitmap(width, height);
+                _bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 _bitmapGraphics = System.Drawing.Graphics.FromImage(_bitmap);
                 _bitmapGraphics.Clear(Control.DefaultBackColor);
             }

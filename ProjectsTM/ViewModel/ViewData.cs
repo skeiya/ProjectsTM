@@ -36,7 +36,6 @@ namespace ProjectsTM.ViewModel
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
-        public event EventHandler FontChanged;
 
         public int FontSize { set; get; } = 6;
 
@@ -171,27 +170,17 @@ namespace ProjectsTM.ViewModel
             if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
-        internal void IncFont()
-        {
-            FontSize++;
-            FontChanged(this, null);
-        }
-
-        internal void DecFont()
-        {
-            if (FontSize <= 1) return;
-            FontSize--;
-            FontChanged(this, null);
-        }
-
         internal void DecRatio()
         {
             if (Detail.ViewRatio <= 0.2) return;
+            if (FontSize <= 1) return;
+            FontSize--;
             Detail.ViewRatio -= 0.1f;
         }
 
         internal void IncRatio()
         {
+            FontSize++;
             Detail.ViewRatio += 0.1f;
         }
     }

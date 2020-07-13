@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FreeGridControl
@@ -38,7 +39,6 @@ namespace FreeGridControl
         public void Update()
         {
             if (_lockUpdate) return;
-            FixedWidth = ColWidths.Sum(FixedCols);
             var virtical = Task.Run(() =>
             {
                 FixedHeight = RowHeights.Sum(FixedRows);
@@ -50,15 +50,15 @@ namespace FreeGridControl
             });
             var horizontal = Task.Run(() =>
             {
+                FixedWidth = ColWidths.Sum(FixedCols);
                 _cacheLeft.Clear();
                 foreach (var c in ColIndex.Range(0, ColWidths.Count + 1))
                 {
                     _cacheLeft.Add(c, ColWidths.Sum(c.Value));
                 }
-                _chacheRect.Clear();
             });
-            virtical.Wait();
-            horizontal.Wait();
+            while (!virtical.IsCompleted || !horizontal.IsCompleted) Thread.Sleep(0); // Waitで待つとmessage loop回って、再入発生して落ちる。
+            _chacheRect.Clear();
             foreach (var r in RowIndex.Range(0, RowHeights.Count))
             {
                 foreach (var c in ColIndex.Range(0, ColWidths.Count))
