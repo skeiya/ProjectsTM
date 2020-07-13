@@ -221,15 +221,18 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_OnDrawNormalArea(object sender, FreeGridControl.DrawNormalAreaEventArgs e)
         {
-            var g = e.Graphics;
-            DrawTitleRow(g);
-            foreach (var r in RowIndex.Range(VisibleNormalTopRow.Value, VisibleNormalRowCount))
+            using (var format = new StringFormat() { LineAlignment = StringAlignment.Center })
             {
-                DrawItemRow(g, r);
+                var g = e.Graphics;
+                DrawTitleRow(g);
+                foreach (var r in RowIndex.Range(VisibleNormalTopRow.Value, VisibleNormalRowCount))
+                {
+                    DrawItemRow(g, r, format);
+                }
             }
         }
 
-        private void DrawItemRow(Graphics g, RowIndex r)
+        private void DrawItemRow(Graphics g, RowIndex r, StringFormat format)
         {
             var item = _listItems[r.Value - FixedRowCount];
             foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
@@ -239,7 +242,9 @@ namespace ProjectsTM.UI
                 g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 var text = GetText(item, c);
-                g.DrawString(text, this.Font, Brushes.Black, res.Value);
+                var rect = res.Value;
+                rect.Y+= 1;
+                g.DrawString(text, this.Font, Brushes.Black, rect, format);
 
             }
             if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
@@ -306,7 +311,9 @@ namespace ProjectsTM.UI
                 if (!res.HasValue) return;
                 g.FillRectangle(Brushes.Gray, res.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                g.DrawString(GetTitle(c), this.Font, Brushes.Black, res.Value);
+                var rect = res.Value;
+                rect.Y += 1;
+                g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
             }
         }
 
