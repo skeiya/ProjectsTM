@@ -21,6 +21,7 @@ namespace ProjectsTM.UI
         private string _pattern;
         private WorkItemEditService _editService;
 
+
         public TaskListGrid()
         {
             InitializeComponent();
