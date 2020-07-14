@@ -12,17 +12,19 @@ namespace ProjectsTM.UI
         private Font _font;
         private Graphics _graphics;
         private Func<TaskListItem, ColIndex, string> _getText;
+        private Func<ColIndex, string> _getTitle;
         private int _colCount;
         private readonly List<TaskListItem> _listItems;
         private Dictionary<RowIndex, float> _heights = new Dictionary<RowIndex, float>();
         private Dictionary<ColIndex, float> _widthds = new Dictionary<ColIndex, float>();
 
-        public HeightAndWidthCalcultor(Font font, Graphics g, List<TaskListItem> listItems, Func<TaskListItem, ColIndex, string> getText, int colCount)
+        public HeightAndWidthCalcultor(Font font, Graphics g, List<TaskListItem> listItems, Func<TaskListItem, ColIndex, string> getText, Func<ColIndex, string> getTitle, int colCount)
         {
             this._font = font;
             this._graphics = g;
             this._listItems = listItems;
             this._getText = getText;
+            this._getTitle = getTitle;
             this._colCount = colCount;
             Caluculate();
         }
@@ -51,6 +53,10 @@ namespace ProjectsTM.UI
                         using (var bmp = new Bitmap(1, 1))
                         {
                             var g = Graphics.FromImage(bmp);
+                            {
+                                var tmp = g.MeasureString(_getTitle(c), _font);
+                                _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
+                            }
                             foreach (var r in RowIndex.Range(1, _listItems.Count))
                             {
                                 var tmp = g.MeasureString(_getText(_listItems[r.Value - 1], c), _font);
