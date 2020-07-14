@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProjectsTM.UI
@@ -43,26 +44,30 @@ namespace ProjectsTM.UI
         private void Caluculate()
         {
             _heights[new RowIndex(0)] = (float)Math.Ceiling(_graphics.MeasureString("NAM", _font).Height);
-            Parallel.ForEach(
-                ColIndex.Range(0, _colCount),
-                (c) =>
-                {
-                    using (var bmp = new Bitmap(1, 1))
+            var t = Task.Run(() =>
+            {
+                Parallel.ForEach(
+                    ColIndex.Range(0, _colCount),
+                    (c) =>
                     {
-                        var g = Graphics.FromImage(bmp);
+                        using (var bmp = new Bitmap(1, 1))
                         {
-                            var tmp = g.MeasureString(_getTitle(c), _font);
-                            _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
-                        }
-                        foreach (var r in RowIndex.Range(1, _listItems.Count))
-                        {
-                            var tmp = g.MeasureString(_getText(_listItems[r.Value - 1], c), _font);
-                            _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
-                            _heights[r] = (float)Math.Ceiling(Math.Max(GetHeight(r), tmp.Height));
+                            var g = Graphics.FromImage(bmp);
+                            {
+                                var tmp = g.MeasureString(_getTitle(c), _font);
+                                _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
+                            }
+                            foreach (var r in RowIndex.Range(1, _listItems.Count))
+                            {
+                                var tmp = g.MeasureString(_getText(_listItems[r.Value - 1], c), _font);
+                                _widthds[c] = (float)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
+                                _heights[r] = (float)Math.Ceiling(Math.Max(GetHeight(r), tmp.Height));
+                            }
                         }
                     }
-                }
-                );
+                    );
+            });
+            while (!t.IsCompleted) Thread.Sleep(0); // こうやって待たないとOnPaintが走って落ちる
         }
     }
 }
