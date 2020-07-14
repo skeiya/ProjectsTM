@@ -110,7 +110,7 @@ namespace ProjectsTM.UI
         {
             var font = this.Font;
             var g = this.CreateGraphics();
-            var calculator = new HeightAndWidthCalcultor(font, g, _listItems, GetText, ColCount);
+            var calculator = new HeightAndWidthCalcultor(font, g, _listItems, GetText, GetTitle, ColCount);
             foreach (var c in ColIndex.Range(0, ColCount))
             {
                 ColWidths[c.Value] = calculator.GetWidth(c);
