@@ -216,18 +216,37 @@ namespace ProjectsTM.Service
             var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
-                result.Add(new MileStone("Today", today, Color.Red));
+                result.Add(new MileStone("Today", today, Color.Red, null));
             }
             return result;
+        }
+
+        private bool FilterdProjectsContain(MileStone m, IEnumerable<Project> projects)
+        {
+            foreach (var project in projects)
+            {
+                if (m.Project.ToString() == project.ToString()) return true;
+            }
+            return false;
+        }
+
+        private bool FilteredMileStonesContain(MileStone m, IEnumerable<Project> projects)
+        {
+            if (m == null) return false;
+            if (m.Project == null) { m.Project = new Project("ALL"); return true; }
+            if (m.Project.ToString() == "ALL") return true;
+            if (FilterdProjectsContain(m, projects)) return true;
+            return false;
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
             var range = _grid.VisibleRowColRange;
+            var projects = _viewData.GetFilteredWorkItems().Select(w => w.Project).Distinct();
             foreach (var r in range.Rows)
             {
-                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (m == null) continue;
+                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));           
+                if (!FilteredMileStonesContain(m, projects)) continue;
                 var rect = _grid.GetRect(range.LeftCol, r, 0, false, false, true);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))

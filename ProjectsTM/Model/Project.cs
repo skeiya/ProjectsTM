@@ -6,6 +6,8 @@ namespace ProjectsTM.Model
     {
         private string _name;
 
+        public Project() { }
+
         public Project(string name)
         {
             this._name = name;

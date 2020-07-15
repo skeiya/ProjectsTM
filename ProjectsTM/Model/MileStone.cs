@@ -10,11 +10,12 @@ namespace ProjectsTM.Model
     {
         public MileStone() { }
 
-        public MileStone(string name, CallenderDay day, Color color)
+        public MileStone(string name, CallenderDay day, Color color, Project project)
         {
             Name = name;
             Day = day;
             Color = color;
+            Project = project;
         }
 
         public string Name { set; get; }
@@ -26,6 +27,13 @@ namespace ProjectsTM.Model
         {
             get { return ColorSerializer.Serialize(Color); }
             set { Color = ColorSerializer.Deserialize(value); }
+        }                
+        public Project Project { set; get; }
+        [XmlElement]
+        public string ProjectName
+        {
+            get { return Project.ToString(); }
+            set { Project = new Project(value); }
         }
 
         public int CompareTo(MileStone other)
@@ -41,7 +49,8 @@ namespace ProjectsTM.Model
                    Name == stone.Name &&
                    EqualityComparer<CallenderDay>.Default.Equals(Day, stone.Day) &&
                    EqualityComparer<Color>.Default.Equals(Color, stone.Color) &&
-                   ColorText == stone.ColorText;
+                   ColorText == stone.ColorText &&
+                   Project == stone.Project;
         }
 
         public override int GetHashCode()
@@ -51,12 +60,13 @@ namespace ProjectsTM.Model
             hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(Day);
             hashCode = hashCode * -1521134295 + Color.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorText);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Project>.Default.GetHashCode(Project);
             return hashCode;
         }
 
         internal MileStone Clone()
         {
-            return new MileStone(Name, Day, Color);
+            return new MileStone(Name, Day, Color, Project);
         }
 
         public static bool operator ==(MileStone left, MileStone right)
