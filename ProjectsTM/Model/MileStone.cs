@@ -27,7 +27,8 @@ namespace ProjectsTM.Model
         {
             get { return ColorSerializer.Serialize(Color); }
             set { Color = ColorSerializer.Deserialize(value); }
-        }                
+        }
+        [XmlIgnore]
         public Project Project { set; get; }
         [XmlElement]
         public string ProjectName
