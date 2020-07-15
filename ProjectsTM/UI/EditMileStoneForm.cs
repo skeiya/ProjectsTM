@@ -75,7 +75,7 @@ namespace ProjectsTM.UI
             return null;
         }
 
-        private Project GetProjectName()
+        private Project GetProject()
         {
             var selectedIndex = comboBox1.SelectedIndex;
             if (selectedIndex == 0) return new Project("ALL");
@@ -86,7 +86,7 @@ namespace ProjectsTM.UI
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
             if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
-            return new MileStone(textBoxName.Text, day, labelColor.BackColor, GetProjectName());
+            return new MileStone(textBoxName.Text, day, labelColor.BackColor, GetProject());
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
