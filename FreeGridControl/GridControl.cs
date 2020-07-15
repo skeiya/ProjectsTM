@@ -13,6 +13,8 @@ namespace FreeGridControl
 
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
+        public int VScrollBarWidth => this.vScrollBar.Width;
+
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
         public GridControl()
         {
