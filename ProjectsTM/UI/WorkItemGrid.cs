@@ -16,7 +16,7 @@ namespace ProjectsTM.UI
         private ViewData _viewData;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
-        private DrawService _drawService;
+        private DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
 
@@ -53,7 +53,7 @@ namespace ProjectsTM.UI
             _editService = new WorkItemEditService(_viewData);
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
-            _drawService = new DrawService(
+            _drawService.Initialize(
                 _viewData,
                 this,
                 () => _workItemDragService.IsActive(),
