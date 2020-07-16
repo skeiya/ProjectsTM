@@ -18,7 +18,7 @@ namespace ProjectsTM.ViewModel
         public Members HideMembers { get; set; }
         public Period Period { get; set; }
         public string WorkItem { get; set; }
-        public bool IsFreeTimeMemberShow { get; set; }
+        public bool IsFreeTimeMemberShow { get; set; } = true;
 
         public bool Equals(Filter other)
         {
