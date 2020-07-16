@@ -164,7 +164,7 @@ namespace ProjectsTM.UI
         private bool IsStartSoon(WorkItem wi)
         {
             var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
-            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 20;
+            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 4;
         }
 
         private static bool IsNotStartedError(WorkItem wi)
