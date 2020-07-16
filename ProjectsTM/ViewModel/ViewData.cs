@@ -63,7 +63,6 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
-            AddFreeTimeMembersToHideMembers(GetFilteredMembers());
             FilterChanged(this, null);
         }
 
@@ -77,23 +76,20 @@ namespace ProjectsTM.ViewModel
         public IEnumerable<Member> GetFilteredMembers()
         {
             var result = CreateAllMembersList();
-            return RemoveFilterSettingMembers(result);
+            result = RemoveFilterSettingMembers(result);
+            return RemoveFreeTimeMembers(result);
         }
 
-        private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members)
+        private IEnumerable<Member> RemoveFreeTimeMembers(IEnumerable<Member> members)
         {
-            if (Filter == null || Filter.IsFreeTimeMemberShow) return;
-            var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
-            foreach (var m in freeTimeMember)
-            {
-                if (!Filter.HideMembers.Contains(m)) Filter.HideMembers.Add(m);
-            }
+            if (Filter == null || Filter.IsFreeTimeMemberShow) return members;
+            return members.Where(m => GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
         }
 
-        private IEnumerable<Member> RemoveFilterSettingMembers(List<Member> members)
+        private List<Member> RemoveFilterSettingMembers(List<Member> members)
         {
             if (Filter == null || Filter.HideMembers == null) return members;
-            return members.Where(m => !Filter.HideMembers.Contains(m));
+            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
         }
 
         private List<Member> CreateAllMembersList()
