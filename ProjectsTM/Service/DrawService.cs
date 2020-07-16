@@ -20,11 +20,15 @@ namespace ProjectsTM.Service
             _redrawLock = redrawLock;
         }
 
-        private readonly Func<bool> _isDragActive;
+        private Func<bool> _isDragActive;
         private ImageBuffer _imageBuffer;
         private IWorkItemGrid _grid;
 
-        public DrawService(
+        public DrawService()
+        {
+        }
+
+        internal void Initialize(
             ViewData viewData,
             IWorkItemGrid grid,
             Func<bool> IsDragActive,
@@ -369,7 +373,7 @@ namespace ProjectsTM.Service
 
         #region IDisposable Support
         private bool disposedValue = false; // 重複する呼び出しを検出するには
-        private readonly Font _font;
+        private Font _font;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -377,7 +381,7 @@ namespace ProjectsTM.Service
             {
                 if (disposing)
                 {
-                    _imageBuffer.Dispose();
+                    _imageBuffer?.Dispose();
                 }
 
                 // TODO: アンマネージ リソース (アンマネージ オブジェクト) を解放し、下のファイナライザーをオーバーライドします。
