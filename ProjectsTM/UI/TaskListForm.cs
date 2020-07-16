@@ -70,7 +70,6 @@ namespace ProjectsTM.UI
 
         private void CheckUpdated()
         {
-            comboBoxPattern.Enabled = !radioButtonAudit.Checked;
             if (radioButtonAudit.Checked)
             {
                 Audit();

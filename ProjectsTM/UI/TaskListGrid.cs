@@ -146,7 +146,8 @@ namespace ProjectsTM.UI
                     continue;
                 }
             }
-            return list;
+            if (_pattern == null) return list;
+            return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
         }
 
         private bool IsTooBigError(WorkItem wi)
