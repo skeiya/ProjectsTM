@@ -17,12 +17,25 @@ namespace ProjectsTM.UI
 
             this._viewData = viewData;
             this._history = patternHistory;
+            gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Initialize(viewData, comboBoxPattern.Text, IsAudit());
             var offset = gridControl1.GridWidth - gridControl1.Width;
             this.Width += (int)offset + gridControl1.VScrollBarWidth;
             this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
             this._formSize = formSize;
             this.FormClosed += TaskListForm_FormClosed;
+        }
+
+        private void GridControl1_ListUpdated(object sender, System.EventArgs e)
+        {
+            UpdateLabelSum();
+        }
+
+        private void UpdateLabelSum()
+        {
+            var dayCount = gridControl1.GetDayCount();
+            var monthCount = dayCount / 20;
+            labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
         }
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)

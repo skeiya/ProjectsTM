@@ -20,7 +20,7 @@ namespace ProjectsTM.UI
         private bool _isAudit;
         private string _pattern;
         private WorkItemEditService _editService;
-
+        public event EventHandler ListUpdated;
 
         public TaskListGrid()
         {
@@ -60,6 +60,11 @@ namespace ProjectsTM.UI
                 _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
+        }
+
+        internal int GetDayCount()
+        {
+            return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
         internal void Initialize(ViewData viewData, string pattern, bool isAudit)
@@ -126,7 +131,7 @@ namespace ProjectsTM.UI
         {
             var list = _isAudit ? GetAuditList() : GetFilterList();
             _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
-
+            ListUpdated?.Invoke(this, null);
         }
 
         private List<TaskListItem> GetAuditList()
