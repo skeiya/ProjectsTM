@@ -21,6 +21,8 @@ namespace ProjectsTM.UI
         private string _pattern;
         private WorkItemEditService _editService;
         public event EventHandler ListUpdated;
+        private ColIndex _sortCol = new ColIndex(6);
+        private bool _isReverse = false;
 
         public TaskListGrid()
         {
@@ -33,13 +35,54 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(Client2Raw(e.Location).Y);
-            if (r.Value < FixedRowCount) return;
+            var rawLocation = Client2Raw(e.Location);
+            var r = Y2Row(rawLocation.Y);
+            if (r.Value < FixedRowCount)
+            {
+                HandleSortRequest(rawLocation);
+                return;
+            }
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
             {
                 _viewData.Selected = new WorkItems(item.WorkItem);
             }
+        }
+
+        private void HandleSortRequest(RawPoint rawLocation)
+        {
+            var c = X2Col(rawLocation.X);
+            if (_sortCol.Equals(c))
+            {
+                _isReverse = !_isReverse;
+            }
+            else
+            {
+                _isReverse = false;
+            }
+            _sortCol = c;
+            InitializeGrid();
+        }
+
+        private void Sort()
+        {
+            if (IsDayCountCol(_sortCol))
+            {
+                _listItems = _listItems.OrderBy(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period)).ToList();
+            }
+            else
+            {
+                _listItems = _listItems.OrderBy(l => GetText(l, _sortCol)).ToList();
+            }
+            if (_isReverse)
+            {
+                _listItems.Reverse();
+            }
+        }
+
+        private static bool IsDayCountCol(ColIndex c)
+        {
+            return c.Value == 7;
         }
 
         private void TaskListGrid_Disposed(object sender, EventArgs e)
@@ -129,8 +172,8 @@ namespace ProjectsTM.UI
 
         private void UpdateListItem()
         {
-            var list = _isAudit ? GetAuditList() : GetFilterList();
-            _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
+            _listItems = _isAudit ? GetAuditList() : GetFilterList();
+            Sort();
             ListUpdated?.Invoke(this, null);
         }
 
@@ -206,7 +249,7 @@ namespace ProjectsTM.UI
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(new Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
+            return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
         }
 
         private static Color GetColor(TaskState state)
@@ -250,7 +293,7 @@ namespace ProjectsTM.UI
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 var text = GetText(item, c);
                 var rect = res.Value;
-                rect.Y+= 1;
+                rect.Y += 1;
                 g.DrawString(text, this.Font, Brushes.Black, rect, format);
 
             }
@@ -312,15 +355,19 @@ namespace ProjectsTM.UI
 
         private void DrawTitleRow(Graphics g)
         {
-            foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+            using (var format = new StringFormat() { Alignment = StringAlignment.Far })
             {
-                var res = GetRect(c, new RowIndex(0), 1, true, false, true);
-                if (!res.HasValue) return;
-                g.FillRectangle(Brushes.Gray, res.Value);
-                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                var rect = res.Value;
-                rect.Y += 1;
-                g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
+                foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+                {
+                    var res = GetRect(c, new RowIndex(0), 1, true, false, true);
+                    if (!res.HasValue) return;
+                    g.FillRectangle(Brushes.Gray, res.Value);
+                    g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                    var rect = res.Value;
+                    rect.Y += 1;
+                    g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
+                    if(c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect, format);
+                }
             }
         }
 
