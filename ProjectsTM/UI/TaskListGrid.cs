@@ -31,6 +31,36 @@ namespace ProjectsTM.UI
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
             this.MouseClick += TaskListGrid_MouseClick;
             this.Disposed += TaskListGrid_Disposed;
+            this.KeyDown += TaskListGrid_KeyDown;
+        }
+
+        private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                MoveSelect(+1);
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                MoveSelect(-1);
+            }
+        }
+
+        private void MoveSelect(int offset)
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+            var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+            var oneStep = offset / Math.Abs(offset);
+            while (true)
+            {
+                idx += oneStep;
+                if (idx < 0 || _listItems.Count <= idx) return;
+                if (_listItems.ElementAt(idx).IsMilestone) continue;
+                offset -= oneStep;
+                if (offset != 0) continue;
+                _viewData.Selected = new WorkItems(_listItems.ElementAt(idx).WorkItem);
+            }
         }
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
@@ -366,7 +396,7 @@ namespace ProjectsTM.UI
                     var rect = res.Value;
                     rect.Y += 1;
                     g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
-                    if(c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect, format);
+                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect, format);
                 }
             }
         }
