@@ -355,20 +355,6 @@ namespace FreeGridControl
             return Y2NormalRow(y, mid, up);
         }
 
-        public bool Row2Y(RowIndex r, out float y)
-        {
-            if (r == null)
-            {
-                y = -1;
-                return false;
-            }
-            var rect = GetVisibleRect(false, false);
-            y = _cache.GetTop(r) - VOffset;
-            if (y < rect.Top) return false;
-            if (rect.Bottom < y) return false;
-            return true;
-        }
-
         protected float FixedWidth => _cache.FixedWidth;
         protected float FixedHeight => _cache.FixedHeight;
     }
