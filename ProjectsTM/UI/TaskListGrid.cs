@@ -176,7 +176,16 @@ namespace ProjectsTM.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
+            MoveSelectedVisible();
             this.Invalidate();
+        }
+
+        private void MoveSelectedVisible()
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+            var rowIdx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique)) + FixedRowCount;
+            MoveVisibleRowCol(new RowIndex(rowIdx), new ColIndex(0)); // TODO グリッドの上側に移動してしまう。下側にはみ出ていた時は下のままにする。
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)

@@ -14,6 +14,7 @@ namespace FreeGridControl
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public int VScrollBarWidth => this.vScrollBar.Width;
+        public int HScrollBarHeight => this.hScrollBar.Height;
 
         public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
         public GridControl()
@@ -148,11 +149,11 @@ namespace FreeGridControl
         private void UpdateVisibleRange()
         {
             VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0, (int)(_cache.FixedHeight + 1))).Y);
-            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1))).Y);
+            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1 - HScrollBarHeight))).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
 
             VisibleNormalLeftCol = X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1), 0)).X);
-            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1), 0)).X);
+            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1 - VScrollBarWidth), 0)).X);
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
