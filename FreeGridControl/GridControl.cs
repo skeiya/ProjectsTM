@@ -317,18 +317,32 @@ namespace FreeGridControl
 
         public Point Raw2Client(RawPoint raw)
         {
-            return new Point(raw.X - HOffset, raw.Y - VOffset);
+            var x = IsFixedCol(raw.X) ? raw.X : raw.X - HOffset;
+            var y = IsFixedRow(raw.Y) ? raw.Y : raw.Y - VOffset;
+            return new Point(x, y);
         }
 
         public RawPoint Client2Raw(Point client)
         {
-            return new RawPoint(client.X + HOffset, client.Y + VOffset);
+            var x = IsFixedCol(client.X) ? client.X : client.X + HOffset;
+            var y = IsFixedRow(client.Y) ? client.Y : client.Y + VOffset;
+            return new RawPoint(x, y);
         }
 
         public bool IsFixedArea(Point cur)
         {
-            if (cur.X < _cache.FixedWidth || cur.Y < _cache.FixedHeight) return true;
+            if (IsFixedCol(cur.Y) || IsFixedRow(cur.Y)) return true;
             return false;
+        }
+
+        private bool IsFixedRow(int y)
+        {
+            return y < _cache.FixedHeight;
+        }
+
+        private bool IsFixedCol(int x)
+        {
+            return x < _cache.FixedWidth;
         }
 
         public RowIndex Y2Row(float y)
