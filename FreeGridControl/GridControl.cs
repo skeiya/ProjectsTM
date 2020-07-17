@@ -181,8 +181,17 @@ namespace FreeGridControl
             base.OnPaint(pe);
         }
 
-        protected int VOffset => vScrollBar.Value;
-        protected int HOffset => hScrollBar.Value;
+        public int VOffset
+        {
+            get { return vScrollBar.Value; }
+            set { vScrollBar.Value = value; }
+        }
+        public int HOffset
+        {
+            get { return hScrollBar.Value; }
+            set { hScrollBar.Value = value; }
+        }
+
         private void DrawGrid(Graphics graphics, bool isPrint)
         {
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
@@ -331,7 +340,7 @@ namespace FreeGridControl
 
         public bool IsFixedArea(Point cur)
         {
-            if (IsFixedCol(cur.Y) || IsFixedRow(cur.Y)) return true;
+            if (IsFixedCol(cur.X) || IsFixedRow(cur.Y)) return true;
             return false;
         }
 
