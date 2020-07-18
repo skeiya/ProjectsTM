@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using FreeGridControl;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.UI;
@@ -48,7 +49,7 @@ namespace ProjectsTM.Service
         public void MouseDown(MouseEventArgs e)
         {
             if (_grid.IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = _grid.Client2Raw(e.Location);
+            var curOnRaw = _grid.Client2Raw(e.Location);
 
             if (e.Button == MouseButtons.Right)
             {
