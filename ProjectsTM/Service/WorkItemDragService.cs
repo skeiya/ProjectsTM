@@ -10,7 +10,7 @@ using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.Service
 {
-    using RawPoint = FreeGridControl.GridControl.RawPoint;
+    using RawPoint = FreeGridControl.RawPoint;
 
     class WorkItemDragService
     {

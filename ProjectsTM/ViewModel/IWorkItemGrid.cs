@@ -31,9 +31,9 @@ namespace ProjectsTM.ViewModel
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
         void Invalidate();
-        WorkItem PickWorkItemFromPoint(GridControl.RawPoint curOnRaw);
+        WorkItem PickWorkItemFromPoint(RawPoint curOnRaw);
         bool IsFixedArea(Point location);
-        GridControl.RawPoint Client2Raw(Point location);
+        RawPoint Client2Raw(Point location);
         void IncRatio();
         void DecRatio();
         void EditSelectedWorkItem();
