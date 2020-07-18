@@ -65,7 +65,7 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            var rawLocation = Client2Raw(e.Location);
+            var rawLocation = Client2Raw(ClientPoint.Create(e));
             var r = Y2Row(rawLocation.Y);
             if (r.Value < FixedRowCount)
             {
@@ -122,7 +122,7 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(Client2Raw(e.Location).Y);
+            var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
             if (r.Value < FixedRowCount) return;
             var item = _listItems[r.Value - FixedRowCount];
             using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
@@ -326,19 +326,19 @@ namespace ProjectsTM.UI
             var item = _listItems[r.Value - FixedRowCount];
             foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
             {
-                var res = GetRect(c, r, 1, false, false, true);
+                var res = GetRectClient(c, r, 1, false, false);
                 if (!res.HasValue) continue;
-                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value);
-                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value.Value);
+                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value.Value));
                 var text = GetText(item, c);
                 var rect = res.Value;
                 rect.Y += 1;
-                g.DrawString(text, this.Font, Brushes.Black, rect, format);
+                g.DrawString(text, this.Font, Brushes.Black, rect.Value, format);
 
             }
             if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
             {
-                var res = GetRect(new ColIndex(0), r, 1, false, false, true);
+                var res = GetRectClient(new ColIndex(0), r, 1, false, false);
                 if (!res.HasValue) return;
                 var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
@@ -398,14 +398,14 @@ namespace ProjectsTM.UI
             {
                 foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
                 {
-                    var res = GetRect(c, new RowIndex(0), 1, true, false, true);
+                    var res = GetRectClient(c, new RowIndex(0), 1, true, false);
                     if (!res.HasValue) return;
-                    g.FillRectangle(Brushes.Gray, res.Value);
-                    g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                    g.FillRectangle(Brushes.Gray, res.Value.Value);
+                    g.DrawRectangle(Pens.Black, res.Value.Value);
                     var rect = res.Value;
                     rect.Y += 1;
-                    g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
-                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect, format);
+                    g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect.Value);
+                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect.Value, format);
                 }
             }
         }

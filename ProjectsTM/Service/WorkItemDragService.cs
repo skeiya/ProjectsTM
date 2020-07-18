@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using FreeGridControl;
 using ProjectsTM.Model;
 using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
@@ -32,7 +33,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        public static float ExpandHeight => 5;
+        public static int ExpandHeight => 5;
 
         public RawPoint DragedLocation => _draggedLocation;
 
@@ -302,19 +303,19 @@ namespace ProjectsTM.Service
             return !_backup.Equals(viewData.Selected);
         }
 
-        internal static Tuple<PointF, PointF> GetBottomBarLine(RectangleF bounds)
+        internal static Tuple<PointF, PointF> GetBottomBarLine(ClientRectangle bounds)
         {
             var bar = GetBottomBarRect(bounds);
             return GetMidLine(bar);
         }
 
-        internal static Tuple<PointF, PointF> GetTopBarLine(RectangleF bounds)
+        internal static Tuple<PointF, PointF> GetTopBarLine(ClientRectangle bounds)
         {
             var bar = GetTopBarRect(bounds);
             return GetMidLine(bar);
         }
 
-        private static Tuple<PointF, PointF> GetMidLine(RectangleF bar)
+        private static Tuple<PointF, PointF> GetMidLine(ClientRectangle bar)
         {
             var y = (bar.Bottom + bar.Top) / 2;
             var p1 = new PointF(bar.X + bar.Width / 4, y);
@@ -322,14 +323,14 @@ namespace ProjectsTM.Service
             return new Tuple<PointF, PointF>(p1, p2);
         }
 
-        internal static RectangleF GetBottomBarRect(RectangleF bounds)
+        internal static ClientRectangle GetBottomBarRect(ClientRectangle bounds)
         {
-            return new RectangleF(bounds.X, bounds.Bottom, bounds.Width, ExpandHeight);
+            return new ClientRectangle(bounds.X, bounds.Bottom, bounds.Width, ExpandHeight);
         }
 
-        internal static RectangleF GetTopBarRect(RectangleF bounds)
+        internal static ClientRectangle GetTopBarRect(ClientRectangle bounds)
         {
-            return new RectangleF(bounds.X, bounds.Top - ExpandHeight, bounds.Width, ExpandHeight);
+            return new ClientRectangle(bounds.X, bounds.Top - ExpandHeight, bounds.Width, ExpandHeight);
         }
 
         internal void ToCopyMode(WorkItems workItems, Action<IEnumerable<Member>> invalidateMembers)

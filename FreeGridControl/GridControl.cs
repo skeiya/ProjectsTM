@@ -148,12 +148,12 @@ namespace FreeGridControl
 
         private void UpdateVisibleRange()
         {
-            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0, _cache.FixedHeight + 1)).Y);
-            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, this.Height - 1 - HScrollBarHeight)).Y);
+            VisibleNormalTopRow = Y2Row(Client2Raw(new ClientPoint(0, _cache.FixedHeight + 1)).Y);
+            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new ClientPoint(0, this.Height - 1 - HScrollBarHeight)).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
 
-            VisibleNormalLeftCol = X2Col(Client2Raw(new Point(_cache.FixedWidth + 1, 0)).X);
-            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point(this.Width - 1 - VScrollBarWidth, 0)).X);
+            VisibleNormalLeftCol = X2Col(Client2Raw(new ClientPoint(_cache.FixedWidth + 1, 0)).X);
+            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new ClientPoint(this.Width - 1 - VScrollBarWidth, 0)).X);
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
@@ -197,38 +197,44 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
         }
 
-        public Rectangle? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
+        public RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount)
         {
             var top = _cache.GetTop(r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
-            var result = new Rectangle(left, top, width, height);
-            if (isFrontView)
-            {
-                result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
-                var visible = GetVisibleRect(isFixedRow, isFixedCol);
-                if (!result.IntersectsWith(visible)) return null;
-                result.Intersect(visible);
-            }
+            return new RawRectangle(left, top, width, height);
+        }
+
+        public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol)
+        {
+            var top = _cache.GetTop(r);
+            var left = _cache.GetLeft(col);
+            var width = _cache.GetLeft(col.Offset(1)) - left;
+            var height = _cache.GetTop(r.Offset(rowCount)) - top;
+            var result = new ClientRectangle(left, top, width, height);
+            result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
+            var visible = GetVisibleRect(isFixedRow, isFixedCol);
+            if (!result.IntersectsWith(visible)) return null;
+            result.Intersect(visible);
             return result;
         }
 
-        Rectangle GetVisibleRect(bool isFixedRow, bool isFixedCol)
+        ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol)
         {
             if (!isFixedRow && !isFixedCol)
             {
-                return new Rectangle(_cache.FixedWidth, _cache.FixedHeight, Width - _cache.FixedWidth, Height - _cache.FixedHeight);
+                return new ClientRectangle(_cache.FixedWidth, _cache.FixedHeight, Width - _cache.FixedWidth, Height - _cache.FixedHeight);
             }
             else if (isFixedRow && !isFixedCol)
             {
-                return new Rectangle(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHeight);
+                return new ClientRectangle(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHeight);
             }
             else if (!isFixedRow && isFixedCol)
             {
-                return new Rectangle(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
+                return new ClientRectangle(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
             }
-            return new Rectangle(0, 0, _cache.FixedWidth, _cache.FixedHeight);
+            return new ClientRectangle(0, 0, _cache.FixedWidth, _cache.FixedHeight);
         }
 
         [Category("Grid")]
@@ -331,14 +337,14 @@ namespace FreeGridControl
             return new Point(x, y);
         }
 
-        public RawPoint Client2Raw(Point client)
+        public RawPoint Client2Raw(ClientPoint client)
         {
             var x = IsFixedCol(client.X) ? client.X : client.X + HOffset;
             var y = IsFixedRow(client.Y) ? client.Y : client.Y + VOffset;
             return new RawPoint(x, y);
         }
 
-        public bool IsFixedArea(Point cur)
+        public bool IsFixedArea(ClientPoint cur)
         {
             if (IsFixedCol(cur.X) || IsFixedRow(cur.Y)) return true;
             return false;

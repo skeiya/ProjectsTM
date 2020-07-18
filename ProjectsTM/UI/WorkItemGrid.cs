@@ -142,7 +142,7 @@ namespace ProjectsTM.UI
         public Rectangle? GetMemberDrawRect(Member m)
         {
             var col = Member2Col(m, _viewData.GetFilteredMembers());
-            var rect = GetRect(col, VisibleNormalTopRow, 1, false, false, false);
+            var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
             if (!rect.HasValue) return null;
             return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
@@ -208,7 +208,7 @@ namespace ProjectsTM.UI
             _keyAndMouseHandleService.MouseUp();
         }
 
-        public Rectangle? GetRangeSelectBound()
+        public ClientRectangle? GetRangeSelectBound()
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
@@ -237,7 +237,7 @@ namespace ProjectsTM.UI
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseMove(e, this);
+            _keyAndMouseHandleService.MouseMove(ClientPoint.Create(e), this);
             this.Invalidate();
         }
 
@@ -347,11 +347,18 @@ namespace ProjectsTM.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        public Rectangle? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
+        public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
+            return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count);
+        }
+
+        public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
+        {
+            var rowRange = GetRowRange(wi);
+            if (rowRange.row == null) return null;
+            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false);
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)
