@@ -4,6 +4,6 @@
     {
         public int X { get; }
         public int Y { get; }
-        public RawPoint(int x = 0, int y = 0) { X = x; Y = y; }
+        public RawPoint(int x, int y) { X = x; Y = y; }
     }
 }
