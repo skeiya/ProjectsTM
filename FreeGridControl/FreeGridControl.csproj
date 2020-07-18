@@ -57,7 +57,7 @@
     <Compile Include="GridControl.Designer.cs">
       <DependentUpon>GridControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="FloatArrayForDesign.cs" />
+    <Compile Include="IntArrayForDesign.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RowColRange.cs" />
     <Compile Include="RowIndex.cs" />

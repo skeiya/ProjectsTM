@@ -89,16 +89,16 @@ namespace ProjectsTM.UI
 
         internal void AdjustForPrint(Rectangle printRect)
         {
-            var vRatio = printRect.Height / (float)GridHeight;
-            var hRatio = printRect.Width / (float)GridWidth;
+            var vRatio = printRect.Height / GridHeight;
+            var hRatio = printRect.Width / GridWidth;
             LockUpdate = true;
             for (var c = 0; c < ColCount; c++)
             {
-                ColWidths[c] = (ColWidths[c] * hRatio);
+                ColWidths[c] = (int)(ColWidths[c] * hRatio);
             }
             for (var r = 0; r < RowCount; r++)
             {
-                RowHeights[r] = (RowHeights[r] * vRatio);
+                RowHeights[r] = (int)(RowHeights[r] * vRatio);
             }
             LockUpdate = false;
         }

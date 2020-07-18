@@ -9,12 +9,12 @@ namespace ProjectsTM.ViewModel
     interface IWorkItemGrid
     {
         Member X2Member(int x);
-        ColIndex X2Col(float x);
+        ColIndex X2Col(int x);
         Member Col2Member(ColIndex c);
         ColIndex Member2Col(Member m);
         CallenderDay Y2Day(int y);
         CallenderDay Row2Day(RowIndex r);
-        RowIndex Y2Row(float y);
+        RowIndex Y2Row(int y);
 
         RectangleF? GetMemberDrawRect(Member m);
         RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);

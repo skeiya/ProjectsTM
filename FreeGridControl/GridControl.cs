@@ -278,7 +278,7 @@ namespace FreeGridControl
 
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public FloatArrayForDesign RowHeights
+        public IntArrayForDesign RowHeights
         {
             get => _cache.RowHeights;
             set
@@ -289,7 +289,7 @@ namespace FreeGridControl
 
         [Category("Grid")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public FloatArrayForDesign ColWidths
+        public IntArrayForDesign ColWidths
         {
             get => _cache.ColWidths;
             set
@@ -315,7 +315,7 @@ namespace FreeGridControl
             DrawGrid(graphics, true);
         }
 
-        public ColIndex X2Col(float x)
+        public ColIndex X2Col(int x)
         {
             foreach (var c in ColIndex.Range(0, ColCount))
             {
@@ -354,7 +354,7 @@ namespace FreeGridControl
             return x < _cache.FixedWidth;
         }
 
-        public RowIndex Y2Row(float y)
+        public RowIndex Y2Row(int y)
         {
             return Y2NormalRow(y, new RowIndex(0), new RowIndex(RowCount - 1));
         }
