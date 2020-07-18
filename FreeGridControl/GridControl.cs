@@ -129,11 +129,11 @@ namespace FreeGridControl
             vScrollBar.LargeChange = this.Height;
             hScrollBar.LargeChange = this.Width;
             this.vScrollBar.Minimum = 0;
-            var vMax = (int)Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
+            var vMax = Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
             if (this.vScrollBar.Value > vMax) this.vScrollBar.Value = 0;
             this.vScrollBar.Maximum = vMax;
             this.hScrollBar.Minimum = 0;
-            var hMax = (int)Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
+            var hMax = Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
             if (this.hScrollBar.Value > hMax) this.hScrollBar.Value = 0;
             this.hScrollBar.Maximum = hMax;
             UpdateVisibleRange();
@@ -148,12 +148,12 @@ namespace FreeGridControl
 
         private void UpdateVisibleRange()
         {
-            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0, (int)(_cache.FixedHeight + 1))).Y);
-            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, (int)(this.Height - 1 - HScrollBarHeight))).Y);
+            VisibleNormalTopRow = Y2Row(Client2Raw(new Point(0, _cache.FixedHeight + 1)).Y);
+            VisibleNormalButtomRow = (_cache.GridHeight <= this.Height) ? new RowIndex(RowCount - 1) : Y2Row(Client2Raw(new Point(0, this.Height - 1 - HScrollBarHeight)).Y);
             VisibleNormalRowCount = RowCount == FixedRowCount ? 0 : VisibleNormalButtomRow.Value - VisibleNormalTopRow.Value + 1;
 
-            VisibleNormalLeftCol = X2Col(Client2Raw(new Point((int)(_cache.FixedWidth + 1), 0)).X);
-            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point((int)(this.Width - 1 - VScrollBarWidth), 0)).X);
+            VisibleNormalLeftCol = X2Col(Client2Raw(new Point(_cache.FixedWidth + 1, 0)).X);
+            VisibleNormalRightCol = (_cache.GridWidth <= this.Width) ? X2Col(_cache.GridWidth - 1) : X2Col(Client2Raw(new Point(this.Width - 1 - VScrollBarWidth, 0)).X);
             VisibleNormalColCount = ColCount == FixedColCount ? 0 : VisibleNormalRightCol.Value - VisibleNormalLeftCol.Value + 1;
         }
 
@@ -197,13 +197,13 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
         }
 
-        public RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
+        public Rectangle? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView)
         {
             var top = _cache.GetTop(r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
-            var result = new RectangleF(left, top, width, height);
+            var result = new Rectangle(left, top, width, height);
             if (isFrontView)
             {
                 result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
@@ -214,21 +214,21 @@ namespace FreeGridControl
             return result;
         }
 
-        RectangleF GetVisibleRect(bool isFixedRow, bool isFixedCol)
+        Rectangle GetVisibleRect(bool isFixedRow, bool isFixedCol)
         {
             if (!isFixedRow && !isFixedCol)
             {
-                return new RectangleF(_cache.FixedWidth, _cache.FixedHeight, Width - _cache.FixedWidth, Height - _cache.FixedHeight);
+                return new Rectangle(_cache.FixedWidth, _cache.FixedHeight, Width - _cache.FixedWidth, Height - _cache.FixedHeight);
             }
             else if (isFixedRow && !isFixedCol)
             {
-                return new RectangleF(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHeight);
+                return new Rectangle(_cache.FixedWidth, 0, Width - _cache.FixedWidth, _cache.FixedHeight);
             }
             else if (!isFixedRow && isFixedCol)
             {
-                return new RectangleF(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
+                return new Rectangle(0, _cache.FixedHeight, _cache.FixedWidth, Height - _cache.FixedHeight);
             }
-            return new RectangleF(0, 0, _cache.FixedWidth, _cache.FixedHeight);
+            return new Rectangle(0, 0, _cache.FixedWidth, _cache.FixedHeight);
         }
 
         [Category("Grid")]
@@ -298,8 +298,8 @@ namespace FreeGridControl
             }
         }
 
-        public float GridWidth => _cache.GridWidth;
-        public float GridHeight => _cache.GridHeight;
+        public int GridWidth => _cache.GridWidth;
+        public int GridHeight => _cache.GridHeight;
 
         public RowIndex VisibleNormalTopRow { get; private set; }
         public RowIndex VisibleNormalButtomRow { get; private set; }
@@ -378,7 +378,7 @@ namespace FreeGridControl
             return Y2NormalRow(y, mid, up);
         }
 
-        protected float FixedWidth => _cache.FixedWidth;
-        protected float FixedHeight => _cache.FixedHeight;
+        protected int FixedWidth => _cache.FixedWidth;
+        protected int FixedHeight => _cache.FixedHeight;
     }
 }

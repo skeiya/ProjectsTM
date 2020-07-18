@@ -340,7 +340,7 @@ namespace ProjectsTM.UI
             {
                 var res = GetRect(new ColIndex(0), r, 1, false, false, true);
                 if (!res.HasValue) return;
-                var rect = new Rectangle(0, (int)res.Value.Top, (int)GridWidth, (int)res.Value.Height);
+                var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
             }
         }

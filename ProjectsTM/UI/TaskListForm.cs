@@ -20,7 +20,7 @@ namespace ProjectsTM.UI
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Initialize(viewData, comboBoxPattern.Text, IsAudit());
             var offset = gridControl1.GridWidth - gridControl1.Width;
-            this.Width += (int)offset + gridControl1.VScrollBarWidth;
+            this.Width += offset + gridControl1.VScrollBarWidth;
             this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
             this._formSize = formSize;
             this.FormClosed += TaskListForm_FormClosed;
