@@ -90,10 +90,10 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        private IEnumerable<Member> RemoveFilterSettingMembers(List<Member> members)
+        private List<Member> RemoveFilterSettingMembers(List<Member> members)
         {
             if (Filter == null || Filter.HideMembers == null) return members;
-            return members.Where(m => !Filter.HideMembers.Contains(m));
+            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
         }
 
         private List<Member> CreateAllMembersList()
