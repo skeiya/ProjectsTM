@@ -22,11 +22,11 @@ namespace ProjectsTM.UI
 
         public WorkItemEditService EditService => _editService;
 
-        public SizeF FullSize => new SizeF(GridWidth, GridHeight);
+        public Size FullSize => new Size(GridWidth, GridHeight);
 
         public Size VisibleSize => new Size(Width, Height);
 
-        public SizeF FixedSize => new SizeF(FixedWidth, FixedHeight);
+        public Size FixedSize => new Size(FixedWidth, FixedHeight);
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
@@ -89,8 +89,8 @@ namespace ProjectsTM.UI
 
         internal void AdjustForPrint(Rectangle printRect)
         {
-            var vRatio = printRect.Height / GridHeight;
-            var hRatio = printRect.Width / GridWidth;
+            var vRatio = printRect.Height / (float)GridHeight;
+            var hRatio = printRect.Width / (float)GridWidth;
             LockUpdate = true;
             for (var c = 0; c < ColCount; c++)
             {
@@ -109,11 +109,11 @@ namespace ProjectsTM.UI
             var g = this.CreateGraphics();
             var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
             var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            var height = (int)(memberHeight);
+            var height = memberHeight;
             var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2) + 1;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4) + 1;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4) + 1;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2f) + 1;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4f) + 1;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4f) + 1;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = width;
@@ -139,12 +139,12 @@ namespace ProjectsTM.UI
             return Member2Col(m, _viewData.GetFilteredMembers());
         }
 
-        public RectangleF? GetMemberDrawRect(Member m)
+        public Rectangle? GetMemberDrawRect(Member m)
         {
             var col = Member2Col(m, _viewData.GetFilteredMembers());
             var rect = GetRect(col, VisibleNormalTopRow, 1, false, false, false);
             if (!rect.HasValue) return null;
-            return new RectangleF(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
 
         private void AttachEvents()
@@ -324,7 +324,7 @@ namespace ProjectsTM.UI
         internal void MoveToToday()
         {
             var wi = GetUniqueSelect();
-            var m = wi != null ? wi.AssignedMember : X2Member((int)FixedWidth);
+            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
@@ -347,7 +347,7 @@ namespace ProjectsTM.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        public RectangleF? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
+        public Rectangle? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;

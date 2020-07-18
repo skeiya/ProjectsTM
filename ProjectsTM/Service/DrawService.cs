@@ -36,7 +36,7 @@ namespace ProjectsTM.Service
         {
             this._viewData = viewData;
             _isDragActive = IsDragActive;
-            _imageBuffer = new ImageBuffer((int)grid.FullSize.Width, (int)grid.FullSize.Height);
+            _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
             this._font = font;
         }
@@ -184,7 +184,7 @@ namespace ProjectsTM.Service
                 font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
             }
             var rect = res.Value;
-            rect.Intersect(new RectangleF(0, 0, _grid.FullSize.Width - 1, _grid.FullSize.Height - 1));
+            rect.Intersect(new Rectangle(0, 0, _grid.FullSize.Width - 1, _grid.FullSize.Height - 1));
             g.FillRectangle(fillBrush, rect);
             var isAppendDays = IsAppendDays(g, font, rect);
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect);

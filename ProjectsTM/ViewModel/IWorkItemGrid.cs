@@ -16,15 +16,15 @@ namespace ProjectsTM.ViewModel
         CallenderDay Row2Day(RowIndex r);
         RowIndex Y2Row(int y);
 
-        RectangleF? GetMemberDrawRect(Member m);
-        RectangleF? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);
-        RectangleF? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView);
+        Rectangle? GetMemberDrawRect(Member m);
+        Rectangle? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);
+        Rectangle? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);
 
 
-        SizeF FullSize { get; }
+        Size FullSize { get; }
         Size VisibleSize { get; }
-        SizeF FixedSize { get; }
+        Size FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
         Rectangle? GetRangeSelectBound();
