@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
+using System.Collections.Generic;
 
 namespace ProjectsTM.Logic
 {

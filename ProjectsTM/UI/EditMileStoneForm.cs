@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using System;
 using System.Windows.Forms;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.UI
 {

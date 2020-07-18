@@ -1,7 +1,6 @@
-﻿using System;
+﻿using ProjectsTM.UI;
+using System;
 using System.Windows.Forms;
-using ProjectsTM.Service;
-using ProjectsTM.UI;
 
 namespace ProjectsTM
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
 
 namespace ProjectsTM.ViewModel
 {

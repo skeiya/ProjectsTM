@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ProjectsTM.Logic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using ProjectsTM.Logic;
 
 namespace ProjectsTM.Model
 {

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
+using System;
 using System.Text;
 using System.Windows.Forms;
-using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.Service
 {

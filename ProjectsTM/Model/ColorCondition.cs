@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ProjectsTM.Logic;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using ProjectsTM.Logic;
 
 namespace ProjectsTM.Model
 {

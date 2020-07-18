@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using FreeGridControl;
+﻿using FreeGridControl;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
-using static FreeGridControl.GridControl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
@@ -25,7 +23,7 @@ namespace ProjectsTM.Service
         private ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService, Control parentControl)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl)
         {
             this._viewData = viewData;
             this._grid = grid;

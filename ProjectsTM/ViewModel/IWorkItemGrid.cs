@@ -1,8 +1,7 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Model;
 using System.Collections.Generic;
 using System.Drawing;
-using ProjectsTM.Model;
-using ProjectsTM.UI;
 
 namespace ProjectsTM.ViewModel
 {

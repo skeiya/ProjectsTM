@@ -1,12 +1,12 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Model;
+using ProjectsTM.UI;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ProjectsTM.Model;
-using ProjectsTM.UI;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.Service
 {

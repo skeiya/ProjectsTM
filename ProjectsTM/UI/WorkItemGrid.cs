@@ -1,13 +1,13 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
+using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -47,7 +47,7 @@ namespace ProjectsTM.UI
             this.ColCount = _viewData.GetFilteredMembers().Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
             _editService = new WorkItemEditService(_viewData);

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using FreeGridControl;
+using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using FreeGridControl;
-using ProjectsTM.Model;
-using ProjectsTM.UI;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.Service
 {
@@ -37,7 +36,7 @@ namespace ProjectsTM.Service
 
         public RawPoint DragedLocation => _draggedLocation;
 
-        public void UpdateDraggingItem(IWorkItemGrid grid,  RawPoint curLocation, ViewData viewData)
+        public void UpdateDraggingItem(IWorkItemGrid grid, RawPoint curLocation, ViewData viewData)
         {
             var callender = viewData.Original.Callender;
 

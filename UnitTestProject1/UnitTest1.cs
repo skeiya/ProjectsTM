@@ -1,14 +1,13 @@
 ﻿using FreeGridControl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using static FreeGridControl.GridControl;
 
 namespace UnitTestProject1
 {
