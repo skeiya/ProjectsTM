@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using static FreeGridControl.GridControl;
 
 namespace UnitTestProject1
 {
@@ -159,6 +160,51 @@ namespace UnitTestProject1
             w.Description = "aaa" + Environment.NewLine + "bbb";
             var c = w.Clone();
             Assert.AreEqual(w.Description, c.Description);
+        }
+
+        [TestMethod]
+        public void Client2Raw()
+        {
+            GridControl g = GetGrid();
+            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new Point(10, 20)));
+            Assert.AreEqual(new RawPoint(10, 450), g.Client2Raw(new Point(10, 450)));
+            Assert.AreEqual(new RawPoint(250, 20), g.Client2Raw(new Point(250, 20)));
+            Assert.AreEqual(new RawPoint(250, 450), g.Client2Raw(new Point(250, 450)));
+            g.LockUpdate = true;
+            g.VOffset = 6;
+            g.HOffset = 7;
+            g.LockUpdate = false;
+            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new Point(10, 20)));
+            Assert.AreEqual(new RawPoint(10, 450 + 6), g.Client2Raw(new Point(10, 450)));
+            Assert.AreEqual(new RawPoint(250 + 7, 20), g.Client2Raw(new Point(250, 20)));
+            Assert.AreEqual(new RawPoint(250 + 7, 450 + 6), g.Client2Raw(new Point(250, 450)));
+        }
+
+        [TestMethod]
+        public void IsFixedArea()
+        {
+            GridControl g = GetGrid();
+            Assert.IsTrue(g.IsFixedArea(new Point(10, 20)));
+            Assert.IsTrue(g.IsFixedArea(new Point(10, 450)));
+            Assert.IsTrue(g.IsFixedArea(new Point(250, 20)));
+            Assert.IsFalse(g.IsFixedArea(new Point(250, 450)));
+        }
+
+        private static GridControl GetGrid()
+        {
+            var g = new GridControl();
+            g.ColCount = 4;
+            g.FixedColCount = 2;
+            g.RowCount = 2;
+            g.FixedRowCount = 1;
+            g.ColWidths[0] = 100;
+            g.ColWidths[1] = 100;
+            g.ColWidths[2] = 200;
+            g.ColWidths[3] = 200;
+            g.RowHeights[0] = 150;
+            g.RowHeights[1] = 300;
+            g.LockUpdate = false;
+            return g;
         }
     }
 }
