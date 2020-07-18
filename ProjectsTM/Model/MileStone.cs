@@ -61,7 +61,7 @@ namespace ProjectsTM.Model
             hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(Day);
             hashCode = hashCode * -1521134295 + Color.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorText);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Project>.Default.GetHashCode(Project);
+            hashCode = hashCode * -1521134295 + Project.GetHashCode();
             return hashCode;
         }
 

@@ -233,7 +233,7 @@ namespace ProjectsTM.Service
         private bool FilteredMileStonesContain(MileStone m, IEnumerable<Project> projects)
         {
             if (m == null) return false;
-            if (m.Project == null) { m.Project = new Project("ALL"); return true; }
+            if (m.Project == null || m.ProjectName == null) { m.Project = new Project("ALL"); return true; }
             if (m.Project.ToString() == "ALL") return true;
             if (FilterdProjectsContain(m, projects)) return true;
             return false;
