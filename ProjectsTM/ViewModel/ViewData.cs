@@ -19,6 +19,7 @@ namespace ProjectsTM.ViewModel
             {
                 _appData = value;
                 UndoService = new UndoService();
+                AddFreeTimeMembersToHideMembers(GetFilteredMembers());
                 if (AppDataChanged != null) AppDataChanged(this, null);
             }
         }
