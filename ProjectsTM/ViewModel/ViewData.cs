@@ -84,6 +84,7 @@ namespace ProjectsTM.ViewModel
         private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members)
         {
             if (Filter == null || Filter.IsFreeTimeMemberShow) return;
+            if (members == null || members.Count() > 0) return;
             var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
             foreach (var m in freeTimeMember)
             {
