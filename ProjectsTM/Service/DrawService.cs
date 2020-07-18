@@ -185,7 +185,8 @@ namespace ProjectsTM.Service
             }
             var rect = res.Value;
             g.FillRectangle(fillBrush, rect.Value);
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, false), font, BrushCache.GetBrush(front), rect.Value);
+            var isAppendDays = IsAppendDays(g, font, rect.Value);
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
             g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
@@ -208,6 +209,7 @@ namespace ProjectsTM.Service
             g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
             g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
         }
+
         private static bool IsAppendDays(Graphics g, Font f, Rectangle rect)
         {
             var min = g.MeasureString("5d", f);

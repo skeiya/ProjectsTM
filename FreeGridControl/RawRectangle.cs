@@ -20,7 +20,7 @@ namespace FreeGridControl
 
         public bool IsEmpty => _rectangle.IsEmpty;
 
-        public RectangleF Value => _rectangle;
+        public Rectangle Value => _rectangle;
 
         public int Width => _rectangle.Width;
 
