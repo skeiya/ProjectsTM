@@ -203,7 +203,9 @@ namespace FreeGridControl
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
-            return new RawRectangle(left, top, width, height);
+            var result = new RawRectangle(left, top, width, height);
+            if (result.IsEmpty) return null;
+            return result;
         }
 
         public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol)
@@ -217,6 +219,7 @@ namespace FreeGridControl
             var visible = GetVisibleRect(isFixedRow, isFixedCol);
             if (!result.IntersectsWith(visible)) return null;
             result.Intersect(visible);
+            if (result.IsEmpty) return null;
             return result;
         }
 

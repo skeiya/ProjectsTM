@@ -173,40 +173,30 @@ namespace ProjectsTM.Service
 
         private void DrawWorkItemRaw(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
         {
-            var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-            var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : BrushCache.GetBrush(cond.BackColor);
-            var front = cond == null ? Color.Black : cond.ForeColor;
             var res = _grid.GetWorkItemDrawRectRaw(wi, members);
             if (!res.HasValue) return;
-            if (res.Value.IsEmpty) return;
-            if (wi.State == TaskState.Done)
-            {
-                font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
-            }
-            var rect = res.Value;
-            g.FillRectangle(fillBrush, rect.Value);
-            var isAppendDays = IsAppendDays(g, font, rect.Value);
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
-            g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
+            DrawWorkItemCore(wi, edge, font, g, res.Value.Value);
         }
 
         private void DrawWorkItemClient(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
         {
+            var res = _grid.GetWorkItemDrawRectClient(wi, members);
+            if (!res.HasValue) return;
+            DrawWorkItemCore(wi, edge, font, g, res.Value.Value);
+        }
+
+        private void DrawWorkItemCore(WorkItem wi, Pen edge, Font font, Graphics g, Rectangle rect)
+        {
             var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
             var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : BrushCache.GetBrush(cond.BackColor);
             var front = cond == null ? Color.Black : cond.ForeColor;
-            var res = _grid.GetWorkItemDrawRectClient(wi, members);
-            if (!res.HasValue) return;
-            if (res.Value.IsEmpty) return;
             if (wi.State == TaskState.Done)
             {
                 font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
             }
-            var rect = res.Value;
-            rect.Intersect(new ClientRectangle(0, 0, _grid.FullSize.Width - 1, _grid.FullSize.Height - 1));
-            g.FillRectangle(fillBrush, rect.Value);
-            var isAppendDays = IsAppendDays(g, font, rect.Value);
-            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect.Value);
+            g.FillRectangle(fillBrush, rect);
+            var isAppendDays = IsAppendDays(g, font, rect);
+            g.DrawString(wi.ToDrawString(_viewData.Original.Callender, isAppendDays), font, BrushCache.GetBrush(front), rect);
             g.DrawRectangle(edge, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
