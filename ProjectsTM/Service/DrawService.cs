@@ -119,7 +119,7 @@ namespace ProjectsTM.Service
         private static int GetRowCount(RowColRange range, ColIndex c, bool isPrint)
         {
             if (isPrint) return range.RowCount;
-            return c.Equals(range.LeftCol) ? range.RowCount : 1;
+            return c.Equals(range.LeftCol) || c.Equals(range.Cols.Last()) ? range.RowCount : 1;
         }
 
         private void TransferImage(Graphics transferGraphics)
