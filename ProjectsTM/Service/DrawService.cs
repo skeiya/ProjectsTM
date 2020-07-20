@@ -237,11 +237,12 @@ namespace ProjectsTM.Service
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
             var range = _grid.VisibleRowColRange;
+            var visibleArea = _grid.GetVisibleRect(false, false);
             foreach (var r in range.Rows)
             {
                 var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
                 if (m == null) continue;
-                var rect = _grid.GetRectClient(range.LeftCol, r, 0, false, false);
+                var rect = _grid.GetRectClient(range.LeftCol, r, 0, visibleArea);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
@@ -295,20 +296,21 @@ namespace ProjectsTM.Service
             var day = 0;
             var range = _grid.VisibleRowColRange;
             var rowHeight = (int)g.MeasureString("A", font).Height;
+            var visibleArea = _grid.GetVisibleRect(false, true);
             foreach (var r in range.Rows)
             {
                 var d = _grid.Row2Day(r);
                 if (_grid.IsSelected(d))
                 {
-                    var rectYear = _grid.GetRectClient(WorkItemGridConstants.YearCol, r, 1, false, true);
-                    var rectMonth = _grid.GetRectClient(WorkItemGridConstants.MonthCol, r, 1, false, true);
-                    var rectDay = _grid.GetRectClient(WorkItemGridConstants.DayCol, r, 1, false, true);
+                    var rectYear = _grid.GetRectClient(WorkItemGridConstants.YearCol, r, 1, visibleArea);
+                    var rectMonth = _grid.GetRectClient(WorkItemGridConstants.MonthCol, r, 1, visibleArea);
+                    var rectDay = _grid.GetRectClient(WorkItemGridConstants.DayCol, r, 1, visibleArea);
                     var rect = new RectangleF(rectYear.Value.Left, rectYear.Value.Top, rectYear.Value.Width + rectMonth.Value.Width + rectDay.Value.Width, rectYear.Value.Height);
                     g.FillRectangle(BrushCache.GetBrush(Color.LightSkyBlue), rect);
                 }
                 if (year != d.Year)
                 {
-                    var rectYear = _grid.GetRectClient(WorkItemGridConstants.YearCol, r, 1, false, true);
+                    var rectYear = _grid.GetRectClient(WorkItemGridConstants.YearCol, r, 1, visibleArea);
                     if (rectYear.HasValue)
                     {
                         month = 0;
@@ -318,7 +320,7 @@ namespace ProjectsTM.Service
                 }
                 if (month != d.Month)
                 {
-                    var rectMonth = _grid.GetRectClient(WorkItemGridConstants.MonthCol, r, 1, false, true);
+                    var rectMonth = _grid.GetRectClient(WorkItemGridConstants.MonthCol, r, 1, visibleArea);
                     if (rectMonth.HasValue)
                     {
                         day = 0;
@@ -327,7 +329,7 @@ namespace ProjectsTM.Service
                 }
                 if (day != d.Day)
                 {
-                    var rectDay = _grid.GetRectClient(WorkItemGridConstants.DayCol, r, 1, false, true);
+                    var rectDay = _grid.GetRectClient(WorkItemGridConstants.DayCol, r, 1, visibleArea);
                     if (rectDay.HasValue)
                     {
                         day = d.Day;
@@ -363,12 +365,13 @@ namespace ProjectsTM.Service
         private void DrawMember(Font font, Graphics g)
         {
             var range = _grid.VisibleRowColRange;
+            var visibleAread = _grid.GetVisibleRect(true, false);
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
-                var rectCompany = _grid.GetRectClient(c, WorkItemGridConstants.CompanyRow, 1, true, false);
-                var rectLastName = _grid.GetRectClient(c, WorkItemGridConstants.LastNameRow, 1, true, false);
-                var rectFirstName = _grid.GetRectClient(c, WorkItemGridConstants.FirstNameRow, 1, true, false);
+                var rectCompany = _grid.GetRectClient(c, WorkItemGridConstants.CompanyRow, 1, visibleAread);
+                var rectLastName = _grid.GetRectClient(c, WorkItemGridConstants.LastNameRow, 1, visibleAread);
+                var rectFirstName = _grid.GetRectClient(c, WorkItemGridConstants.FirstNameRow, 1, visibleAread);
                 if (_grid.IsSelected(m))
                 {
                     var rect = new RectangleF(rectCompany.Value.Left, rectCompany.Value.Top, rectCompany.Value.Width, rectCompany.Value.Height + rectLastName.Value.Height + rectFirstName.Value.Height);

@@ -207,22 +207,18 @@ namespace FreeGridControl
             return result;
         }
 
-        public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol)
+        public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea)
         {
-            var top = _cache.GetTop(r);
-            var left = _cache.GetLeft(col);
-            var width = _cache.GetLeft(col.Offset(1)) - left;
-            var height = _cache.GetTop(r.Offset(rowCount)) - top;
-            var result = new ClientRectangle(left, top, width, height);
-            result.Offset(isFixedCol ? 0 : -HOffset, isFixedRow ? 0 : -VOffset);
-            var visible = GetVisibleRect(isFixedRow, isFixedCol);
-            if (!result.IntersectsWith(visible)) return null;
-            result.Intersect(visible);
+            var raw = GetRectRaw(col, r, rowCount);
+            if (!raw.HasValue) return null;
+            var location = Raw2Client(raw.Value.Location);
+            var result = new ClientRectangle(location.X, location.Y, raw.Value.Width, raw.Value.Height);
+            result.Intersect(visibleArea);
             if (result.IsEmpty) return null;
             return result;
         }
 
-        ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol)
+        public ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol)
         {
             if (!isFixedRow && !isFixedCol)
             {

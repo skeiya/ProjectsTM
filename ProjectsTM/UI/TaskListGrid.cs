@@ -324,9 +324,10 @@ namespace ProjectsTM.UI
         private void DrawItemRow(Graphics g, RowIndex r, StringFormat format)
         {
             var item = _listItems[r.Value - FixedRowCount];
+            var visibleArea = GetVisibleRect(false, false);
             foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
             {
-                var res = GetRectClient(c, r, 1, false, false);
+                var res = GetRectClient(c, r, 1, visibleArea);
                 if (!res.HasValue) continue;
                 g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value.Value));
@@ -338,7 +339,7 @@ namespace ProjectsTM.UI
             }
             if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
             {
-                var res = GetRectClient(new ColIndex(0), r, 1, false, false);
+                var res = GetRectClient(new ColIndex(0), r, 1, visibleArea);
                 if (!res.HasValue) return;
                 var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
@@ -396,9 +397,10 @@ namespace ProjectsTM.UI
         {
             using (var format = new StringFormat() { Alignment = StringAlignment.Far })
             {
+                var visibleArea = GetVisibleRect(true, false);
                 foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
                 {
-                    var res = GetRectClient(c, new RowIndex(0), 1, true, false);
+                    var res = GetRectClient(c, new RowIndex(0), 1, visibleArea);
                     if (!res.HasValue) return;
                     g.FillRectangle(Brushes.Gray, res.Value.Value);
                     g.DrawRectangle(Pens.Black, res.Value.Value);

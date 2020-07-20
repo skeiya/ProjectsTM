@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
 
         Rectangle? GetMemberDrawRect(Member m);
         RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount);
-        ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol);
+        ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea);
         RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
         ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);
@@ -28,6 +28,8 @@ namespace ProjectsTM.ViewModel
         Size FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
+        ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol);
+
         ClientRectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);

@@ -358,7 +358,7 @@ namespace ProjectsTM.UI
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false);
+            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, GetVisibleRect(false, false));
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)

@@ -22,5 +22,7 @@ namespace FreeGridControl
         public int Height => _rectangle.Height;
 
         public int Y => _rectangle.Y;
+
+        public RawPoint Location => new RawPoint(X, Y);
     }
 }
