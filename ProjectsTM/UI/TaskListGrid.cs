@@ -240,6 +240,7 @@ namespace ProjectsTM.UI
         private bool IsTooBigError(WorkItem wi)
         {
             if (wi.State == TaskState.Background) return false;
+            if (wi.State == TaskState.Done) return false;
             if (!IsStartSoon(wi)) return false;
             return IsTooBig(wi);
         }
