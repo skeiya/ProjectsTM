@@ -242,12 +242,13 @@ namespace ProjectsTM.Service
             {
                 var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
                 if (m == null) continue;
-                var rect = _grid.GetRectClient(range.LeftCol, r, 0, visibleArea);
+                var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))
                 {
-                    g.FillRectangle(brush, 0, rect.Value.Y, _grid.VisibleSize.Width, 1);
-                    g.DrawString(m.Name, font, brush, 0, rect.Value.Y - 10);
+                    var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
+                    g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
+                    g.DrawString(m.Name, font, brush, 0, y - 10);
                 }
             }
         }
