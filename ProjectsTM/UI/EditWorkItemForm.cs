@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.UI
 {
@@ -68,14 +68,14 @@ namespace ProjectsTM.UI
 
         bool CheckEdit()
         {
-            if(!ValidateAssignedMember())
+            if (!ValidateAssignedMember())
             {
                 MessageBox.Show("担当者が存在しません。", "不正な入力", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
             return CreateWorkItem(_callender) != null;
         }
- 
+
         private WorkItem CreateWorkItem(Callender callender)
         {
             var p = GetProject();

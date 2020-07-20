@@ -1,14 +1,14 @@
-﻿using System;
+﻿using ProjectsTM.Logic;
+using ProjectsTM.Model;
+using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.ComponentModel;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -160,7 +160,7 @@ namespace ProjectsTM.UI
         {
             private DataGridView _dataGridView;
             private DataGridViewColumn _sortedColumn;
-            private SortOrder _sortOrder;         
+            private SortOrder _sortOrder;
 
             public ResortDataGridView(DataGridView dataGridView)
             {
@@ -171,7 +171,7 @@ namespace ProjectsTM.UI
 
             internal void Resort()
             {
-                switch(_sortOrder)
+                switch (_sortOrder)
                 {
                     case SortOrder.Ascending:
                         _dataGridView.Sort(_sortedColumn, ListSortDirection.Ascending);

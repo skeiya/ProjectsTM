@@ -1,14 +1,13 @@
 ﻿using FreeGridControl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using static FreeGridControl.GridControl;
 
 namespace UnitTestProject1
 {
@@ -166,28 +165,28 @@ namespace UnitTestProject1
         public void Client2Raw()
         {
             GridControl g = GetGrid();
-            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new Point(10, 20)));
-            Assert.AreEqual(new RawPoint(10, 450), g.Client2Raw(new Point(10, 450)));
-            Assert.AreEqual(new RawPoint(250, 20), g.Client2Raw(new Point(250, 20)));
-            Assert.AreEqual(new RawPoint(250, 450), g.Client2Raw(new Point(250, 450)));
+            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new ClientPoint(10, 20)));
+            Assert.AreEqual(new RawPoint(10, 450), g.Client2Raw(new ClientPoint(10, 450)));
+            Assert.AreEqual(new RawPoint(250, 20), g.Client2Raw(new ClientPoint(250, 20)));
+            Assert.AreEqual(new RawPoint(250, 450), g.Client2Raw(new ClientPoint(250, 450)));
             g.LockUpdate = true;
             g.VOffset = 6;
             g.HOffset = 7;
             g.LockUpdate = false;
-            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new Point(10, 20)));
-            Assert.AreEqual(new RawPoint(10, 450 + 6), g.Client2Raw(new Point(10, 450)));
-            Assert.AreEqual(new RawPoint(250 + 7, 20), g.Client2Raw(new Point(250, 20)));
-            Assert.AreEqual(new RawPoint(250 + 7, 450 + 6), g.Client2Raw(new Point(250, 450)));
+            Assert.AreEqual(new RawPoint(10, 20), g.Client2Raw(new ClientPoint(10, 20)));
+            Assert.AreEqual(new RawPoint(10, 450 + 6), g.Client2Raw(new ClientPoint(10, 450)));
+            Assert.AreEqual(new RawPoint(250 + 7, 20), g.Client2Raw(new ClientPoint(250, 20)));
+            Assert.AreEqual(new RawPoint(250 + 7, 450 + 6), g.Client2Raw(new ClientPoint(250, 450)));
         }
 
         [TestMethod]
         public void IsFixedArea()
         {
             GridControl g = GetGrid();
-            Assert.IsTrue(g.IsFixedArea(new Point(10, 20)));
-            Assert.IsTrue(g.IsFixedArea(new Point(10, 450)));
-            Assert.IsTrue(g.IsFixedArea(new Point(250, 20)));
-            Assert.IsFalse(g.IsFixedArea(new Point(250, 450)));
+            Assert.IsTrue(g.IsFixedArea(new ClientPoint(10, 20)));
+            Assert.IsTrue(g.IsFixedArea(new ClientPoint(10, 450)));
+            Assert.IsTrue(g.IsFixedArea(new ClientPoint(250, 20)));
+            Assert.IsFalse(g.IsFixedArea(new ClientPoint(250, 450)));
         }
 
         private static GridControl GetGrid()

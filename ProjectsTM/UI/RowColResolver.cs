@@ -1,9 +1,9 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {

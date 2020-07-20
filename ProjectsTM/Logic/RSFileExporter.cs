@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.Logic
 {
@@ -42,7 +42,8 @@ namespace ProjectsTM.Logic
             if (selectGetsudo.Length == 0)
             {
                 months = GetMonths(appData.Callender);
-            } else
+            }
+            else
             {
                 try
                 {
@@ -72,7 +73,7 @@ namespace ProjectsTM.Logic
             csv[0, 1] = "Mem";
             csv[0, 2] = "Proj";
             var c = 3;
-            foreach(var m in months)
+            foreach (var m in months)
             {
                 csv[0, c] = m.Item1.ToString() + "/" + m.Item2.ToString();
                 c++;

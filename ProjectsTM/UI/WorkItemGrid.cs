@@ -1,13 +1,13 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
+using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -47,7 +47,7 @@ namespace ProjectsTM.UI
             this.ColCount = _viewData.GetFilteredMembers().Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
             _editService = new WorkItemEditService(_viewData);
@@ -142,7 +142,7 @@ namespace ProjectsTM.UI
         public Rectangle? GetMemberDrawRect(Member m)
         {
             var col = Member2Col(m, _viewData.GetFilteredMembers());
-            var rect = GetRect(col, VisibleNormalTopRow, 1, false, false, false);
+            var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
             if (!rect.HasValue) return null;
             return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
@@ -208,7 +208,7 @@ namespace ProjectsTM.UI
             _keyAndMouseHandleService.MouseUp();
         }
 
-        public Rectangle? GetRangeSelectBound()
+        public ClientRectangle? GetRangeSelectBound()
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
@@ -237,7 +237,7 @@ namespace ProjectsTM.UI
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseMove(e, this);
+            _keyAndMouseHandleService.MouseMove(ClientPoint.Create(e), this);
             this.Invalidate();
         }
 
@@ -347,11 +347,18 @@ namespace ProjectsTM.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        public Rectangle? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
+        public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
+            return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count);
+        }
+
+        public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
+        {
+            var rowRange = GetRowRange(wi);
+            if (rowRange.row == null) return null;
+            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, GetVisibleRect(false, false));
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)

@@ -15,7 +15,7 @@ namespace ProjectsTM.UI
         public string MemberName => textBoxMemberName.Text;
         public string TagText => textBoxTagText.Text;
 
-        public string RegexPattern 
+        public string RegexPattern
         {
             get
             {

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using System;
 using System.Collections.Generic;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.ViewModel
 {

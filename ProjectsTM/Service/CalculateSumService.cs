@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectsTM.Service
 {

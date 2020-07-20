@@ -1,8 +1,7 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Model;
 using System.Collections.Generic;
 using System.Drawing;
-using ProjectsTM.Model;
-using ProjectsTM.UI;
 
 namespace ProjectsTM.ViewModel
 {
@@ -17,8 +16,10 @@ namespace ProjectsTM.ViewModel
         RowIndex Y2Row(int y);
 
         Rectangle? GetMemberDrawRect(Member m);
-        Rectangle? GetRect(ColIndex col, RowIndex r, int rowCount, bool isFixedRow, bool isFixedCol, bool isFrontView);
-        Rectangle? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView);
+        RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount);
+        ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea);
+        RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
+        ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);
 
 
@@ -27,13 +28,15 @@ namespace ProjectsTM.ViewModel
         Size FixedSize { get; }
         Point ScrollOffset { get; }
         RowColRange VisibleRowColRange { get; }
-        Rectangle? GetRangeSelectBound();
+        ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol);
+
+        ClientRectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
         void Invalidate();
         WorkItem PickWorkItemFromPoint(RawPoint curOnRaw);
-        bool IsFixedArea(Point location);
-        RawPoint Client2Raw(Point location);
+        bool IsFixedArea(ClientPoint location);
+        RawPoint Client2Raw(ClientPoint location);
         void IncRatio();
         void DecRatio();
         void EditSelectedWorkItem();

@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using ProjectsTM.Model;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.Logic
 {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace FreeGridControl
 {
     [DebuggerDisplay("Index = {Value}")]
-       public class ColIndex
+    public class ColIndex
     {
         public ColIndex(int value)
         {
