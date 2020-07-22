@@ -46,7 +46,7 @@ jobs:
       run: msbuild $Env:GITHUB_WORKSPACE\ProjectsTM\ProjectsTM.sln /property:Configuration=Release
     
     - name: VSTest
-      run: VSTest.Console.exe **UnitTest*.dll
+      run: VSTest.Console.exe UnitTestProject1\bin\Release\UnitTest*.dll
     
     - name: Build Installer
       shell: powershell
