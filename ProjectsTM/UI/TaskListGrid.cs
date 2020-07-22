@@ -184,8 +184,9 @@ namespace ProjectsTM.UI
         {
             if (_viewData.Selected == null) return;
             if (_viewData.Selected.Count() != 1) return;
-            var rowIdx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique)) + FixedRowCount;
-            MoveVisibleRowCol(new RowIndex(rowIdx), new ColIndex(0)); // TODO グリッドの上側に移動してしまう。下側にはみ出ていた時は下のままにする。
+            var listIdx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+            if (listIdx == -1) return;
+            MoveVisibleRowCol(new RowIndex(listIdx + FixedRowCount), new ColIndex(0)); // TODO グリッドの上側に移動してしまう。下側にはみ出ていた時は下のままにする。
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)
