@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Xml.Serialization;
-using ProjectsTM.Logic;
+﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {

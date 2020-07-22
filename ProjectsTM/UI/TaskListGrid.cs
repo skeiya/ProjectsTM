@@ -20,7 +20,9 @@ namespace ProjectsTM.UI
         private bool _isAudit;
         private string _pattern;
         private WorkItemEditService _editService;
-
+        public event EventHandler ListUpdated;
+        private ColIndex _sortCol = new ColIndex(6);
+        private bool _isReverse = false;
 
         public TaskListGrid()
         {
@@ -29,17 +31,88 @@ namespace ProjectsTM.UI
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
             this.MouseClick += TaskListGrid_MouseClick;
             this.Disposed += TaskListGrid_Disposed;
+            this.KeyDown += TaskListGrid_KeyDown;
+        }
+
+        private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)
+            {
+                MoveSelect(+1);
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                MoveSelect(-1);
+            }
+        }
+
+        private void MoveSelect(int offset)
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+            var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+            var oneStep = offset / Math.Abs(offset);
+            while (true)
+            {
+                idx += oneStep;
+                if (idx < 0 || _listItems.Count <= idx) return;
+                if (_listItems.ElementAt(idx).IsMilestone) continue;
+                offset -= oneStep;
+                if (offset != 0) continue;
+                _viewData.Selected = new WorkItems(_listItems.ElementAt(idx).WorkItem);
+            }
         }
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(Client2Raw(e.Location).Y);
-            if (r.Value < FixedRowCount) return;
+            var rawLocation = Client2Raw(ClientPoint.Create(e));
+            var r = Y2Row(rawLocation.Y);
+            if (r.Value < FixedRowCount)
+            {
+                HandleSortRequest(rawLocation);
+                return;
+            }
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
             {
                 _viewData.Selected = new WorkItems(item.WorkItem);
             }
+        }
+
+        private void HandleSortRequest(RawPoint rawLocation)
+        {
+            var c = X2Col(rawLocation.X);
+            if (_sortCol.Equals(c))
+            {
+                _isReverse = !_isReverse;
+            }
+            else
+            {
+                _isReverse = false;
+            }
+            _sortCol = c;
+            InitializeGrid();
+        }
+
+        private void Sort()
+        {
+            if (IsDayCountCol(_sortCol))
+            {
+                _listItems = _listItems.OrderBy(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period)).ToList();
+            }
+            else
+            {
+                _listItems = _listItems.OrderBy(l => GetText(l, _sortCol)).ToList();
+            }
+            if (_isReverse)
+            {
+                _listItems.Reverse();
+            }
+        }
+
+        private static bool IsDayCountCol(ColIndex c)
+        {
+            return c.Value == 7;
         }
 
         private void TaskListGrid_Disposed(object sender, EventArgs e)
@@ -49,7 +122,7 @@ namespace ProjectsTM.UI
 
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var r = Y2Row(Client2Raw(e.Location).Y);
+            var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
             if (r.Value < FixedRowCount) return;
             var item = _listItems[r.Value - FixedRowCount];
             using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
@@ -60,6 +133,11 @@ namespace ProjectsTM.UI
                 _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
+        }
+
+        internal int GetDayCount()
+        {
+            return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
         internal void Initialize(ViewData viewData, string pattern, bool isAudit)
@@ -98,7 +176,17 @@ namespace ProjectsTM.UI
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
+            MoveSelectedVisible();
             this.Invalidate();
+        }
+
+        private void MoveSelectedVisible()
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+            var listIdx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+            if (listIdx == -1) return;
+            MoveVisibleRowCol(new RowIndex(listIdx + FixedRowCount), new ColIndex(0)); // TODO グリッドの上側に移動してしまう。下側にはみ出ていた時は下のままにする。
         }
 
         private void _undoService_Changed(object sender, EditedEventArgs e)
@@ -124,9 +212,9 @@ namespace ProjectsTM.UI
 
         private void UpdateListItem()
         {
-            var list = _isAudit ? GetAuditList() : GetFilterList();
-            _listItems = list.OrderBy(l => l.WorkItem.Period.To).ToList();
-
+            _listItems = _isAudit ? GetAuditList() : GetFilterList();
+            Sort();
+            ListUpdated?.Invoke(this, null);
         }
 
         private List<TaskListItem> GetAuditList()
@@ -146,12 +234,14 @@ namespace ProjectsTM.UI
                     continue;
                 }
             }
-            return list;
+            if (_pattern == null) return list;
+            return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
         }
 
         private bool IsTooBigError(WorkItem wi)
         {
             if (wi.State == TaskState.Background) return false;
+            if (wi.State == TaskState.Done) return false;
             if (!IsStartSoon(wi)) return false;
             return IsTooBig(wi);
         }
@@ -164,7 +254,7 @@ namespace ProjectsTM.UI
         private bool IsStartSoon(WorkItem wi)
         {
             var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
-            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 20;
+            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 4;
         }
 
         private static bool IsNotStartedError(WorkItem wi)
@@ -200,7 +290,7 @@ namespace ProjectsTM.UI
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(new Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
+            return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
         }
 
         private static Color GetColor(TaskState state)
@@ -236,23 +326,24 @@ namespace ProjectsTM.UI
         private void DrawItemRow(Graphics g, RowIndex r, StringFormat format)
         {
             var item = _listItems[r.Value - FixedRowCount];
+            var visibleArea = GetVisibleRect(false, false);
             foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
             {
-                var res = GetRect(c, r, 1, false, false, true);
+                var res = GetRectClient(c, r, 1, visibleArea);
                 if (!res.HasValue) continue;
-                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value);
-                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
+                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value.Value);
+                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value.Value));
                 var text = GetText(item, c);
                 var rect = res.Value;
-                rect.Y+= 1;
-                g.DrawString(text, this.Font, Brushes.Black, rect, format);
+                rect.Y += 1;
+                g.DrawString(text, this.Font, Brushes.Black, rect.Value, format);
 
             }
             if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
             {
-                var res = GetRect(new ColIndex(0), r, 1, false, false, true);
+                var res = GetRectClient(new ColIndex(0), r, 1, visibleArea);
                 if (!res.HasValue) return;
-                var rect = new Rectangle(0, (int)res.Value.Top, (int)GridWidth, (int)res.Value.Height);
+                var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
             }
         }
@@ -306,15 +397,20 @@ namespace ProjectsTM.UI
 
         private void DrawTitleRow(Graphics g)
         {
-            foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+            using (var format = new StringFormat() { Alignment = StringAlignment.Far })
             {
-                var res = GetRect(c, new RowIndex(0), 1, true, false, true);
-                if (!res.HasValue) return;
-                g.FillRectangle(Brushes.Gray, res.Value);
-                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
-                var rect = res.Value;
-                rect.Y += 1;
-                g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect);
+                var visibleArea = GetVisibleRect(true, false);
+                foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
+                {
+                    var res = GetRectClient(c, new RowIndex(0), 1, visibleArea);
+                    if (!res.HasValue) return;
+                    g.FillRectangle(Brushes.Gray, res.Value.Value);
+                    g.DrawRectangle(Pens.Black, res.Value.Value);
+                    var rect = res.Value;
+                    rect.Y += 1;
+                    g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect.Value);
+                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect.Value, format);
+                }
             }
         }
 

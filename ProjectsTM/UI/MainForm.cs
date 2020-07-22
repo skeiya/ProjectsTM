@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ProjectsTM.Logic;
+using ProjectsTM.Model;
+using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,10 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -123,7 +123,7 @@ namespace ProjectsTM.UI
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                FormSize = _formSize 
+                FormSize = _formSize
             };
             UserSettingUIService.Save(UserSettingPath, setting);
         }

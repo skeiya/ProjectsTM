@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace ProjectsTM.ViewModel
+﻿namespace ProjectsTM.ViewModel
 {
     public class Detail
     {

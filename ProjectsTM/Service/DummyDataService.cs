@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Xml.Serialization;
-using ProjectsTM.Logic;
+﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {

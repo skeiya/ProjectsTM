@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ProjectsTM.UI;
+using ProjectsTM.ViewModel;
+using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
-using ProjectsTM.UI;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.Service
 {

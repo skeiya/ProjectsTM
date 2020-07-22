@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Xml.Serialization;
-using ProjectsTM.Logic;
+﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace ProjectsTM.UI
 {
@@ -260,7 +259,7 @@ namespace ProjectsTM.UI
 
         private void buttonGenerateFromWorkItems_Click(object sender, EventArgs e)
         {
-            using(var dlg = new EditMemberForm(""))
+            using (var dlg = new EditMemberForm(""))
             {
                 dlg.Text = "作業項目の正規表現";
                 if (dlg.ShowDialog() != DialogResult.OK) return;

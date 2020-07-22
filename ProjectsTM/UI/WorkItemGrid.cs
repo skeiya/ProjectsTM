@@ -1,13 +1,13 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Logic;
+using ProjectsTM.Model;
+using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ProjectsTM.Logic;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -16,17 +16,17 @@ namespace ProjectsTM.UI
         private ViewData _viewData;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
-        private DrawService _drawService;
+        private DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
 
         public WorkItemEditService EditService => _editService;
 
-        public SizeF FullSize => new SizeF(GridWidth, GridHeight);
+        public Size FullSize => new Size(GridWidth, GridHeight);
 
         public Size VisibleSize => new Size(Width, Height);
 
-        public SizeF FixedSize => new SizeF(FixedWidth, FixedHeight);
+        public Size FixedSize => new Size(FixedWidth, FixedHeight);
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
@@ -47,13 +47,13 @@ namespace ProjectsTM.UI
             this.ColCount = _viewData.GetFilteredMembers().Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
             _editService = new WorkItemEditService(_viewData);
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
-            _drawService = new DrawService(
+            _drawService.Initialize(
                 _viewData,
                 this,
                 () => _workItemDragService.IsActive(),
@@ -94,11 +94,11 @@ namespace ProjectsTM.UI
             LockUpdate = true;
             for (var c = 0; c < ColCount; c++)
             {
-                ColWidths[c] = (ColWidths[c] * hRatio);
+                ColWidths[c] = (int)(ColWidths[c] * hRatio);
             }
             for (var r = 0; r < RowCount; r++)
             {
-                RowHeights[r] = (RowHeights[r] * vRatio);
+                RowHeights[r] = (int)(RowHeights[r] * vRatio);
             }
             LockUpdate = false;
         }
@@ -109,11 +109,11 @@ namespace ProjectsTM.UI
             var g = this.CreateGraphics();
             var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
             var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            var height = (int)(memberHeight);
+            var height = memberHeight;
             var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2) + 1;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4) + 1;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4) + 1;
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2f) + 1;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4f) + 1;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4f) + 1;
             for (var c = FixedColCount; c < ColCount; c++)
             {
                 this.ColWidths[c] = width;
@@ -139,12 +139,12 @@ namespace ProjectsTM.UI
             return Member2Col(m, _viewData.GetFilteredMembers());
         }
 
-        public RectangleF? GetMemberDrawRect(Member m)
+        public Rectangle? GetMemberDrawRect(Member m)
         {
             var col = Member2Col(m, _viewData.GetFilteredMembers());
-            var rect = GetRect(col, VisibleNormalTopRow, 1, false, false, false);
+            var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
             if (!rect.HasValue) return null;
-            return new RectangleF(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
 
         private void AttachEvents()
@@ -208,7 +208,7 @@ namespace ProjectsTM.UI
             _keyAndMouseHandleService.MouseUp();
         }
 
-        public Rectangle? GetRangeSelectBound()
+        public ClientRectangle? GetRangeSelectBound()
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
@@ -237,7 +237,7 @@ namespace ProjectsTM.UI
 
         private void WorkItemGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseMove(e, this);
+            _keyAndMouseHandleService.MouseMove(ClientPoint.Create(e), this);
             this.Invalidate();
         }
 
@@ -324,7 +324,7 @@ namespace ProjectsTM.UI
         internal void MoveToToday()
         {
             var wi = GetUniqueSelect();
-            var m = wi != null ? wi.AssignedMember : X2Member((int)FixedWidth);
+            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
@@ -347,11 +347,18 @@ namespace ProjectsTM.UI
             RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
-        public RectangleF? GetWorkItemDrawRect(WorkItem wi, IEnumerable<Member> members, bool isFrontView)
+        public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
             if (rowRange.row == null) return null;
-            return GetRect(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, false, false, isFrontView);
+            return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count);
+        }
+
+        public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
+        {
+            var rowRange = GetRowRange(wi);
+            if (rowRange.row == null) return null;
+            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, GetVisibleRect(false, false));
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ProjectsTM.Model;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using ProjectsTM.Model;
 
 namespace ProjectsTM.Logic
 {

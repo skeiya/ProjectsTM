@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ProjectsTM.Logic;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Xml.Serialization;
-using ProjectsTM.Logic;
 
 namespace ProjectsTM.Model
 {

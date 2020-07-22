@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ProjectsTM.Model;
-using ProjectsTM.Service;
 
 namespace ProjectsTM.ViewModel
 {
@@ -19,6 +19,7 @@ namespace ProjectsTM.ViewModel
             {
                 _appData = value;
                 UndoService = new UndoService();
+                AddFreeTimeMembersToHideMembers(GetFilteredMembers());
                 if (AppDataChanged != null) AppDataChanged(this, null);
             }
         }
@@ -63,6 +64,7 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
+            AddFreeTimeMembersToHideMembers(GetFilteredMembers());
             FilterChanged(this, null);
         }
 
@@ -76,14 +78,18 @@ namespace ProjectsTM.ViewModel
         public IEnumerable<Member> GetFilteredMembers()
         {
             var result = CreateAllMembersList();
-            result = RemoveFilterSettingMembers(result);
-            return RemoveFreeTimeMembers(result);
+            return RemoveFilterSettingMembers(result);
         }
 
-        private IEnumerable<Member> RemoveFreeTimeMembers(IEnumerable<Member> members)
+        private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members)
         {
-            if (Filter == null || Filter.IsFreeTimeMemberShow) return members;
-            return members.Where(m => GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
+            if (Filter == null || Filter.IsFreeTimeMemberShow) return;
+            if (members == null || members.Count() > 0) return;
+            var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
+            foreach (var m in freeTimeMember)
+            {
+                if (!Filter.HideMembers.Contains(m)) Filter.HideMembers.Add(m);
+            }
         }
 
         private List<Member> RemoveFilterSettingMembers(List<Member> members)

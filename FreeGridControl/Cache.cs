@@ -8,18 +8,18 @@ namespace FreeGridControl
 {
     class Cache
     {
-        private Dictionary<RowIndex, float> _cacheTop = new Dictionary<RowIndex, float>();
-        private Dictionary<ColIndex, float> _cacheLeft = new Dictionary<ColIndex, float>();
+        private Dictionary<RowIndex, int> _cacheTop = new Dictionary<RowIndex, int>();
+        private Dictionary<ColIndex, int> _cacheLeft = new Dictionary<ColIndex, int>();
         private Dictionary<Tuple<RowIndex, ColIndex>, RectangleF> _chacheRect = new Dictionary<Tuple<RowIndex, ColIndex>, RectangleF>();
-        public FloatArrayForDesign RowHeights = new FloatArrayForDesign();
-        public FloatArrayForDesign ColWidths = new FloatArrayForDesign();
+        public IntArrayForDesign RowHeights = new IntArrayForDesign();
+        public IntArrayForDesign ColWidths = new IntArrayForDesign();
         private bool _lockUpdate = true;
 
-        public float GridHeight => GetTop(new RowIndex(RowHeights.Count));
-        public float GridWidth => GetLeft(new ColIndex(ColWidths.Count));
+        public int GridHeight => GetTop(new RowIndex(RowHeights.Count));
+        public int GridWidth => GetLeft(new ColIndex(ColWidths.Count));
 
-        public float FixedWidth { get; private set; }
-        public float FixedHeight { get; private set; }
+        public int FixedWidth { get; private set; }
+        public int FixedHeight { get; private set; }
         public int FixedRows { get; set; }
         public int FixedCols { get; set; }
         public bool LockUpdate
@@ -32,9 +32,9 @@ namespace FreeGridControl
             }
         }
 
-        public float GetTop(RowIndex row) => _cacheTop.Count == 0 ? 0 : _cacheTop[row];
-        public float GetLeft(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col];
-        public float GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col] + ColWidths[col.Value];
+        public int GetTop(RowIndex row) => _cacheTop.Count == 0 ? 0 : _cacheTop[row];
+        public int GetLeft(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col];
+        public int GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col] + ColWidths[col.Value];
 
         public void Update()
         {

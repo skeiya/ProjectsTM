@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+﻿using FreeGridControl;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
-using static FreeGridControl.GridControl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
@@ -24,7 +23,7 @@ namespace ProjectsTM.Service
         private ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService,DrawService drawService, WorkItemEditService editService, Control parentControl)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl)
         {
             this._viewData = viewData;
             this._grid = grid;
@@ -47,8 +46,9 @@ namespace ProjectsTM.Service
 
         public void MouseDown(MouseEventArgs e)
         {
-            if (_grid.IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = _grid.Client2Raw(e.Location);
+            var location = ClientPoint.Create(e);
+            if (_grid.IsFixedArea(location)) return;
+            var curOnRaw = _grid.Client2Raw(location);
 
             if (e.Button == MouseButtons.Right)
             {
@@ -57,9 +57,9 @@ namespace ProjectsTM.Service
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData, e.Location))
+                if (IsWorkItemExpandArea(_viewData, location))
                 {
-                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, e.Location), _viewData.Selected, _grid.Y2Day(curOnRaw.Y));
+                    _workItemDragService.StartExpand(GetExpandDirection(_viewData, location), _viewData.Selected, _grid.Y2Day(curOnRaw.Y));
                     return;
                 }
             }
@@ -108,12 +108,12 @@ namespace ProjectsTM.Service
             }
         }
 
-        private int GetExpandDirection(ViewData viewData, Point location)
+        private int GetExpandDirection(ViewData viewData, ClientPoint location)
         {
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRect(w, viewData.GetFilteredMembers(), true);
+                var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.GetFilteredMembers());
                 if (!bounds.HasValue) return 0;
                 if (IsTopBar(bounds.Value, location)) return +1;
                 if (IsBottomBar(bounds.Value, location)) return -1;
@@ -121,11 +121,11 @@ namespace ProjectsTM.Service
             return 0;
         }
 
-        public void MouseMove(MouseEventArgs e, Control control)
+        public void MouseMove(ClientPoint location, Control control)
         {
-            UpdateHoveringText(e);
-            _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(e.Location), _viewData);
-            if (IsWorkItemExpandArea(_viewData, e.Location))
+            UpdateHoveringText(location);
+            _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(location), _viewData);
+            if (IsWorkItemExpandArea(_viewData, location))
             {
                 if (control.Cursor != Cursors.SizeNS)
                 {
@@ -143,18 +143,18 @@ namespace ProjectsTM.Service
         }
 
 
-        private bool IsWorkItemExpandArea(ViewData viewData, Point location)
+        private bool IsWorkItemExpandArea(ViewData viewData, ClientPoint location)
         {
             if (viewData.Selected == null) return false;
             return null != PickExpandingWorkItem(location);
         }
 
-        public WorkItem PickExpandingWorkItem(Point location)
+        public WorkItem PickExpandingWorkItem(ClientPoint location)
         {
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRect(w, _viewData.GetFilteredMembers(), true);
+                var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.GetFilteredMembers());
                 if (!bounds.HasValue) continue;
                 if (IsTopBar(bounds.Value, location)) return w;
                 if (IsBottomBar(bounds.Value, location)) return w;
@@ -162,31 +162,32 @@ namespace ProjectsTM.Service
             return null;
         }
 
-        internal static bool IsTopBar(RectangleF workItemBounds, PointF point)
+        internal static bool IsTopBar(ClientRectangle workItemBounds, ClientPoint point)
         {
             var topBar = WorkItemDragService.GetTopBarRect(workItemBounds);
             return topBar.Contains(point);
         }
 
-        internal static bool IsBottomBar(RectangleF workItemBounds, PointF point)
+        internal static bool IsBottomBar(ClientRectangle workItemBounds, ClientPoint point)
         {
             var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds);
             return bottomBar.Contains(point);
         }
 
-        private void UpdateHoveringText(MouseEventArgs e)
+        private void UpdateHoveringText(ClientPoint location)
         {
             if (_workItemDragService.IsActive()) return;
-            if (_grid.IsFixedArea(e.Location)) { _toolTipService.Hide(); return; }
-            RawPoint cur = _grid.Client2Raw(e.Location);
+            if (_grid.IsFixedArea(location)) { _toolTipService.Hide(); return; }
+            RawPoint cur = _grid.Client2Raw(location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi);
         }
 
         public void DoubleClick(MouseEventArgs e)
         {
-            if (_grid.IsFixedArea(e.Location)) return;
-            RawPoint curOnRaw = _grid.Client2Raw(e.Location);
+            var locaion = ClientPoint.Create(e);
+            if (_grid.IsFixedArea(locaion)) return;
+            RawPoint curOnRaw = _grid.Client2Raw(locaion);
 
             if (_viewData.Selected != null)
             {
@@ -260,9 +261,9 @@ namespace ProjectsTM.Service
                 var m = _grid.Col2Member(c);
                 foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
                 {
-                    var rect = _grid.GetWorkItemDrawRect(w, members, true);
+                    var rect = _grid.GetWorkItemDrawRectClient(w, members);
                     if (!rect.HasValue) continue;
-                    if (range.Value.Contains(Rectangle.Round(rect.Value))) selected.Add(w);
+                    if (range.Value.Contains(rect.Value)) selected.Add(w);
                 }
             }
             _viewData.Selected = selected;

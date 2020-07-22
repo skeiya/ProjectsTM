@@ -33,6 +33,7 @@
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.radioButtonFilter = new System.Windows.Forms.RadioButton();
             this.radioButtonAudit = new System.Windows.Forms.RadioButton();
+            this.labelSum = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -45,7 +46,7 @@
             this.gridControl1.Location = new System.Drawing.Point(12, 44);
             this.gridControl1.LockUpdate = true;
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(726, 251);
+            this.gridControl1.Size = new System.Drawing.Size(726, 239);
             this.gridControl1.TabIndex = 2;
             // 
             // comboBoxPattern
@@ -94,12 +95,23 @@
             this.radioButtonAudit.UseVisualStyleBackColor = true;
             this.radioButtonAudit.CheckedChanged += new System.EventHandler(this.radioButtonAudit_CheckedChanged);
             // 
+            // labelSum
+            // 
+            this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelSum.AutoSize = true;
+            this.labelSum.Location = new System.Drawing.Point(12, 288);
+            this.labelSum.Name = "labelSum";
+            this.labelSum.Size = new System.Drawing.Size(29, 12);
+            this.labelSum.TabIndex = 5;
+            this.labelSum.Text = "合計";
+            // 
             // TaskListForm
             // 
             this.AcceptButton = this.buttonUpdate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 307);
+            this.Controls.Add(this.labelSum);
             this.Controls.Add(this.radioButtonAudit);
             this.Controls.Add(this.radioButtonFilter);
             this.Controls.Add(this.buttonUpdate);
@@ -120,5 +132,6 @@
         private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.RadioButton radioButtonFilter;
         private System.Windows.Forms.RadioButton radioButtonAudit;
+        private System.Windows.Forms.Label labelSum;
     }
 }

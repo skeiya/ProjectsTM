@@ -75,7 +75,7 @@ namespace ProjectsTM.Model
         {
             if (other == null) return false;
             if (this._members.Count != other._members.Count) return false;
-            for(var i = 0; i < this._members.Count; i++)
+            for (var i = 0; i < this._members.Count; i++)
             {
                 if (!this._members[i].Equals(other._members[i])) return false;
             }

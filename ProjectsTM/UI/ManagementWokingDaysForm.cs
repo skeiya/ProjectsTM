@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using ProjectsTM.Logic;
+﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using System;
+using System.Windows.Forms;
 
 namespace ProjectsTM.UI
 {
