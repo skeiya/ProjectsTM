@@ -222,8 +222,30 @@ namespace ProjectsTM.Service
             using (var rs = StreamFactory.CreateReader(path))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                return (Filter)x.Deserialize(rs);
+                return SetDefaultMileStoneFilter((Filter)x.Deserialize(rs));
             }
+        }
+
+        private Filter SetDefaultMileStoneFilter(Filter filter)
+        {
+            if (filter.MileStoneFilters?.Count > 0) return filter;
+            if (NoFiterMileStoneCount() == 0) return filter;
+
+            filter.MileStoneFilters = new MileStoneFilters();
+            filter.MileStoneFilters.Add(new MileStoneFilter());
+            return filter;
+        }
+
+        private int NoFiterMileStoneCount()
+        {
+            int result = 0;
+            foreach(var ms in _viewData.Original.MileStones)
+            {
+                if (ms.MileStoneFilter == null ||
+                    ms.MileStoneFilter.Name == null ||
+                    ms.MileStoneFilter.Name == string.Empty) result++;
+            }
+            return result;
         }
     }
 }
