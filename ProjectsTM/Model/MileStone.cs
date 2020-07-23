@@ -10,12 +10,12 @@ namespace ProjectsTM.Model
     {
         public MileStone() { }
 
-        public MileStone(string name, CallenderDay day, Color color, Project project)
+        public MileStone(string name, CallenderDay day, Color color, MileStoneFilter mileStoneFilter)
         {
             Name = name;
             Day = day;
             Color = color;
-            Project = project;
+            MileStoneFilter = mileStoneFilter;
         }
 
         public string Name { set; get; }
@@ -29,13 +29,14 @@ namespace ProjectsTM.Model
             set { Color = ColorSerializer.Deserialize(value); }
         }
         [XmlIgnore]
-        public Project Project { set; get; }
+        public MileStoneFilter MileStoneFilter { set; get; }
+
         [XmlElement]
-        public string ProjectName
+        public string MileStoneFilterName
         {
-            get { return Project.ToString(); }
-            set { Project = new Project(value); }
-        }
+            get { return MileStoneFilter != null ? MileStoneFilter.Name : string.Empty; }
+            set { MileStoneFilter = new MileStoneFilter(value); }
+        }       
 
         public int CompareTo(MileStone other)
         {
@@ -46,12 +47,13 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            return obj is MileStone stone &&
-                   Name == stone.Name &&
+            if (!(obj is MileStone stone)) return false;
+            if (stone.MileStoneFilter == null) stone.MileStoneFilter = new MileStoneFilter();
+            return Name == stone.Name &&
                    EqualityComparer<CallenderDay>.Default.Equals(Day, stone.Day) &&
                    EqualityComparer<Color>.Default.Equals(Color, stone.Color) &&
                    ColorText == stone.ColorText &&
-                   Project == stone.Project;
+                   MileStoneFilter.Name == stone.MileStoneFilter.Name;
         }
 
         public override int GetHashCode()
@@ -61,13 +63,13 @@ namespace ProjectsTM.Model
             hashCode = hashCode * -1521134295 + EqualityComparer<CallenderDay>.Default.GetHashCode(Day);
             hashCode = hashCode * -1521134295 + Color.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ColorText);
-            hashCode = hashCode * -1521134295 + Project.GetHashCode();
+            hashCode = hashCode * -1521134295 + MileStoneFilter.GetHashCode();
             return hashCode;
         }
 
         internal MileStone Clone()
         {
-            return new MileStone(Name, Day, Color, Project);
+            return new MileStone(Name, Day, Color, MileStoneFilter);
         }
 
         public static bool operator ==(MileStone left, MileStone right)

@@ -119,7 +119,7 @@ namespace ProjectsTM.Service
             toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
-        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
+        internal void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = null;
             var idx = toolStripComboBoxFilter.SelectedIndex;
@@ -155,7 +155,23 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false);
+            return new Filter(null, null, members, false, GetMileStoneFiltersFromCompanyName(com));
+        }
+
+        private MileStoneFilters GetMileStoneFiltersFromCompanyName(string company)
+        {
+            var mileStoneFilters = new MileStoneFilters();
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                if (ms.MileStoneFilter.Name == company)
+                {
+                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
+                    return mileStoneFilters;
+                }
+            }
+
+            mileStoneFilters.Add(new MileStoneFilter());
+            return mileStoneFilters;
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -171,8 +187,24 @@ namespace ProjectsTM.Service
             foreach (var m in _viewData.Original.Members)
             {
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
+            }        
+            return new Filter(null, null, members, false,GetMileStoneFiltersFromProjectName(pro));
+        }
+
+        private MileStoneFilters GetMileStoneFiltersFromProjectName(Project pro)
+        {
+            var mileStoneFilters = new MileStoneFilters();
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                if (ms.MileStoneFilter?.Name == pro.ToString())
+                {
+                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
+                    return mileStoneFilters;
+                }
             }
-            return new Filter(null, null, members, false);
+
+            mileStoneFilters.Add(new MileStoneFilter());
+            return mileStoneFilters;
         }
 
         private Filter GetFilterByFiles(ref int idx)

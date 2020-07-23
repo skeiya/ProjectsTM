@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
@@ -14,14 +13,16 @@ namespace ProjectsTM.UI
         private readonly ViewData _viewData;
         private MileStone _mileStone;
         private IEnumerable<Project> _projects;
+        private MileStoneFilters _mileStoneFilters;
 
         public MileStone MileStone => _mileStone;
 
-        public EditMileStoneForm(Callender callender, MileStone m, ViewData viewData)
+        public EditMileStoneForm(Callender callender, MileStone m, ViewData viewData, MileStoneFilters mileStoneFilters)
         {
             InitializeComponent();
             this._callender = callender;
             this._viewData = viewData;
+            this._mileStoneFilters = mileStoneFilters;
             ComboBox1_Init(m);
             if (m == null) return;
             textBoxName.Text = m.Name;
@@ -32,25 +33,28 @@ namespace ProjectsTM.UI
         private void SetComboBoxItems()
         {
             comboBox1.Items.Clear();
-            comboBox1.Items.Add("ALL");
-            _projects = _viewData.Original.WorkItems.Select(w => w.Project).Distinct();
-            foreach (var pro in _projects) comboBox1.Items.Add(pro.ToString());
+            if (_mileStoneFilters == null) return;
+            foreach (var msFilter in _mileStoneFilters)
+            {
+                if (msFilter.Name == null) continue;
+                comboBox1.Items.Add(msFilter.Name);
+            }
         }
 
-        private bool ComboBox1_Contain(MileStone m)
+        private bool ComboBox1_Contain(MileStoneFilter msFilter)
         {
-            if (m == null ||
-                m.Project == null ||
-                m.Project.ToString() == null ||
-                !comboBox1.Items.Contains(m.Project.ToString())) return false;
+            if (msFilter == null ||
+                msFilter.Name == null ||
+                msFilter.Name == String.Empty ||
+                !comboBox1.Items.Contains(msFilter.Name)) return false;
             return true;
         }
 
         private void ComboBox1_Init(MileStone m)
         {
             SetComboBoxItems();
-            if (!ComboBox1_Contain(m)) { comboBox1.SelectedIndex = 0; return; }
-            comboBox1.SelectedIndex = comboBox1.Items.IndexOf(m.Project.ToString());  
+            if (!ComboBox1_Contain(m?.MileStoneFilter)) return;
+            comboBox1.SelectedIndex = comboBox1.Items.IndexOf(m.MileStoneFilter.Name);  
         }
 
         private void ButtonSelectColor_Click(object sender, EventArgs e)
@@ -76,18 +80,11 @@ namespace ProjectsTM.UI
             return null;
         }
 
-        private Project GetProject()
-        {
-            var selectedIndex = comboBox1.SelectedIndex;
-            if (selectedIndex == 0) return new Project("ALL");
-            return _projects.ElementAt(selectedIndex - 1);
-        }
-
         private MileStone CreateMileStone()
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
             if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
-            return new MileStone(textBoxName.Text, day, labelColor.BackColor, GetProject());
+            return new MileStone(textBoxName.Text, day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text));
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)

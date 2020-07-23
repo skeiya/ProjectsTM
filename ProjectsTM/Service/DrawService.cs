@@ -234,21 +234,23 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        private bool FilterdProjectsContain(MileStone m, IEnumerable<Project> projects)
+        private bool IsShowAllSetting()
         {
-            foreach (var project in projects)
-            {
-                if (m.Project.ToString() == project.ToString()) return true;
-            }
-            return false;
+            return _viewData.Filter == null;
         }
 
-        private bool FilteredMileStonesContain(MileStone m, IEnumerable<Project> projects)
+        private bool MileStoneFiltersContain(MileStone m)
         {
             if (m == null) return false;
-            if (m.Project == null || m.ProjectName == null) { m.Project = new Project("ALL"); return true; }
-            if (m.Project.ToString() == "ALL") return true;
-            if (FilterdProjectsContain(m, projects)) return true;
+            if (IsShowAllSetting()) return true;
+            if (m.Name.Equals("Today")) return true;
+
+            var mileStoneFilters = _viewData.Filter.MileStoneFilters;
+            if (mileStoneFilters == null) return false;
+            foreach (var msFilter in mileStoneFilters)
+            {
+                if (msFilter.Equals(m.MileStoneFilter)) return true;
+            }
             return false;
         }
 
@@ -260,7 +262,7 @@ namespace ProjectsTM.Service
             foreach (var r in range.Rows)
             {
                 var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (!FilteredMileStonesContain(m, projects)) continue;
+                if (!MileStoneFiltersContain(m)) continue;
                 var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))

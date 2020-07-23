@@ -51,5 +51,17 @@ namespace ProjectsTM.Model
         {
             return _list.Count == 0;
         }
+
+        internal MileStoneFilters GetMileStoneFilters()
+        {
+            var result = new MileStoneFilters();
+            foreach (var mileStone in this._list)
+            {
+                if (mileStone.MileStoneFilter == null) continue;
+                if (result.Contains(mileStone.MileStoneFilter)) continue;
+                result.Add(mileStone.MileStoneFilter);
+            }
+            return result;
+        }
     }
 }
