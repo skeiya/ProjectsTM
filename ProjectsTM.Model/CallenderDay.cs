@@ -84,7 +84,7 @@ namespace ProjectsTM.Model
             return 1;
         }
 
-        internal void CopyFrom(CallenderDay d)
+        public void CopyFrom(CallenderDay d)
         {
             Year = d.Year;
             Month = d.Month;

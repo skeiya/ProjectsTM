@@ -26,14 +26,14 @@ namespace ProjectsTM.Model
             return _members.GetEnumerator();
         }
 
-        internal Members Clone()
+        public Members Clone()
         {
             var result = new Members();
             foreach (var m in _members) result.Add(m.Clone());
             return result;
         }
 
-        internal void Up(Member m)
+        public void Up(Member m)
         {
             var index = FindIndex(m);
             if (index == 0) return;
@@ -47,7 +47,7 @@ namespace ProjectsTM.Model
             return _members.FindIndex((x) => x.Equals(m));
         }
 
-        internal void Down(Member m)
+        public void Down(Member m)
         {
             var index = FindIndex(m);
             if (index == _members.Count - 1) return;
@@ -61,7 +61,7 @@ namespace ProjectsTM.Model
             return 229854969 + EqualityComparer<List<Member>>.Default.GetHashCode(_members);
         }
 
-        internal void SortByCompany()
+        public void SortByCompany()
         {
             _members.Sort((a, b) => a.Company.CompareTo(b.Company));
         }

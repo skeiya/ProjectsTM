@@ -49,7 +49,7 @@ namespace ProjectsTM.Model
             return hashCode;
         }
 
-        internal bool HasInterSection(Period period)
+        public bool HasInterSection(Period period)
         {
             if (period == null) return true;
             if (period.Contains(From)) return true;

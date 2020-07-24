@@ -57,7 +57,7 @@ namespace ProjectsTM.Model
             }
         }
 
-        internal void EditApply(string text)
+        public void EditApply(string text)
         {
             var m = Member.Parse(text);
             if (m == null) return;

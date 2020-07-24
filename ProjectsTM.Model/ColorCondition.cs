@@ -52,12 +52,12 @@ namespace ProjectsTM.Model
             return hashCode;
         }
 
-        internal ColorCondition Clone()
+        public ColorCondition Clone()
         {
             return new ColorCondition(Pattern, BackColor, ForeColor);
         }
 
-        internal void Apply(ColorCondition cond)
+        public void Apply(ColorCondition cond)
         {
             this.Pattern = cond.Pattern;
             this.BackColor = cond.BackColor;

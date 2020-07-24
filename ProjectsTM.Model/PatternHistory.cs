@@ -19,7 +19,7 @@ namespace ProjectsTM.Model
         {
         }
 
-        internal void Append(string text)
+        public void Append(string text)
         {
             if (string.IsNullOrEmpty(text)) return;
             if (IsNewestSame(text)) return;

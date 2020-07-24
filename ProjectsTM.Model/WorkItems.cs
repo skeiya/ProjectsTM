@@ -79,12 +79,12 @@ namespace ProjectsTM.Model
             return _items.SequenceEqual(target._items);
         }
 
-        internal void Remove(WorkItems selected)
+        public void Remove(WorkItems selected)
         {
             foreach (var wi in selected) Remove(wi);
         }
 
-        internal void Remove(WorkItem selected)
+        public void Remove(WorkItem selected)
         {
             if (!_items[selected.AssignedMember].Remove(selected))
             {
@@ -97,7 +97,7 @@ namespace ProjectsTM.Model
             return -566117206 + EqualityComparer<SortedDictionary<Member, MembersWorkItems>>.Default.GetHashCode(_items);
         }
 
-        internal WorkItems Clone()
+        public WorkItems Clone()
         {
             var result = new WorkItems();
             foreach (var ws in this._items)

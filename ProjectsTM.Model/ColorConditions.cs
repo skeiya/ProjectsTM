@@ -32,12 +32,12 @@ namespace ProjectsTM.Model
             return null;
         }
 
-        internal void Remove(ColorCondition c)
+        public void Remove(ColorCondition c)
         {
             _list.Remove(c);
         }
 
-        internal ColorCondition At(int i)
+        public ColorCondition At(int i)
         {
             var index = 0;
             foreach (var c in _list)
@@ -65,21 +65,21 @@ namespace ProjectsTM.Model
             return _list.GetHashCode();
         }
 
-        internal void Up(int index)
+        public void Up(int index)
         {
             var cond = _list[index];
             _list[index] = _list[index - 1];
             _list[index - 1] = cond;
         }
 
-        internal void Down(int index)
+        public void Down(int index)
         {
             var cond = _list[index];
             _list[index] = _list[index + 1];
             _list[index + 1] = cond;
         }
 
-        internal void Apply(ColorConditions colorConditions)
+        public void Apply(ColorConditions colorConditions)
         {
             _list.Clear();
             foreach (var c in colorConditions)

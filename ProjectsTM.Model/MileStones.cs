@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
     {
         private List<MileStone> _list = new List<MileStone>();
 
-        internal MileStones Clone()
+        public MileStones Clone()
         {
             var result = new MileStones();
             foreach (var m in _list)
@@ -32,17 +32,17 @@ namespace ProjectsTM.Model
             return _list.GetEnumerator();
         }
 
-        internal void Replace(MileStone before, MileStone after)
+        public void Replace(MileStone before, MileStone after)
         {
             _list[_list.FindIndex(ind => ind.Equals(before))] = after;
         }
 
-        internal void Delete(MileStone m)
+        public void Delete(MileStone m)
         {
             _list.Remove(m);
         }
 
-        internal void Sort()
+        public void Sort()
         {
             _list.Sort();
         }

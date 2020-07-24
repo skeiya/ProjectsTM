@@ -54,7 +54,7 @@ namespace ProjectsTM.Model
             return hashCode;
         }
 
-        internal MileStone Clone()
+        public MileStone Clone()
         {
             return new MileStone(Name, Day, Color);
         }

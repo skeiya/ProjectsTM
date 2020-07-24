@@ -37,12 +37,12 @@ namespace ProjectsTM.Model
             return _items.GetEnumerator();
         }
 
-        internal void Add(WorkItem wi)
+        public void Add(WorkItem wi)
         {
             _items.Add(wi);
         }
 
-        internal bool Remove(WorkItem selected)
+        public bool Remove(WorkItem selected)
         {
             return _items.Remove(selected);
         }

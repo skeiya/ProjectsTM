@@ -95,7 +95,7 @@ namespace ProjectsTM.Model
             return hashCode;
         }
 
-        internal string Serialize()
+        public string Serialize()
         {
             var x = new XmlSerializer(typeof(WorkItem));
             using (var s = new MemoryStream())
@@ -115,7 +115,7 @@ namespace ProjectsTM.Model
             return Deserialize(Serialize());
         }
 
-        static internal WorkItem Deserialize(string text)
+        static public WorkItem Deserialize(string text)
         {
             using (var s = new MemoryStream())
             using (var w = StreamFactory.CreateWriter(s))

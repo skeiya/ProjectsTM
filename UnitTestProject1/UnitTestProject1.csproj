@@ -77,6 +77,10 @@
       <Project>{f086cca0-3428-4bf9-9c59-2f51f24563a3}</Project>
       <Name>ProjectsTM.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Model\ProjectsTM.Model.csproj">
+      <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
+      <Name>ProjectsTM.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectsTM\ProjectsTM.csproj">
       <Project>{217d0cf7-f594-43c1-a3e1-40fb70ee643b}</Project>
       <Name>ProjectsTM</Name>
