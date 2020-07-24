@@ -15,8 +15,8 @@ namespace ProjectsTM.UI
         private Func<ColIndex, string> _getTitle;
         private int _colCount;
         private readonly List<TaskListItem> _listItems;
-        private Dictionary<RowIndex, int> _heights = new Dictionary<RowIndex, int>();
-        private Dictionary<ColIndex, int> _widthds = new Dictionary<ColIndex, int>();
+        private int[] _heights;
+        private int[] _widths;
 
         public HeightAndWidthCalcultor(Font font, Graphics g, List<TaskListItem> listItems, Func<TaskListItem, ColIndex, string> getText, Func<ColIndex, string> getTitle, int colCount)
         {
@@ -31,19 +31,19 @@ namespace ProjectsTM.UI
 
         internal int GetWidth(ColIndex c)
         {
-            if (!_widthds.ContainsKey(c)) return 0;
-            return _widthds[c];
+            return _widths[c.Value];
         }
 
         internal int GetHeight(RowIndex r)
         {
-            if (!_heights.ContainsKey(r)) return 0;
-            return _heights[r];
+            return _heights[r.Value];
         }
 
         private void Caluculate()
         {
-            _heights[new RowIndex(0)] = (int)Math.Ceiling(_graphics.MeasureString("NAM", _font).Height);
+            _heights = new int[_listItems.Count + 1];
+            _heights[0] = (int)Math.Ceiling(_graphics.MeasureString("NAM", _font).Height);
+            _widths = new int[_colCount];
             var t = Task.Run(() =>
             {
                 Parallel.ForEach(
@@ -55,13 +55,13 @@ namespace ProjectsTM.UI
                             var g = Graphics.FromImage(bmp);
                             {
                                 var tmp = g.MeasureString(_getTitle(c), _font);
-                                _widthds[c] = (int)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
+                                _widths[c.Value] = (int)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
                             }
                             foreach (var r in RowIndex.Range(1, _listItems.Count))
                             {
                                 var tmp = g.MeasureString(_getText(_listItems[r.Value - 1], c), _font);
-                                _widthds[c] = (int)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
-                                _heights[r] = (int)Math.Ceiling(Math.Max(GetHeight(r), tmp.Height));
+                                _widths[c.Value] = (int)Math.Ceiling(Math.Max(GetWidth(c), tmp.Width + 10));
+                                _heights[r.Value] = (int)Math.Ceiling(Math.Max(GetHeight(r), tmp.Height));
                             }
                         }
                     }
