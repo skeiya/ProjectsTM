@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    static class OldFileService
+    public static class OldFileService
     {
 
         public static void ImportMemberAndWorkItems(ViewData viewData)

@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
 {
     using RawPoint = FreeGridControl.RawPoint;
 
-    class WorkItemDragService
+    public class WorkItemDragService
     {
         private WorkItems _backup;
         private RawPoint _draggedLocation;

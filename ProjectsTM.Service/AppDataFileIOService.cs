@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    class AppDataFileIOService : IDisposable
+    public class AppDataFileIOService : IDisposable
     {
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
@@ -39,7 +39,7 @@ namespace ProjectsTM.Service
         private string _previousFileName;
         public string FilePath => _previousFileName;
 
-        internal bool Save(AppData appData, Action showOverwrapCheck)
+        public bool Save(AppData appData, Action showOverwrapCheck)
         {
             if (string.IsNullOrEmpty(_previousFileName))
             {
@@ -59,7 +59,7 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        internal bool SaveOtherName(AppData appData, Action showOverwrapCheck)
+        public bool SaveOtherName(AppData appData, Action showOverwrapCheck)
         {
             if (!CheckOverwrap(appData, showOverwrapCheck)) return false;
             using (var dlg = new SaveFileDialog())
@@ -90,7 +90,7 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        internal AppData Open()
+        public AppData Open()
         {
             using (var dlg = new OpenFileDialog())
             {
@@ -101,7 +101,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal AppData ReOpen()
+        public AppData ReOpen()
         {
             if (!File.Exists(_previousFileName)) return null;
             return OpenFile(_previousFileName);

@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    class FilterComboBoxService
+    public class FilterComboBoxService
     {
         private ViewData _viewData;
         private ToolStripComboBox toolStripComboBoxFilter;
@@ -45,7 +45,7 @@ namespace ProjectsTM.Service
         }
 
         private string _filepPath = string.Empty;
-        internal void Initialize(string filePath)
+        public void Initialize(string filePath)
         {
             _filepPath = filePath;
             var selectedItem = toolStripComboBoxFilter.SelectedItem;

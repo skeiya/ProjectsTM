@@ -1,7 +1,6 @@
 ﻿using FreeGridControl;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
-using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    class KeyAndMouseHandleService : IDisposable
+    public class KeyAndMouseHandleService : IDisposable
     {
         private readonly ViewData _viewData;
         private readonly IWorkItemGrid _grid;
@@ -201,7 +200,7 @@ namespace ProjectsTM.Service
             _grid.AddNewWorkItem(proto);
         }
 
-        internal void KeyDown(KeyEventArgs e)
+        public void KeyDown(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.ControlKey)
             {
@@ -214,7 +213,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void KeyUp(KeyEventArgs e)
+        public void KeyUp(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -227,7 +226,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void MouseWheel(MouseEventArgs e)
+        public void MouseWheel(MouseEventArgs e)
         {
             if (KeyState.IsControlDown)
             {
@@ -242,7 +241,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void MouseUp()
+        public void MouseUp()
         {
             using (new RedrawLock(_drawService, () => _grid.Invalidate()))
             {

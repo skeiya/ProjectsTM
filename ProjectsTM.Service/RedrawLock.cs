@@ -1,7 +1,6 @@
-﻿using ProjectsTM.Service;
-using System;
+﻿using System;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.Service
 {
     internal class RedrawLock : IDisposable
     {

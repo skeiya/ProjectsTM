@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ProjectsTM.Service
 {
-    class AtomicAction : IEnumerable<EditAction>
+    public class AtomicAction : IEnumerable<EditAction>
     {
         private List<EditAction> _list = new List<EditAction>();
 

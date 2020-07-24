@@ -1,5 +1,4 @@
-﻿using ProjectsTM.UI;
-using ProjectsTM.ViewModel;
+﻿using ProjectsTM.ViewModel;
 using System;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -7,15 +6,17 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    class PrintService : IDisposable
+    public class PrintService : IDisposable
     {
         private PrintDocument _printDocument = new PrintDocument();
         private Font _font;
+        private readonly Action<PrintPageEventArgs> _print;
         private ViewData _viewData;
 
-        internal PrintService(ViewData viewData, Font font)
+        public PrintService(ViewData viewData, Font font, Action<PrintPageEventArgs> print)
         {
             _font = font;
+            this._print = print;
             _viewData = viewData;
             _printDocument.DefaultPageSettings.Landscape = true;
             _printDocument.PrintPage += PrintDocument_PrintPage;
@@ -30,16 +31,10 @@ namespace ProjectsTM.Service
                     _printDocument.DefaultPageSettings.PaperSize = s;
                 }
             }
-            using (var grid = new WorkItemGrid())
-            {
-                grid.Size = e.PageBounds.Size;
-                grid.Initialize(_viewData);
-                grid.AdjustForPrint(e.PageBounds);
-                grid.Print(e.Graphics);
-            }
+            _print(e);
         }
 
-        internal void Print()
+        public void Print()
         {
             using (var printPreviewDialog1 = new PrintPreviewDialog())
             using (var font = new Font(_font.FontFamily, _viewData.FontSize))

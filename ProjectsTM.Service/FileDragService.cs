@@ -2,7 +2,7 @@
 
 namespace ProjectsTM.Service
 {
-    static class FileDragService
+    public static class FileDragService
     {
         public static string Drop(DragEventArgs e)
         {
@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
             return fileName[0];
         }
 
-        internal static void DragEnter(DragEventArgs e)
+        public static void DragEnter(DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {

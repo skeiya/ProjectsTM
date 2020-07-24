@@ -2,7 +2,7 @@
 
 namespace ProjectsTM.Service
 {
-    class EditAction
+    public class EditAction
     {
         private EditActionType _action;
         private string _workItem;

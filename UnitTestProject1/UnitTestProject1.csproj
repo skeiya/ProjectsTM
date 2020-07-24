@@ -81,6 +81,10 @@
       <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
       <Name>ProjectsTM.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Service\ProjectsTM.Service.csproj">
+      <Project>{e76f7b1a-25a3-423d-98fe-c2f8c466764e}</Project>
+      <Name>ProjectsTM.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectsTM\ProjectsTM.csproj">
       <Project>{217d0cf7-f594-43c1-a3e1-40fb70ee643b}</Project>
       <Name>ProjectsTM</Name>

@@ -1,6 +1,6 @@
 ﻿namespace ProjectsTM.Service
 {
-    enum EditActionType
+    public enum EditActionType
     {
         Add,
         Delete,

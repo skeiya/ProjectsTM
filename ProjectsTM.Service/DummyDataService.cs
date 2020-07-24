@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    class DummyDataService
+    public class DummyDataService
     {
-        internal static void Save(string fileName)
+        public static void Save(string fileName)
         {
             var appData = new AppData();
             appData.Callender = new Callender();

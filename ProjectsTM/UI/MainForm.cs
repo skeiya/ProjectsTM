@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -22,7 +23,7 @@ namespace ProjectsTM.UI
         private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
-        private ContextMenuService _contextMenuService;
+        private ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
@@ -31,10 +32,10 @@ namespace ProjectsTM.UI
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            PrintService = new PrintService(_viewData, workItemGrid1.Font);
+            PrintService = new PrintService(_viewData, workItemGrid1.Font, Print);
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
-            _contextMenuService = new ContextMenuService(_viewData, workItemGrid1);
+            _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
@@ -50,6 +51,17 @@ namespace ProjectsTM.UI
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void Print(PrintPageEventArgs e)
+        {
+            using (var grid = new WorkItemGrid())
+            {
+                grid.Size = e.PageBounds.Size;
+                grid.Initialize(_viewData);
+                grid.AdjustForPrint(e.PageBounds);
+                grid.Print(e.Graphics);
+            }
         }
 
         private void FileIOService_FileOpened(object sender, string e)

@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    class UserSettingUIService
+    public class UserSettingUIService
     {
-        internal static void Save(string filePath, UserSetting setting)
+        public static void Save(string filePath, UserSetting setting)
         {
             var xml = new XmlSerializer(typeof(UserSetting));
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
@@ -17,7 +17,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal static UserSetting Load(string filePath)
+        public static UserSetting Load(string filePath)
         {
             var xml = new XmlSerializer(typeof(UserSetting));
             using (var r = StreamFactory.CreateReader(filePath))

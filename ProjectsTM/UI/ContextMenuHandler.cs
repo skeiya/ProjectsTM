@@ -1,17 +1,16 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
 
-namespace ProjectsTM.Service
+namespace ProjectsTM.UI
 {
-    class ContextMenuService
+    class ContextMenuHandler
     {
         private ViewData _viewData;
         private WorkItemGrid workItemGrid1;
 
-        public ContextMenuService(ViewData viewData, WorkItemGrid workItemGrid1)
+        public ContextMenuHandler(ViewData viewData, WorkItemGrid workItemGrid1)
         {
             _viewData = viewData;
             this.workItemGrid1 = workItemGrid1;

@@ -1,6 +1,6 @@
 ﻿namespace ProjectsTM.Service
 {
-    enum DragState
+    public enum DragState
     {
         None,
         BeforeExpanding,

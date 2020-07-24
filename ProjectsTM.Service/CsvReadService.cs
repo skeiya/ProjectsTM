@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    class CsvReadService
+    public class CsvReadService
     {
         private static Tags ParseTags(string tag)
         {

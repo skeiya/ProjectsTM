@@ -38,7 +38,7 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
-        internal void Delete()
+        public void Delete()
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
             _viewData.UndoService.Delete(_viewData.Selected);
@@ -46,7 +46,7 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
-        internal void Divide(WorkItem selected, int divided, int remain)
+        public void Divide(WorkItem selected, int divided, int remain)
         {
             var d1 = selected.Clone();
             var d2 = selected.Clone();
@@ -66,12 +66,12 @@ namespace ProjectsTM.Service
             workItems.Add(d2);
         }
 
-        internal void Replace(object workItem, WorkItem newWi)
+        public void Replace(object workItem, WorkItem newWi)
         {
             throw new NotImplementedException();
         }
 
-        internal void Replace(WorkItems before, WorkItems after)
+        public void Replace(WorkItems before, WorkItems after)
         {
             _viewData.Original.WorkItems.Remove(before);
             _viewData.Original.WorkItems.Add(after);
@@ -80,7 +80,7 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
-        internal void Replace(WorkItem before, WorkItem after)
+        public void Replace(WorkItem before, WorkItem after)
         {
             if (before.Equals(after)) return;
             _viewData.Original.WorkItems.Remove(before);
@@ -90,7 +90,7 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
-        internal void ChangeState(WorkItems selected, TaskState state)
+        public void ChangeState(WorkItems selected, TaskState state)
         {
             var newWis = selected.Clone();
 
@@ -106,7 +106,7 @@ namespace ProjectsTM.Service
             workItems.Add(newWis);
         }
 
-        internal void SelectAfterward(WorkItems starts)
+        public void SelectAfterward(WorkItems starts)
         {
             var newSetected = new WorkItems();
             foreach (var s in starts)
@@ -130,7 +130,7 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        internal bool AlignAfterward()
+        public bool AlignAfterward()
         {
             var starts = _viewData.Selected;
             if (starts == null) return false;
@@ -161,7 +161,7 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        internal void AlignSelected()
+        public void AlignSelected()
         {
             if (_viewData.Selected == null) return;
             var before = _viewData.Selected.Clone().OrderBy(w => w.Period.From);
@@ -200,17 +200,17 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        internal void DivideInto2Parts()
+        public void DivideInto2Parts()
         {
             DivideCore(false);
         }
 
-        internal void MakeHalf()
+        public void MakeHalf()
         {
             DivideCore(true);
         }
 
-        internal void DivideCore(bool makeHalf)
+        public void DivideCore(bool makeHalf)
         {
             if (_viewData.Selected == null) return;
             var add = new WorkItems();

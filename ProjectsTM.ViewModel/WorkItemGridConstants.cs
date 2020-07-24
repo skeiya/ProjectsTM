@@ -1,8 +1,8 @@
 ﻿using FreeGridControl;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.ViewModel
 {
-    static class WorkItemGridConstants
+    public static class WorkItemGridConstants
     {
         public static int FixedRows = 3;
         public static int FixedCols = 3;

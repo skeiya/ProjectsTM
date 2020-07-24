@@ -1,7 +1,6 @@
 ﻿using FreeGridControl;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
-using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.Service
 {
-    class DrawService : IDisposable
+    public class DrawService : IDisposable
     {
         private ViewData _viewData;
 
@@ -29,7 +28,7 @@ namespace ProjectsTM.Service
         {
         }
 
-        internal void Initialize(
+        public void Initialize(
             ViewData viewData,
             IWorkItemGrid grid,
             Func<bool> IsDragActive,
@@ -42,7 +41,7 @@ namespace ProjectsTM.Service
             this._font = font;
         }
 
-        internal void Draw(Graphics g, bool isPrint)
+        public void Draw(Graphics g, bool isPrint)
         {
             if (_redrawLock) return;
             DrawImageBufferBase();
@@ -110,7 +109,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void Clear()
+        public void Clear()
         {
             var size = _imageBuffer.Image.Size;
             _imageBuffer.Dispose();
@@ -157,11 +156,6 @@ namespace ProjectsTM.Service
                     DrawWorkItemRaw(wi, Pens.Black, font, g, members);
                 }
             }
-        }
-
-        internal void InvalidateMembers(object updatedMembers)
-        {
-            throw new NotImplementedException();
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)
@@ -346,7 +340,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void InvalidateMembers(IEnumerable<Member> updatedMembers)
+        public void InvalidateMembers(IEnumerable<Member> updatedMembers)
         {
             _imageBuffer.Invalidate(updatedMembers, _grid);
         }

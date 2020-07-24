@@ -78,28 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service\OverwrapedWorkItemsCollectService.cs" />
-    <Compile Include="Service\AtomicAction.cs" />
-    <Compile Include="Service\CalculateSumService.cs" />
-    <Compile Include="Service\ContextMenuService.cs" />
-    <Compile Include="Service\DragState.cs" />
-    <Compile Include="Service\DrawService.cs" />
-    <Compile Include="Service\DummyDataService.cs" />
-    <Compile Include="Service\EditAction.cs" />
-    <Compile Include="Service\EditActionType.cs" />
-    <Compile Include="Service\EditedEventArgs.cs" />
-    <Compile Include="Service\FileDragService.cs" />
-    <Compile Include="Service\AppDataFileIOService.cs" />
-    <Compile Include="Service\FilterComboBoxService.cs" />
-    <Compile Include="Service\KeyAndMouseHandleService.cs" />
-    <Compile Include="Service\OldFileService.cs" />
-    <Compile Include="Service\PrintService.cs" />
-    <Compile Include="Service\UndoService.cs" />
-    <Compile Include="Service\UserSettingUIService.cs" />
-    <Compile Include="Service\VersionUpdateService.cs" />
-    <Compile Include="Service\WorkItemDragService.cs" />
-    <Compile Include="Service\AppDataSerializeService.cs" />
-    <Compile Include="Service\WorkItemEditService.cs" />
+    <Compile Include="UI\ContextMenuHandler.cs" />
     <Compile Include="UI\PenCache.cs" />
     <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
@@ -113,7 +92,6 @@
     <Compile Include="UI\ColorManagementForm.Designer.cs">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Service\CsvReadService.cs" />
     <Compile Include="UI\DevideWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,7 +130,6 @@
     <Compile Include="UI\EditWorkItemForm.Designer.cs">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FontCache.cs" />
     <Compile Include="UI\ManageMileStoneForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,8 +142,6 @@
     <Compile Include="UI\ProjectSelectForm.Designer.cs">
       <DependentUpon>ProjectSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\RedrawLock.cs" />
-    <Compile Include="Service\ToolTipService.cs" />
     <Compile Include="UI\TaskListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,7 +164,6 @@
     <Compile Include="UI\WorkItemGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\WorkItemGridConstants.cs" />
     <Compile Include="UI\FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,7 +178,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\RSFileExportService.cs" />
     <Compile Include="UI\ManageMemberForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,6 +304,10 @@
       <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
       <Name>ProjectsTM.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Service\ProjectsTM.Service.csproj">
+      <Project>{e76f7b1a-25a3-423d-98fe-c2f8c466764e}</Project>
+      <Name>ProjectsTM.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj">
       <Project>{8e66a8da-c23e-4d86-a83f-ab8c2574e129}</Project>
       <Name>ProjectsTM.ViewModel</Name>
@@ -338,7 +315,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
