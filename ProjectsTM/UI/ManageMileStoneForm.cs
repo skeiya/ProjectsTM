@@ -40,7 +40,7 @@ namespace ProjectsTM.UI
             _mileStones.Sort();
             foreach (var m in _mileStones)
             {
-                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() });
+                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString(), m.MileStoneFilter.Name });
                 item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
