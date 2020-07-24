@@ -1,4 +1,5 @@
 ﻿using FreeGridControl;
+using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.UI;
 using ProjectsTM.ViewModel;
@@ -156,6 +157,11 @@ namespace ProjectsTM.Service
                     DrawWorkItemRaw(wi, Pens.Black, font, g, members);
                 }
             }
+        }
+
+        internal void InvalidateMembers(object updatedMembers)
+        {
+            throw new NotImplementedException();
         }
 
         private IEnumerable<WorkItem> GetVisibleWorkItems(Member m, RowIndex top, int count)

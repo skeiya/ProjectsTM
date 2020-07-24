@@ -39,7 +39,7 @@ namespace ProjectsTM.ViewModel
             return hashCode;
         }
 
-        internal Filter Clone()
+        public Filter Clone()
         {
             var result = new Filter();
             if (this.HideMembers != null) result.HideMembers = this.HideMembers.Clone();

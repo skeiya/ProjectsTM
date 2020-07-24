@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ProjectsTM.ViewModel
 {
-    interface IWorkItemGrid
+    public interface IWorkItemGrid
     {
         Member X2Member(int x);
         ColIndex X2Col(int x);

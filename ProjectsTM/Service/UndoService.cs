@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace ProjectsTM.Service
 {
-    public class UndoService
+    public class UndoService : IUndoService
     {
         private Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
         private Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
 
-        public event EventHandler<EditedEventArgs> Changed;
+        public event EventHandler<IEditedEventArgs> Changed;
 
         public UndoService()
         {
@@ -18,27 +18,27 @@ namespace ProjectsTM.Service
 
         private AtomicAction _atomicAction = new AtomicAction();
 
-        internal void Delete(WorkItems wis)
+        public void Delete(WorkItems wis)
         {
             foreach (var w in wis) Delete(w);
         }
 
-        internal void Delete(WorkItem w)
+        public void Delete(WorkItem w)
         {
             _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
         }
 
-        internal void Add(WorkItems wis)
+        public void Add(WorkItems wis)
         {
             foreach (var w in wis) Add(w);
         }
 
-        internal void Add(WorkItem w)
+        public void Add(WorkItem w)
         {
             _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize(), w.AssignedMember));
         }
 
-        internal void Push()
+        public void Push()
         {
             _undoStack.Push(_atomicAction.Clone());
             Changed?.Invoke(this, new EditedEventArgs(_atomicAction.Members));
@@ -46,7 +46,7 @@ namespace ProjectsTM.Service
             _redoStack.Clear();
         }
 
-        internal void Undo(ViewData viewData)
+        public void Undo(ViewData viewData)
         {
             if (_undoStack.Count == 0) return;
             var p = _undoStack.Pop();
@@ -68,7 +68,7 @@ namespace ProjectsTM.Service
             Changed(this, new EditedEventArgs(p.Members));
         }
 
-        internal void Redo(ViewData viewData)
+        public void Redo(ViewData viewData)
         {
             if (_redoStack.Count == 0) return;
             var r = _redoStack.Pop();

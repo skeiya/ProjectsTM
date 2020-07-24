@@ -94,13 +94,13 @@
     <Compile Include="Service\KeyAndMouseHandleService.cs" />
     <Compile Include="Service\OldFileService.cs" />
     <Compile Include="Service\PrintService.cs" />
+    <Compile Include="Service\UndoService.cs" />
     <Compile Include="Service\UserSettingUIService.cs" />
     <Compile Include="Service\VersionUpdateService.cs" />
     <Compile Include="Service\WorkItemDragService.cs" />
     <Compile Include="Service\AppDataSerializeService.cs" />
     <Compile Include="Service\WorkItemEditService.cs" />
     <Compile Include="UI\PenCache.cs" />
-    <Compile Include="UI\BrushCache.cs" />
     <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,7 +152,6 @@
     <Compile Include="UI\EditWorkItemForm.Designer.cs">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Service\UndoService.cs" />
     <Compile Include="UI\FontCache.cs" />
     <Compile Include="UI\ManageMileStoneForm.cs">
       <SubType>Form</SubType>
@@ -191,8 +190,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\WorkItemGridConstants.cs" />
-    <Compile Include="ViewModel\Detail.cs" />
-    <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="UI\FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,11 +223,6 @@
     <Compile Include="UI\SearchWorkitemForm.Designer.cs">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ImageBuffer.cs" />
-    <Compile Include="ViewModel\IWorkItemGrid.cs" />
-    <Compile Include="ViewModel\SelectedWorkItemChangedArg.cs" />
-    <Compile Include="ViewModel\UserSetting.cs" />
-    <Compile Include="ViewModel\ViewData.cs" />
     <EmbeddedResource Include="UI\ColorConditionEditorForm.resx">
       <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -339,9 +331,14 @@
       <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
       <Name>ProjectsTM.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj">
+      <Project>{8e66a8da-c23e-4d86-a83f-ab8c2574e129}</Project>
+      <Name>ProjectsTM.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />

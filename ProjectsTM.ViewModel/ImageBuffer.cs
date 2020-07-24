@@ -1,5 +1,5 @@
-﻿using ProjectsTM.Model;
-using ProjectsTM.UI;
+﻿using ProjectsTM.Logic;
+using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.ViewModel
 {
-    class ImageBuffer : IDisposable
+    public class ImageBuffer : IDisposable
     {
         private Bitmap _bitmap;
         private Graphics _bitmapGraphics;
@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
 
         public Image Image => _bitmap;
 
-        internal ImageBuffer(int width, int height)
+        public ImageBuffer(int width, int height)
         {
             if (_bitmap == null)
             {
@@ -28,7 +28,7 @@ namespace ProjectsTM.ViewModel
 
         }
 
-        internal void Validate(WorkItem wi)
+        public void Validate(WorkItem wi)
         {
             if (IsValid(wi)) return;
 
@@ -40,13 +40,13 @@ namespace ProjectsTM.ViewModel
             _validList.Add(wi.AssignedMember, new HashSet<WorkItem>() { wi });
         }
 
-        internal bool IsValid(WorkItem wi)
+        public bool IsValid(WorkItem wi)
         {
             if (!_validList.TryGetValue(wi.AssignedMember, out var workItems)) return false;
             return workItems.Contains(wi);
         }
 
-        internal void Invalidate(IEnumerable<Member> members, IWorkItemGrid grid)
+        public void Invalidate(IEnumerable<Member> members, IWorkItemGrid grid)
         {
             //該当メンバの列を少し広めにクリアFill
             foreach (var m in members)

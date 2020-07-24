@@ -1,5 +1,4 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +11,21 @@ namespace ProjectsTM.ViewModel
         public Filter Filter { get; private set; }
         public Detail Detail { get; set; } = new Detail();
 
-        public AppData Original
+        public AppData Original => _appData;
+
+        public void SetAppData(AppData appData, IUndoService undoService)
         {
-            get { return _appData; }
-            set
-            {
-                _appData = value;
-                UndoService = new UndoService();
-                AddFreeTimeMembersToHideMembers(GetFilteredMembers());
-                AppDataChanged?.Invoke(this, null);
-            }
+            _appData = appData;
+            UndoService = undoService;
+            AddFreeTimeMembersToHideMembers(GetFilteredMembers());
+            AppDataChanged?.Invoke(this, null);
         }
 
         private AppData _appData;
-        public UndoService UndoService { get; private set; }
+        public IUndoService UndoService { get; private set; }
         private WorkItems _selected;
 
-        internal void ClearCallenderAndMembers()
+        public void ClearCallenderAndMembers()
         {
             this.Original.Callender = new Callender();
             this.Original.Members = new Members();
@@ -55,9 +52,9 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        public ViewData(AppData appData)
+        public ViewData(AppData appData, IUndoService undoService)
         {
-            Original = appData;
+            SetAppData(appData, undoService);
         }
 
         public void SetFilter(Filter filter)
@@ -103,7 +100,7 @@ namespace ProjectsTM.ViewModel
             return this.Original.Members.ToList();
         }
 
-        internal WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
+        public WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
         {
             if (m == null) return null;
             foreach (var wi in GetFilteredWorkItemsOfMember(m))
@@ -176,7 +173,7 @@ namespace ProjectsTM.ViewModel
             if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
-        internal void DecRatio()
+        public void DecRatio()
         {
             if (Detail.ViewRatio <= 0.2) return;
             if (FontSize <= 1) return;
@@ -184,7 +181,7 @@ namespace ProjectsTM.ViewModel
             Detail.ViewRatio -= 0.1f;
         }
 
-        internal void IncRatio()
+        public void IncRatio()
         {
             FontSize++;
             Detail.ViewRatio += 0.1f;

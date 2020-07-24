@@ -15,7 +15,7 @@ namespace ProjectsTM.UI
 {
     public partial class MainForm : Form
     {
-        private ViewData _viewData = new ViewData(new AppData());
+        private ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private SearchWorkitemForm SearchForm { get; set; }
         private TaskListForm TaskListForm { get; set; }
         private PrintService PrintService { get; set; }
@@ -134,7 +134,7 @@ namespace ProjectsTM.UI
             _viewData.AppDataChanged += _viewData_AppDataChanged;
         }
 
-        private void _undoService_Changed(object sender, EditedEventArgs e)
+        private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _isDirty = true;
             UpdateDisplayOfSum(e.UpdatedMembers);
@@ -350,7 +350,7 @@ namespace ProjectsTM.UI
         private void OpenAppData(AppData appData)
         {
             if (appData == null) return;
-            _viewData.Original = appData;
+            _viewData.SetAppData(appData, new UndoService());
             _viewData.Selected = null;
             workItemGrid1.Initialize(_viewData);
             _isDirty = false;

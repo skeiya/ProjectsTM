@@ -30,7 +30,7 @@ namespace ProjectsTM.UI
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public event EventHandler<EditedEventArgs> UndoChanged;
+        public event EventHandler<IEditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid() { }
@@ -127,7 +127,7 @@ namespace ProjectsTM.UI
             }
         }
 
-        private void _undoService_Changed(object sender, EditedEventArgs e)
+        private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             UndoChanged?.Invoke(this, e);
             _drawService.InvalidateMembers(e.UpdatedMembers);

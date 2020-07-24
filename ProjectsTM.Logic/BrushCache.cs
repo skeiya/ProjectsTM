@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.Logic
 {
-    class BrushCache
+    public class BrushCache
     {
         private static Dictionary<Color, Brush> _cache = new Dictionary<Color, Brush>();
         public static Brush GetBrush(Color c)

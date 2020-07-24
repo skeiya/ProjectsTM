@@ -189,7 +189,7 @@ namespace ProjectsTM.UI
             MoveVisibleRowCol(new RowIndex(listIdx + FixedRowCount), new ColIndex(0)); // TODO グリッドの上側に移動してしまう。下側にはみ出ていた時は下のままにする。
         }
 
-        private void _undoService_Changed(object sender, EditedEventArgs e)
+        private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             InitializeGrid();
             this.Invalidate();

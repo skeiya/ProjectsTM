@@ -1,9 +1,10 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System.Collections.Generic;
 
 namespace ProjectsTM.Service
 {
-    public class EditedEventArgs
+    public class EditedEventArgs : IEditedEventArgs
     {
         public EditedEventArgs(List<Member> members)
         {
