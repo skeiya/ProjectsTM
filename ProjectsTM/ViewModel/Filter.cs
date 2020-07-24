@@ -6,6 +6,7 @@ namespace ProjectsTM.ViewModel
 {
     public class Filter : IEquatable<Filter>
     {
+        public Filter() { }
         public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
         {
             if (v != null) WorkItem = v;
@@ -16,8 +17,8 @@ namespace ProjectsTM.ViewModel
         }
 
         public Members HideMembers { get; private set; } = new Members();
-        public Period Period { get; private set; } = new Period();
-        public string WorkItem { get; private set; } = string.Empty;
+        public Period Period { get; set; } = new Period();
+        public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
         public static Filter All => new Filter(null, null, new Members(), false, null);
