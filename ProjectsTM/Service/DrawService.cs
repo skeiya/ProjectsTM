@@ -236,7 +236,7 @@ namespace ProjectsTM.Service
 
         private bool IsShowAllSetting()
         {
-            return _viewData.Filter == null;
+            return !_viewData.Filter.MileStoneFilters.Any();
         }
 
         private bool MileStoneFiltersContain(MileStone m)
@@ -244,14 +244,7 @@ namespace ProjectsTM.Service
             if (m == null) return false;
             if (IsShowAllSetting()) return true;
             if (m.Name.Equals("Today")) return true;
-
-            var mileStoneFilters = _viewData.Filter.MileStoneFilters;
-            if (mileStoneFilters == null) return false;
-            foreach (var msFilter in mileStoneFilters)
-            {
-                if (msFilter.Equals(m.MileStoneFilter)) return true;
-            }
-            return false;
+            return _viewData.Filter.MileStoneFilters.Any(f => f.Equals(m.MileStoneFilter));
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)

@@ -125,7 +125,7 @@ namespace ProjectsTM.Service
             var idx = toolStripComboBoxFilter.SelectedIndex;
             if (idx == 0)
             {
-                _viewData.SetFilter(null);
+                _viewData.SetFilter(Filter.All);
                 return;
             }
             idx = idx - 1;
@@ -187,8 +187,8 @@ namespace ProjectsTM.Service
             foreach (var m in _viewData.Original.Members)
             {
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
-            }        
-            return new Filter(null, null, members, false,GetMileStoneFiltersFromProjectName(pro));
+            }
+            return new Filter(null, null, members, false, GetMileStoneFiltersFromProjectName(pro));
         }
 
         private MileStoneFilters GetMileStoneFiltersFromProjectName(Project pro)
@@ -196,7 +196,7 @@ namespace ProjectsTM.Service
             var mileStoneFilters = new MileStoneFilters();
             foreach (var ms in _viewData.Original.MileStones)
             {
-                if (ms.MileStoneFilter?.Name == pro.ToString())
+                if (ms.MileStoneFilter.Name == pro.ToString())
                 {
                     mileStoneFilters.Add(ms.MileStoneFilter.Clone());
                     return mileStoneFilters;
@@ -228,10 +228,10 @@ namespace ProjectsTM.Service
 
         private Filter SetDefaultMileStoneFilter(Filter filter)
         {
-            if (filter.MileStoneFilters?.Count > 0) return filter;
+            if (filter.MileStoneFilters.Count > 0) return filter;
             if (NoFiterMileStoneCount() == 0) return filter;
 
-            filter.MileStoneFilters = new MileStoneFilters();
+            filter.MileStoneFilters.Clear();
             filter.MileStoneFilters.Add(new MileStoneFilter());
             return filter;
         }
@@ -239,11 +239,9 @@ namespace ProjectsTM.Service
         private int NoFiterMileStoneCount()
         {
             int result = 0;
-            foreach(var ms in _viewData.Original.MileStones)
+            foreach (var ms in _viewData.Original.MileStones)
             {
-                if (ms.MileStoneFilter == null ||
-                    ms.MileStoneFilter.Name == null ||
-                    ms.MileStoneFilter.Name == string.Empty) result++;
+                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) result++;
             }
             return result;
         }

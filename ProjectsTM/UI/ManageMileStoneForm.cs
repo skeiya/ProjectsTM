@@ -40,7 +40,7 @@ namespace ProjectsTM.UI
             _mileStones.Sort();
             foreach (var m in _mileStones)
             {
-                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString(), m.MileStoneFilter.Name });
+                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() , m.MileStoneFilterName});
                 item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
@@ -94,6 +94,11 @@ namespace ProjectsTM.UI
             {
                 return;
             }
+        }
+
+        private void listView1_Resize(object sender, EventArgs e)
+        {
+            listView1.Columns[listView1.Columns.Count - 1].Width = -2; // "-2"はListViewの仕様マジックナンバー(これでFillの幅になる)
         }
     }
 }

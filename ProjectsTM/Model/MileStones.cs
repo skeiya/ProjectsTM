@@ -19,6 +19,7 @@ namespace ProjectsTM.Model
 
         public void Add(MileStone m)
         {
+            if (m == null) return;
             _list.Add(m);
         }
 
@@ -57,7 +58,6 @@ namespace ProjectsTM.Model
             var result = new MileStoneFilters();
             foreach (var mileStone in this._list)
             {
-                if (mileStone.MileStoneFilter == null) continue;
                 if (result.Contains(mileStone.MileStoneFilter)) continue;
                 result.Add(mileStone.MileStoneFilter);
             }
