@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.TaskList
 {
     internal class HeightAndWidthCalcultor
     {

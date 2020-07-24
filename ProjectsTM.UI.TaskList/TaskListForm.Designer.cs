@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.UI
+﻿namespace ProjectsTM.UI.TaskList
 {
     partial class TaskListForm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gridControl1 = new ProjectsTM.UI.TaskListGrid();
+            this.gridControl1 = new ProjectsTM.UI.TaskList.TaskListGrid();
             this.comboBoxPattern = new System.Windows.Forms.ComboBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.radioButtonFilter = new System.Windows.Forms.RadioButton();

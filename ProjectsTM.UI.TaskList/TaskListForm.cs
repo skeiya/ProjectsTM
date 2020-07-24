@@ -3,7 +3,7 @@ using ProjectsTM.ViewModel;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListForm : Form
     {

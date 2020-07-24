@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
+using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;

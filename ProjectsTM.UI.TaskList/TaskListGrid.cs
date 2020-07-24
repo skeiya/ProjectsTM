@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
