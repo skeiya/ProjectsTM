@@ -245,11 +245,8 @@ namespace ProjectsTM.Service
         {
             foreach (var ms in _viewData.Original.MileStones)
             {
-                if (ms.MileStoneFilter == null ||
-                    ms.MileStoneFilter.Name == null ||
-                    ms.MileStoneFilter.Name == string.Empty) return true;
+                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) return true;
             }
-
             return false;
         }
 
