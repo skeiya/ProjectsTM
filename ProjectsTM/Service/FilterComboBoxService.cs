@@ -249,15 +249,5 @@ namespace ProjectsTM.Service
             }
             return false;
         }
-
-        private int NoFiterMileStoneCount()
-        {
-            int result = 0;
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) result++;
-            }
-            return result;
-        }
     }
 }
