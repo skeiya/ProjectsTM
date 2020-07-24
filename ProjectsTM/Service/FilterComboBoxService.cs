@@ -228,12 +228,29 @@ namespace ProjectsTM.Service
 
         private Filter SetDefaultMileStoneFilter(Filter filter)
         {
-            if (filter.MileStoneFilters.Count > 0) return filter;
-            if (NoFiterMileStoneCount() == 0) return filter;
+            if (DoesFilterHaveMileStoneFilter(filter) ||
+                 !DoesAnyMileStoneHaveEmptyFilter(filter)) return filter;
 
             filter.MileStoneFilters.Clear();
             filter.MileStoneFilters.Add(new MileStoneFilter());
             return filter;
+        }
+
+        private bool DoesFilterHaveMileStoneFilter(Filter filter)
+        {
+            return filter.MileStoneFilters?.Count > 0;
+        }
+
+        private bool DoesAnyMileStoneHaveEmptyFilter(Filter filter)
+        {
+            foreach (var ms in _viewData.Original.MileStones)
+            {
+                if (ms.MileStoneFilter == null ||
+                    ms.MileStoneFilter.Name == null ||
+                    ms.MileStoneFilter.Name == string.Empty) return true;
+            }
+
+            return false;
         }
 
         private int NoFiterMileStoneCount()
