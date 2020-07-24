@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,9 +6,8 @@ namespace FreeGridControl
 {
     class Cache
     {
-        private Dictionary<RowIndex, int> _cacheTop = new Dictionary<RowIndex, int>();
-        private Dictionary<ColIndex, int> _cacheLeft = new Dictionary<ColIndex, int>();
-        private Dictionary<Tuple<RowIndex, ColIndex>, RectangleF> _chacheRect = new Dictionary<Tuple<RowIndex, ColIndex>, RectangleF>();
+        private int[] _cacheTop = new int[1] { 0 };
+        private int[] _cacheLeft = new int[1] { 0 };
         public IntArrayForDesign RowHeights = new IntArrayForDesign();
         public IntArrayForDesign ColWidths = new IntArrayForDesign();
         private bool _lockUpdate = true;
@@ -32,9 +29,9 @@ namespace FreeGridControl
             }
         }
 
-        public int GetTop(RowIndex row) => _cacheTop.Count == 0 ? 0 : _cacheTop[row];
-        public int GetLeft(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col];
-        public int GetRight(ColIndex col) => _cacheLeft.Count == 0 ? 0 : _cacheLeft[col] + ColWidths[col.Value];
+        public int GetTop(RowIndex row) => _cacheTop[row.Value];
+        public int GetLeft(ColIndex col) => _cacheLeft[col.Value];
+        public int GetRight(ColIndex col) => _cacheLeft[col.Value] + ColWidths[col.Value];
 
         public void Update()
         {
@@ -42,40 +39,31 @@ namespace FreeGridControl
             var virtical = Task.Run(() =>
             {
                 FixedHeight = RowHeights.Sum(FixedRows);
-                _cacheTop.Clear();
-                foreach (var r in RowIndex.Range(0, RowHeights.Count + 1))
+                _cacheTop = new int[RowHeights.Count + 1];
+                var height = 0;
+                _cacheTop[0] = height;
+                for (var idx = 0; idx < RowHeights.Count; idx++)
                 {
-                    _cacheTop.Add(r, RowHeights.Sum(r.Value));
+                    height += RowHeights[idx];
+                    _cacheTop[idx + 1] = height;
                 }
             });
             var horizontal = Task.Run(() =>
             {
                 FixedWidth = ColWidths.Sum(FixedCols);
-                _cacheLeft.Clear();
-                foreach (var c in ColIndex.Range(0, ColWidths.Count + 1))
+                _cacheLeft = new int[ColWidths.Count + 1];
+                var width = 0;
+                _cacheLeft[0] = width;
+                for (var idx = 0; idx < ColWidths.Count; idx++)
                 {
-                    _cacheLeft.Add(c, ColWidths.Sum(c.Value));
+                    width += ColWidths[idx];
+                    _cacheLeft[idx + 1] = width;
                 }
             });
             while (!virtical.IsCompleted || !horizontal.IsCompleted) Thread.Sleep(0); // Waitで待つとmessage loop回って、再入発生して落ちる。
-            _chacheRect.Clear();
-            foreach (var r in RowIndex.Range(0, RowHeights.Count))
-            {
-                foreach (var c in ColIndex.Range(0, ColWidths.Count))
-                {
-                    var key = new Tuple<RowIndex, ColIndex>(r, c);
-                    var value = new RectangleF(GetLeft(c), GetTop(r), GetLeft(c.Offset(1)) - GetLeft(c), GetTop(r.Offset(1)) - GetTop(r));
-                    _chacheRect.Add(key, value);
-                }
-            }
             Updated(this, null);
         }
 
         public event EventHandler Updated;
-
-        internal RectangleF GetRectangle(RowIndex r, ColIndex c)
-        {
-            return _chacheRect[new Tuple<RowIndex, ColIndex>(r, c)];
-        }
     }
 }
