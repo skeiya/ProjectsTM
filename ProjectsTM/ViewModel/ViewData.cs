@@ -154,7 +154,7 @@ namespace ProjectsTM.ViewModel
 
         public List<CallenderDay> GetFilteredDays()
         {
-            if (Filter.Period == null) return Original.Callender.Days;
+            if (!Filter.Period.IsValid) return Original.Callender.Days;
             var result = new List<CallenderDay>();
             bool isFound = false;
             foreach (var d in Original.Callender.Days)

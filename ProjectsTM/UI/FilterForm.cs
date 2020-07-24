@@ -79,8 +79,8 @@ namespace ProjectsTM.UI
 
         private void UpdatePeriodText()
         {
-            textBoxFrom.Text = _filter.Period == null ? string.Empty : _filter.Period.From.ToString();
-            textBoxTo.Text = _filter.Period == null ? string.Empty : _filter.Period.To.ToString();
+            textBoxFrom.Text = _filter.Period.IsValid ? _filter.Period.From.ToString() : string.Empty;
+            textBoxTo.Text = _filter.Period.IsValid ? _filter.Period.To.ToString() : string.Empty;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)

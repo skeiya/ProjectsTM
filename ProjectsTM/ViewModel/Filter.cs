@@ -9,14 +9,14 @@ namespace ProjectsTM.ViewModel
         public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
         {
             if (v != null) WorkItem = v;
-            Period = period;
+            if (period != null) Period = period;
             if (hideMembers != null) HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
             if (mileStoneFilters != null) MileStoneFilters = mileStoneFilters;
         }
 
         public Members HideMembers { get; private set; } = new Members();
-        public Period Period { get; set; }
+        public Period Period { get; private set; } = new Period();
         public string WorkItem { get; private set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
@@ -48,7 +48,7 @@ namespace ProjectsTM.ViewModel
             var result = Filter.All;
             result.HideMembers = this.HideMembers.Clone();
             result.WorkItem = (string)this.WorkItem.Clone();
-            if (this.Period != null) result.Period = this.Period.Clone();
+            result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;
             result.MileStoneFilters = this.MileStoneFilters.Clone();
             return result;
