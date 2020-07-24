@@ -12,7 +12,6 @@ namespace ProjectsTM.UI
         private readonly Callender _callender;
         private readonly ViewData _viewData;
         private MileStone _mileStone;
-        private IEnumerable<Project> _projects;
         private MileStoneFilters _mileStoneFilters;
 
         public MileStone MileStone => _mileStone;
