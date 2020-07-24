@@ -50,6 +50,8 @@
             this.buttonFromTodayToSpecialDay = new System.Windows.Forms.Button();
             this.checkBox_IsFreeTimeMemberShow = new System.Windows.Forms.CheckBox();
             this.comboBoxPattern = new System.Windows.Forms.ComboBox();
+            this.checkedListBox_msFilters = new System.Windows.Forms.CheckedListBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -94,8 +96,7 @@
             // 
             // checkedListBox1
             // 
-            this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(9, 182);
@@ -107,7 +108,7 @@
             // buttonApply
             // 
             this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonApply.Location = new System.Drawing.Point(456, 373);
+            this.buttonApply.Location = new System.Drawing.Point(456, 490);
             this.buttonApply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(62, 23);
@@ -120,7 +121,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(521, 373);
+            this.buttonCancel.Location = new System.Drawing.Point(521, 490);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(62, 23);
@@ -188,7 +189,7 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(413, 348);
+            this.buttonImport.Location = new System.Drawing.Point(413, 465);
             this.buttonImport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(85, 20);
@@ -200,7 +201,7 @@
             // buttonExport
             // 
             this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExport.Location = new System.Drawing.Point(500, 349);
+            this.buttonExport.Location = new System.Drawing.Point(500, 466);
             this.buttonExport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(82, 20);
@@ -275,7 +276,7 @@
             // 
             this.checkBox_IsFreeTimeMemberShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox_IsFreeTimeMemberShow.AutoSize = true;
-            this.checkBox_IsFreeTimeMemberShow.Location = new System.Drawing.Point(22, 348);
+            this.checkBox_IsFreeTimeMemberShow.Location = new System.Drawing.Point(22, 345);
             this.checkBox_IsFreeTimeMemberShow.Name = "checkBox_IsFreeTimeMemberShow";
             this.checkBox_IsFreeTimeMemberShow.Size = new System.Drawing.Size(168, 16);
             this.checkBox_IsFreeTimeMemberShow.TabIndex = 18;
@@ -293,13 +294,37 @@
             this.comboBoxPattern.TabIndex = 19;
             this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
             // 
+            // checkedListBox_msFilters
+            // 
+            this.checkedListBox_msFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkedListBox_msFilters.FormattingEnabled = true;
+            this.checkedListBox_msFilters.Location = new System.Drawing.Point(9, 380);
+            this.checkedListBox_msFilters.Margin = new System.Windows.Forms.Padding(2);
+            this.checkedListBox_msFilters.Name = "checkedListBox_msFilters";
+            this.checkedListBox_msFilters.Size = new System.Drawing.Size(576, 74);
+            this.checkedListBox_msFilters.TabIndex = 20;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 366);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(136, 12);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "マイルストーンフィルタの選択";
+            // 
             // FilterForm
             // 
             this.AcceptButton = this.buttonApply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(588, 403);
+            this.ClientSize = new System.Drawing.Size(588, 520);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.checkedListBox_msFilters);
             this.Controls.Add(this.comboBoxPattern);
             this.Controls.Add(this.checkBox_IsFreeTimeMemberShow);
             this.Controls.Add(this.buttonFromTodayToSpecialDay);
@@ -356,5 +381,7 @@
         private System.Windows.Forms.Button buttonFromTodayToSpecialDay;
         private System.Windows.Forms.CheckBox checkBox_IsFreeTimeMemberShow;
         private System.Windows.Forms.ComboBox comboBoxPattern;
+        private System.Windows.Forms.CheckedListBox checkedListBox_msFilters;
+        private System.Windows.Forms.Label label5;
     }
 }

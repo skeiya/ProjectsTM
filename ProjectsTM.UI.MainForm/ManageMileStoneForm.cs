@@ -1,6 +1,7 @@
-﻿using ProjectsTM.Model;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -8,12 +9,16 @@ namespace ProjectsTM.UI
     {
         private readonly MileStones _mileStones;
         private readonly Callender _callender;
+        private readonly ViewData _viewData;
+        private readonly Action<object, EventArgs> UpdateFilter;
 
-        public ManageMileStoneForm(MileStones mileStones, Callender callender)
+        public ManageMileStoneForm(MileStones mileStones, Callender callender, ViewData viewData, Action<object, EventArgs> updateFilter)
         {
             InitializeComponent();
             this._mileStones = mileStones;
             this._callender = callender;
+            this._viewData = viewData;
+            this.UpdateFilter = updateFilter;
             UpdateList();
         }
 
@@ -21,7 +26,7 @@ namespace ProjectsTM.UI
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMileStoneForm(_callender, null))
+            using (var dlg = new EditMileStoneForm(_callender, null, _viewData, MileStones.GetMileStoneFilters()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _mileStones.Add(dlg.MileStone);
@@ -45,6 +50,7 @@ namespace ProjectsTM.UI
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+            UpdateFilter?.Invoke(null, null);
             Close();
         }
 
@@ -58,7 +64,7 @@ namespace ProjectsTM.UI
             try
             {
                 var m = (MileStone)listView1.SelectedItems[0].Tag;
-                using (var dlg = new EditMileStoneForm(_callender, m.Clone()))
+                using (var dlg = new EditMileStoneForm(_callender, m.Clone(),_viewData, MileStones.GetMileStoneFilters()))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _mileStones.Replace(m, dlg.MileStone);

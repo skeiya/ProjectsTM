@@ -47,9 +47,21 @@ namespace ProjectsTM.Model
             _list.Sort();
         }
 
-        internal bool IsEmpty()
+        public bool IsEmpty()
         {
             return _list.Count == 0;
+        }
+
+        public MileStoneFilters GetMileStoneFilters()
+        {
+            var result = new MileStoneFilters();
+            foreach (var mileStone in this._list)
+            {
+                if (mileStone.MileStoneFilter == null) continue;
+                if (result.Contains(mileStone.MileStoneFilter)) continue;
+                result.Add(mileStone.MileStoneFilter);
+            }
+            return result;
         }
     }
 }

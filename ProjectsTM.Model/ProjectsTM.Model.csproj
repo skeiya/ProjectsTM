@@ -54,6 +54,8 @@
     <Compile Include="Members.cs" />
     <Compile Include="MembersWorkItems.cs" />
     <Compile Include="MileStone.cs" />
+    <Compile Include="MileStoneFilter.cs" />
+    <Compile Include="MileStoneFilters.cs" />
     <Compile Include="MileStones.cs" />
     <Compile Include="PatternHistory.cs" />
     <Compile Include="Period.cs" />
