@@ -6,21 +6,20 @@ namespace ProjectsTM.ViewModel
 {
     public class Filter : IEquatable<Filter>
     {
-        public Filter() { }
         public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
         {
             WorkItem = v;
             Period = period;
-            HideMembers = hideMembers;
+            if (hideMembers != null) HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
             if (mileStoneFilters != null) MileStoneFilters = mileStoneFilters;
         }
 
-        public Members HideMembers { get; set; }
+        public Members HideMembers { get; private set; } = new Members();
         public Period Period { get; set; }
         public string WorkItem { get; set; }
         public bool IsFreeTimeMemberShow { get; set; } = true;
-        public MileStoneFilters MileStoneFilters { get; set; } = new MileStoneFilters();
+        public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
         public static Filter All => new Filter(null, null, new Members(), false, null);
 
         public bool Equals(Filter other)
@@ -30,7 +29,7 @@ namespace ProjectsTM.ViewModel
                    EqualityComparer<Period>.Default.Equals(Period, other.Period) &&
                    WorkItem == other.WorkItem &&
                    IsFreeTimeMemberShow == other.IsFreeTimeMemberShow &&
-                   MileStoneFilters.Equals(other.MileStoneFilters);                    
+                   MileStoneFilters.Equals(other.MileStoneFilters);
         }
 
         public override int GetHashCode()
@@ -47,7 +46,7 @@ namespace ProjectsTM.ViewModel
         internal Filter Clone()
         {
             var result = Filter.All;
-            if (this.HideMembers != null) result.HideMembers = this.HideMembers.Clone();
+            result.HideMembers = this.HideMembers.Clone();
             if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
             if (this.Period != null) result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;

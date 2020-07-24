@@ -51,7 +51,7 @@ namespace ProjectsTM.UI
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contains(m);
+                var check = !_filter.HideMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
 

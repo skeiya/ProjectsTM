@@ -231,7 +231,7 @@ namespace ProjectsTM.Service
             if (filter.MileStoneFilters.Count > 0) return filter;
             if (NoFiterMileStoneCount() == 0) return filter;
 
-            filter.MileStoneFilters = new MileStoneFilters();
+            filter.MileStoneFilters.Clear();
             filter.MileStoneFilters.Add(new MileStoneFilter());
             return filter;
         }

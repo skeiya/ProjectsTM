@@ -92,7 +92,6 @@ namespace ProjectsTM.ViewModel
 
         private List<Member> RemoveFilterSettingMembers(List<Member> members)
         {
-            if (Filter.HideMembers == null) return members;
             return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
         }
 
