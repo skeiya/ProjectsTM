@@ -48,7 +48,7 @@ namespace ProjectsTM.UI
             return radioButtonAudit.Checked;
         }
 
-        internal void Clear()
+        public void Clear()
         {
             comboBoxPattern.Text = string.Empty;
             gridControl1.Initialize(_viewData, null, IsAudit());

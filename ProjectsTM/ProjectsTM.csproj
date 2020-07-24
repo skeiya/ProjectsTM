@@ -79,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UI\ContextMenuHandler.cs" />
-    <Compile Include="UI\PenCache.cs" />
     <Compile Include="UI\ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,31 +103,18 @@
     <Compile Include="UI\EazyRegexForm.Designer.cs">
       <DependentUpon>EazyRegexForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\EditMemberForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\EditMemberForm.Designer.cs">
-      <DependentUpon>EditMemberForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\EditMileStoneForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\HeightAndWidthCalcultor.cs" />
     <Compile Include="UI\RowColResolver.cs" />
     <Compile Include="UI\RsExportSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\RsExportSelectForm.Designer.cs">
       <DependentUpon>RsExportSelectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\EditWorkItemForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\EditWorkItemForm.Designer.cs">
-      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ManageMileStoneForm.cs">
       <SubType>Form</SubType>
@@ -142,19 +128,6 @@
     <Compile Include="UI\ProjectSelectForm.Designer.cs">
       <DependentUpon>ProjectSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\TaskListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\TaskListForm.Designer.cs">
-      <DependentUpon>TaskListForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\TaskListGrid.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\TaskListGrid.Designer.cs">
-      <DependentUpon>TaskListGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\TaskListItem.cs" />
     <Compile Include="UI\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,14 +181,8 @@
     <EmbeddedResource Include="UI\EazyRegexForm.resx">
       <DependentUpon>EazyRegexForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\EditMemberForm.resx">
-      <DependentUpon>EditMemberForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\EditMileStoneForm.resx">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\EditWorkItemForm.resx">
-      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
@@ -251,9 +218,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\TaskListForm.resx">
-      <DependentUpon>TaskListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\VersionForm.resx">
       <DependentUpon>VersionForm.cs</DependentUpon>
@@ -307,6 +271,14 @@
     <ProjectReference Include="..\ProjectsTM.Service\ProjectsTM.Service.csproj">
       <Project>{e76f7b1a-25a3-423d-98fe-c2f8c466764e}</Project>
       <Name>ProjectsTM.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj">
+      <Project>{451bc99b-e4b8-44c8-9828-f916f98f5cc7}</Project>
+      <Name>ProjectsTM.UI.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj">
+      <Project>{d9c038e1-45db-433c-9260-4d7cbc93f347}</Project>
+      <Name>ProjectsTM.UI.TaskList</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj">
       <Project>{8e66a8da-c23e-4d86-a83f-ab8c2574e129}</Project>
