@@ -174,6 +174,7 @@ namespace ProjectsTM.UI
             this._viewData.UndoService.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
+            this.KeyUp -= WorkItemGrid_KeyUp;
         }
 
         private void _viewData_FontChanged(object sender, EventArgs e)
