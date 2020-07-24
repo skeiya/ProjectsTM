@@ -21,6 +21,7 @@ namespace ProjectsTM.ViewModel
         public string WorkItem { get; set; }
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public MileStoneFilters MileStoneFilters { get; set; } = new MileStoneFilters();
+        public static Filter All => new Filter(null, null, new Members(), false, null);
 
         public bool Equals(Filter other)
         {
@@ -45,7 +46,7 @@ namespace ProjectsTM.ViewModel
 
         internal Filter Clone()
         {
-            var result = new Filter();
+            var result = Filter.All;
             if (this.HideMembers != null) result.HideMembers = this.HideMembers.Clone();
             if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
             if (this.Period != null) result.Period = this.Period.Clone();

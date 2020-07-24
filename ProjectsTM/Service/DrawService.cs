@@ -236,7 +236,7 @@ namespace ProjectsTM.Service
 
         private bool IsShowAllSetting()
         {
-            return _viewData.Filter == null;
+            return !_viewData.Filter.MileStoneFilters.Any();
         }
 
         private bool MileStoneFiltersContain(MileStone m)

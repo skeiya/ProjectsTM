@@ -125,7 +125,7 @@ namespace ProjectsTM.Service
             var idx = toolStripComboBoxFilter.SelectedIndex;
             if (idx == 0)
             {
-                _viewData.SetFilter(null);
+                _viewData.SetFilter(Filter.All);
                 return;
             }
             idx = idx - 1;
