@@ -13,14 +13,14 @@ namespace ProjectsTM.ViewModel
             Period = period;
             HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
-            MileStoneFilters = mileStoneFilters;
+            if (mileStoneFilters != null) MileStoneFilters = mileStoneFilters;
         }
 
         public Members HideMembers { get; set; }
         public Period Period { get; set; }
         public string WorkItem { get; set; }
         public bool IsFreeTimeMemberShow { get; set; } = true;
-        public MileStoneFilters MileStoneFilters { get; set; }
+        public MileStoneFilters MileStoneFilters { get; set; } = new MileStoneFilters();
 
         public bool Equals(Filter other)
         {
@@ -50,7 +50,7 @@ namespace ProjectsTM.ViewModel
             if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
             if (this.Period != null) result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;
-            if (this.MileStoneFilters != null) result.MileStoneFilters = this.MileStoneFilters.Clone();
+            result.MileStoneFilters = this.MileStoneFilters.Clone();
             return result;
         }
 

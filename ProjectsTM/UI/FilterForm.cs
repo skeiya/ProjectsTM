@@ -65,11 +65,9 @@ namespace ProjectsTM.UI
             if (_mileStones == null) return;
             foreach (var ms in _mileStones)
             {
-                if (ms == null || 
-                    ms.MileStoneFilter == null || 
-                    ms.MileStoneFilter.Name == null) continue;
+                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) continue;
                 if (checkedListBox_msFilters.Items.Contains(ms.MileStoneFilter.Name)) continue;
-                var check = _filter.MileStoneFilters == null ? true : _filter.MileStoneFilters.Contains(ms.MileStoneFilter);
+                var check = _filter.MileStoneFilters.Contains(ms.MileStoneFilter);
                 checkedListBox_msFilters.Items.Add(ms.MileStoneFilter.Name, check);
             }
         }
