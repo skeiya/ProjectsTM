@@ -40,6 +40,14 @@ Source: ".\ProjectsTM\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flag
 Source: ".\ProjectsTM\bin\Release\ProjectsTM.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM\bin\Release\ProjectsTM.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM\bin\Release\Help\help.html"; DestDir: "{app}\Help"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.Logic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.Service.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.UI.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.UI.MainForm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.UI.TaskList.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM\bin\Release\ProjectsTM.ViewModel.dll"; DestDir: "{app}"; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
