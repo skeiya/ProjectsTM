@@ -58,5 +58,10 @@ namespace ProjectsTM.Model
         {
             return _mileStoneFilters.Contains(msf);
         }
+
+        internal void Clear()
+        {
+            _mileStoneFilters.Clear();
+        }
     }
 }
