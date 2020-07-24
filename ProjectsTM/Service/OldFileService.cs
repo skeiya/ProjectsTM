@@ -15,8 +15,8 @@ namespace ProjectsTM.Service
                 using (var dlg = new OpenFileDialog())
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
-                    viewData.Original.Members = CsvReader.ReadMembers(dlg.FileName);
-                    viewData.Original.WorkItems = CsvReader.ReadWorkItems(dlg.FileName);
+                    viewData.Original.Members = CsvReadService.ReadMembers(dlg.FileName);
+                    viewData.Original.WorkItems = CsvReadService.ReadWorkItems(dlg.FileName);
                     viewData.ClearCallenderAndMembers();
                     foreach (var w in viewData.Original.WorkItems) // TODO 暫定
                     {

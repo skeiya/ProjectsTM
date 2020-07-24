@@ -1,12 +1,13 @@
-﻿using ProjectsTM.Model;
+﻿using ProjectsTM.Logic;
+using ProjectsTM.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ProjectsTM.Logic
+namespace ProjectsTM.Service
 {
-    class CsvReader
+    class CsvReadService
     {
         private static Tags ParseTags(string tag)
         {

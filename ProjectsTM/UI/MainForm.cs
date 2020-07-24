@@ -194,11 +194,11 @@ namespace ProjectsTM.UI
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 if (dlg.allPeriod)
                 {
-                    RSFileExporter.Export(_viewData.Original);
+                    RSFileExportService.Export(_viewData.Original);
                 }
                 else
                 {
-                    RSFileExporter.ExportSelectGetsudo(_viewData.Original, dlg.selectGetsudo);
+                    RSFileExportService.ExportSelectGetsudo(_viewData.Original, dlg.selectGetsudo);
                 }
             }
         }

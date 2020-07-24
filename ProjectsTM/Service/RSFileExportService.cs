@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ProjectsTM.Logic
+namespace ProjectsTM.Service
 {
-    public static class RSFileExporter
+    public static class RSFileExportService
     {
         public static void Export(AppData appData)
         {

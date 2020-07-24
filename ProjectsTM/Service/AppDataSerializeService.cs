@@ -1,11 +1,12 @@
-﻿using ProjectsTM.Model;
+﻿using ProjectsTM.Logic;
+using ProjectsTM.Model;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ProjectsTM.Logic
+namespace ProjectsTM.Service
 {
-    public static class AppDataSerializer
+    public static class AppDataSerializeService
     {
         public static void Serialize(string fileName, AppData appData)
         {

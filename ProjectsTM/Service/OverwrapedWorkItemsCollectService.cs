@@ -1,9 +1,9 @@
 ﻿using ProjectsTM.Model;
 using System.Collections.Generic;
 
-namespace ProjectsTM.Logic
+namespace ProjectsTM.Service
 {
-    public static class OverwrapedWorkItemsGetter
+    public static class OverwrapedWorkItemsCollectService
     {
         public static List<WorkItem> Get(WorkItems workItems)
         {

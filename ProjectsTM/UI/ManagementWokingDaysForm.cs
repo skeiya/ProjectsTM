@@ -1,5 +1,5 @@
-﻿using ProjectsTM.Logic;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using System;
 using System.Windows.Forms;
 
@@ -69,7 +69,7 @@ namespace ProjectsTM.UI
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var cal = CsvReader.ReadWorkingDays(dlg.FileName);
+                var cal = CsvReadService.ReadWorkingDays(dlg.FileName);
                 foreach (var d in cal.Days)
                 {
                     _callender.Days.Add(d);

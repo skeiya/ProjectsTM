@@ -84,7 +84,7 @@ namespace ProjectsTM.UI
             checkBoxCaseDistinct.Enabled = false;
 
             comboBoxPattern.Text = string.Empty;
-            UpdateList(OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems));
+            UpdateList(OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems));
         }
 
         private void ButtonSearch_Click(object sender, EventArgs e)

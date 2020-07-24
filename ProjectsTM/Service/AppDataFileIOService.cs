@@ -49,7 +49,7 @@ namespace ProjectsTM.Service
             _watcher.EnableRaisingEvents = false;
             try
             {
-                AppDataSerializer.Serialize(_previousFileName, appData);
+                AppDataSerializeService.Serialize(_previousFileName, appData);
                 FileSaved?.Invoke(this, null);
             }
             finally
@@ -68,7 +68,7 @@ namespace ProjectsTM.Service
                 _watcher.EnableRaisingEvents = false;
                 try
                 {
-                    AppDataSerializer.Serialize(dlg.FileName, appData);
+                    AppDataSerializeService.Serialize(dlg.FileName, appData);
                     FileSaved?.Invoke(this, null);
                     _previousFileName = dlg.FileName;
                 }
@@ -84,7 +84,7 @@ namespace ProjectsTM.Service
 
         private static bool CheckOverwrap(AppData appData, Action showOverwrapCheck)
         {
-            if (OverwrapedWorkItemsGetter.Get(appData.WorkItems).Count == 0) return true;
+            if (OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Count == 0) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
             showOverwrapCheck();
             return false;
@@ -116,7 +116,7 @@ namespace ProjectsTM.Service
             _watcher.IncludeSubdirectories = false;
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
-            return AppDataSerializer.Deserialize(fileName);
+            return AppDataSerializeService.Deserialize(fileName);
         }
 
         public void Dispose()

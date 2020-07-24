@@ -219,7 +219,7 @@ namespace ProjectsTM.UI
 
         private List<TaskListItem> GetAuditList()
         {
-            var list = OverwrapedWorkItemsGetter.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
+            var list = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (list.Any(l => l.WorkItem.Equals(wi))) continue;

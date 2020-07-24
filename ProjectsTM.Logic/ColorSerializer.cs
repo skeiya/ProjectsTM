@@ -2,7 +2,7 @@
 
 namespace ProjectsTM.Logic
 {
-    class ColorSerializer
+    public class ColorSerializer
     {
         public static string Serialize(Color c)
         {

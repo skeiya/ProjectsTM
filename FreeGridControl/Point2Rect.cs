@@ -1,10 +1,9 @@
-﻿using FreeGridControl;
-using System;
+﻿using System;
 using System.Drawing;
 
-namespace ProjectsTM.Logic
+namespace FreeGridControl
 {
-    static class Point2Rect
+    public static class Point2Rect
     {
         public static ClientRectangle GetRectangle(Point p1, Point p2)
         {

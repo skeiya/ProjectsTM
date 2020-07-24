@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using ProjectsTM.Service;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -86,10 +87,10 @@ namespace UnitTestProject1
             {
                 var orgApp = BuildDummyData();
 
-                AppDataSerializer.WriteToStream(orgApp, writer);
+                AppDataSerializeService.WriteToStream(orgApp, writer);
                 writer.Flush();
                 stream.Position = 0;
-                var loadedApp = AppDataSerializer.LoadFromStream(reader);
+                var loadedApp = AppDataSerializeService.LoadFromStream(reader);
                 Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }
@@ -129,7 +130,7 @@ namespace UnitTestProject1
         public void RSExport()
         {
             var appData = new AppData();
-            var result = RSFileExporter.MakeTextAllData(appData);
+            var result = RSFileExportService.MakeTextAllData(appData);
             var expect = "Com\tMem\tProj\t" + Environment.NewLine;
             Assert.AreEqual(expect, result);
         }

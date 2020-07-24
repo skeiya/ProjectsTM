@@ -1,5 +1,5 @@
-﻿using ProjectsTM.Logic;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using System;
 using System.Windows.Forms;
 
@@ -106,7 +106,7 @@ namespace ProjectsTM.UI
             using (var dlg = new OpenFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var appData = AppDataSerializer.Deserialize(dlg.FileName);
+                var appData = AppDataSerializeService.Deserialize(dlg.FileName);
                 _colorConditions.Apply(appData.ColorConditions);
                 UpdateList();
             }
