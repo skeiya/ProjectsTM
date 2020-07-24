@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\ProjectsTM\packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
+      <HintPath>..\packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
