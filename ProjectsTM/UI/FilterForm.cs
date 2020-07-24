@@ -74,7 +74,7 @@ namespace ProjectsTM.UI
 
         private void UpdateWorkItemText()
         {
-            comboBoxPattern.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
+            comboBoxPattern.Text = _filter.WorkItem;
         }
 
         private void UpdatePeriodText()

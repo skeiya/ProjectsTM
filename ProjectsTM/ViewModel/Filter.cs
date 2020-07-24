@@ -8,7 +8,7 @@ namespace ProjectsTM.ViewModel
     {
         public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
         {
-            WorkItem = v;
+            if (v != null) WorkItem = v;
             Period = period;
             if (hideMembers != null) HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
 
         public Members HideMembers { get; private set; } = new Members();
         public Period Period { get; set; }
-        public string WorkItem { get; set; }
+        public string WorkItem { get; private set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
         public static Filter All => new Filter(null, null, new Members(), false, null);
@@ -47,7 +47,7 @@ namespace ProjectsTM.ViewModel
         {
             var result = Filter.All;
             result.HideMembers = this.HideMembers.Clone();
-            if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
+            result.WorkItem = (string)this.WorkItem.Clone();
             if (this.Period != null) result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;
             result.MileStoneFilters = this.MileStoneFilters.Clone();

@@ -126,7 +126,7 @@ namespace ProjectsTM.ViewModel
 
         public bool IsFilteredWorkItem(WorkItem w)
         {
-            if (Filter.WorkItem == null) return false;
+            if (string.IsNullOrEmpty(Filter.WorkItem)) return false;
             return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
