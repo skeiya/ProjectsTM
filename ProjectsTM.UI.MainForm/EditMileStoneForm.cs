@@ -1,9 +1,8 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -54,7 +53,7 @@ namespace ProjectsTM.UI
         {
             SetComboBoxItems();
             if (!ComboBox1_Contain(m?.MileStoneFilter)) return;
-            comboBox1.SelectedIndex = comboBox1.Items.IndexOf(m.MileStoneFilter.Name);  
+            comboBox1.SelectedIndex = comboBox1.Items.IndexOf(m.MileStoneFilter.Name);
         }
 
         private void ButtonSelectColor_Click(object sender, EventArgs e)

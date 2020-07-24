@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
+using System;
+using System.Windows.Forms;
 
 namespace ProjectsTM.UI
 {
@@ -40,7 +40,7 @@ namespace ProjectsTM.UI
             _mileStones.Sort();
             foreach (var m in _mileStones)
             {
-                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() , m.MileStoneFilterName});
+                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString(), m.MileStoneFilterName });
                 item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
@@ -64,7 +64,7 @@ namespace ProjectsTM.UI
             try
             {
                 var m = (MileStone)listView1.SelectedItems[0].Tag;
-                using (var dlg = new EditMileStoneForm(_callender, m.Clone(),_viewData, MileStones.GetMileStoneFilters()))
+                using (var dlg = new EditMileStoneForm(_callender, m.Clone(), _viewData, MileStones.GetMileStoneFilters()))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _mileStones.Replace(m, dlg.MileStone);

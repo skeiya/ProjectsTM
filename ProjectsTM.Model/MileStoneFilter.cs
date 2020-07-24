@@ -6,7 +6,7 @@ namespace ProjectsTM.Model
     {
         public string Name { get; set; } = string.Empty;
 
-        public MileStoneFilter() {}
+        public MileStoneFilter() { }
 
         public MileStoneFilter(string name)
         {

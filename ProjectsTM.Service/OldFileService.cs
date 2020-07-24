@@ -1,5 +1,4 @@
-﻿using ProjectsTM.Logic;
-using ProjectsTM.ViewModel;
+﻿using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
 

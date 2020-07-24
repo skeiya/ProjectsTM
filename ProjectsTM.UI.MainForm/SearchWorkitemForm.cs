@@ -1,5 +1,4 @@
-﻿using ProjectsTM.Logic;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
 using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
 using System;
