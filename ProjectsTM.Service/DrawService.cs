@@ -236,33 +236,25 @@ namespace ProjectsTM.Service
 
         private bool IsShowAllSetting()
         {
-            return _viewData.Filter == null;
+            return !_viewData.Filter.MileStoneFilters.Any();
         }
 
-        private bool MileStoneFiltersContain(MileStone m)
+        private bool DoesFilterSuppressMileStoneDraw(MileStone m)
         {
-            if (m == null) return false;
-            if (IsShowAllSetting()) return true;
-            if (m.Name.Equals("Today")) return true;
-
-            var mileStoneFilters = _viewData.Filter.MileStoneFilters;
-            if (mileStoneFilters == null) return false;
-            foreach (var msFilter in mileStoneFilters)
-            {
-                if (msFilter.Equals(m.MileStoneFilter)) return true;
-            }
-            return false;
+            if (m == null) return true;
+            if (IsShowAllSetting()) return false;
+            if (m.Name.Equals("Today")) return false;
+            return !_viewData.Filter.MileStoneFilters.Any(f => f.Equals(m.MileStoneFilter));
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
             var range = _grid.VisibleRowColRange;
-            var projects = _viewData.GetFilteredWorkItems().Select(w => w.Project).Distinct();
             var visibleArea = _grid.GetVisibleRect(false, false);
             foreach (var r in range.Rows)
             {
                 var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (!MileStoneFiltersContain(m)) continue;
+                if (DoesFilterSuppressMileStoneDraw(m)) continue;
                 var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))

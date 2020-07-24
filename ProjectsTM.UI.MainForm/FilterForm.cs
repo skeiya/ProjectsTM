@@ -51,7 +51,7 @@ namespace ProjectsTM.UI
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contains(m);
+                var check = !_filter.HideMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
 
@@ -65,24 +65,22 @@ namespace ProjectsTM.UI
             if (_mileStones == null) return;
             foreach (var ms in _mileStones)
             {
-                if (ms == null || 
-                    ms.MileStoneFilter == null || 
-                    ms.MileStoneFilter.Name == null) continue;
+                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) continue;
                 if (checkedListBox_msFilters.Items.Contains(ms.MileStoneFilter.Name)) continue;
-                var check = _filter.MileStoneFilters == null ? true : _filter.MileStoneFilters.Contains(ms.MileStoneFilter);
+                var check = _filter.MileStoneFilters.Contains(ms.MileStoneFilter);
                 checkedListBox_msFilters.Items.Add(ms.MileStoneFilter.Name, check);
             }
         }
 
         private void UpdateWorkItemText()
         {
-            comboBoxPattern.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
+            comboBoxPattern.Text = _filter.WorkItem;
         }
 
         private void UpdatePeriodText()
         {
-            textBoxFrom.Text = _filter.Period == null ? string.Empty : _filter.Period.From.ToString();
-            textBoxTo.Text = _filter.Period == null ? string.Empty : _filter.Period.To.ToString();
+            textBoxFrom.Text = _filter.Period.IsValid ? _filter.Period.From.ToString() : string.Empty;
+            textBoxTo.Text = _filter.Period.IsValid ? _filter.Period.To.ToString() : string.Empty;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)

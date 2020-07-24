@@ -12,6 +12,8 @@ namespace ProjectsTM.Model
             this.To = to;
         }
 
+        public bool IsValid => From != null && To != null;
+
         public CallenderDay From { set; get; }
         public CallenderDay To { set; get; }
 
@@ -51,7 +53,7 @@ namespace ProjectsTM.Model
 
         public bool HasInterSection(Period period)
         {
-            if (period == null) return true;
+            if (!period.IsValid) return true;
             if (period.Contains(From)) return true;
             if (period.Contains(To)) return true;
             if (this.Contains(period.From)) return true;

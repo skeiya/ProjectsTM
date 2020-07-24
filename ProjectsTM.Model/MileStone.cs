@@ -15,7 +15,7 @@ namespace ProjectsTM.Model
             Name = name;
             Day = day;
             Color = color;
-            MileStoneFilter = mileStoneFilter;
+            if (mileStoneFilter != null) MileStoneFilter = mileStoneFilter;
         }
 
         public string Name { set; get; }
@@ -29,14 +29,14 @@ namespace ProjectsTM.Model
             set { Color = ColorSerializer.Deserialize(value); }
         }
         [XmlIgnore]
-        public MileStoneFilter MileStoneFilter { set; get; }
+        public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter();
 
         [XmlElement]
         public string MileStoneFilterName
         {
-            get { return MileStoneFilter != null ? MileStoneFilter.Name : string.Empty; }
+            get { return MileStoneFilter.Name; }
             set { MileStoneFilter = new MileStoneFilter(value); }
-        }       
+        }
 
         public int CompareTo(MileStone other)
         {
@@ -48,7 +48,6 @@ namespace ProjectsTM.Model
         public override bool Equals(object obj)
         {
             if (!(obj is MileStone stone)) return false;
-            if (stone.MileStoneFilter == null) stone.MileStoneFilter = new MileStoneFilter();
             return Name == stone.Name &&
                    EqualityComparer<CallenderDay>.Default.Equals(Day, stone.Day) &&
                    EqualityComparer<Color>.Default.Equals(Color, stone.Color) &&

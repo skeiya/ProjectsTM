@@ -35,6 +35,7 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
+            this.columnHeaderFilter = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -44,16 +45,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
-            this.columnHeaderDate});
+            this.columnHeaderDate,
+            this.columnHeaderFilter});
+            this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(240, 205);
+            this.listView1.Size = new System.Drawing.Size(314, 205);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListView1_MouseDoubleClick);
+            this.listView1.Resize += new System.EventHandler(this.listView1_Resize);
             // 
             // columnHeaderName
             // 
@@ -68,7 +72,7 @@
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(252, 6);
+            this.buttonAdd.Location = new System.Drawing.Point(326, 6);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(60, 25);
@@ -80,7 +84,7 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(252, 186);
+            this.buttonOK.Location = new System.Drawing.Point(326, 186);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(60, 25);
             this.buttonOK.TabIndex = 2;
@@ -91,7 +95,7 @@
             // buttonEdit
             // 
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(252, 35);
+            this.buttonEdit.Location = new System.Drawing.Point(326, 35);
             this.buttonEdit.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(60, 25);
@@ -103,7 +107,7 @@
             // buttonDelete
             // 
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDelete.Location = new System.Drawing.Point(252, 64);
+            this.buttonDelete.Location = new System.Drawing.Point(326, 64);
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(60, 25);
@@ -112,11 +116,16 @@
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
+            // columnHeaderFilter
+            // 
+            this.columnHeaderFilter.Text = "フィルター";
+            this.columnHeaderFilter.Width = 110;
+            // 
             // ManageMileStoneForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(322, 216);
+            this.ClientSize = new System.Drawing.Size(396, 216);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonEdit);
@@ -140,5 +149,6 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.ColumnHeader columnHeaderFilter;
     }
 }

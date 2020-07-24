@@ -8,7 +8,7 @@ namespace ProjectsTM.ViewModel
 {
     public class ViewData
     {
-        public Filter Filter { get; private set; }
+        public Filter Filter { get; private set; } = Filter.All;
         public Detail Detail { get; set; } = new Detail();
 
         public AppData Original => _appData;
@@ -67,9 +67,7 @@ namespace ProjectsTM.ViewModel
 
         private bool Changed(Filter filter)
         {
-            if (Filter == null && filter == null) return false;
-            if (Filter != null) return !Filter.Equals(filter);
-            return !filter.Equals(Filter);
+            return !Filter.Equals(filter);
         }
 
         public IEnumerable<Member> GetFilteredMembers()
@@ -80,7 +78,7 @@ namespace ProjectsTM.ViewModel
 
         private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members)
         {
-            if (Filter == null || Filter.IsFreeTimeMemberShow) return;
+            if (Filter.IsFreeTimeMemberShow) return;
             if (members == null || members.Count() > 0) return;
             var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
             foreach (var m in freeTimeMember)
@@ -91,7 +89,6 @@ namespace ProjectsTM.ViewModel
 
         private List<Member> RemoveFilterSettingMembers(List<Member> members)
         {
-            if (Filter == null || Filter.HideMembers == null) return members;
             return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
         }
 
@@ -112,7 +109,6 @@ namespace ProjectsTM.ViewModel
 
         public MembersWorkItems GetFilteredWorkItemsOfMember(Member m)
         {
-            if (Filter == null) return Original.WorkItems.OfMember(m);
             var result = new MembersWorkItems();
             foreach (var w in Original.WorkItems.OfMember(m))
             {
@@ -127,13 +123,12 @@ namespace ProjectsTM.ViewModel
 
         public bool IsFilteredWorkItem(WorkItem w)
         {
-            if (Filter == null || Filter.WorkItem == null) return false;
+            if (string.IsNullOrEmpty(Filter.WorkItem)) return false;
             return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
         public IEnumerable<WorkItem> GetFilteredWorkItems()
         {
-            if (Filter == null) return Original.WorkItems;
             var filteredMembers = GetFilteredMembers();
             var result = new WorkItems();
             foreach (var w in Original.WorkItems)
@@ -149,10 +144,14 @@ namespace ProjectsTM.ViewModel
             return result;
         }
 
+        internal void SetFilter(object all)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<CallenderDay> GetFilteredDays()
         {
-            if (Filter == null) return Original.Callender.Days;
-            if (Filter.Period == null) return Original.Callender.Days;
+            if (!Filter.Period.IsValid) return Original.Callender.Days;
             var result = new List<CallenderDay>();
             bool isFound = false;
             foreach (var d in Original.Callender.Days)

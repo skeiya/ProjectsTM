@@ -9,18 +9,19 @@ namespace ProjectsTM.ViewModel
         public Filter() { }
         public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
         {
-            WorkItem = v;
-            Period = period;
-            HideMembers = hideMembers;
+            if (v != null) WorkItem = v;
+            if (period != null) Period = period;
+            if (hideMembers != null) HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
-            MileStoneFilters = mileStoneFilters;
+            if (mileStoneFilters != null) MileStoneFilters = mileStoneFilters;
         }
 
-        public Members HideMembers { get; set; }
-        public Period Period { get; set; }
-        public string WorkItem { get; set; }
+        public Members HideMembers { get; private set; } = new Members();
+        public Period Period { get; set; } = new Period();
+        public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
-        public MileStoneFilters MileStoneFilters { get; set; }
+        public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
+        public static Filter All => new Filter(null, null, new Members(), false, null);
 
         public bool Equals(Filter other)
         {
@@ -29,7 +30,7 @@ namespace ProjectsTM.ViewModel
                    EqualityComparer<Period>.Default.Equals(Period, other.Period) &&
                    WorkItem == other.WorkItem &&
                    IsFreeTimeMemberShow == other.IsFreeTimeMemberShow &&
-                   MileStoneFilters.Equals(other.MileStoneFilters);                    
+                   MileStoneFilters.Equals(other.MileStoneFilters);
         }
 
         public override int GetHashCode()
@@ -45,12 +46,12 @@ namespace ProjectsTM.ViewModel
 
         public Filter Clone()
         {
-            var result = new Filter();
-            if (this.HideMembers != null) result.HideMembers = this.HideMembers.Clone();
-            if (this.WorkItem != null) result.WorkItem = (string)this.WorkItem.Clone();
-            if (this.Period != null) result.Period = this.Period.Clone();
+            var result = Filter.All;
+            result.HideMembers = this.HideMembers.Clone();
+            result.WorkItem = (string)this.WorkItem.Clone();
+            result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;
-            if (this.MileStoneFilters != null) result.MileStoneFilters = this.MileStoneFilters.Clone();
+            result.MileStoneFilters = this.MileStoneFilters.Clone();
             return result;
         }
 
