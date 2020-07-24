@@ -257,7 +257,6 @@ namespace ProjectsTM.Service
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
         {
             var range = _grid.VisibleRowColRange;
-            var projects = _viewData.GetFilteredWorkItems().Select(w => w.Project).Distinct();
             var visibleArea = _grid.GetVisibleRect(false, false);
             foreach (var r in range.Rows)
             {
