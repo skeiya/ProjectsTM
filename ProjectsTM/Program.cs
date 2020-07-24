@@ -1,4 +1,4 @@
-﻿using ProjectsTM.UI;
+﻿using ProjectsTM.UI.MainForm;
 using System;
 using System.Windows.Forms;
 

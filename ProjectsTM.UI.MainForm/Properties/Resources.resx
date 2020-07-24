@@ -118,7 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Dakirby309_Simply_Styled_Calendar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Dakirby309-Simply-Styled-Calendar.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8_filter_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-filter-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_swatch_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-swatch-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_129150_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_129150_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

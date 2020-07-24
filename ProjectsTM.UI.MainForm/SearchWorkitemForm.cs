@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     public partial class SearchWorkitemForm : Form
     {

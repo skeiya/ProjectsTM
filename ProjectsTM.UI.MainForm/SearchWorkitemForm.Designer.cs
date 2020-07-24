@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.UI
+﻿namespace ProjectsTM.UI.MainForm
 {
     partial class SearchWorkitemForm
     {
@@ -161,7 +161,7 @@
             // 
             // searchWorkitemFormBindingSource
             // 
-            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.SearchWorkitemForm);
+            this.searchWorkitemFormBindingSource.DataSource = typeof(ProjectsTM.UI.MainForm.SearchWorkitemForm);
             // 
             // SearchWorkitemForm
             // 

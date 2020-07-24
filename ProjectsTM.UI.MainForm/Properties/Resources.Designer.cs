@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectsTM.Properties {
+namespace ProjectsTM.UI.MainForm.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ProjectsTM.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProjectsTM.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProjectsTM.UI.MainForm.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,12 +61,32 @@ namespace ProjectsTM.Properties {
         }
         
         /// <summary>
-        ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Icon Dakirby309_Simply_Styled_Calendar {
+        internal static System.Drawing.Bitmap icon_129150_48 {
             get {
-                object obj = ResourceManager.GetObject("Dakirby309_Simply_Styled_Calendar", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                object obj = ResourceManager.GetObject("icon_129150_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_filter_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_filter_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_swatch_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_swatch_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

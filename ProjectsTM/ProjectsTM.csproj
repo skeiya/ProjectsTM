@@ -59,14 +59,8 @@
     <ApplicationIcon>res\Dakirby309-Simply-Styled-Calendar.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,119 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\ContextMenuHandler.cs" />
-    <Compile Include="UI\ColorConditionEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ColorConditionEditorForm.Designer.cs">
-      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ColorManagementForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ColorManagementForm.Designer.cs">
-      <DependentUpon>ColorManagementForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\DevideWorkItemForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\DevideWorkItemForm.Designer.cs">
-      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\EazyRegexForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\EazyRegexForm.Designer.cs">
-      <DependentUpon>EazyRegexForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\EditMileStoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\EditMileStoneForm.Designer.cs">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\RowColResolver.cs" />
-    <Compile Include="UI\RsExportSelectForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\RsExportSelectForm.Designer.cs">
-      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ManageMileStoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ManageMileStoneForm.Designer.cs">
-      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ProjectSelectForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ProjectSelectForm.Designer.cs">
-      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\VersionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\VersionForm.Designer.cs">
-      <DependentUpon>VersionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\WorkItemGrid.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\FilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FilterForm.Designer.cs">
-      <DependentUpon>FilterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\ManageMemberForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ManageMemberForm.Designer.cs">
-      <DependentUpon>ManageMemberForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ManagementWokingDaysForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ManagementWokingDaysForm.Designer.cs">
-      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\SearchWorkitemForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\SearchWorkitemForm.Designer.cs">
-      <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="UI\ColorConditionEditorForm.resx">
-      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ColorManagementForm.resx">
-      <DependentUpon>ColorManagementForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\DevideWorkItemForm.resx">
-      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\EazyRegexForm.resx">
-      <DependentUpon>EazyRegexForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\EditMileStoneForm.resx">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FilterForm.resx">
-      <DependentUpon>FilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -201,27 +84,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\ManageMemberForm.resx">
-      <DependentUpon>ManageMemberForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ManagementWokingDaysForm.resx">
-      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ManageMileStoneForm.resx">
-      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ProjectSelectForm.resx">
-      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\RsExportSelectForm.resx">
-      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SearchWorkitemForm.resx">
-      <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\VersionForm.resx">
-      <DependentUpon>VersionForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -236,15 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\icons8-filter-24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\icons8-swatch-48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\icon_129150_48.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Dakirby309-Simply-Styled-Calendar.ico" />
@@ -275,6 +128,10 @@
     <ProjectReference Include="..\ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj">
       <Project>{451bc99b-e4b8-44c8-9828-f916f98f5cc7}</Project>
       <Name>ProjectsTM.UI.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.UI.MainForm\ProjectsTM.UI.MainForm.csproj">
+      <Project>{799e1ac1-909e-4a12-85c3-46fa01c548d4}</Project>
+      <Name>ProjectsTM.UI.MainForm</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj">
       <Project>{d9c038e1-45db-433c-9260-4d7cbc93f347}</Project>

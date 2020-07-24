@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     partial class MainForm
     {
@@ -134,7 +134,7 @@ namespace ProjectsTM.UI
             // 
             // ToolStripMenuItemPrint
             // 
-            this.ToolStripMenuItemPrint.Image = global::ProjectsTM.Properties.Resources.icon_129150_48;
+            this.ToolStripMenuItemPrint.Image = global::ProjectsTM.UI.MainForm.Properties.Resources.icon_129150_48;
             this.ToolStripMenuItemPrint.Name = "ToolStripMenuItemPrint";
             this.ToolStripMenuItemPrint.Size = new System.Drawing.Size(170, 22);
             this.ToolStripMenuItemPrint.Text = "印刷";
@@ -235,7 +235,7 @@ namespace ProjectsTM.UI
             // 
             // ToolStripMenuItemFilter
             // 
-            this.ToolStripMenuItemFilter.Image = global::ProjectsTM.Properties.Resources.icons8_filter_24;
+            this.ToolStripMenuItemFilter.Image = global::ProjectsTM.UI.MainForm.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
             this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(196, 38);
             this.ToolStripMenuItemFilter.Text = "フィルター";
@@ -243,7 +243,7 @@ namespace ProjectsTM.UI
             // 
             // ToolStripMenuItemColor
             // 
-            this.ToolStripMenuItemColor.Image = global::ProjectsTM.Properties.Resources.icons8_swatch_48;
+            this.ToolStripMenuItemColor.Image = global::ProjectsTM.UI.MainForm.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
             this.ToolStripMenuItemColor.Size = new System.Drawing.Size(196, 38);
             this.ToolStripMenuItemColor.Text = "色";
