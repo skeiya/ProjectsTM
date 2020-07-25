@@ -72,7 +72,7 @@ namespace ProjectsTM.Model
             {
                 foreach (var ms in this._list)
                 {
-                    if (ms.IsMatchFilter(searchPattern)) continue;
+                    if (!ms.IsMatchFilter(searchPattern)) continue;
                     if (result.Contains(ms.MileStoneFilter)) continue;
                     result.Add(ms.MileStoneFilter);
                 }
