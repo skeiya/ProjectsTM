@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Xml.Serialization;
+using System.Text.RegularExpressions;
 
 namespace ProjectsTM.Model
 {
@@ -36,6 +37,11 @@ namespace ProjectsTM.Model
         {
             get { return MileStoneFilter.Name; }
             set { MileStoneFilter = new MileStoneFilter(value); }
+        }
+
+        public bool IsMatchFilter(string searchPattern)
+        {
+            return Regex.IsMatch(this.MileStoneFilter.Name, searchPattern, RegexOptions.IgnoreCase);
         }
 
         public int CompareTo(MileStone other)

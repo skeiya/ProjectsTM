@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace ProjectsTM.Model
 {
@@ -65,17 +64,17 @@ namespace ProjectsTM.Model
             return result;
         }
 
-        public MileStoneFilters GeMatchedMileStoneFilters(string searchPettern)
+        public MileStoneFilters GeMatchedMileStoneFilters(string searchPattern)
         {
             var result = new MileStoneFilters();
-            if (string.IsNullOrEmpty(searchPettern)) return result;
+            if (string.IsNullOrEmpty(searchPattern)) return result;
             try
             {
-                foreach (var msFilter in this.GetMileStoneFilters())
+                foreach (var ms in this._list)
                 {
-                    if (!Regex.IsMatch(msFilter.Name, searchPettern, RegexOptions.IgnoreCase)) continue;
-                    if (result.Contains(msFilter)) continue;
-                    result.Add(msFilter);
+                    if (ms.IsMatchFilter(searchPattern)) continue;
+                    if (result.Contains(ms.MileStoneFilter)) continue;
+                    result.Add(ms.MileStoneFilter);
                 }
                 return result;
             }

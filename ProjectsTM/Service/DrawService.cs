@@ -238,9 +238,7 @@ namespace ProjectsTM.Service
         {
             if (m == null) return true;
             if (m.Name.Equals("Today")) return false;
-            var serachPattern = _viewData.Filter.MSFilterSearchPattern;
-            var matchedMSFilters = _viewData.Original.MileStones.GeMatchedMileStoneFilters(serachPattern);
-            return !matchedMSFilters.Any(f => f.Equals(m.MileStoneFilter));
+            return !m.IsMatchFilter(_viewData.Filter.MSFilterSearchPattern);
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
