@@ -24,7 +24,7 @@ namespace ProjectsTM.UI.TaskList
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
         private RowIndex _clickedRawIndexBefore;
-        private bool IsShiftKeyDown { get; set; }
+        private bool _isShiftKeyDown;
 
         public TaskListGrid()
         {
@@ -41,7 +41,7 @@ namespace ProjectsTM.UI.TaskList
         {
             if (e.KeyCode == Keys.ShiftKey)
             {
-                IsShiftKeyDown = false;
+                _isShiftKeyDown = false;
             }
         }
 
@@ -56,7 +56,7 @@ namespace ProjectsTM.UI.TaskList
                 MoveSelect(-1);
             }else if(e.KeyCode == Keys.ShiftKey)
             {
-                IsShiftKeyDown = true;
+                _isShiftKeyDown = true;
             }
         }
 
@@ -136,7 +136,7 @@ namespace ProjectsTM.UI.TaskList
                 return;
             }
 
-            if (IsShiftKeyDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
+            if (_isShiftKeyDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
 
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
@@ -246,7 +246,7 @@ namespace ProjectsTM.UI.TaskList
             if (_viewData.Selected == null || _viewData.Selected.Count() == 0) { _clickedRawIndexBefore = null; return; }
             if (_viewData.Selected.Count() > 1)
             {
-                if (!IsShiftKeyDown) _clickedRawIndexBefore = null;
+                if (!_isShiftKeyDown) _clickedRawIndexBefore = null;
                 return;
             }
             var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
