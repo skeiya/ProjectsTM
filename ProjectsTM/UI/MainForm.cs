@@ -320,7 +320,7 @@ namespace ProjectsTM.UI
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender, _viewData, _filterComboBoxService.ToolStripComboBoxFilter_SelectedIndexChanged))
+            using (var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender, _viewData))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
