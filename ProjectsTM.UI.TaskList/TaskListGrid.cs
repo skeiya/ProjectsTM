@@ -23,6 +23,8 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
+        private RowIndex _clickedRawIndexBefore;
+        private bool isShiftKeyDown;
 
         public TaskListGrid()
         {
@@ -32,6 +34,15 @@ namespace ProjectsTM.UI.TaskList
             this.MouseClick += TaskListGrid_MouseClick;
             this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
+            this.KeyUp += TaskListGrid_KeyUp;
+        }
+
+        private void TaskListGrid_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                isShiftKeyDown = false;
+            }
         }
 
         private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
@@ -43,6 +54,9 @@ namespace ProjectsTM.UI.TaskList
             else if (e.KeyCode == Keys.Up)
             {
                 MoveSelect(-1);
+            }else if(e.KeyCode == Keys.ShiftKey)
+            {
+                isShiftKeyDown = true;
             }
         }
 
@@ -63,6 +77,55 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
+        private bool CheckMultiRowIndex(int minRowIndex, int maxRowIndex)
+        {
+            if (minRowIndex <= FixedRowCount - 1 ||
+                maxRowIndex <= minRowIndex ||
+                _listItems.Count - 1 < maxRowIndex) return false;
+            return true;
+        }
+
+        private List<TaskListItem> GetMultiSelectedTaskListItems(int minRowIndex, int maxRowIndex)
+        {
+            List<TaskListItem> items = new List<TaskListItem>();
+            if (CheckMultiRowIndex(minRowIndex, maxRowIndex)) return items;
+
+            for (var idx = minRowIndex; idx <= maxRowIndex; idx++)
+            {
+                var item = _listItems[idx - FixedRowCount];
+                if (!item.IsMilestone) items.Add(item);
+            }
+            return items;
+        }
+
+
+        private List<TaskListItem> GetMultiSelectedTaskListItems(RowIndex r)
+        {
+            if (_clickedRawIndexBefore == null ||
+                _clickedRawIndexBefore.Equals(r)) return new List<TaskListItem>();
+            var minRowIdx = r.Value < _clickedRawIndexBefore.Value ? r : _clickedRawIndexBefore;
+            var maxRowIdx = r.Value > _clickedRawIndexBefore.Value ? r : _clickedRawIndexBefore;
+
+            return GetMultiSelectedTaskListItems(minRowIdx.Value, maxRowIdx.Value);
+        }
+
+        private void SetItemsToViewDataSelected(List<TaskListItem> items)
+        {
+            if (items.Count == 0) return;
+            var workItems = new WorkItems();
+            foreach(var item in items)
+            {
+                workItems.Add(item.WorkItem);
+            }
+            _viewData.Selected = workItems;
+        }
+
+        private void TaskListGrid_MouseClickAndShiftKey(RowIndex r)
+        {
+            SetItemsToViewDataSelected(GetMultiSelectedTaskListItems(r));
+            return;
+        }
+
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
             var rawLocation = Client2Raw(ClientPoint.Create(e));
@@ -72,6 +135,9 @@ namespace ProjectsTM.UI.TaskList
                 HandleSortRequest(rawLocation);
                 return;
             }
+
+            if (isShiftKeyDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
+
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
             {
@@ -160,6 +226,7 @@ namespace ProjectsTM.UI.TaskList
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
             LockUpdate = false;
+            UpdateSelectedRowIndexBefore();
         }
 
         private void AttachEvents()
@@ -174,8 +241,21 @@ namespace ProjectsTM.UI.TaskList
             _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
+        private void UpdateSelectedRowIndexBefore()
+        {
+            if (_viewData.Selected == null || _viewData.Selected.Count() == 0) { _clickedRawIndexBefore = null; return; }
+            if (_viewData.Selected.Count() > 1)
+            {
+                if (!isShiftKeyDown) _clickedRawIndexBefore = null;
+                return;
+            }
+            var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+            _clickedRawIndexBefore = new RowIndex(idx + FixedRowCount);
+        }
+
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
+            UpdateSelectedRowIndexBefore();
             MoveSelectedVisible();
             this.Invalidate();
         }
