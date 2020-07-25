@@ -88,7 +88,7 @@ namespace ProjectsTM.UI.TaskList
         private List<TaskListItem> GetMultiSelectedTaskListItems(int minRowIndex, int maxRowIndex)
         {
             List<TaskListItem> items = new List<TaskListItem>();
-            if (CheckMultiRowIndex(minRowIndex, maxRowIndex)) return items;
+            if (!CheckMultiRowIndex(minRowIndex, maxRowIndex)) return items;
 
             for (var idx = minRowIndex; idx <= maxRowIndex; idx++)
             {
