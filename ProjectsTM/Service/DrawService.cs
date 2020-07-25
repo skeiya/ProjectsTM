@@ -236,15 +236,16 @@ namespace ProjectsTM.Service
 
         private bool IsShowAllSetting()
         {
-            return !_viewData.Filter.MileStoneFilters.Any();
+            return _viewData.Filter.Equals(Filter.All);
         }
 
         private bool DoesFilterSuppressMileStoneDraw(MileStone m)
         {
             if (m == null) return true;
-            if (IsShowAllSetting()) return false;
             if (m.Name.Equals("Today")) return false;
-            return !_viewData.Filter.MileStoneFilters.Any(f => f.Equals(m.MileStoneFilter));
+            var serachPattern = IsShowAllSetting() ? "ALL" : _viewData.Filter.MSFilterSearchPattern;
+            var matchedMSFilters = _viewData.Original.MileStones.GeMatchedMileStoneFilters(serachPattern);
+            return !matchedMSFilters.Any(f => f.Equals(m.MileStoneFilter));
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)

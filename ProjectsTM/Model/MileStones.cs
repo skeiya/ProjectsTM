@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ProjectsTM.Model
 {
@@ -62,6 +63,23 @@ namespace ProjectsTM.Model
                 result.Add(mileStone.MileStoneFilter);
             }
             return result;
+        }
+
+        public MileStoneFilters GeMatchedMileStoneFilters(string searchPettern)
+        {
+            var result = new MileStoneFilters();
+            if (string.IsNullOrEmpty(searchPettern)) return result;
+            try
+            {
+                foreach (var msFilter in this.GetMileStoneFilters())
+                {
+                    if (!Regex.IsMatch(msFilter.Name, searchPettern, RegexOptions.IgnoreCase)) continue;
+                    if (result.Contains(msFilter)) continue;
+                    result.Add(msFilter);
+                }
+                return result;
+            }
+            catch { return new MileStoneFilters(); }
         }
     }
 }

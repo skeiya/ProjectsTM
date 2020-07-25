@@ -155,7 +155,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, GetMileStoneFiltersFromCompanyName(com));
+            return new Filter(null, null, members, false, com);
         }
 
         private MileStoneFilters GetMileStoneFiltersFromCompanyName(string company)
@@ -188,7 +188,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, GetMileStoneFiltersFromProjectName(pro));
+            return new Filter(null, null, members, false, pro.ToString());
         }
 
         private MileStoneFilters GetMileStoneFiltersFromProjectName(Project pro)
@@ -222,32 +222,8 @@ namespace ProjectsTM.Service
             using (var rs = StreamFactory.CreateReader(path))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                return SetDefaultMileStoneFilter((Filter)x.Deserialize(rs));
+                return (Filter)x.Deserialize(rs);
             }
-        }
-
-        private Filter SetDefaultMileStoneFilter(Filter filter)
-        {
-            if (DoesFilterHaveMileStoneFilter(filter) ||
-                 !DoesAnyMileStoneHaveEmptyFilter(filter)) return filter;
-
-            filter.MileStoneFilters.Clear();
-            filter.MileStoneFilters.Add(new MileStoneFilter());
-            return filter;
-        }
-
-        private bool DoesFilterHaveMileStoneFilter(Filter filter)
-        {
-            return filter.MileStoneFilters?.Count > 0;
-        }
-
-        private bool DoesAnyMileStoneHaveEmptyFilter(Filter filter)
-        {
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) return true;
-            }
-            return false;
         }
     }
 }

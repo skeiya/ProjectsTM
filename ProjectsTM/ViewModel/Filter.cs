@@ -7,21 +7,21 @@ namespace ProjectsTM.ViewModel
     public class Filter : IEquatable<Filter>
     {
         public Filter() { }
-        public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, MileStoneFilters mileStoneFilters)
+        public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, string msFilterSearchPattern)
         {
             if (v != null) WorkItem = v;
             if (period != null) Period = period;
             if (hideMembers != null) HideMembers = hideMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
-            if (mileStoneFilters != null) MileStoneFilters = mileStoneFilters;
+            if (MSFilterSearchPattern != null) MSFilterSearchPattern = msFilterSearchPattern;
         }
 
         public Members HideMembers { get; private set; } = new Members();
         public Period Period { get; set; } = new Period();
         public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
-        public MileStoneFilters MileStoneFilters { get; private set; } = new MileStoneFilters();
-        public static Filter All => new Filter(null, null, new Members(), false, null);
+        public string MSFilterSearchPattern { get; set; } = "ALL";
+        public static Filter All => new Filter(null, null, new Members(), false, "ALL");
 
         public bool Equals(Filter other)
         {
@@ -30,7 +30,7 @@ namespace ProjectsTM.ViewModel
                    EqualityComparer<Period>.Default.Equals(Period, other.Period) &&
                    WorkItem == other.WorkItem &&
                    IsFreeTimeMemberShow == other.IsFreeTimeMemberShow &&
-                   MileStoneFilters.Equals(other.MileStoneFilters);
+                   MSFilterSearchPattern.Equals(other.MSFilterSearchPattern);
         }
 
         public override int GetHashCode()
@@ -40,7 +40,7 @@ namespace ProjectsTM.ViewModel
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(WorkItem);
             hashCode = hashCode * -1521134295 + EqualityComparer<bool>.Default.GetHashCode(IsFreeTimeMemberShow);
-            hashCode = hashCode * -1521134295 + EqualityComparer<MileStoneFilters>.Default.GetHashCode(MileStoneFilters);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(MSFilterSearchPattern);
             return hashCode;
         }
 
@@ -51,7 +51,7 @@ namespace ProjectsTM.ViewModel
             result.WorkItem = (string)this.WorkItem.Clone();
             result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;
-            result.MileStoneFilters = this.MileStoneFilters.Clone();
+            result.MSFilterSearchPattern = (string)this.MSFilterSearchPattern.Clone();
             return result;
         }
 

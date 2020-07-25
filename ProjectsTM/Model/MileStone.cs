@@ -29,7 +29,7 @@ namespace ProjectsTM.Model
             set { Color = ColorSerializer.Deserialize(value); }
         }
         [XmlIgnore]
-        public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter();
+        public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter("ALL");
 
         [XmlElement]
         public string MileStoneFilterName

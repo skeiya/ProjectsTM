@@ -30,17 +30,44 @@ namespace ProjectsTM.UI
             _workItems = workItems;
             _history = patternHistory;
             _mileStones = mileStones;
+            InitComboBox_MSFiltersSearchPattern(filter.MSFilterSearchPattern);
             UpdateAllField();
             this.IsMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
-            checkedListBox_msFilters.CheckOnClick = true;
             buttonFromTodayToSpecialDay.Text += SpecialDay;
+        }
+
+        private void InitComboBox_MSFiltersSearchPattern(string MSFilterSearchPattern)
+        {
+            comboBox_MSFiltersSearchPattern.TextChanged += ComboBox_MSFiltersSearchPattern_TextChanged;
+            comboBox_MSFiltersSearchPattern.Text = _filter == null ? "ALL" : MSFilterSearchPattern;
+            ComboBox_MSFiltersSearchPattern_TextChanged(null, null);
+        }
+
+        private void ComboBox_MSFiltersSearchPattern_TextChanged(object sender, EventArgs e)
+        {
+            UpdateMileStoneFiltersPreview();
+        }
+
+        private void UpdateMileStoneFiltersPreview()
+        {
+            listBox1.Items.Clear();
+            if (string.IsNullOrEmpty(comboBox_MSFiltersSearchPattern.Text)) return;
+            try
+            {
+                foreach (var msFilter in _mileStones.GeMatchedMileStoneFilters(comboBox_MSFiltersSearchPattern.Text))
+                {
+                    if (listBox1.Items.Contains(msFilter.Name)) continue;
+                    listBox1.Items.Add(msFilter.Name);
+                }
+            }
+            catch { }
         }
 
         private void UpdateAllField()
         {
             UpdateMembersCheck();
-            UpdateMileStonesCheck();
+            UpdateComboBox_MSFiltersSearchPattern();
             UpdatePeriodText();
             UpdateWorkItemText();
         }
@@ -58,17 +85,15 @@ namespace ProjectsTM.UI
             checkBox_IsFreeTimeMemberShow.Checked = _filter == null ? false : _filter.IsFreeTimeMemberShow;
         }
 
-        private void UpdateMileStonesCheck()
+        private void UpdateComboBox_MSFiltersSearchPattern()
         {
-            checkedListBox_msFilters.Items.Clear();
-            checkedListBox_msFilters.DisplayMember = "NaturalString";
+            comboBox_MSFiltersSearchPattern.Items.Clear();
             if (_mileStones == null) return;
             foreach (var ms in _mileStones)
             {
                 if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) continue;
-                if (checkedListBox_msFilters.Items.Contains(ms.MileStoneFilter.Name)) continue;
-                var check = _filter.MileStoneFilters.Contains(ms.MileStoneFilter);
-                checkedListBox_msFilters.Items.Add(ms.MileStoneFilter.Name, check);
+                if (comboBox_MSFiltersSearchPattern.Items.Contains(ms.MileStoneFilter.Name)) continue;
+                comboBox_MSFiltersSearchPattern.Items.Add(ms.MileStoneFilter.Name);
             }
         }
 
@@ -120,7 +145,7 @@ namespace ProjectsTM.UI
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked, GetCheckedMileStoneFilters());
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text);
         }
 
         private string GetWorkItemFilter()
@@ -152,13 +177,6 @@ namespace ProjectsTM.UI
         {
             var result = new Members();
             foreach (var c in checkedListBox1.CheckedItems) result.Add((Member)c);
-            return result;
-        }
-
-        private MileStoneFilters GetCheckedMileStoneFilters()
-        {
-            var result = new MileStoneFilters();
-            foreach (var c in checkedListBox_msFilters.CheckedItems) result.Add(new MileStoneFilter((string)c));
             return result;
         }
 
