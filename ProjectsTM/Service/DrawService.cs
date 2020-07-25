@@ -234,16 +234,11 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        private bool IsShowAllSetting()
-        {
-            return _viewData.Filter.Equals(Filter.All);
-        }
-
         private bool DoesFilterSuppressMileStoneDraw(MileStone m)
         {
             if (m == null) return true;
             if (m.Name.Equals("Today")) return false;
-            var serachPattern = IsShowAllSetting() ? "ALL" : _viewData.Filter.MSFilterSearchPattern;
+            var serachPattern = _viewData.Filter.MSFilterSearchPattern;
             var matchedMSFilters = _viewData.Original.MileStones.GeMatchedMileStoneFilters(serachPattern);
             return !matchedMSFilters.Any(f => f.Equals(m.MileStoneFilter));
         }
