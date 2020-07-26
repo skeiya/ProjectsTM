@@ -4,7 +4,7 @@ namespace ProjectsTM.Model
 {
     public class MileStoneFilter
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = "ALL";
 
         public MileStoneFilter() { }
 
