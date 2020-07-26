@@ -187,7 +187,7 @@ namespace ProjectsTM.UI.MainForm
         {
             _viewData.Selected = new WorkItems();
             SearchForm?.Clear();
-            TaskListForm?.Clear();
+            if (TaskListForm!= null && TaskListForm.Visible) TaskListForm.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
