@@ -158,22 +158,6 @@ namespace ProjectsTM.Service
             return new Filter(null, null, members, false, com);
         }
 
-        private MileStoneFilters GetMileStoneFiltersFromCompanyName(string company)
-        {
-            var mileStoneFilters = new MileStoneFilters();
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (ms.MileStoneFilter.Name == company)
-                {
-                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
-                    return mileStoneFilters;
-                }
-            }
-
-            mileStoneFilters.Add(new MileStoneFilter());
-            return mileStoneFilters;
-        }
-
         private Filter GetFilterByProjects(ref int idx)
         {
             var projects = GetProjects();
@@ -189,22 +173,6 @@ namespace ProjectsTM.Service
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
             return new Filter(null, null, members, false, pro.ToString());
-        }
-
-        private MileStoneFilters GetMileStoneFiltersFromProjectName(Project pro)
-        {
-            var mileStoneFilters = new MileStoneFilters();
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (ms.MileStoneFilter.Name == pro.ToString())
-                {
-                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
-                    return mileStoneFilters;
-                }
-            }
-
-            mileStoneFilters.Add(new MileStoneFilter());
-            return mileStoneFilters;
         }
 
         private Filter GetFilterByFiles(ref int idx)
