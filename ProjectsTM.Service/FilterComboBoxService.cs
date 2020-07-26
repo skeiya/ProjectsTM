@@ -155,23 +155,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, GetMileStoneFiltersFromCompanyName(com));
-        }
-
-        private MileStoneFilters GetMileStoneFiltersFromCompanyName(string company)
-        {
-            var mileStoneFilters = new MileStoneFilters();
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (ms.MileStoneFilter.Name == company)
-                {
-                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
-                    return mileStoneFilters;
-                }
-            }
-
-            mileStoneFilters.Add(new MileStoneFilter());
-            return mileStoneFilters;
+            return new Filter(null, null, members, false, com);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -188,23 +172,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, GetMileStoneFiltersFromProjectName(pro));
-        }
-
-        private MileStoneFilters GetMileStoneFiltersFromProjectName(Project pro)
-        {
-            var mileStoneFilters = new MileStoneFilters();
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (ms.MileStoneFilter.Name == pro.ToString())
-                {
-                    mileStoneFilters.Add(ms.MileStoneFilter.Clone());
-                    return mileStoneFilters;
-                }
-            }
-
-            mileStoneFilters.Add(new MileStoneFilter());
-            return mileStoneFilters;
+            return new Filter(null, null, members, false, pro.ToString());
         }
 
         private Filter GetFilterByFiles(ref int idx)
@@ -222,32 +190,8 @@ namespace ProjectsTM.Service
             using (var rs = StreamFactory.CreateReader(path))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                return SetDefaultMileStoneFilter((Filter)x.Deserialize(rs));
+                return (Filter)x.Deserialize(rs);
             }
-        }
-
-        private Filter SetDefaultMileStoneFilter(Filter filter)
-        {
-            if (DoesFilterHaveMileStoneFilter(filter) ||
-                 !DoesAnyMileStoneHaveEmptyFilter(filter)) return filter;
-
-            filter.MileStoneFilters.Clear();
-            filter.MileStoneFilters.Add(new MileStoneFilter());
-            return filter;
-        }
-
-        private bool DoesFilterHaveMileStoneFilter(Filter filter)
-        {
-            return filter.MileStoneFilters?.Count > 0;
-        }
-
-        private bool DoesAnyMileStoneHaveEmptyFilter(Filter filter)
-        {
-            foreach (var ms in _viewData.Original.MileStones)
-            {
-                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) return true;
-            }
-            return false;
         }
     }
 }

@@ -10,15 +10,13 @@ namespace ProjectsTM.UI
         private readonly MileStones _mileStones;
         private readonly Callender _callender;
         private readonly ViewData _viewData;
-        private readonly Action<object, EventArgs> UpdateFilter;
 
-        public ManageMileStoneForm(MileStones mileStones, Callender callender, ViewData viewData, Action<object, EventArgs> updateFilter)
+        public ManageMileStoneForm(MileStones mileStones, Callender callender, ViewData viewData)
         {
             InitializeComponent();
             this._mileStones = mileStones;
             this._callender = callender;
             this._viewData = viewData;
-            this.UpdateFilter = updateFilter;
             UpdateList();
         }
 
@@ -50,7 +48,6 @@ namespace ProjectsTM.UI
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            UpdateFilter?.Invoke(null, null);
             Close();
         }
 

@@ -44,7 +44,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count <= 0) return;
+            if (dataGridView1.SelectedRows.Count != 1) return;
             if (dataGridView1.RowCount - 1 <= dataGridView1.SelectedRows[0].Index) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
@@ -54,8 +54,8 @@ namespace ProjectsTM.UI.MainForm
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count != 1) return;
             if (e.ColumnIndex < 0 || dataGridView1.ColumnCount <= e.ColumnIndex || e.RowIndex < 0 || dataGridView1.RowCount - 1 <= e.RowIndex) return;
-            if (dataGridView1.SelectedRows.Count <= 0) return;
             var index = GetListIndexSelected(dataGridView1.SelectedRows);
             if (index < 0) return;
             var wi = _list[index].Item1;
@@ -315,7 +315,7 @@ namespace ProjectsTM.UI.MainForm
 
         private int GetListIndexSelected(DataGridViewSelectedRowCollection selectedRows)
         {
-            if (selectedRows.Count <= 0) return -1;
+            if (selectedRows.Count != 1) return -1;
             for (int result = 0; result < _list.Count; result++)
             {
                 if (Equal(_list[result].Item1, selectedRows[0].Cells)) return result;

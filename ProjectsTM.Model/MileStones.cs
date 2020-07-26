@@ -63,5 +63,22 @@ namespace ProjectsTM.Model
             }
             return result;
         }
+
+        public MileStoneFilters GeMatchedMileStoneFilters(string searchPattern)
+        {
+            var result = new MileStoneFilters();
+            if (string.IsNullOrEmpty(searchPattern)) return result;
+            try
+            {
+                foreach (var ms in this._list)
+                {
+                    if (!ms.IsMatchFilter(searchPattern)) continue;
+                    if (result.Contains(ms.MileStoneFilter)) continue;
+                    result.Add(ms.MileStoneFilter);
+                }
+                return result;
+            }
+            catch { return new MileStoneFilters(); }
+        }
     }
 }
