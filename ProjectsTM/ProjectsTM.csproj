@@ -86,6 +86,8 @@
     <Compile Include="Model\FormSize.cs" />
     <Compile Include="Model\MembersWorkItems.cs" />
     <Compile Include="Model\MileStone.cs" />
+    <Compile Include="Model\MileStoneFilter.cs" />
+    <Compile Include="Model\MileStoneFilters.cs" />
     <Compile Include="Model\MileStones.cs" />
     <Compile Include="Model\TaskState.cs" />
     <Compile Include="Model\UserSetting.cs" />

@@ -18,8 +18,9 @@ namespace ProjectsTM.UI
         private IEnumerable<WorkItem> _workItems;
         private Func<Member, string, bool> IsMemberMatchText;
         private PatternHistory _history;
+        private MileStones _mileStones;
 
-        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText, PatternHistory patternHistory)
+        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText, PatternHistory patternHistory, MileStones mileStones)
         {
             InitializeComponent();
             _originalMembers = members.Clone();
@@ -27,16 +28,46 @@ namespace ProjectsTM.UI
             _filter = filter;
             _callender = callender;
             _workItems = workItems;
+            _history = patternHistory;
+            _mileStones = mileStones;
+            InitComboBox_MSFiltersSearchPattern(filter.MSFilterSearchPattern);
             UpdateAllField();
             this.IsMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
             buttonFromTodayToSpecialDay.Text += SpecialDay;
-            _history = patternHistory;
+        }
+
+        private void InitComboBox_MSFiltersSearchPattern(string MSFilterSearchPattern)
+        {
+            comboBox_MSFiltersSearchPattern.TextChanged += ComboBox_MSFiltersSearchPattern_TextChanged;
+            comboBox_MSFiltersSearchPattern.Text = _filter == null ? "ALL" : MSFilterSearchPattern;
+            ComboBox_MSFiltersSearchPattern_TextChanged(null, null);
+        }
+
+        private void ComboBox_MSFiltersSearchPattern_TextChanged(object sender, EventArgs e)
+        {
+            UpdateMileStoneFiltersPreview();
+        }
+
+        private void UpdateMileStoneFiltersPreview()
+        {
+            listBox1.Items.Clear();
+            if (string.IsNullOrEmpty(comboBox_MSFiltersSearchPattern.Text)) return;
+            try
+            {
+                foreach (var msFilter in _mileStones.GeMatchedMileStoneFilters(comboBox_MSFiltersSearchPattern.Text))
+                {
+                    if (listBox1.Items.Contains(msFilter.Name)) continue;
+                    listBox1.Items.Add(msFilter.Name);
+                }
+            }
+            catch { }
         }
 
         private void UpdateAllField()
         {
             UpdateMembersCheck();
+            UpdateComboBox_MSFiltersSearchPattern();
             UpdatePeriodText();
             UpdateWorkItemText();
         }
@@ -47,22 +78,34 @@ namespace ProjectsTM.UI
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = _filter.HideMembers == null ? true : !_filter.HideMembers.Contains(m);
+                var check = !_filter.HideMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
 
             checkBox_IsFreeTimeMemberShow.Checked = _filter == null ? false : _filter.IsFreeTimeMemberShow;
         }
 
+        private void UpdateComboBox_MSFiltersSearchPattern()
+        {
+            comboBox_MSFiltersSearchPattern.Items.Clear();
+            if (_mileStones == null) return;
+            foreach (var ms in _mileStones)
+            {
+                if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) continue;
+                if (comboBox_MSFiltersSearchPattern.Items.Contains(ms.MileStoneFilter.Name)) continue;
+                comboBox_MSFiltersSearchPattern.Items.Add(ms.MileStoneFilter.Name);
+            }
+        }
+
         private void UpdateWorkItemText()
         {
-            comboBoxPattern.Text = _filter.WorkItem == null ? string.Empty : _filter.WorkItem;
+            comboBoxPattern.Text = _filter.WorkItem;
         }
 
         private void UpdatePeriodText()
         {
-            textBoxFrom.Text = _filter.Period == null ? string.Empty : _filter.Period.From.ToString();
-            textBoxTo.Text = _filter.Period == null ? string.Empty : _filter.Period.To.ToString();
+            textBoxFrom.Text = _filter.Period.IsValid ? _filter.Period.From.ToString() : string.Empty;
+            textBoxTo.Text = _filter.Period.IsValid ? _filter.Period.To.ToString() : string.Empty;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -102,7 +145,7 @@ namespace ProjectsTM.UI
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked);
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text);
         }
 
         private string GetWorkItemFilter()

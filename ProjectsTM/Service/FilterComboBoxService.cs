@@ -119,13 +119,13 @@ namespace ProjectsTM.Service
             toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
-        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
+        internal void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = null;
             var idx = toolStripComboBoxFilter.SelectedIndex;
             if (idx == 0)
             {
-                _viewData.SetFilter(null);
+                _viewData.SetFilter(Filter.All);
                 return;
             }
             idx = idx - 1;
@@ -155,7 +155,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false);
+            return new Filter(null, null, members, false, com);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -172,7 +172,7 @@ namespace ProjectsTM.Service
             {
                 if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members, false);
+            return new Filter(null, null, members, false, pro.ToString());
         }
 
         private Filter GetFilterByFiles(ref int idx)

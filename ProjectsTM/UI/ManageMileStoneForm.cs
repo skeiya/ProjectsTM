@@ -1,6 +1,7 @@
-﻿using ProjectsTM.Model;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI
 {
@@ -8,12 +9,14 @@ namespace ProjectsTM.UI
     {
         private readonly MileStones _mileStones;
         private readonly Callender _callender;
+        private readonly ViewData _viewData;
 
-        public ManageMileStoneForm(MileStones mileStones, Callender callender)
+        public ManageMileStoneForm(MileStones mileStones, Callender callender, ViewData viewData)
         {
             InitializeComponent();
             this._mileStones = mileStones;
             this._callender = callender;
+            this._viewData = viewData;
             UpdateList();
         }
 
@@ -21,7 +24,7 @@ namespace ProjectsTM.UI
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMileStoneForm(_callender, null))
+            using (var dlg = new EditMileStoneForm(_callender, null, _viewData, MileStones.GetMileStoneFilters()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _mileStones.Add(dlg.MileStone);
@@ -35,7 +38,7 @@ namespace ProjectsTM.UI
             _mileStones.Sort();
             foreach (var m in _mileStones)
             {
-                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() });
+                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString() , m.MileStoneFilterName});
                 item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);
@@ -58,7 +61,7 @@ namespace ProjectsTM.UI
             try
             {
                 var m = (MileStone)listView1.SelectedItems[0].Tag;
-                using (var dlg = new EditMileStoneForm(_callender, m.Clone()))
+                using (var dlg = new EditMileStoneForm(_callender, m.Clone(),_viewData, MileStones.GetMileStoneFilters()))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _mileStones.Replace(m, dlg.MileStone);
@@ -88,6 +91,11 @@ namespace ProjectsTM.UI
             {
                 return;
             }
+        }
+
+        private void listView1_Resize(object sender, EventArgs e)
+        {
+            listView1.Columns[listView1.Columns.Count - 1].Width = -2; // "-2"はListViewの仕様マジックナンバー(これでFillの幅になる)
         }
     }
 }

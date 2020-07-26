@@ -229,9 +229,16 @@ namespace ProjectsTM.Service
             var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
-                result.Add(new MileStone("Today", today, Color.Red));
+                result.Add(new MileStone("Today", today, Color.Red, null));
             }
             return result;
+        }
+
+        private bool DoesFilterSuppressMileStoneDraw(MileStone m)
+        {
+            if (m == null) return true;
+            if (m.Name.Equals("Today")) return false;
+            return !m.IsMatchFilter(_viewData.Filter.MSFilterSearchPattern);
         }
 
         private void DrawMileStones(Font font, Graphics g, MileStones mileStones)
@@ -241,7 +248,7 @@ namespace ProjectsTM.Service
             foreach (var r in range.Rows)
             {
                 var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (m == null) continue;
+                if (DoesFilterSuppressMileStoneDraw(m)) continue;
                 var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
                 if (!rect.HasValue) continue;
                 using (var brush = new SolidBrush(m.Color))
