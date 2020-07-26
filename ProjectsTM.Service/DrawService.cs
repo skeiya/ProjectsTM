@@ -109,13 +109,6 @@ namespace ProjectsTM.Service
             }
         }
 
-        public void Clear()
-        {
-            var size = _imageBuffer.Image.Size;
-            _imageBuffer.Dispose();
-            _imageBuffer = new ImageBuffer(size.Width, size.Height);
-        }
-
         private static int GetRowCount(RowColRange range, ColIndex c, bool isPrint)
         {
             if (isPrint) return range.RowCount;

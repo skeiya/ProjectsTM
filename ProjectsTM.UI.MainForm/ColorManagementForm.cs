@@ -111,5 +111,27 @@ namespace ProjectsTM.UI
                 UpdateList();
             }
         }
+
+        internal ColorConditions GetColorConditions()
+        {
+            return _colorConditions;
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void listView1_Resize(object sender, EventArgs e)
+        {
+            listView1.Columns[listView1.Columns.Count - 1].Width = -2;
+        }
     }
 }
