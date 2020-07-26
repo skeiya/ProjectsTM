@@ -54,10 +54,41 @@ namespace ProjectsTM.UI.TaskList
             else if (e.KeyCode == Keys.Up)
             {
                 MoveSelect(-1);
-            }else if(e.KeyCode == Keys.ShiftKey)
+            }
+            else if(e.KeyCode == Keys.ShiftKey)
             {
                 _isShiftKeyDown = true;
             }
+            else if(e.Control && (e.KeyCode == Keys.C))
+            {
+                CopyToClipboard();
+            }
+        }
+
+        private string CreateStringOneLine(WorkItem w)
+        {
+            const string DOUBLE_Q = "\"";
+            const string TAB = "\t";
+            string copyData = w.Name.ToString() + TAB
+                            + w.Project.ToString() + TAB
+                            + w.AssignedMember.ToString() + TAB
+                            + w.Tags.ToString() + TAB
+                            + w.State + TAB
+                            + w.Period.From.ToString() + TAB
+                            + w.Period.To + TAB
+                            + _viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString() + TAB
+                            + DOUBLE_Q + w.Description + DOUBLE_Q + TAB;
+            copyData += Environment.NewLine;
+            return copyData;
+        }
+
+        private void CopyToClipboard()
+        {
+            if (_viewData.Selected == null) return;
+            var workItems = _viewData.Selected;
+            string copyData = string.Empty;
+            foreach (var w in workItems) { copyData += CreateStringOneLine(w); }          
+            Clipboard.SetData(DataFormats.Text, copyData);
         }
 
         private void MoveSelect(int offset)
