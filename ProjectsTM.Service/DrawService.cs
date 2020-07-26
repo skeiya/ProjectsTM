@@ -36,6 +36,7 @@ namespace ProjectsTM.Service
         {
             this._viewData = viewData;
             _isDragActive = IsDragActive;
+            _imageBuffer?.Dispose();
             _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
             this._font = font;
