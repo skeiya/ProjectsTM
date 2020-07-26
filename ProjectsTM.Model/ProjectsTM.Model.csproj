@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA48DCDD-D652-409A-B204-DE163C403E12}</ProjectGuid>
+    <ProjectGuid>{ED87E6CF-B3E1-4671-A8FB-83BB9D1ED4BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FreeGridControl</RootNamespace>
-    <AssemblyName>FreeGridControl</AssemblyName>
+    <RootNamespace>ProjectsTM.Model</RootNamespace>
+    <AssemblyName>ProjectsTM.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,12 +30,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,30 +44,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache.cs" />
-    <Compile Include="ClientPoint.cs" />
-    <Compile Include="ClientRectangle.cs" />
-    <Compile Include="Point2Rect.cs" />
-    <Compile Include="RawPoint.cs">
-    </Compile>
-    <Compile Include="ColIndex.cs" />
-    <Compile Include="DrawNormalAreaEventArgs.cs" />
-    <Compile Include="GridControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GridControl.Designer.cs">
-      <DependentUpon>GridControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IntArrayForDesign.cs" />
+    <Compile Include="AppData.cs" />
+    <Compile Include="Callender.cs" />
+    <Compile Include="CallenderDay.cs" />
+    <Compile Include="ColorCondition.cs" />
+    <Compile Include="ColorConditions.cs" />
+    <Compile Include="FormSize.cs" />
+    <Compile Include="Member.cs" />
+    <Compile Include="Members.cs" />
+    <Compile Include="MembersWorkItems.cs" />
+    <Compile Include="MileStone.cs" />
+    <Compile Include="MileStoneFilter.cs" />
+    <Compile Include="MileStoneFilters.cs" />
+    <Compile Include="MileStones.cs" />
+    <Compile Include="PatternHistory.cs" />
+    <Compile Include="Period.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawRectangle.cs" />
-    <Compile Include="RowColRange.cs" />
-    <Compile Include="RowIndex.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="TaskState.cs" />
+    <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItems.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GridControl.resx">
-      <DependentUpon>GridControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\ProjectsTM.Logic\ProjectsTM.Logic.csproj">
+      <Project>{f086cca0-3428-4bf9-9c59-2f51f24563a3}</Project>
+      <Name>ProjectsTM.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

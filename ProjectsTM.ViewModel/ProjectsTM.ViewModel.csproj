@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA48DCDD-D652-409A-B204-DE163C403E12}</ProjectGuid>
+    <ProjectGuid>{8E66A8DA-C23E-4D86-A83F-AB8C2574E129}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FreeGridControl</RootNamespace>
-    <AssemblyName>FreeGridControl</AssemblyName>
+    <RootNamespace>ProjectsTM.ViewModel</RootNamespace>
+    <AssemblyName>ProjectsTM.ViewModel</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,30 +45,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache.cs" />
-    <Compile Include="ClientPoint.cs" />
-    <Compile Include="ClientRectangle.cs" />
-    <Compile Include="Point2Rect.cs" />
-    <Compile Include="RawPoint.cs">
-    </Compile>
-    <Compile Include="ColIndex.cs" />
-    <Compile Include="DrawNormalAreaEventArgs.cs" />
-    <Compile Include="GridControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GridControl.Designer.cs">
-      <DependentUpon>GridControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IntArrayForDesign.cs" />
+    <Compile Include="Detail.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="IEditedEventArgs.cs" />
+    <Compile Include="ImageBuffer.cs" />
+    <Compile Include="IUndoService.cs" />
+    <Compile Include="IWorkItemGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawRectangle.cs" />
-    <Compile Include="RowColRange.cs" />
-    <Compile Include="RowIndex.cs" />
+    <Compile Include="SelectedWorkItemChangedArg.cs" />
+    <Compile Include="UserSetting.cs" />
+    <Compile Include="ViewData.cs" />
+    <Compile Include="WorkItemGridConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GridControl.resx">
-      <DependentUpon>GridControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\FreeGridControl\FreeGridControl.csproj">
+      <Project>{ba48dcdd-d652-409a-b204-de163c403e12}</Project>
+      <Name>FreeGridControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Logic\ProjectsTM.Logic.csproj">
+      <Project>{f086cca0-3428-4bf9-9c59-2f51f24563a3}</Project>
+      <Name>ProjectsTM.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Model\ProjectsTM.Model.csproj">
+      <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
+      <Name>ProjectsTM.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ProjectsTM"
-#define MyAppVersion GetFileVersion(SourcePath + "\ProjectsTM\bin\Release\ProjectsTM.exe")
+#define MyAppVersion GetFileVersion(SourcePath + "\ProjectsTM.exe\bin\Release\ProjectsTM.exe")
 #define MyAppPublisher "Keiya Shimomura"
 #define MyAppURL "https://github.com/skeiya/ProjectsTM"
 #define MyAppExeName "ProjectsTM.exe"
@@ -34,12 +34,20 @@ Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\ProjectsTM\bin\Release\FreeGridControl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM\bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM\bin\Release\ProjectsTM.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM\bin\Release\ProjectsTM.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM\bin\Release\Help\help.html"; DestDir: "{app}\Help"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\FreeGridControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\Help\help.html"; DestDir: "{app}\Help"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Logic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Service.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.MainForm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.TaskList.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.ViewModel.dll"; DestDir: "{app}"; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
