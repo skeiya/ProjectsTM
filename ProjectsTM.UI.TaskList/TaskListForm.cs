@@ -50,8 +50,7 @@ namespace ProjectsTM.UI.TaskList
 
         public void Clear()
         {
-            comboBoxPattern.Text = string.Empty;
-            gridControl1.Initialize(_viewData, null, IsAudit());
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, IsAudit());
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -95,8 +94,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void Audit()
         {
-            comboBoxPattern.Text = string.Empty;
-            gridControl1.Initialize(_viewData, null, IsAudit());
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, IsAudit());
         }
     }
 }
