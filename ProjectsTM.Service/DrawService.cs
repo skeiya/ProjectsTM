@@ -36,6 +36,7 @@ namespace ProjectsTM.Service
         {
             this._viewData = viewData;
             _isDragActive = IsDragActive;
+            _imageBuffer?.Dispose();
             _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
             this._font = font;
@@ -107,13 +108,6 @@ namespace ProjectsTM.Service
                     DrawWorkItemClient(wi, Pens.Black, font, g, members);
                 }
             }
-        }
-
-        public void Clear()
-        {
-            var size = _imageBuffer.Image.Size;
-            _imageBuffer.Dispose();
-            _imageBuffer = new ImageBuffer(size.Width, size.Height);
         }
 
         private static int GetRowCount(RowColRange range, ColIndex c, bool isPrint)

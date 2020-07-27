@@ -87,5 +87,12 @@ namespace ProjectsTM.Model
                 _list.Add(c);
             }
         }
+
+        public ColorConditions Clone()
+        {
+            var result = new ColorConditions();
+            _list.ForEach(c => result.Add(c.Clone()));
+            return result;
+        }
     }
 }
