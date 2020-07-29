@@ -109,6 +109,7 @@ namespace ProjectsTM.Service
 
         public AppData OpenFile(string fileName)
         {
+            if (VersionUpdateService.UpdateByFileServer(Path.GetDirectoryName(fileName))) return null;
             if (IsFutureVersion(fileName))
             {
                 MessageBox.Show("ご使用のツールより新しいバージョンで保存されたファイルです。ツールを更新してから開いてください。");

@@ -9,20 +9,20 @@ namespace ProjectsTM.Service
 {
     public static class VersionUpdateService
     {
-        public static bool UpdateByFileServer()
+        public static bool UpdateByFileServer(string dir)
         {
-            var latestVersion = GetLatestVersionByFileServer();
+            var latestVersion = GetLatestVersionByFileServer(dir);
             if (latestVersion == null) return false;
             if (!IsOldCurrentVersion(latestVersion)) return false;
             if (MessageBox.Show("ツールの最新版がリリースされています。配布先を開きますか？", "日程表ツール", MessageBoxButtons.YesNo) != DialogResult.Yes) return false;
-            Process.Start(GetFileServerPath());
+            Process.Start(GetFileServerPath(dir));
             return true;
         }
 
-        private static Version GetLatestVersionByFileServer()
+        private static Version GetLatestVersionByFileServer(string dir)
         {
             Version result = null;
-            var fileServerPath = GetFileServerPath();
+            var fileServerPath = GetFileServerPath(dir);
             if (fileServerPath == null) return null;
             foreach (var d in Directory.GetDirectories(fileServerPath))
             {
@@ -32,9 +32,9 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        private static string GetFileServerPath()
+        private static string GetFileServerPath(string dir)
         {
-            var definedText = "UpdaterPlace.txt";
+            var definedText = Path.Combine(dir, "UpdaterPlace.txt");
             if (!File.Exists(definedText)) return null;
             var lines = File.ReadAllLines(definedText);
             if (lines.Length < 1) return null;
