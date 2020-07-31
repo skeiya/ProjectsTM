@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Text;
 
 namespace ProjectsTM.UI.TaskList
 {
@@ -65,30 +66,30 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private string CreateStringOneLine(WorkItem w)
+        private void SetStrOneLine(StringBuilder copyData, WorkItem  w)
         {
             const string DOUBLE_Q = "\"";
             const string TAB = "\t";
-            string copyData = w.Name.ToString() + TAB
-                            + w.Project.ToString() + TAB
-                            + w.AssignedMember.ToString() + TAB
-                            + w.Tags.ToString() + TAB
-                            + w.State + TAB
-                            + w.Period.From.ToString() + TAB
-                            + w.Period.To + TAB
-                            + _viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString() + TAB
-                            + DOUBLE_Q + w.Description + DOUBLE_Q + TAB;
-            copyData += Environment.NewLine;
-            return copyData;
+            copyData.Append(w.Name.ToString());             copyData.Append(TAB);
+            copyData.Append(w.Project.ToString());          copyData.Append(TAB);
+            copyData.Append(w.AssignedMember.ToString());   copyData.Append(TAB);
+            copyData.Append(w.Tags.ToString());             copyData.Append(TAB);
+            copyData.Append(w.State);                       copyData.Append(TAB);
+            copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
+            copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
+            copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
+                                                            copyData.Append(TAB);
+            copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
+                                                            copyData.AppendLine(TAB);
         }
 
         private void CopyToClipboard()
         {
             if (_viewData.Selected == null) return;
             var workItems = _viewData.Selected;
-            string copyData = string.Empty;
-            foreach (var w in workItems) { copyData += CreateStringOneLine(w); }          
-            Clipboard.SetData(DataFormats.Text, copyData);
+            StringBuilder copyData = new StringBuilder(string.Empty);
+            foreach (var w in workItems) { SetStrOneLine(copyData, w); }
+            Clipboard.SetData(DataFormats.Text, copyData.ToString());
         }
 
         private void MoveSelect(int offset)
