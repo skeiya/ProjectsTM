@@ -101,7 +101,6 @@ namespace ProjectsTM.UI.TaskList
             var to = r.Value - FixedRowCount;
             if (IsMultiSelect()) from = _lastSelect.Value - FixedRowCount;
             SelectRange(from, to);
-            return;
         }
 
         private bool IsMultiSelect()
