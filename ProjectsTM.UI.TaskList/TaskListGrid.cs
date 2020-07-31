@@ -25,7 +25,6 @@ namespace ProjectsTM.UI.TaskList
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
         private RowIndex _clickedRawIndexBefore;
-        private bool _isShiftKeyDown;
 
         public TaskListGrid()
         {
@@ -35,15 +34,6 @@ namespace ProjectsTM.UI.TaskList
             this.MouseClick += TaskListGrid_MouseClick;
             this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
-            this.KeyUp += TaskListGrid_KeyUp;
-        }
-
-        private void TaskListGrid_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ShiftKey)
-            {
-                _isShiftKeyDown = false;
-            }
         }
 
         private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
@@ -56,11 +46,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 MoveSelect(-1);
             }
-            else if(e.KeyCode == Keys.ShiftKey)
-            {
-                _isShiftKeyDown = true;
-            }
-            else if(e.Control && (e.KeyCode == Keys.C))
+            else if(KeyState.IsControlDown && (e.KeyCode == Keys.C))
             {
                 CopyToClipboard();
             }
@@ -168,7 +154,7 @@ namespace ProjectsTM.UI.TaskList
                 return;
             }
 
-            if (_isShiftKeyDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
+            if (KeyState.IsShiftDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
 
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
@@ -278,7 +264,7 @@ namespace ProjectsTM.UI.TaskList
             if (_viewData.Selected == null || _viewData.Selected.Count() == 0) { _clickedRawIndexBefore = null; return; }
             if (_viewData.Selected.Count() > 1)
             {
-                if (!_isShiftKeyDown) _clickedRawIndexBefore = null;
+                if (!KeyState.IsShiftDown) _clickedRawIndexBefore = null;
                 return;
             }
             var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
