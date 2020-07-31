@@ -24,7 +24,7 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
-        private RowIndex _clickedRawIndexBefore;
+        private RowIndex _lastSelect;
 
         public TaskListGrid()
         {
@@ -95,53 +95,41 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private bool CheckMultiRowIndex(int minRowIndex, int maxRowIndex)
+        private void SelectItems(RowIndex r)
         {
-            if (minRowIndex <= FixedRowCount - 1 ||
-                maxRowIndex <= minRowIndex ||
-                _listItems.Count - 1 < maxRowIndex) return false;
+            var from = r.Value - FixedRowCount;
+            var to = r.Value - FixedRowCount;
+            if (IsMultiSelect()) from = _lastSelect.Value - FixedRowCount;
+            SelectRange(from, to);
+            return;
+        }
+
+        private bool IsMultiSelect()
+        {
+            if (!KeyState.IsShiftDown) return false;
+            if (_lastSelect == null) return false;
             return true;
         }
 
-        private List<TaskListItem> GetMultiSelectedTaskListItems(int minRowIndex, int maxRowIndex)
+        private void SelectRange(int from,int to)
         {
-            List<TaskListItem> items = new List<TaskListItem>();
-            if (!CheckMultiRowIndex(minRowIndex, maxRowIndex)) return items;
-
-            for (var idx = minRowIndex; idx <= maxRowIndex; idx++)
+            SwapIfUpsideDown(ref from, ref to);
+            var selects = new WorkItems();
+            for (var idx = from; idx <= to; idx++)
             {
-                var item = _listItems[idx - FixedRowCount];
-                if (!item.IsMilestone) items.Add(item);
+                var l = _listItems[idx];
+                if (l.IsMilestone) continue;
+                selects.Add(l.WorkItem);
             }
-            return items;
+            _viewData.Selected = selects;
         }
 
-
-        private List<TaskListItem> GetMultiSelectedTaskListItems(RowIndex r)
+        private void SwapIfUpsideDown(ref int from, ref int to)
         {
-            if (_clickedRawIndexBefore == null ||
-                _clickedRawIndexBefore.Equals(r)) return new List<TaskListItem>();
-            var minRowIdx = r.Value < _clickedRawIndexBefore.Value ? r : _clickedRawIndexBefore;
-            var maxRowIdx = r.Value > _clickedRawIndexBefore.Value ? r : _clickedRawIndexBefore;
-
-            return GetMultiSelectedTaskListItems(minRowIdx.Value, maxRowIdx.Value);
-        }
-
-        private void SetItemsToViewDataSelected(List<TaskListItem> items)
-        {
-            if (items.Count == 0) return;
-            var workItems = new WorkItems();
-            foreach(var item in items)
-            {
-                workItems.Add(item.WorkItem);
-            }
-            _viewData.Selected = workItems;
-        }
-
-        private void TaskListGrid_MouseClickAndShiftKey(RowIndex r)
-        {
-            SetItemsToViewDataSelected(GetMultiSelectedTaskListItems(r));
-            return;
+            if (from <= to) return;
+            int buf = from;
+            from = to;
+            to = buf;
         }
 
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
@@ -154,7 +142,7 @@ namespace ProjectsTM.UI.TaskList
                 return;
             }
 
-            if (KeyState.IsShiftDown) { TaskListGrid_MouseClickAndShiftKey(r); return; }
+            if (KeyState.IsShiftDown) { SelectItems(r); return; }
 
             var item = _listItems[r.Value - FixedRowCount];
             if (!item.IsMilestone)
@@ -244,7 +232,7 @@ namespace ProjectsTM.UI.TaskList
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
             LockUpdate = false;
-            UpdateSelectedRowIndexBefore();
+            UpdateLastSelect();
         }
 
         private void AttachEvents()
@@ -259,21 +247,21 @@ namespace ProjectsTM.UI.TaskList
             _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
-        private void UpdateSelectedRowIndexBefore()
+        private void UpdateLastSelect()
         {
-            if (_viewData.Selected == null || _viewData.Selected.Count() == 0) { _clickedRawIndexBefore = null; return; }
-            if (_viewData.Selected.Count() > 1)
+            if (_viewData.Selected == null ||
+                _viewData.Selected.Count() == 0) { _lastSelect = null; return; }
+
+            if (_viewData.Selected.Count() == 1)
             {
-                if (!KeyState.IsShiftDown) _clickedRawIndexBefore = null;
-                return;
+                var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+                _lastSelect = new RowIndex(idx + FixedRowCount);
             }
-            var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
-            _clickedRawIndexBefore = new RowIndex(idx + FixedRowCount);
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
-            UpdateSelectedRowIndexBefore();
+            UpdateLastSelect();
             MoveSelectedVisible();
             this.Invalidate();
         }
