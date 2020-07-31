@@ -144,11 +144,6 @@ namespace ProjectsTM.ViewModel
             return result;
         }
 
-        internal void SetFilter(object all)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<CallenderDay> GetFilteredDays()
         {
             if (!Filter.Period.IsValid) return Original.Callender.Days;
