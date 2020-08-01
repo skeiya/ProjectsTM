@@ -140,14 +140,7 @@ namespace ProjectsTM.UI.TaskList
                 HandleSortRequest(rawLocation);
                 return;
             }
-
-            if (KeyState.IsShiftDown) { SelectItems(r); return; }
-
-            var item = _listItems[r.Value - FixedRowCount];
-            if (!item.IsMilestone)
-            {
-                _viewData.Selected = new WorkItems(item.WorkItem);
-            }
+            SelectItems(r);
         }
 
         private void HandleSortRequest(RawPoint rawLocation)
