@@ -266,9 +266,7 @@ namespace ProjectsTM.UI.TaskList
                 if(errorList.Any(l => l.WorkItem.Equals(i.WorkItem))) continue;
                 errorList.Add(i);
             }
-
-            if (_pattern == null) return errorList;
-            return errorList.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
+            return errorList;
         }
 
         private bool IsTooBigError(WorkItem wi)
