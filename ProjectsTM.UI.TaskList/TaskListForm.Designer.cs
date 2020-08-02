@@ -31,8 +31,6 @@
             this.gridControl1 = new ProjectsTM.UI.TaskList.TaskListGrid();
             this.comboBoxPattern = new System.Windows.Forms.ComboBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.radioButtonFilter = new System.Windows.Forms.RadioButton();
-            this.radioButtonAudit = new System.Windows.Forms.RadioButton();
             this.labelSum = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -43,11 +41,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gridControl1.FixedColCount = 0;
             this.gridControl1.FixedRowCount = 0;
+            this.gridControl1.HOffset = 0;
             this.gridControl1.Location = new System.Drawing.Point(12, 44);
             this.gridControl1.LockUpdate = true;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.Size = new System.Drawing.Size(726, 239);
             this.gridControl1.TabIndex = 2;
+            this.gridControl1.VOffset = 0;
             // 
             // comboBoxPattern
             // 
@@ -71,30 +71,6 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
-            // radioButtonFilter
-            // 
-            this.radioButtonFilter.AutoSize = true;
-            this.radioButtonFilter.Checked = true;
-            this.radioButtonFilter.Location = new System.Drawing.Point(12, 13);
-            this.radioButtonFilter.Name = "radioButtonFilter";
-            this.radioButtonFilter.Size = new System.Drawing.Size(66, 16);
-            this.radioButtonFilter.TabIndex = 3;
-            this.radioButtonFilter.TabStop = true;
-            this.radioButtonFilter.Text = "フィルター";
-            this.radioButtonFilter.UseVisualStyleBackColor = true;
-            this.radioButtonFilter.CheckedChanged += new System.EventHandler(this.radioButtonFilter_CheckedChanged);
-            // 
-            // radioButtonAudit
-            // 
-            this.radioButtonAudit.AutoSize = true;
-            this.radioButtonAudit.Location = new System.Drawing.Point(84, 13);
-            this.radioButtonAudit.Name = "radioButtonAudit";
-            this.radioButtonAudit.Size = new System.Drawing.Size(47, 16);
-            this.radioButtonAudit.TabIndex = 4;
-            this.radioButtonAudit.Text = "監査";
-            this.radioButtonAudit.UseVisualStyleBackColor = true;
-            this.radioButtonAudit.CheckedChanged += new System.EventHandler(this.radioButtonAudit_CheckedChanged);
-            // 
             // labelSum
             // 
             this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -112,8 +88,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 307);
             this.Controls.Add(this.labelSum);
-            this.Controls.Add(this.radioButtonAudit);
-            this.Controls.Add(this.radioButtonFilter);
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.comboBoxPattern);
             this.Controls.Add(this.gridControl1);
@@ -130,8 +104,6 @@
         private TaskListGrid gridControl1;
         private System.Windows.Forms.ComboBox comboBoxPattern;
         private System.Windows.Forms.Button buttonUpdate;
-        private System.Windows.Forms.RadioButton radioButtonFilter;
-        private System.Windows.Forms.RadioButton radioButtonAudit;
         private System.Windows.Forms.Label labelSum;
     }
 }

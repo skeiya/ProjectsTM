@@ -18,7 +18,6 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
-        private bool _isAudit;
         private string _pattern;
         private WorkItemEditService _editService;
         public event EventHandler ListUpdated;
@@ -142,9 +141,8 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, bool isAudit)
+        internal void Initialize(ViewData viewData, string pattern)
         {
-            this._isAudit = isAudit;
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
