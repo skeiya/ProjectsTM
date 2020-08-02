@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.TaskList
@@ -23,6 +24,7 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
+        private bool _lockInit = false;
 
         public TaskListGrid()
         {
@@ -151,14 +153,30 @@ namespace ProjectsTM.UI.TaskList
             InitializeGrid();
         }
 
-        private void InitializeGrid()
+        private void _InitializeGrid(bool isAuditTask)
         {
-            LockUpdate = true;
-            UpdateListItem();
-            ColCount = _isAudit ? 10 : 9;
+            UpdateListItem(isAuditTask);
+            ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
+        }
+
+        private void InitializeGrid()
+        {
+            LockUpdate = true;
+            _InitializeGrid(false);
+
+            if (!_lockInit)
+            {
+                _lockInit = true;
+                Task auditTask = Task.Run(() =>
+                {
+                    _InitializeGrid(true);
+                    _lockInit = false;
+                });
+            }
+
             LockUpdate = false;
         }
 
@@ -210,16 +228,16 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void UpdateListItem()
+        private void UpdateListItem(bool isAuditTask)
         {
-            _listItems = _isAudit ? GetAuditList() : GetFilterList();
+            _listItems = GetFilterList(isAuditTask ? GetAuditList() : null);
             Sort();
             ListUpdated?.Invoke(this, null);
         }
 
-        private List<TaskListItem> GetAuditList()
+        private List<TaskListItem> GetNotStartedErrorAndTooBigError()
         {
-            var list = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
+            var list = new List<TaskListItem>();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (list.Any(l => l.WorkItem.Equals(wi))) continue;
@@ -234,8 +252,25 @@ namespace ProjectsTM.UI.TaskList
                     continue;
                 }
             }
-            if (_pattern == null) return list;
-            return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
+            return list;
+        }
+        private List<TaskListItem> GetAuditList()
+        {
+            Task<List<TaskListItem>> task1 = Task.Run(() => {
+                return OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
+            });
+            Task<List<TaskListItem>> task2 = Task.Run(() => { return GetNotStartedErrorAndTooBigError(); });
+            Task.WhenAll(task1, task2);
+
+            var errorList = task1.Result;
+            foreach (var i in task2.Result)
+            {
+                if(errorList.Any(l => l.WorkItem.Equals(i.WorkItem))) continue;
+                errorList.Add(i);
+            }
+
+            if (_pattern == null) return errorList;
+            return errorList.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
         }
 
         private bool IsTooBigError(WorkItem wi)
@@ -273,13 +308,22 @@ namespace ProjectsTM.UI.TaskList
             return new TaskListItem(wi, Color.White, false, msg);
         }
 
-        private List<TaskListItem> GetFilterList()
+        private bool HasError(WorkItems errWorkItems, WorkItem wi)
+        {
+            return errWorkItems.Count() >= 0 && errWorkItems.Contains(wi);
+        }
+        private List<TaskListItem> GetFilterList(List<TaskListItem> errList)
         {
             var list = new List<TaskListItem>();
+            var errWorkItems = new WorkItems();
+            if (errList != null) { foreach (var item in errList) errWorkItems.Add(item.WorkItem); };
+
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
-                list.Add(new TaskListItem(wi, GetColor(wi.State), false, string.Empty));
+                list.Add(HasError(errWorkItems, wi) ?
+                    errList.First(i => i.WorkItem == wi) :
+                    new TaskListItem(wi, GetColor(wi.State), false, string.Empty));
             }
             foreach (var ms in _viewData.Original.MileStones)
             {

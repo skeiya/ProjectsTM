@@ -125,6 +125,8 @@ namespace FreeGridControl
 
         private void _cache_Updated(object sender, System.EventArgs e)
         {
+            if (this.InvokeRequired) { this.Invoke(new Action(() => _cache_Updated(sender, e))); return; }
+
             vScrollBar.LargeChange = this.Height;
             hScrollBar.LargeChange = this.Width;
             this.vScrollBar.Minimum = 0;
