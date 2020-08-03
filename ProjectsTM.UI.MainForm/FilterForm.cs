@@ -39,29 +39,7 @@ namespace ProjectsTM.UI
 
         private void InitComboBox_MSFiltersSearchPattern(string MSFilterSearchPattern)
         {
-            comboBox_MSFiltersSearchPattern.TextChanged += ComboBox_MSFiltersSearchPattern_TextChanged;
             comboBox_MSFiltersSearchPattern.Text = _filter == null ? "ALL" : MSFilterSearchPattern;
-            ComboBox_MSFiltersSearchPattern_TextChanged(null, null);
-        }
-
-        private void ComboBox_MSFiltersSearchPattern_TextChanged(object sender, EventArgs e)
-        {
-            UpdateMileStoneFiltersPreview();
-        }
-
-        private void UpdateMileStoneFiltersPreview()
-        {
-            listBox1.Items.Clear();
-            if (string.IsNullOrEmpty(comboBox_MSFiltersSearchPattern.Text)) return;
-            try
-            {
-                foreach (var msFilter in _mileStones.GeMatchedMileStoneFilters(comboBox_MSFiltersSearchPattern.Text))
-                {
-                    if (listBox1.Items.Contains(msFilter.Name)) continue;
-                    listBox1.Items.Add(msFilter.Name);
-                }
-            }
-            catch { }
         }
 
         private void UpdateAllField()
