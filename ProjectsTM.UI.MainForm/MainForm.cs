@@ -143,7 +143,13 @@ namespace ProjectsTM.UI.MainForm
         private void InitializeViewData()
         {
             _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.ColorConditionChanged += _viewData_ColorConditionChanged;
             _viewData.AppDataChanged += _viewData_AppDataChanged;
+        }
+
+        private void _viewData_ColorConditionChanged(object sender, EventArgs e)
+        {
+            workItemGrid1.Initialize(_viewData);
         }
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
@@ -187,7 +193,7 @@ namespace ProjectsTM.UI.MainForm
         {
             _viewData.Selected = new WorkItems();
             SearchForm?.Clear();
-            if (TaskListForm!= null && TaskListForm.Visible) TaskListForm.Clear();
+            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
@@ -252,11 +258,11 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ColorManagementForm(_viewData.Original.ColorConditions))
+            using (var dlg = new ColorManagementForm(_viewData.Original.ColorConditions.Clone()))
             {
-                dlg.ShowDialog();
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                _viewData.SetColorConditions(dlg.GetColorConditions());
             }
-            workItemGrid1.Clear();
         }
 
         private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)

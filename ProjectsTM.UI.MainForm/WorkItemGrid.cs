@@ -81,11 +81,6 @@ namespace ProjectsTM.UI
             return neighbers;
         }
 
-        private void _viewData_FilterChanged(object sender, EventArgs e)
-        {
-            _rowColResolver.ClearCache();
-            _drawService.Clear();
-        }
 
         internal void AdjustForPrint(Rectangle printRect)
         {
@@ -150,7 +145,6 @@ namespace ProjectsTM.UI
         private void AttachEvents()
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-            this._viewData.FilterChanged += _viewData_FilterChanged;
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
@@ -165,7 +159,6 @@ namespace ProjectsTM.UI
         private void DetatchEvents()
         {
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
-            this._viewData.FilterChanged -= _viewData_FilterChanged;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
             this.MouseUp -= WorkItemGrid_MouseDown;
@@ -175,11 +168,6 @@ namespace ProjectsTM.UI
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
             this.KeyUp -= WorkItemGrid_KeyUp;
-        }
-
-        private void _viewData_FontChanged(object sender, EventArgs e)
-        {
-            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)
@@ -197,11 +185,6 @@ namespace ProjectsTM.UI
         {
             _keyAndMouseHandleService.KeyUp(e);
             this.Invalidate();
-        }
-
-        internal void Clear()
-        {
-            _drawService.Clear();
         }
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)

@@ -35,7 +35,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: ".\ProjectsTM.exe\bin\Release\FreeGridControl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM.exe\bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.exe.config"; DestDir: "{app}"; Flags: ignoreversion

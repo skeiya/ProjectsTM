@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace ProjectsTM.Service
 {
@@ -108,6 +109,12 @@ namespace ProjectsTM.Service
 
         public AppData OpenFile(string fileName)
         {
+            if (VersionUpdateService.UpdateByFileServer(Path.GetDirectoryName(fileName))) return null;
+            if (IsFutureVersion(fileName))
+            {
+                MessageBox.Show("ご使用のツールより新しいバージョンで保存されたファイルです。ツールを更新してから開いてください。");
+                return null;
+            }
             _previousFileName = fileName;
             _watcher.Path = Path.GetDirectoryName(fileName);
             _watcher.Filter = Path.GetFileName(fileName);
@@ -116,6 +123,17 @@ namespace ProjectsTM.Service
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
             return AppDataSerializeService.Deserialize(fileName);
+        }
+
+        private bool IsFutureVersion(string fileName)
+        {
+            XmlDocument oDom = new XmlDocument();
+            oDom.Load(fileName);
+            var node = oDom.SelectSingleNode("//AppData/Version");
+            if (node == null) return false;
+            string str = node.InnerText;
+            if (!Int32.TryParse(str, out var version)) return false;
+            return AppData.DataVersion < version;
         }
 
         public void Dispose()
