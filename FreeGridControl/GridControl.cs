@@ -73,7 +73,6 @@ namespace FreeGridControl
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
                 this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
             }
-            Thread.Sleep(250);
         }
 
         private bool IsVisibleRange(RowIndex row, int count, ColIndex col)

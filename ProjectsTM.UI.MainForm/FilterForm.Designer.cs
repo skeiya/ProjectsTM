@@ -52,7 +52,6 @@
             this.comboBoxPattern = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBox_MSFiltersSearchPattern = new System.Windows.Forms.ComboBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -110,7 +109,7 @@
             // buttonApply
             // 
             this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonApply.Location = new System.Drawing.Point(456, 490);
+            this.buttonApply.Location = new System.Drawing.Point(456, 424);
             this.buttonApply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(62, 23);
@@ -123,7 +122,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(521, 490);
+            this.buttonCancel.Location = new System.Drawing.Point(521, 424);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(62, 23);
@@ -191,7 +190,7 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(413, 465);
+            this.buttonImport.Location = new System.Drawing.Point(413, 399);
             this.buttonImport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(85, 20);
@@ -203,7 +202,7 @@
             // buttonExport
             // 
             this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExport.Location = new System.Drawing.Point(500, 466);
+            this.buttonExport.Location = new System.Drawing.Point(500, 400);
             this.buttonExport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(82, 20);
@@ -314,17 +313,6 @@
             this.comboBox_MSFiltersSearchPattern.Size = new System.Drawing.Size(121, 20);
             this.comboBox_MSFiltersSearchPattern.TabIndex = 22;
             // 
-            // listBox1
-            // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.listBox1.Enabled = false;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(8, 398);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(577, 64);
-            this.listBox1.TabIndex = 23;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -341,9 +329,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(588, 520);
+            this.ClientSize = new System.Drawing.Size(588, 454);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.comboBox_MSFiltersSearchPattern);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.comboBoxPattern);
@@ -404,7 +391,6 @@
         private System.Windows.Forms.ComboBox comboBoxPattern;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox comboBox_MSFiltersSearchPattern;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label6;
     }
 }
