@@ -28,6 +28,7 @@ namespace ProjectsTM.UI.MainForm
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
         private GitRepositoryService _gitRepositoryService;
+
         public MainForm()
         {
             InitializeComponent();
@@ -130,7 +131,7 @@ namespace ProjectsTM.UI.MainForm
         }
 
         private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "UserSetting.xml");
-        
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_isDirty) return;
