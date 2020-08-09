@@ -25,16 +25,15 @@ namespace ProjectsTM.Service
 
         internal void CheckRemoteBranchAppDataFile(string filePath)
         {
-            Task<bool> task = Task.Run(() =>
+            Task task = Task.Run(() =>
             {
                 GitCmd.GitFetch(filePath);
                 if (DoesRemoteBranchHaveNewCommit(filePath))
                 {
                     IsRemoteBranchAppDataNew = true;
-                    return true;
+                    return;
                 }
                 IsRemoteBranchAppDataNew = false;
-                return false;
             });
         }    
 
