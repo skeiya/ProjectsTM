@@ -27,13 +27,14 @@ namespace ProjectsTM.UI.MainForm
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
-
+        private GitRepositoryService _gitRepositoryService;
         public MainForm()
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font, Print);
-            FileIOService = new AppDataFileIOService();
+            _gitRepositoryService = new GitRepositoryService(this.UpdateTitlebarText);
+            FileIOService = new AppDataFileIOService(_gitRepositoryService);
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
             statusStrip1.Items.Add("");
@@ -51,6 +52,17 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void UpdateTitlebarText(bool _isRemoteBranchAppDataNew)
+        {
+            if (this.InvokeRequired) { this.Invoke(new Action(() => UpdateTitlebarText(_isRemoteBranchAppDataNew))); return; }
+            if (_isRemoteBranchAppDataNew)
+            {
+                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
+                return;
+            }
+            this.Text = "ProjectsTM";
         }
 
         private void Print(PrintPageEventArgs e)
@@ -118,7 +130,7 @@ namespace ProjectsTM.UI.MainForm
         }
 
         private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "UserSetting.xml");
-
+        
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_isDirty) return;

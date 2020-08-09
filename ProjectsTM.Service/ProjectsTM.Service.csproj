@@ -58,6 +58,9 @@
     <Compile Include="EditedEventArgs.cs" />
     <Compile Include="FileDragService.cs" />
     <Compile Include="FilterComboBoxService.cs" />
+    <Compile Include="GitCmdCommon.cs" />
+    <Compile Include="GitCmd.cs" />
+    <Compile Include="GitRepositoryService.cs" />
     <Compile Include="KeyAndMouseHandleService.cs" />
     <Compile Include="OldFileService.cs" />
     <Compile Include="OverwrapedWorkItemsCollectService.cs" />

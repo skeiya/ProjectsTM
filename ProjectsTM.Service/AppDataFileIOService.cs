@@ -12,11 +12,13 @@ namespace ProjectsTM.Service
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
         private DateTime _last;
+        private GitRepositoryService _gitRepositoryService;
 
-        public AppDataFileIOService()
+        public AppDataFileIOService(GitRepositoryService gitRepositoryService)
         {
             _watcher = new FileSystemWatcher();
             _watcher.Changed += _watcher_Changed;
+            _gitRepositoryService = gitRepositoryService;
         }
 
         private void _watcher_Changed(object sender, FileSystemEventArgs e)
@@ -122,7 +124,14 @@ namespace ProjectsTM.Service
             _watcher.IncludeSubdirectories = false;
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
+            CheckRemoteBranchAppData(fileName);
             return AppDataSerializeService.Deserialize(fileName);
+        }
+
+        private void CheckRemoteBranchAppData(string filePath)
+        {
+            _gitRepositoryService.IsRemoteBranchAppDataNew = false;
+            _gitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
         }
 
         private bool IsFutureVersion(string fileName)

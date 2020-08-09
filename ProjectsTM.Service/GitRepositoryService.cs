@@ -41,8 +41,9 @@ namespace ProjectsTM.Service
         private bool DoesRemoteBranchHaveNewCommit(string filePath)
         {
             var localBranchDate = GitCmd.GetLocalBranchDate(filePath);
+            if (localBranchDate <= 0) return false;
             var remoteBranchDate = GitCmd.GetRemoteBranchDate(filePath);
-            if (localBranchDate <= 0 || remoteBranchDate <= 0) return false;
+            if (remoteBranchDate <= 0) return false;
             if (localBranchDate == remoteBranchDate) return IsRemoteBranchTimeStampNew(filePath);
             return remoteBranchDate > localBranchDate;
         }
@@ -50,8 +51,9 @@ namespace ProjectsTM.Service
         private bool IsRemoteBranchTimeStampNew(string filePath)
         {
             var localCommitTime = GitCmd.GetLocalBranchCommitTime(filePath);
-            var remoteCommitTime = GitCmd.GetRemoteBranchCommitTime(filePath);
-            if (localCommitTime <= 0 || remoteCommitTime <= 0) return false;
+            if (localCommitTime <= 0) return false;
+                var remoteCommitTime = GitCmd.GetRemoteBranchCommitTime(filePath);
+            if (remoteCommitTime <= 0) return false;
             return remoteCommitTime > localCommitTime;
         }
     }
