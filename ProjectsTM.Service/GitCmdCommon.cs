@@ -5,7 +5,7 @@ namespace ProjectsTM.Service
 {
     class GitCmdCommon
     {
-        internal static int executeCommand(out string output, string command, string arguments = "")
+        internal static int ExecuteCommand(out string output, string command, string arguments = "")
         {
             var process = new Process
             {
@@ -23,10 +23,10 @@ namespace ProjectsTM.Service
             return process.ExitCode;
         }
 
-        internal static string gitCommand(string arguments)
+        internal static string GitCommand(string arguments)
         {
             string output;
-            if (executeCommand(out output, "git", arguments) != 0)
+            if (ExecuteCommand(out output, "git", arguments) != 0)
             {
                 throw new Exception("git command error");
             }
