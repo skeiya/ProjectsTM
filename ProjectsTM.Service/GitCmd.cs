@@ -11,12 +11,12 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(filePath)) return;
             var gitRepoPath = SearchGitRepo(filePath);
             if (string.IsNullOrEmpty(gitRepoPath)) return;
-            GitCmdCommon.gitCommand("-C " + gitRepoPath + " fetch");
+            GitCmdCommon.GitCommand("-C " + gitRepoPath + " fetch");
         }
  
         private static string GetCurrentBranchName()
         {
-            StringReader reader = new StringReader(GitCmdCommon.gitCommand("rev-parse --abbrev-ref Head"));
+            StringReader reader = new StringReader(GitCmdCommon.GitCommand("rev-parse --abbrev-ref Head"));
             return reader.ReadLine();
         }
 
@@ -25,7 +25,7 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(filePath)) return -1;
             var gitRepoPath = SearchGitRepo(filePath);
             if (string.IsNullOrEmpty(gitRepoPath)) return -1;
-            return ParseDate(GitCmdCommon.gitCommand("-C " + gitRepoPath + " log -1 --date=short --pretty=format:%cd -- " + filePath));
+            return ParseDate(GitCmdCommon.GitCommand("-C " + gitRepoPath + " log -1 --date=short --pretty=format:%cd -- " + filePath));
         }
 
         internal static int GetRemoteBranchDate(string filePath)
@@ -33,7 +33,7 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(filePath)) return -1;
             var gitRepoPath = SearchGitRepo(filePath);
             if (string.IsNullOrEmpty(gitRepoPath)) return -1;
-            return ParseDate(GitCmdCommon.gitCommand("-C " + gitRepoPath + " log -1 remotes/origin/" + GetCurrentBranchName() + " --date=short --pretty=format:%cd -- " + filePath));
+            return ParseDate(GitCmdCommon.GitCommand("-C " + gitRepoPath + " log -1 remotes/origin/" + GetCurrentBranchName() + " --date=short --pretty=format:%cd -- " + filePath));
         }
 
         internal static int GetLocalBranchCommitTime(string filePath)
@@ -41,7 +41,7 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(filePath)) return -1;
             var gitRepoPath = SearchGitRepo(filePath);
             if (string.IsNullOrEmpty(gitRepoPath)) return -1;
-            return ParseTime(GitCmdCommon.gitCommand("-C " + gitRepoPath + " log -1 --pretty=format:%cd -- " + filePath));
+            return ParseTime(GitCmdCommon.GitCommand("-C " + gitRepoPath + " log -1 --pretty=format:%cd -- " + filePath));
         }
 
         internal static int GetRemoteBranchCommitTime(string filePath)
@@ -49,7 +49,7 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(filePath)) return -1;
             var gitRepoPath = SearchGitRepo(filePath);
             if (string.IsNullOrEmpty(gitRepoPath)) return -1;
-            return ParseTime(GitCmdCommon.gitCommand("-C " + gitRepoPath + " log -1 remotes/origin/" + GetCurrentBranchName() + " --pretty=format:%cd -- " + filePath));
+            return ParseTime(GitCmdCommon.GitCommand("-C " + gitRepoPath + " log -1 remotes/origin/" + GetCurrentBranchName() + " --pretty=format:%cd -- " + filePath));
         }
 
         private static int ParseDate(string output)
