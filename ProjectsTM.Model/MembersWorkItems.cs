@@ -63,5 +63,10 @@ namespace ProjectsTM.Model
         {
             return -566117206 + EqualityComparer<List<WorkItem>>.Default.GetHashCode(_items);
         }
+
+        public void SortByPeriodStartDate()
+        {
+            _items.Sort((a, b) => a.Period.From.CompareTo(b.Period.From));
+        }
     }
 }

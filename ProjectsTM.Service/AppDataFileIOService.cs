@@ -51,6 +51,7 @@ namespace ProjectsTM.Service
             _watcher.EnableRaisingEvents = false;
             try
             {
+                appData.WorkItems.SortByPeriodStartDate();
                 AppDataSerializeService.Serialize(_previousFileName, appData);
                 FileSaved?.Invoke(this, null);
             }
@@ -70,6 +71,7 @@ namespace ProjectsTM.Service
                 _watcher.EnableRaisingEvents = false;
                 try
                 {
+                    appData.WorkItems.SortByPeriodStartDate();
                     AppDataSerializeService.Serialize(dlg.FileName, appData);
                     FileSaved?.Invoke(this, null);
                     _previousFileName = dlg.FileName;
