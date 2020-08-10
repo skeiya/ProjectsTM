@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        internal void CheckRemoteBranchAppDataFile(string filePath)
+        public void CheckRemoteBranchAppDataFile(string filePath)
         {
             Task task = Task.Run(() =>
             {

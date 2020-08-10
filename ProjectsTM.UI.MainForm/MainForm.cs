@@ -34,10 +34,10 @@ namespace ProjectsTM.UI.MainForm
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
             PrintService = new PrintService(_viewData, workItemGrid1.Font, Print);
-            _gitRepositoryService = new GitRepositoryService(this.UpdateTitlebarText);
-            FileIOService = new AppDataFileIOService(_gitRepositoryService);
+            FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
+            _gitRepositoryService = new GitRepositoryService(this.UpdateTitlebarText);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
@@ -80,6 +80,7 @@ namespace ProjectsTM.UI.MainForm
         private void FileIOService_FileOpened(object sender, string e)
         {
             _filterComboBoxService.Initialize(e);
+            _gitRepositoryService.CheckRemoteBranchAppDataFile(e);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
