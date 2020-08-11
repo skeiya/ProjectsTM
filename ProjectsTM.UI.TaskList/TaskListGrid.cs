@@ -153,16 +153,17 @@ namespace ProjectsTM.UI.TaskList
 
         private void _InitializeGrid(bool isAuditTask)
         {
+            LockUpdate = true;
             UpdateListItem(isAuditTask);
             ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
+            LockUpdate = false;
         }
 
         private void InitializeGrid()
         {
-            LockUpdate = true;
             _InitializeGrid(false);
 
             if (!_lockInit)
@@ -174,8 +175,6 @@ namespace ProjectsTM.UI.TaskList
                     _lockInit = false;
                 });
             }
-
-            LockUpdate = false;
         }
 
         private void AttachEvents()
