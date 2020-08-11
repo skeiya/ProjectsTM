@@ -23,7 +23,7 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
-        private bool _lockInit = false;
+        private bool _isAuditTaskWorking = false;
 
         public TaskListGrid()
         {
@@ -166,13 +166,13 @@ namespace ProjectsTM.UI.TaskList
         {
             _InitializeGrid(false);
 
-            if (!_lockInit)
+            if (!_isAuditTaskWorking)
             {
-                _lockInit = true;
+                _isAuditTaskWorking = true;
                 Task auditTask = Task.Run(() =>
                 {
                     _InitializeGrid(true);
-                    _lockInit = false;
+                    _isAuditTaskWorking = false;
                 });
             }
         }
