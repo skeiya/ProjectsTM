@@ -24,6 +24,7 @@ namespace ProjectsTM.Service
             Version result = null;
             var fileServerPath = GetFileServerPath(dir);
             if (fileServerPath == null) return null;
+            if (!Directory.Exists(fileServerPath)) return null;
             foreach (var d in Directory.GetDirectories(fileServerPath))
             {
                 var version = ParseVersion(d);

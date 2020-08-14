@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text;
 
 namespace ProjectsTM.UI.TaskList
 {
@@ -23,6 +24,7 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
+        private RowIndex _lastSelect;
         private AuditService _auditService;
         private List<TaskListItem> errList = null;
 
@@ -46,6 +48,36 @@ namespace ProjectsTM.UI.TaskList
             {
                 MoveSelect(-1);
             }
+            else if(KeyState.IsControlDown && (e.KeyCode == Keys.C))
+            {
+                CopyToClipboard();
+            }
+        }
+
+        private void SetStrOneLine(StringBuilder copyData, WorkItem  w)
+        {
+            const string DOUBLE_Q = "\"";
+            const string TAB = "\t";
+            copyData.Append(w.Name.ToString());             copyData.Append(TAB);
+            copyData.Append(w.Project.ToString());          copyData.Append(TAB);
+            copyData.Append(w.AssignedMember.ToString());   copyData.Append(TAB);
+            copyData.Append(w.Tags.ToString());             copyData.Append(TAB);
+            copyData.Append(w.State);                       copyData.Append(TAB);
+            copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
+            copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
+            copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
+                                                            copyData.Append(TAB);
+            copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
+                                                            copyData.AppendLine(TAB);
+        }
+
+        private void CopyToClipboard()
+        {
+            if (_viewData.Selected == null) return;
+            var workItems = _viewData.Selected;
+            StringBuilder copyData = new StringBuilder(string.Empty);
+            foreach (var w in workItems) { SetStrOneLine(copyData, w); }
+            Clipboard.SetData(DataFormats.Text, copyData.ToString());
         }
 
         private void MoveSelect(int offset)
@@ -65,6 +97,42 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
+        private void SelectItems(RowIndex r)
+        {
+            var from = r.Value - FixedRowCount;
+            var to = r.Value - FixedRowCount;
+            if (IsMultiSelect()) from = _lastSelect.Value - FixedRowCount;
+            SelectRange(from, to);
+        }
+
+        private bool IsMultiSelect()
+        {
+            if (!KeyState.IsShiftDown) return false;
+            if (_lastSelect == null) return false;
+            return true;
+        }
+
+        private void SelectRange(int from,int to)
+        {
+            SwapIfUpsideDown(ref from, ref to);
+            var selects = new WorkItems();
+            for (var idx = from; idx <= to; idx++)
+            {
+                var l = _listItems[idx];
+                if (l.IsMilestone) continue;
+                selects.Add(l.WorkItem);
+            }
+            _viewData.Selected = selects;
+        }
+
+        private void SwapIfUpsideDown(ref int from, ref int to)
+        {
+            if (from <= to) return;
+            int buf = from;
+            from = to;
+            to = buf;
+        }
+
         private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
         {
             var rawLocation = Client2Raw(ClientPoint.Create(e));
@@ -74,11 +142,7 @@ namespace ProjectsTM.UI.TaskList
                 HandleSortRequest(rawLocation);
                 return;
             }
-            var item = _listItems[r.Value - FixedRowCount];
-            if (!item.IsMilestone)
-            {
-                _viewData.Selected = new WorkItems(item.WorkItem);
-            }
+            SelectItems(r);
         }
 
         private void HandleSortRequest(RawPoint rawLocation)
@@ -162,6 +226,7 @@ namespace ProjectsTM.UI.TaskList
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
             LockUpdate = false;
+            UpdateLastSelect();
         }
 
         private async void InitializeGridForAuditAsync()
@@ -197,8 +262,21 @@ namespace ProjectsTM.UI.TaskList
             _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
+        private void UpdateLastSelect()
+        {
+            if (_viewData.Selected == null ||
+                _viewData.Selected.Count() == 0) { _lastSelect = null; return; }
+
+            if (_viewData.Selected.Count() == 1)
+            {
+                var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
+                _lastSelect = new RowIndex(idx + FixedRowCount);
+            }
+        }
+
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
+            UpdateLastSelect();
             MoveSelectedVisible();
             this.Invalidate();
         }

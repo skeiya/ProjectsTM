@@ -114,5 +114,13 @@ namespace ProjectsTM.Model
             }
             return result;
         }
+
+        public void SortByPeriodStartDate()
+        {
+            foreach (var workItems in this.EachMembers)
+            {
+                workItems.SortByPeriodStartDate();
+            }
+        }
     }
 }
