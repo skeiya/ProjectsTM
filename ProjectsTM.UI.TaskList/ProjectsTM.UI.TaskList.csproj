@@ -59,7 +59,6 @@
     <Compile Include="TaskListGrid.Designer.cs">
       <DependentUpon>TaskListGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="TaskListItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TaskListForm.resx">

@@ -12,6 +12,7 @@ namespace ProjectsTM.ViewModel
         public Detail Detail { get; set; } = new Detail();
 
         public AppData Original => _appData;
+        public object lockobj = new object();
 
         public void SetAppData(AppData appData, IUndoService undoService)
         {
@@ -187,6 +188,15 @@ namespace ProjectsTM.ViewModel
             if (Original.ColorConditions.Equals(colorConditions)) return;
             Original.ColorConditions = colorConditions;
             ColorConditionChanged?.Invoke(this, null);
+        }
+
+        public void CloneWorkitemsAndCallender(out WorkItems workitems, out Callender callender)
+        {
+            lock (lockobj)
+            {
+                workitems = Original.WorkItems.Clone();
+                callender = new Callender(Original.Callender);
+            }
         }
     }
 }

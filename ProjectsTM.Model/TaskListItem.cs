@@ -1,9 +1,8 @@
-﻿using ProjectsTM.Model;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.Model
 {
-    internal class TaskListItem
+    public class TaskListItem
     {
         public TaskListItem(WorkItem w, Color color, bool isMilestone, string errMsg)
         {

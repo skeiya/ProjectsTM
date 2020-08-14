@@ -6,6 +6,17 @@ namespace ProjectsTM.Model
     public class Callender
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
+
+        public Callender() { }
+
+        public Callender(Callender callender) 
+        { 
+            foreach (var d in callender.Days)
+            {
+                this.Days.Add(d);
+            }
+        }
+
         public CallenderDay NearestFromToday
         {
             get

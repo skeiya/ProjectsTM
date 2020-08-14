@@ -23,7 +23,8 @@ namespace ProjectsTM.UI.TaskList
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
-        private bool _isAuditTaskWorking = false;
+        private AuditService _auditService;
+        private List<TaskListItem> errList = null;
 
         public TaskListGrid()
         {
@@ -92,7 +93,7 @@ namespace ProjectsTM.UI.TaskList
                 _isReverse = false;
             }
             _sortCol = c;
-            InitializeGrid();
+            InitializeGrid(false);
         }
 
         private void Sort()
@@ -147,14 +148,15 @@ namespace ProjectsTM.UI.TaskList
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
+            this._auditService = new AuditService();
             AttachEvents();
-            InitializeGrid();
+            InitializeGrid(true);
         }
 
-        private void _InitializeGrid(bool isAuditTask)
+        private void _InitializeGrid()
         {
             LockUpdate = true;
-            UpdateListItem(isAuditTask);
+            UpdateListItem();
             ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
@@ -162,19 +164,25 @@ namespace ProjectsTM.UI.TaskList
             LockUpdate = false;
         }
 
-        private void InitializeGrid()
+        private async void InitializeGridForAuditAsync()
         {
-            _InitializeGrid(false);
+            if (_auditService.IsActive) return;
+            WorkItems workitems;
+            Callender callender;
 
-            if (!_isAuditTaskWorking)
-            {
-                _isAuditTaskWorking = true;
-                Task auditTask = Task.Run(() =>
-                {
-                    _InitializeGrid(true);
-                    _isAuditTaskWorking = false;
-                });
-            }
+            _viewData.CloneWorkitemsAndCallender(out workitems, out callender);
+            Task<List<TaskListItem>> task = _auditService.StartAuditTask(workitems, callender);
+
+            errList = await task;
+            _viewData.CloneWorkitemsAndCallender(out workitems, out callender);
+            if (_auditService.WorkitemsAndCallenderChanged(workitems, callender)) InitializeGridForAuditAsync();
+            else InitializeGrid(false);
+        }
+
+        private void InitializeGrid(bool execAudit)
+        {
+            _InitializeGrid();
+            if (execAudit) InitializeGridForAuditAsync();
         }
 
         private void AttachEvents()
@@ -206,7 +214,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
-            InitializeGrid();
+            InitializeGrid(true);
             this.Invalidate();
         }
 
@@ -225,84 +233,14 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void UpdateListItem(bool isAuditTask)
+        private void UpdateListItem()
         {
-            _listItems = GetFilterList(isAuditTask ? GetAuditList() : null);
+            _listItems = GetFilterList(errList);
             Sort();
             ListUpdated?.Invoke(this, null);
         }
 
-        private List<TaskListItem> GetNotStartedErrorAndTooBigError()
-        {
-            var list = new List<TaskListItem>();
-            foreach (var wi in _viewData.GetFilteredWorkItems())
-            {
-                if (list.Any(l => l.WorkItem.Equals(wi))) continue;
-                if (IsNotStartedError(wi))
-                {
-                    list.Add(CreateErrorItem(wi, "未開始"));
-                    continue;
-                }
-                if (IsTooBigError(wi))
-                {
-                    list.Add(CreateErrorItem(wi, "要分解"));
-                    continue;
-                }
-            }
-            return list;
-        }
-        private List<TaskListItem> GetAuditList()
-        {
-            Task<List<TaskListItem>> task1 = Task.Run(() => {
-                return OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
-            });
-            Task<List<TaskListItem>> task2 = Task.Run(() => { return GetNotStartedErrorAndTooBigError(); });
-            Task.WhenAll(task1, task2);
-
-            var errorList = task1.Result;
-            foreach (var i in task2.Result)
-            {
-                if(errorList.Any(l => l.WorkItem.Equals(i.WorkItem))) continue;
-                errorList.Add(i);
-            }
-            return errorList;
-        }
-
-        private bool IsTooBigError(WorkItem wi)
-        {
-            if (wi.State == TaskState.Background) return false;
-            if (wi.State == TaskState.Done) return false;
-            if (!IsStartSoon(wi)) return false;
-            return IsTooBig(wi);
-        }
-
-        private bool IsTooBig(WorkItem wi)
-        {
-            return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
-        }
-
-        private bool IsStartSoon(WorkItem wi)
-        {
-            var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
-            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 4;
-        }
-
-        private static bool IsNotStartedError(WorkItem wi)
-        {
-            if (IsStarted(wi)) return false;
-            return CallenderDay.Today >= wi.Period.From;
-        }
-
-        private static bool IsStarted(WorkItem wi)
-        {
-            return wi.State != TaskState.New || wi.State == TaskState.Background;
-        }
-
-        private static TaskListItem CreateErrorItem(WorkItem wi, string msg)
-        {
-            return new TaskListItem(wi, Color.White, false, msg);
-        }
-
+ 
         private bool HasError(WorkItems errWorkItems, WorkItem wi)
         {
             return errWorkItems.Count() >= 0 && errWorkItems.Contains(wi);

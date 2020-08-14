@@ -48,6 +48,7 @@
     <Compile Include="AppDataFileIOService.cs" />
     <Compile Include="AppDataSerializeService.cs" />
     <Compile Include="AtomicAction.cs" />
+    <Compile Include="AuditService.cs" />
     <Compile Include="CalculateSumService.cs" />
     <Compile Include="CsvReadService.cs" />
     <Compile Include="DragState.cs" />

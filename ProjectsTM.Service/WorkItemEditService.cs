@@ -9,10 +9,12 @@ namespace ProjectsTM.Service
     public class WorkItemEditService
     {
         private readonly ViewData _viewData;
+        private object _lockobj;
 
         public WorkItemEditService(ViewData viewData)
         {
             this._viewData = viewData;
+            this._lockobj = viewData.lockobj;
         }
 
         public void Add(WorkItems wis)
@@ -22,7 +24,10 @@ namespace ProjectsTM.Service
             foreach (var w in wis)
             {
                 if (items.Contains(w)) continue;
-                items.Add(w);
+                lock (_lockobj)
+                {
+                    items.Add(w);
+                }
                 _viewData.UndoService.Add(w);
             }
             _viewData.UndoService.Push();
@@ -33,14 +38,20 @@ namespace ProjectsTM.Service
             if (wi == null) return;
             var items = _viewData.Original.WorkItems;
             if (items.Contains(wi)) return;
-            items.Add(wi);
+            lock (_lockobj)
+            {
+                items.Add(wi);
+            }
             _viewData.UndoService.Add(wi);
             _viewData.UndoService.Push();
         }
 
         public void Delete()
         {
-            _viewData.Original.WorkItems.Remove(_viewData.Selected);
+            lock (_lockobj)
+            {
+                _viewData.Original.WorkItems.Remove(_viewData.Selected);
+            }
             _viewData.UndoService.Delete(_viewData.Selected);
             _viewData.Selected = new WorkItems();
             _viewData.UndoService.Push();
@@ -54,16 +65,19 @@ namespace ProjectsTM.Service
             d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
             d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, divided);
 
+            var workItems = _viewData.Original.WorkItems;
+            _viewData.Selected = null;
+            lock (_lockobj)
+            {
+                workItems.Remove(selected);
+                workItems.Add(d1);
+                workItems.Add(d2);
+            }
+
             _viewData.UndoService.Delete(selected);
             _viewData.UndoService.Add(d1);
             _viewData.UndoService.Add(d2);
             _viewData.UndoService.Push();
-
-            var workItems = _viewData.Original.WorkItems;
-            _viewData.Selected = null;
-            workItems.Remove(selected);
-            workItems.Add(d1);
-            workItems.Add(d2);
         }
 
         public void Replace(object workItem, WorkItem newWi)
@@ -73,8 +87,11 @@ namespace ProjectsTM.Service
 
         public void Replace(WorkItems before, WorkItems after)
         {
-            _viewData.Original.WorkItems.Remove(before);
-            _viewData.Original.WorkItems.Add(after);
+            lock (_lockobj)
+            {
+                _viewData.Original.WorkItems.Remove(before);
+                _viewData.Original.WorkItems.Add(after);
+            }
             _viewData.UndoService.Delete(before);
             _viewData.UndoService.Add(after);
             _viewData.UndoService.Push();
@@ -83,8 +100,11 @@ namespace ProjectsTM.Service
         public void Replace(WorkItem before, WorkItem after)
         {
             if (before.Equals(after)) return;
-            _viewData.Original.WorkItems.Remove(before);
-            _viewData.Original.WorkItems.Add(after);
+            lock (_lockobj)
+            {
+                _viewData.Original.WorkItems.Remove(before);
+                _viewData.Original.WorkItems.Add(after);
+            }
             _viewData.UndoService.Delete(before);
             _viewData.UndoService.Add(after);
             _viewData.UndoService.Push();
@@ -96,14 +116,17 @@ namespace ProjectsTM.Service
 
             foreach (var w in newWis) w.State = state;
 
+            var workItems = _viewData.Original.WorkItems;
+            _viewData.Selected = null;
+            lock (_lockobj)
+            {
+                workItems.Remove(selected);
+                workItems.Add(newWis);
+            }
+
             _viewData.UndoService.Delete(selected);
             _viewData.UndoService.Add(newWis);
             _viewData.UndoService.Push();
-
-            var workItems = _viewData.Original.WorkItems;
-            _viewData.Selected = null;
-            workItems.Remove(selected);
-            workItems.Add(newWis);
         }
 
         public void SelectAfterward(WorkItems starts)
@@ -235,14 +258,17 @@ namespace ProjectsTM.Service
             }
             if (!divided.Any()) return;
 
+            var workItems = _viewData.Original.WorkItems;
+            lock (_lockobj)
+            {
+                workItems.Remove(divided);
+                workItems.Add(add);
+            }
+            _viewData.Selected = add;
+
             _viewData.UndoService.Delete(divided);
             _viewData.UndoService.Add(add);
             _viewData.UndoService.Push();
-
-            var workItems = _viewData.Original.WorkItems;
-            workItems.Remove(divided);
-            workItems.Add(add);
-            _viewData.Selected = add;
         }
     }
 }
