@@ -32,12 +32,12 @@ namespace ProjectsTM.Service
 
         private List<TaskListItem> GetAuditList()
         {
-            Task<List<TaskListItem>> task1 = Task.Run(async () =>
+            Task<List<TaskListItem>> task1 = Task.Run(() =>
             {
                 return OverwrapedWorkItemsCollectService.Get(_workitems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
             });
 
-            Task<List<TaskListItem>> task2 = Task.Run(async () =>
+            Task<List<TaskListItem>> task2 = Task.Run(() =>
             {
                 return GetNotStartedErrorAndTooBigError();
             });
