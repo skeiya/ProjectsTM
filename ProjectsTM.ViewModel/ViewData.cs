@@ -194,7 +194,7 @@ namespace ProjectsTM.ViewModel
         {
             lock (lockobj)
             {
-                workitems = Original.WorkItems.Clone();
+                workitems = new WorkItems(Original.WorkItems);
                 callender = new Callender(Original.Callender);
             }
         }
