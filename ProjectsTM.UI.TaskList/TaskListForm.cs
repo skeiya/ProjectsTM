@@ -34,7 +34,6 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateLabelSum()
         {
-            if (this.InvokeRequired) { this.Invoke(new Action(() => UpdateLabelSum())); return; }
             var dayCount = gridControl1.GetDayCount();
             var monthCount = dayCount / 20;
             labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
