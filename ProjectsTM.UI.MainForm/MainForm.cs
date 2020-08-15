@@ -77,10 +77,10 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private void FileIOService_FileOpened(object sender, string e)
+        private void FileIOService_FileOpened(object sender, string filePath)
         {
-            _filterComboBoxService.Initialize(e);
-            _gitRepositoryService.CheckRemoteBranchAppDataFile(e);
+            _filterComboBoxService.Initialize(filePath);
+            _gitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)

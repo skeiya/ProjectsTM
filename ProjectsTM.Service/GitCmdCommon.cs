@@ -5,7 +5,7 @@ namespace ProjectsTM.Service
 {
     class GitCmdCommon
     {
-        internal static int ExecuteCommand(out string output, string command, string arguments = "")
+        private static int ExecuteCommand(out string output, string command, string arguments = "")
         {
             var process = new Process
             {

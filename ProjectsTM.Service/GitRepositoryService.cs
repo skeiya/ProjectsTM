@@ -27,18 +27,13 @@ namespace ProjectsTM.Service
         {
             Task task = Task.Run(() =>
             {
-                GitCmd.GitFetch(filePath);
-                if (DoesRemoteBranchHaveNewCommit(filePath))
-                {
-                    IsRemoteBranchAppDataNew = true;
-                    return;
-                }
-                IsRemoteBranchAppDataNew = false;
+                IsRemoteBranchAppDataNew = DoesRemoteBranchHaveNewCommit(filePath);
             });
         }    
 
         private bool DoesRemoteBranchHaveNewCommit(string filePath)
         {
+            GitCmd.GitFetch(filePath);
             var localBranchDate = GitCmd.GetLocalBranchDate(filePath);
             if (localBranchDate <= 0) return false;
             var remoteBranchDate = GitCmd.GetRemoteBranchDate(filePath);
