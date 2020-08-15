@@ -27,7 +27,6 @@ namespace ProjectsTM.UI.MainForm
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
-        private GitRepositoryService _gitRepositoryService;
 
         public MainForm()
         {
@@ -37,7 +36,6 @@ namespace ProjectsTM.UI.MainForm
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
-            _gitRepositoryService = new GitRepositoryService(this.UpdateTitlebarText);
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
@@ -55,10 +53,9 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
         }
 
-        private void UpdateTitlebarText(bool _isRemoteBranchAppDataNew)
+        private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
         {
-            if (this.InvokeRequired) { this.Invoke(new Action(() => UpdateTitlebarText(_isRemoteBranchAppDataNew))); return; }
-            if (_isRemoteBranchAppDataNew)
+            if (isRemoteBranchAppDataNew)
             {
                 this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
                 return;
@@ -77,10 +74,11 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private void FileIOService_FileOpened(object sender, string filePath)
+        private async void FileIOService_FileOpened(object sender, string filePath)
         {
             _filterComboBoxService.Initialize(filePath);
-            _gitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
+            var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
+            UpdateTitlebarText(isRemoteBranchAppDataNew);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
