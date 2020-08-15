@@ -33,6 +33,8 @@ namespace ProjectsTM.UI
         public event EventHandler<IEditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;
+        public event EventHandler<List<WorkItems>> DragEditDone;
+
         public WorkItemGrid() { }
 
         internal void Initialize(ViewData viewData)
@@ -49,6 +51,7 @@ namespace ProjectsTM.UI
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
+            _workItemDragService.ApplyEditDone += _workItemDragService_ApplyEditDone;
             ApplyDetailSetting();
             _editService = new WorkItemEditService(_viewData);
             LockUpdate = false;
@@ -58,6 +61,11 @@ namespace ProjectsTM.UI
                 this,
                 () => _workItemDragService.IsActive(),
                 this.Font);
+        }
+
+        private void _workItemDragService_ApplyEditDone(object sender, List<WorkItems> workitemsBeforeAndAfter)
+        {
+            DragEditDone?.Invoke(null, workitemsBeforeAndAfter);
         }
 
         private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
@@ -400,5 +408,7 @@ namespace ProjectsTM.UI
             if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
         }
+
+        public bool IsDragActive() { return _workItemDragService.IsActive(); }
     }
 }

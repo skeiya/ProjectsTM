@@ -27,6 +27,7 @@ namespace ProjectsTM.UI.TaskList
         private RowIndex _lastSelect;
         private AuditService _auditService;
         private List<TaskListItem> errList = null;
+        private Func<bool> _IsWorItemDragActive;
 
         public TaskListGrid()
         {
@@ -66,9 +67,9 @@ namespace ProjectsTM.UI.TaskList
             copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
             copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
             copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-                                                            copyData.Append(TAB);
+            copyData.Append(TAB);
             copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-                                                            copyData.AppendLine(TAB);
+            copyData.AppendLine(TAB);
         }
 
         private void CopyToClipboard()
@@ -206,13 +207,14 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern)
+        internal void Initialize(ViewData viewData, string pattern, Func<bool> IsWorkItemDragActive)
         {
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             this._auditService = new AuditService();
+            this._IsWorItemDragActive = IsWorkItemDragActive;
             AttachEvents();
             InitializeGrid(true);
         }
@@ -244,8 +246,28 @@ namespace ProjectsTM.UI.TaskList
             else InitializeGrid(false);
         }
 
+        private void ApplyDragEdit(WorkItems before, WorkItems after)
+        {
+            for (int i = 0; i < before.Count(); i++)
+            {
+                var listIdx = _listItems.FindIndex(l => l.WorkItem.Equals(before.ElementAt(i)));
+                if (listIdx == -1) return;
+                var item = _listItems[listIdx];
+                _listItems[listIdx] = new TaskListItem(after.ElementAt(i), item.Color, item.IsMilestone, item.ErrMsg);
+            }
+            Sort();
+        }
+
+        internal void DragEditDone(WorkItems before, WorkItems after) 
+        {
+            ApplyDragEdit(before, after);
+            SelectedWorkItemChanged();
+            InitializeGridForAuditAsync();
+        }
+
         private void InitializeGrid(bool execAudit)
         {
+            if (_IsWorItemDragActive()) return;
             _InitializeGrid();
             if (execAudit) InitializeGridForAuditAsync();
         }
@@ -274,11 +296,17 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
+        private void SelectedWorkItemChanged()
         {
             UpdateLastSelect();
             MoveSelectedVisible();
             this.Invalidate();
+        }
+
+        private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
+        {
+            if (_IsWorItemDragActive()) return;
+            SelectedWorkItemChanged();
         }
 
         private void MoveSelectedVisible()

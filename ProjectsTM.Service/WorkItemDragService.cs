@@ -18,6 +18,7 @@ namespace ProjectsTM.Service
         private RawPoint _draggedLocation;
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
+        public event EventHandler<List<WorkItems>> ApplyEditDone;
 
         private DragState _state = DragState.None;
         public DragState State
@@ -275,6 +276,15 @@ namespace ProjectsTM.Service
                     break;
             }
             viewData.Selected = edit;
+            ApplyEditToTaskList(_backup, edit);
+        }
+
+        private void ApplyEditToTaskList(WorkItems before, WorkItems after) 
+        {
+            var workItemsBeforeAndAfter = new List<WorkItems>();
+            workItemsBeforeAndAfter.Add(before);
+            workItemsBeforeAndAfter.Add(after);
+            ApplyEditDone?.Invoke(null, workItemsBeforeAndAfter);
         }
 
         private void ClearEdit(ViewData viewData)

@@ -49,8 +49,14 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
+            workItemGrid1.DragEditDone += WorkItemGrid1_DragEditDone;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void WorkItemGrid1_DragEditDone(object sender, List<WorkItems> workitemsBeforeAndAfter)
+        {
+            TaskListForm?.DragEditDone(workitemsBeforeAndAfter[0], workitemsBeforeAndAfter[1]);
         }
 
         private void Print(PrintPageEventArgs e)
@@ -391,7 +397,8 @@ namespace ProjectsTM.UI.MainForm
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize, workItemGrid1.IsDragActive);
+
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
