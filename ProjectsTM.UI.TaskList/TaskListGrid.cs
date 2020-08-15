@@ -67,9 +67,9 @@ namespace ProjectsTM.UI.TaskList
             copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
             copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
             copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-            copyData.Append(TAB);
+                                                            copyData.Append(TAB);
             copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-            copyData.AppendLine(TAB);
+                                                            copyData.AppendLine(TAB);
         }
 
         private void CopyToClipboard()
