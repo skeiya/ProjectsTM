@@ -256,6 +256,7 @@ namespace ProjectsTM.UI.TaskList
                 _listItems[listIdx] = new TaskListItem(after.ElementAt(i), item.Color, item.IsMilestone, item.ErrMsg);
             }
             Sort();
+            ListUpdated?.Invoke(this, null);
         }
 
         internal void DragEditDone(WorkItems before, WorkItems after) 
