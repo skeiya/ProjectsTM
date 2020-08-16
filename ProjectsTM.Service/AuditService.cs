@@ -44,10 +44,10 @@ namespace ProjectsTM.Service
             });
 
             bool allTasksCompleted = Task.WaitAll(new[] { task1, task2 }, 10000);
-            return allTasksCompleted ? ParseErrorList(task1.Result, task2.Result) : null;
+            return allTasksCompleted ? MergeErrorList(task1.Result, task2.Result) : null;
         }
 
-        private List<TaskListItem> ParseErrorList(List<TaskListItem> errList1, List<TaskListItem> errList2)
+        private List<TaskListItem> MergeErrorList(List<TaskListItem> errList1, List<TaskListItem> errList2)
         {
             var result = errList1;
             foreach (var i in errList2)
