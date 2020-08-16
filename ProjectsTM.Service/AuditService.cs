@@ -58,7 +58,7 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        public bool WorkitemsAndCallenderChanged(WorkItems workitems,Callender callender)
+        public bool WorkitemsOrCallenderChanged(WorkItems workitems,Callender callender)
         {
             if (!_workitems.Equals(workitems) ||
                 !_callender.Equals(callender)) return true;
