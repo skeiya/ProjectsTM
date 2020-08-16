@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -43,10 +44,10 @@ namespace ProjectsTM.Service
             });
 
             bool allTasksCompleted = Task.WaitAll(new[] { task1, task2 }, 10000);
-            return allTasksCompleted ? ParseErrorList(task1.Result, task2.Result) : null;
+            return allTasksCompleted ? MergeErrorList(task1.Result, task2.Result) : null;
         }
 
-        private List<TaskListItem> ParseErrorList(List<TaskListItem> errList1, List<TaskListItem> errList2)
+        private List<TaskListItem> MergeErrorList(List<TaskListItem> errList1, List<TaskListItem> errList2)
         {
             var result = errList1;
             foreach (var i in errList2)
@@ -57,7 +58,7 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        public bool WorkitemsAndCallenderChanged(WorkItems workitems,Callender callender)
+        public bool WorkitemsOrCallenderChanged(WorkItems workitems,Callender callender)
         {
             if (!_workitems.Equals(workitems) ||
                 !_callender.Equals(callender)) return true;

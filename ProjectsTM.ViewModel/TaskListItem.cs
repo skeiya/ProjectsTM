@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using ProjectsTM.Model;
+using System.Drawing;
 
-namespace ProjectsTM.Model
+namespace ProjectsTM.ViewModel
 {
     public class TaskListItem
     {

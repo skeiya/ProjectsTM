@@ -9,12 +9,14 @@ namespace ProjectsTM.UI
     {
         private Callender _callender;
         private readonly WorkItems _workItems;
+        private readonly object _lockobj;
 
-        public ManagementWokingDaysForm(Callender callender, WorkItems workItems)
+        public ManagementWokingDaysForm(Callender callender, WorkItems workItems, object lockobj)
         {
             InitializeComponent();
             this._callender = callender;
             this._workItems = workItems;
+            this._lockobj = lockobj;
             UpdateListView();
         }
 
@@ -32,7 +34,10 @@ namespace ProjectsTM.UI
             var selectedDay = GetSelectedDay();
             if (selectedDay == null) return;
             if (!Deletable(selectedDay)) return;
-            _callender.Delete(selectedDay);
+            lock (_lockobj)
+            {
+                _callender.Delete(selectedDay);
+            }
             UpdateListView();
         }
 
@@ -59,8 +64,11 @@ namespace ProjectsTM.UI
         {
             var d = CallenderDay.Parse(textBox1.Text);
             if (d == null) return;
-            _callender.Days.Add(d);
-            _callender.Days.Sort();
+            lock (_lockobj)
+            {
+                _callender.Days.Add(d);
+                _callender.Days.Sort();
+            }
             UpdateListView();
         }
 
@@ -70,11 +78,14 @@ namespace ProjectsTM.UI
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var cal = CsvReadService.ReadWorkingDays(dlg.FileName);
-                foreach (var d in cal.Days)
+                lock (_lockobj)
                 {
-                    _callender.Days.Add(d);
+                    foreach (var d in cal.Days)
+                    {
+                        _callender.Days.Add(d);
+                    }
+                    _callender.Days.Sort();
                 }
-                _callender.Days.Sort();
             }
             UpdateListView();
         }

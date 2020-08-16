@@ -242,7 +242,7 @@ namespace ProjectsTM.UI.TaskList
 
             errList = await task;
             _viewData.CloneWorkitemsAndCallender(out workitems, out callender);
-            if (_auditService.WorkitemsAndCallenderChanged(workitems, callender)) InitializeGridForAuditAsync();
+            if (_auditService.WorkitemsOrCallenderChanged(workitems, callender)) InitializeGridForAuditAsync();
             else InitializeGrid(false);
         }
 
