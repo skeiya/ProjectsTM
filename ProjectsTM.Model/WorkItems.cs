@@ -13,11 +13,6 @@ namespace ProjectsTM.Model
             Add(w);
         }
 
-        public WorkItems(WorkItems ws)
-        {
-            this._items = new SortedDictionary<Member, MembersWorkItems>(ws._items);
-        }
-
         public WorkItems(IEnumerable<WorkItem> wis)
         {
             foreach (var w in wis) Add(w);
