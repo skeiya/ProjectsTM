@@ -73,12 +73,6 @@
     <Compile Include="EazyRegexForm.Designer.cs">
       <DependentUpon>EazyRegexForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditMileStoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditMileStoneForm.Designer.cs">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,9 +150,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EazyRegexForm.resx">
       <DependentUpon>EazyRegexForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditMileStoneForm.resx">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
