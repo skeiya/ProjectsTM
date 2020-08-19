@@ -11,11 +11,12 @@ namespace ProjectsTM.Model
     {
         public MileStone() { }
 
-        public MileStone(string name, CallenderDay day, Color color, MileStoneFilter mileStoneFilter)
+        public MileStone(string name, CallenderDay day, Color color, MileStoneFilter mileStoneFilter, TaskState state)
         {
             Name = name;
             Day = day;
             Color = color;
+            State = state;
             if (mileStoneFilter != null) MileStoneFilter = mileStoneFilter;
         }
 
@@ -38,6 +39,8 @@ namespace ProjectsTM.Model
             get { return MileStoneFilter.Name; }
             set { MileStoneFilter = new MileStoneFilter(value); }
         }
+
+        public TaskState State { get; set; }
 
         public bool IsMatchFilter(string searchPattern)
         {
@@ -74,7 +77,7 @@ namespace ProjectsTM.Model
 
         public MileStone Clone()
         {
-            return new MileStone(Name, Day, Color, MileStoneFilter);
+            return new MileStone(Name, Day, Color, MileStoneFilter, State);
         }
 
         public static bool operator ==(MileStone left, MileStone right)

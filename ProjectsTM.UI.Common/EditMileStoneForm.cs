@@ -1,31 +1,38 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.Common
 {
     public partial class EditMileStoneForm : Form
     {
         private readonly Callender _callender;
-        private readonly ViewData _viewData;
         private MileStone _mileStone;
         private MileStoneFilters _mileStoneFilters;
 
         public MileStone MileStone => _mileStone;
 
-        public EditMileStoneForm(Callender callender, MileStone m, ViewData viewData, MileStoneFilters mileStoneFilters)
+        public EditMileStoneForm(Callender callender, MileStone m, MileStoneFilters mileStoneFilters)
         {
             InitializeComponent();
             this._callender = callender;
-            this._viewData = viewData;
             this._mileStoneFilters = mileStoneFilters;
-            ComboBox1_Init(m);
+            InitializeFilterCombobox(m);
             if (m == null) return;
             textBoxName.Text = m.Name;
             textBoxDate.Text = m.Day.ToString();
             labelColor.BackColor = m.Color;
+            InitializeStateCombobox(m);
+        }
+
+        private void InitializeStateCombobox(MileStone m)
+        {
+            comboBoxState.Items.Clear();
+            foreach (var e in Enum.GetValues(typeof(TaskState)))
+            {
+                comboBoxState.Items.Add(e);
+            }
+            comboBoxState.SelectedItem = m.State;
         }
 
         private void SetComboBoxItems()
@@ -48,7 +55,7 @@ namespace ProjectsTM.UI
             return true;
         }
 
-        private void ComboBox1_Init(MileStone m)
+        private void InitializeFilterCombobox(MileStone m)
         {
             SetComboBoxItems();
             if (!ComboBox1_Contain(m?.MileStoneFilter)) return;
@@ -62,6 +69,10 @@ namespace ProjectsTM.UI
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 labelColor.BackColor = dlg.Color;
             }
+        }
+        private TaskState GetState()
+        {
+            return (TaskState)comboBoxState.SelectedItem;
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
@@ -82,7 +93,7 @@ namespace ProjectsTM.UI
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
             if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
-            return new MileStone(textBoxName.Text, day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text));
+            return new MileStone(textBoxName.Text, day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)

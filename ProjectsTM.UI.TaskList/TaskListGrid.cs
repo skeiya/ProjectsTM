@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Text;
+using ProjectsTM.UI.Common;
 
 namespace ProjectsTM.UI.TaskList
 {
@@ -189,6 +190,7 @@ namespace ProjectsTM.UI.TaskList
             var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
             if (r.Value < FixedRowCount) return;
             var item = _listItems[r.Value - FixedRowCount];
+            if (item.IsMilestone) return;
             using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
@@ -380,7 +382,7 @@ namespace ProjectsTM.UI.TaskList
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), TaskState.Active, "");
+            return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
         }
 
         private static Color GetColor(TaskState state)
