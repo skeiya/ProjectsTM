@@ -8,10 +8,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Text;
-using ProjectsTM.UI.Common;
 
 namespace ProjectsTM.UI.TaskList
 {
@@ -25,15 +24,54 @@ namespace ProjectsTM.UI.TaskList
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
         private RowIndex _lastSelect;
+        private WidthAdjuster _widthAdjuster;
 
         public TaskListGrid()
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
-            this.MouseClick += TaskListGrid_MouseClick;
+            this.MouseMove += TaskListGrid_MouseMove;
+            this.MouseDown += TaskListGrid_MouseDown;
+            this.MouseUp += TaskListGrid_MouseUp;
             this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
+            _widthAdjuster = new WidthAdjuster(GetAdjustCol);
+        }
+
+        private void TaskListGrid_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (_widthAdjuster.IsActive)
+            {
+                _widthAdjuster.End();
+                return;
+            }
+            var rawLocation = Client2Raw(ClientPoint.Create(e));
+            var r = Y2Row(rawLocation.Y);
+            if (r.Value < FixedRowCount)
+            {
+                HandleSortRequest(rawLocation);
+                return;
+            }
+            SelectItems(r);
+        }
+
+        private void TaskListGrid_MouseDown(object sender, MouseEventArgs e)
+        {
+            var col = GetAdjustCol(e.Location);
+            if (col == null) return;
+            var width = ColWidths[col.Value];
+            _widthAdjuster.Start(e.Location, width, GetWidthAdjuster(col));
+        }
+
+        private Action<int> GetWidthAdjuster(ColIndex col)
+        {
+            return new Action<int>((w) => ColWidths[col.Value] = w);
+        }
+
+        private void TaskListGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            Cursor = _widthAdjuster.Update(e.Location);
         }
 
         private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
@@ -129,18 +167,6 @@ namespace ProjectsTM.UI.TaskList
             int buf = from;
             from = to;
             to = buf;
-        }
-
-        private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
-        {
-            var rawLocation = Client2Raw(ClientPoint.Create(e));
-            var r = Y2Row(rawLocation.Y);
-            if (r.Value < FixedRowCount)
-            {
-                HandleSortRequest(rawLocation);
-                return;
-            }
-            SelectItems(r);
         }
 
         private void HandleSortRequest(RawPoint rawLocation)
@@ -291,7 +317,7 @@ namespace ProjectsTM.UI.TaskList
         int GetStringLineCount(string s)
         {
             int n = 1;
-            foreach(var c in s)
+            foreach (var c in s)
             {
                 if (c == '\n') n++;
             }
