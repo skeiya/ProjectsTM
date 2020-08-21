@@ -4,7 +4,7 @@ namespace ProjectsTM.Model
 {
     public class AppData
     {
-        public const int DataVersion = 1; // 互換性のなくなる変更をしたときにこの数字を増やす
+        public const int DataVersion = 2; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version = DataVersion;
         public Callender Callender = new Callender();
         public Members Members = new Members();

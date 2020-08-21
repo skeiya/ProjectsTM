@@ -313,9 +313,21 @@ namespace ProjectsTM.UI.TaskList
                     list.Add(CreateErrorItem(wi, "要分解"));
                     continue;
                 }
+                if (IsNotEndError(wi))
+                {
+                    list.Add(CreateErrorItem(wi, "未終了"));
+                    continue;
+                }
             }
             if (_pattern == null) return list;
             return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
+        }
+
+        private bool IsNotEndError(WorkItem wi)
+        {
+            if (wi.State == TaskState.Done) return false;
+            if (wi.State == TaskState.Background) return false;
+            return wi.Period.To < CallenderDay.Today;
         }
 
         private bool IsTooBigError(WorkItem wi)
