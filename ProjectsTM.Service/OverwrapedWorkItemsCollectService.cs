@@ -15,7 +15,7 @@ namespace ProjectsTM.Service
                 var ar = members.ToArray();
                 for (var idx1 = 0; idx1 < members.Count; idx1++)
                 {
-                    for(var idx2 = idx1+1; idx2 < members.Count; idx2++)
+                    for (var idx2 = idx1 + 1; idx2 < members.Count; idx2++)
                     {
                         var p1 = ar[idx1].Period;
                         var p2 = ar[idx2].Period;
