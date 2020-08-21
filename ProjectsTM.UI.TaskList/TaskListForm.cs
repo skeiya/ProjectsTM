@@ -18,7 +18,7 @@ namespace ProjectsTM.UI.TaskList
             this._viewData = viewData;
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, IsAudit());
+            gridControl1.Initialize(viewData, comboBoxPattern.Text);
             var offset = gridControl1.GridWidth - gridControl1.Width;
             this.Width += offset + gridControl1.VScrollBarWidth;
             this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
@@ -43,14 +43,9 @@ namespace ProjectsTM.UI.TaskList
             _formSize.TaskListFormHeight = this.Height;
         }
 
-        private bool IsAudit()
-        {
-            return radioButtonAudit.Checked;
-        }
-
         public void Clear()
         {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, IsAudit());
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text);
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -67,34 +62,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, IsAudit());
-        }
-
-        private void radioButtonFilter_CheckedChanged(object sender, System.EventArgs e)
-        {
-            CheckUpdated();
-        }
-
-        private void radioButtonAudit_CheckedChanged(object sender, System.EventArgs e)
-        {
-            CheckUpdated();
-        }
-
-        private void CheckUpdated()
-        {
-            if (radioButtonAudit.Checked)
-            {
-                Audit();
-            }
-            else
-            {
-                UpdateList();
-            }
-        }
-
-        private void Audit()
-        {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, IsAudit());
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text);
         }
     }
 }

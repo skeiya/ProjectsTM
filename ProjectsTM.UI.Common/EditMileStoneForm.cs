@@ -18,11 +18,11 @@ namespace ProjectsTM.UI.Common
             this._callender = callender;
             this._mileStoneFilters = mileStoneFilters;
             InitializeFilterCombobox(m);
+            InitializeStateCombobox(m);
             if (m == null) return;
             textBoxName.Text = m.Name;
             textBoxDate.Text = m.Day.ToString();
             labelColor.BackColor = m.Color;
-            InitializeStateCombobox(m);
         }
 
         private void InitializeStateCombobox(MileStone m)
@@ -32,7 +32,7 @@ namespace ProjectsTM.UI.Common
             {
                 comboBoxState.Items.Add(e);
             }
-            comboBoxState.SelectedItem = m.State;
+            comboBoxState.SelectedItem = m != null ? m.State : TaskState.New;
         }
 
         private void SetComboBoxItems()

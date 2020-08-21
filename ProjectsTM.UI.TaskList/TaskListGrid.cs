@@ -19,7 +19,6 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
-        private bool _isAudit;
         private string _pattern;
         private WorkItemEditService _editService;
         public event EventHandler ListUpdated;
@@ -206,9 +205,8 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, bool isAudit)
+        internal void Initialize(ViewData viewData, string pattern)
         {
-            this._isAudit = isAudit;
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
@@ -221,7 +219,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             UpdateListItem();
-            ColCount = _isAudit ? 10 : 9;
+            ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
@@ -292,38 +290,35 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateListItem()
         {
-            _listItems = _isAudit ? GetAuditList() : GetFilterList();
+            _listItems = GetFilterList();
             Sort();
             ListUpdated?.Invoke(this, null);
         }
 
-        private List<TaskListItem> GetAuditList()
+        private Dictionary<WorkItem, string> GetAuditList()
         {
-            var list = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
-            var set = new Dictionary<WorkItem, TaskListItem>();
-            list.ForEach(l => set.Add(l.WorkItem, l));
+            var result = new Dictionary<WorkItem, string>();
+            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "期間重複"));
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (set.TryGetValue(wi, out TaskListItem dummy)) continue;
+                if (result.TryGetValue(wi, out var dummy)) continue;
                 if (IsNotStartedError(wi))
                 {
-                    set.Add(wi, CreateErrorItem(wi, "未開始"));
+                    result.Add(wi, "未開始");
                     continue;
                 }
                 if (IsTooBigError(wi))
                 {
-                    set.Add(wi, CreateErrorItem(wi, "要分解"));
+                    result.Add(wi, "要分解");
                     continue;
                 }
                 if (IsNotEndError(wi))
                 {
-                    set.Add(wi, CreateErrorItem(wi, "未終了"));
+                    result.Add(wi, "未終了");
                     continue;
                 }
             }
-            list = set.Values.ToList();
-            if (_pattern == null) return list;
-            return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
+            return result;
         }
 
         private bool IsNotEndError(WorkItem wi)
@@ -371,10 +366,12 @@ namespace ProjectsTM.UI.TaskList
         private List<TaskListItem> GetFilterList()
         {
             var list = new List<TaskListItem>();
+            var audit = GetAuditList();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
-                list.Add(new TaskListItem(wi, GetColor(wi.State), false, string.Empty));
+                audit.TryGetValue(wi, out string error);
+                list.Add(new TaskListItem(wi, GetColor(wi.State), false, error));
             }
             foreach (var ms in _viewData.Original.MileStones)
             {

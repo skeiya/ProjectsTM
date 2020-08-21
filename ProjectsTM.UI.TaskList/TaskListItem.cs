@@ -10,7 +10,7 @@ namespace ProjectsTM.UI
             this.WorkItem = w;
             this.Color = color;
             IsMilestone = isMilestone;
-            ErrMsg = errMsg;
+            ErrMsg = string.IsNullOrEmpty(errMsg) ? string.Empty : errMsg;
         }
 
         public WorkItem WorkItem { get; private set; }
