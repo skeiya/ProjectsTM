@@ -390,7 +390,7 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsTooBig(WorkItem wi)
         {
-            return 10 < 1; //_viewData.Original.Callender.GetPeriodDayCount(wi.Period);
+            return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
         private bool IsStartSoon(WorkItem wi, CallenderDay soon)
