@@ -321,7 +321,7 @@ namespace ProjectsTM.UI.TaskList
                     continue;
                 }
             }
-            list.AddRange(set.Values);
+            list = set.Values.ToList();
             if (_pattern == null) return list;
             return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
         }
