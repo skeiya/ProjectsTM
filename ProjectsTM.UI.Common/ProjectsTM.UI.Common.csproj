@@ -51,6 +51,12 @@
     <Compile Include="EditMemberForm.Designer.cs">
       <DependentUpon>EditMemberForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditMileStoneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditMileStoneForm.Designer.cs">
+      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +68,9 @@
   <ItemGroup>
     <EmbeddedResource Include="EditMemberForm.resx">
       <DependentUpon>EditMemberForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditMileStoneForm.resx">
+      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditWorkItemForm.resx">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
