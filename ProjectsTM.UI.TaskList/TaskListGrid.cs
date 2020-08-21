@@ -20,6 +20,8 @@ namespace ProjectsTM.UI.TaskList
         private ViewData _viewData;
         private string _pattern;
         private WorkItemEditService _editService;
+        private List<int> _taskListColWidths;
+
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
@@ -231,10 +233,11 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern)
+        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths)
         {
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
+            this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
@@ -306,11 +309,11 @@ namespace ProjectsTM.UI.TaskList
             var unit = Size.Round(g.MeasureString("あ", Font));
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                ColWidths[c.Value] = GetWidth(c, unit);// calculator.GetWidth(c);
+                ColWidths[c.Value] = GetWidth(c, unit);
             }
             foreach (var r in RowIndex.Range(0, RowCount))
             {
-                RowHeights[r.Value] = GetHeight(r, unit);// calculator.GetHeight(r);
+                RowHeights[r.Value] = GetHeight(r, unit);
             }
         }
 
@@ -332,6 +335,7 @@ namespace ProjectsTM.UI.TaskList
 
         private int GetWidth(ColIndex c, Size unit)
         {
+            if (c.Value < _taskListColWidths.Count) return _taskListColWidths[c.Value];
             return unit.Width * 5;
         }
 
