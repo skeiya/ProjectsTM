@@ -330,7 +330,7 @@ namespace ProjectsTM.UI.TaskList
         private int GetHeight(RowIndex r, Size unit)
         {
             if (r.Value == 0) return unit.Height;
-            return unit.Height * GetStringLineCount(_listItems[r.Value - 1].WorkItem.Description);
+            return unit.Height * GetStringLineCount(_listItems[r.Value - FixedRowCount].WorkItem.Description);
         }
 
         private int GetWidth(ColIndex c, Size unit)
