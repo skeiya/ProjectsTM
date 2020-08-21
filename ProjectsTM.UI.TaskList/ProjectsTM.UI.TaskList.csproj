@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HeightAndWidthCalcultor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskListForm.cs">
       <SubType>Form</SubType>

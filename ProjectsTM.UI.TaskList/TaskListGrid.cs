@@ -277,15 +277,36 @@ namespace ProjectsTM.UI.TaskList
         {
             var font = this.Font;
             var g = this.CreateGraphics();
-            var calculator = new HeightAndWidthCalcultor(font, g, _listItems, GetText, GetTitle, ColCount);
+            var unit = Size.Round(g.MeasureString("あ", Font));
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                ColWidths[c.Value] = calculator.GetWidth(c);
+                ColWidths[c.Value] = GetWidth(c, unit);// calculator.GetWidth(c);
             }
             foreach (var r in RowIndex.Range(0, RowCount))
             {
-                RowHeights[r.Value] = calculator.GetHeight(r);
+                RowHeights[r.Value] = GetHeight(r, unit);// calculator.GetHeight(r);
             }
+        }
+
+        int GetStringLineCount(string s)
+        {
+            int n = 1;
+            foreach(var c in s)
+            {
+                if (c == '\n') n++;
+            }
+            return n;
+        }
+
+        private int GetHeight(RowIndex r, Size unit)
+        {
+            if (r.Value == 0) return unit.Height;
+            return unit.Height * GetStringLineCount(_listItems[r.Value - 1].WorkItem.Description);
+        }
+
+        private int GetWidth(ColIndex c, Size unit)
+        {
+            return unit.Width * 5;
         }
 
         private void UpdateListItem()
@@ -339,7 +360,7 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsTooBig(WorkItem wi)
         {
-            return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
+            return 10 < 1; //_viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
         private bool IsStartSoon(WorkItem wi, CallenderDay soon)
