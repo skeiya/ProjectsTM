@@ -299,6 +299,7 @@ namespace ProjectsTM.UI.TaskList
         {
             var result = new Dictionary<WorkItem, string>();
             OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "期間重複"));
+            var soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5);
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
@@ -307,7 +308,7 @@ namespace ProjectsTM.UI.TaskList
                     result.Add(wi, "未開始");
                     continue;
                 }
-                if (IsTooBigError(wi))
+                if (IsTooBigError(wi, soon))
                 {
                     result.Add(wi, "要分解");
                     continue;
@@ -328,11 +329,11 @@ namespace ProjectsTM.UI.TaskList
             return wi.Period.To < CallenderDay.Today;
         }
 
-        private bool IsTooBigError(WorkItem wi)
+        private bool IsTooBigError(WorkItem wi, CallenderDay soon)
         {
             if (wi.State == TaskState.Background) return false;
             if (wi.State == TaskState.Done) return false;
-            if (!IsStartSoon(wi)) return false;
+            if (!IsStartSoon(wi, soon)) return false;
             return IsTooBig(wi);
         }
 
@@ -341,10 +342,9 @@ namespace ProjectsTM.UI.TaskList
             return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
-        private bool IsStartSoon(WorkItem wi)
+        private bool IsStartSoon(WorkItem wi, CallenderDay soon)
         {
-            var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
-            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 4;
+            return wi.Period.From <= soon;
         }
 
         private static bool IsNotStartedError(WorkItem wi)
@@ -356,11 +356,6 @@ namespace ProjectsTM.UI.TaskList
         private static bool IsStarted(WorkItem wi)
         {
             return wi.State != TaskState.New || wi.State == TaskState.Background;
-        }
-
-        private static TaskListItem CreateErrorItem(WorkItem wi, string msg)
-        {
-            return new TaskListItem(wi, Color.White, false, msg);
         }
 
         private List<TaskListItem> GetFilterList()
