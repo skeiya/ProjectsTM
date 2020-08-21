@@ -6,23 +6,30 @@ namespace ProjectsTM.Model
     public class Callender
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
+
+        private Dictionary<CallenderDay, CallenderDay> _nearestDayCache = new Dictionary<CallenderDay, CallenderDay>();
         public CallenderDay NearestFromToday
         {
             get
             {
                 var today = CallenderDay.Today;
-                return Days.FirstOrDefault(d => today <= d);
+                if (_nearestDayCache.TryGetValue(today, out CallenderDay result)) return result;
+                result = Days.FirstOrDefault(d => today <= d);
+                _nearestDayCache.Add(today, result);
+                return result;
             }
         }
 
         public void Delete(CallenderDay d)
         {
             Days.Remove(d);
+            _nearestDayCache.Clear();
         }
 
         public void Add(CallenderDay callenderDay)
         {
             Days.Add(callenderDay);
+            _nearestDayCache.Clear();
         }
 
         public int GetOffset(CallenderDay from, CallenderDay to)

@@ -47,27 +47,27 @@ namespace ProjectsTM.UI.TaskList
             {
                 MoveSelect(-1);
             }
-            else if(KeyState.IsControlDown && (e.KeyCode == Keys.C))
+            else if (KeyState.IsControlDown && (e.KeyCode == Keys.C))
             {
                 CopyToClipboard();
             }
         }
 
-        private void SetStrOneLine(StringBuilder copyData, WorkItem  w)
+        private void SetStrOneLine(StringBuilder copyData, WorkItem w)
         {
             const string DOUBLE_Q = "\"";
             const string TAB = "\t";
-            copyData.Append(w.Name.ToString());             copyData.Append(TAB);
-            copyData.Append(w.Project.ToString());          copyData.Append(TAB);
-            copyData.Append(w.AssignedMember.ToString());   copyData.Append(TAB);
-            copyData.Append(w.Tags.ToString());             copyData.Append(TAB);
-            copyData.Append(w.State);                       copyData.Append(TAB);
-            copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
-            copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
+            copyData.Append(w.Name.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Project.ToString()); copyData.Append(TAB);
+            copyData.Append(w.AssignedMember.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Tags.ToString()); copyData.Append(TAB);
+            copyData.Append(w.State); copyData.Append(TAB);
+            copyData.Append(w.Period.From.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Period.To.ToString()); copyData.Append(TAB);
             copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-                                                            copyData.Append(TAB);
+            copyData.Append(TAB);
             copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-                                                            copyData.AppendLine(TAB);
+            copyData.AppendLine(TAB);
         }
 
         private void CopyToClipboard()
@@ -111,7 +111,7 @@ namespace ProjectsTM.UI.TaskList
             return true;
         }
 
-        private void SelectRange(int from,int to)
+        private void SelectRange(int from, int to)
         {
             SwapIfUpsideDown(ref from, ref to);
             var selects = new WorkItems();
@@ -300,25 +300,28 @@ namespace ProjectsTM.UI.TaskList
         private List<TaskListItem> GetAuditList()
         {
             var list = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
+            var set = new Dictionary<WorkItem, TaskListItem>();
+            list.ForEach(l => set.Add(l.WorkItem, l));
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (list.Any(l => l.WorkItem.Equals(wi))) continue;
+                if (set.TryGetValue(wi, out TaskListItem dummy)) continue;
                 if (IsNotStartedError(wi))
                 {
-                    list.Add(CreateErrorItem(wi, "未開始"));
+                    set.Add(wi, CreateErrorItem(wi, "未開始"));
                     continue;
                 }
                 if (IsTooBigError(wi))
                 {
-                    list.Add(CreateErrorItem(wi, "要分解"));
+                    set.Add(wi, CreateErrorItem(wi, "要分解"));
                     continue;
                 }
                 if (IsNotEndError(wi))
                 {
-                    list.Add(CreateErrorItem(wi, "未終了"));
+                    set.Add(wi, CreateErrorItem(wi, "未終了"));
                     continue;
                 }
             }
+            list.AddRange(set.Values);
             if (_pattern == null) return list;
             return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
         }
