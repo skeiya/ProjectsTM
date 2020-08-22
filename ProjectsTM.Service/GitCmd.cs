@@ -1,45 +1,81 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace ProjectsTM.Service
 {
     class GitCmd
     {
-        internal static void Fetch(string filePath)
+        public static bool IsActive
         {
-            if (string.IsNullOrEmpty(filePath)) return;
-            var gitRepoPath = SearchGitRepo(filePath);
-            if (string.IsNullOrEmpty(gitRepoPath)) return;
-            GitCmdCommon.GitCommand("-C " + gitRepoPath + " fetch");
+            get
+            {
+                try
+                {
+                    return !string.IsNullOrEmpty(GitCommand("--version"));
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
- 
-        private static string GetCurrentBranchName()
+
+        internal static void Fetch(string gitRepoPath)
         {
-            StringReader reader = new StringReader(GitCmdCommon.GitCommand("rev-parse --abbrev-ref Head"));
+            if (string.IsNullOrEmpty(gitRepoPath)) return;
+            GitCommand("-C " + gitRepoPath + " fetch");
+        }
+
+        internal static string GetCurrentBranchName(string gitRepoPath)
+        {
+            var reader = new StringReader(GitCommand("-C " + gitRepoPath + " rev-parse --abbrev-ref Head"));
             return reader.ReadLine();
         }
 
-        internal static int GetDifferentCommitsCount(string filePath)
+        internal static string GetDifferenceBitweenBranches(string gitRepoPath, string baseBranch, string targetBranch)
         {
-            if (string.IsNullOrEmpty(filePath)) return 0;
-            var gitRepoPath = SearchGitRepo(filePath);
-            var branchName = GetCurrentBranchName();
-            return ParseCommitsCount(GitCmdCommon.GitCommand("-C " + gitRepoPath + " log " + branchName + "..remotes/origin/" + branchName + " -- " + filePath));
+            return GitCommand("-C " + gitRepoPath + " log" + baseBranch + ".." + targetBranch);
         }
 
-        private static int ParseCommitsCount(string str)
+        internal static string GetRemoteBranchName(string gitRepoPath)
         {
-            var matches = Regex.Matches(str, @"commit ........................................");
-            return matches.Count;
+            var reader = new StringReader(GitCommand("-C " + gitRepoPath + " rev-parse --abbrev-ref --symbolic-full-name @{u}"));
+            return reader.ReadLine();
         }
 
-        internal static string SearchGitRepo(string path)
+        private static int ExecuteCommand(out string output, string command, string arguments = "")
         {
-            var dir = Path.GetDirectoryName(path);
-            if (dir == null) return string.Empty;
-            var repositoryPath = Directory.GetDirectories(dir, ".git");
-            return repositoryPath.Count() == 0 ? SearchGitRepo(dir) : Path.GetDirectoryName(repositoryPath[0]);
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(command)
+                {
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            process.WaitForExit();
+            output = process.StandardOutput.ReadToEnd();
+            return process.ExitCode;
+        }
+
+        internal static string GitCommand(string arguments)
+        {
+            string output;
+            if (ExecuteCommand(out output, "git", arguments) != 0)
+            {
+                return string.Empty;
+            }
+            return output;
+        }
+
+        internal static string GetRepositoryPath(string dir)
+        {
+            var reader = new StringReader(GitCommand("-C " + dir + " rev-parse --show-toplevel"));
+            return reader.ReadLine();
         }
     }
 }
