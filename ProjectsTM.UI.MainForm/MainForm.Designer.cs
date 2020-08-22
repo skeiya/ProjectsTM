@@ -48,6 +48,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemTaskList = new System.Windows.Forms.ToolStripMenuItem();
             this.表示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,6 @@ namespace ProjectsTM.UI.MainForm
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new ProjectsTM.UI.WorkItemGrid();
-            this.ToolStripMenuItemTaskList = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -176,10 +176,10 @@ namespace ProjectsTM.UI.MainForm
             this.編集ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemAddWorkItem,
             this.ToolStripMenuItemDivide,
+            this.ToolStripMenuItemTaskList,
             this.ToolStripMenuItemSearch,
             this.ToolStripMenuItemUndo,
-            this.ToolStripMenuItemRedo,
-            this.ToolStripMenuItemTaskList});
+            this.ToolStripMenuItemRedo});
             this.編集ToolStripMenuItem.Name = "編集ToolStripMenuItem";
             this.編集ToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
             this.編集ToolStripMenuItem.Text = "編集";
@@ -187,30 +187,29 @@ namespace ProjectsTM.UI.MainForm
             // ToolStripMenuItemAddWorkItem
             // 
             this.ToolStripMenuItemAddWorkItem.Name = "ToolStripMenuItemAddWorkItem";
-            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemAddWorkItem.Size = new System.Drawing.Size(226, 22);
             this.ToolStripMenuItemAddWorkItem.Text = "作業項目の追加";
             this.ToolStripMenuItemAddWorkItem.Click += new System.EventHandler(this.ToolStripMenuItemAddWorkItem_Click);
             // 
             // ToolStripMenuItemDivide
             // 
             this.ToolStripMenuItemDivide.Name = "ToolStripMenuItemDivide";
-            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDivide.Size = new System.Drawing.Size(226, 22);
             this.ToolStripMenuItemDivide.Text = "作業項目の分割";
             this.ToolStripMenuItemDivide.Click += new System.EventHandler(this.ToolStripMenuItemDivide_Click);
             // 
             // ToolStripMenuItemSearch
             // 
             this.ToolStripMenuItemSearch.Name = "ToolStripMenuItemSearch";
-            this.ToolStripMenuItemSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(180, 22);
-            this.ToolStripMenuItemSearch.Text = "検索";
+            this.ToolStripMenuItemSearch.Size = new System.Drawing.Size(226, 22);
+            this.ToolStripMenuItemSearch.Text = "旧検索(しばらくしたら削除予定)";
             this.ToolStripMenuItemSearch.Click += new System.EventHandler(this.ToolStripMenuItemSearch_Click);
             // 
             // ToolStripMenuItemUndo
             // 
             this.ToolStripMenuItemUndo.Name = "ToolStripMenuItemUndo";
             this.ToolStripMenuItemUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemUndo.Size = new System.Drawing.Size(226, 22);
             this.ToolStripMenuItemUndo.Text = "Undo";
             this.ToolStripMenuItemUndo.Click += new System.EventHandler(this.ToolStripMenuItemUndo_Click);
             // 
@@ -218,9 +217,17 @@ namespace ProjectsTM.UI.MainForm
             // 
             this.ToolStripMenuItemRedo.Name = "ToolStripMenuItemRedo";
             this.ToolStripMenuItemRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemRedo.Size = new System.Drawing.Size(226, 22);
             this.ToolStripMenuItemRedo.Text = "Redo";
             this.ToolStripMenuItemRedo.Click += new System.EventHandler(this.ToolStripMenuItemRedo_Click);
+            // 
+            // ToolStripMenuItemTaskList
+            // 
+            this.ToolStripMenuItemTaskList.Name = "ToolStripMenuItemTaskList";
+            this.ToolStripMenuItemTaskList.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.ToolStripMenuItemTaskList.Size = new System.Drawing.Size(226, 22);
+            this.ToolStripMenuItemTaskList.Text = "検索";
+            this.ToolStripMenuItemTaskList.Click += new System.EventHandler(this.ToolStripMenuItemTaskList_Click);
             // 
             // 表示ToolStripMenuItem
             // 
@@ -365,18 +372,13 @@ namespace ProjectsTM.UI.MainForm
             this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.workItemGrid1.FixedColCount = 0;
             this.workItemGrid1.FixedRowCount = 0;
+            this.workItemGrid1.HOffset = 0;
             this.workItemGrid1.Location = new System.Drawing.Point(0, 25);
             this.workItemGrid1.LockUpdate = true;
             this.workItemGrid1.Name = "workItemGrid1";
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
             this.workItemGrid1.TabIndex = 12;
-            // 
-            // ToolStripMenuItemTaskList
-            // 
-            this.ToolStripMenuItemTaskList.Name = "ToolStripMenuItemTaskList";
-            this.ToolStripMenuItemTaskList.Size = new System.Drawing.Size(180, 22);
-            this.ToolStripMenuItemTaskList.Text = "タスクリスト";
-            this.ToolStripMenuItemTaskList.Click += new System.EventHandler(this.ToolStripMenuItemTaskList_Click);
+            this.workItemGrid1.VOffset = 0;
             // 
             // MainForm
             // 

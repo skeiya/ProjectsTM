@@ -8,10 +8,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Text;
-using ProjectsTM.UI.Common;
 
 namespace ProjectsTM.UI.TaskList
 {
@@ -19,22 +18,62 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
-        private bool _isAudit;
         private string _pattern;
         private WorkItemEditService _editService;
+        private List<int> _taskListColWidths;
+
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
         private bool _isReverse = false;
         private RowIndex _lastSelect;
+        private WidthAdjuster _widthAdjuster;
 
         public TaskListGrid()
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
-            this.MouseClick += TaskListGrid_MouseClick;
+            this.MouseMove += TaskListGrid_MouseMove;
+            this.MouseDown += TaskListGrid_MouseDown;
+            this.MouseUp += TaskListGrid_MouseUp;
             this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
+            _widthAdjuster = new WidthAdjuster(GetAdjustCol);
+        }
+
+        private void TaskListGrid_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (_widthAdjuster.IsActive)
+            {
+                _widthAdjuster.End();
+                return;
+            }
+            var rawLocation = Client2Raw(ClientPoint.Create(e));
+            var r = Y2Row(rawLocation.Y);
+            if (r.Value < FixedRowCount)
+            {
+                HandleSortRequest(rawLocation);
+                return;
+            }
+            SelectItems(r);
+        }
+
+        private void TaskListGrid_MouseDown(object sender, MouseEventArgs e)
+        {
+            var col = GetAdjustCol(e.Location);
+            if (col == null) return;
+            var width = ColWidths[col.Value];
+            _widthAdjuster.Start(e.Location, width, GetWidthAdjuster(col));
+        }
+
+        private Action<int> GetWidthAdjuster(ColIndex col)
+        {
+            return new Action<int>((w) => ColWidths[col.Value] = w);
+        }
+
+        private void TaskListGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            Cursor = _widthAdjuster.Update(e.Location);
         }
 
         private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)
@@ -47,27 +86,27 @@ namespace ProjectsTM.UI.TaskList
             {
                 MoveSelect(-1);
             }
-            else if(KeyState.IsControlDown && (e.KeyCode == Keys.C))
+            else if (KeyState.IsControlDown && (e.KeyCode == Keys.C))
             {
                 CopyToClipboard();
             }
         }
 
-        private void SetStrOneLine(StringBuilder copyData, WorkItem  w)
+        private void SetStrOneLine(StringBuilder copyData, WorkItem w)
         {
             const string DOUBLE_Q = "\"";
             const string TAB = "\t";
-            copyData.Append(w.Name.ToString());             copyData.Append(TAB);
-            copyData.Append(w.Project.ToString());          copyData.Append(TAB);
-            copyData.Append(w.AssignedMember.ToString());   copyData.Append(TAB);
-            copyData.Append(w.Tags.ToString());             copyData.Append(TAB);
-            copyData.Append(w.State);                       copyData.Append(TAB);
-            copyData.Append(w.Period.From.ToString());      copyData.Append(TAB);
-            copyData.Append(w.Period.To.ToString());        copyData.Append(TAB);
+            copyData.Append(w.Name.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Project.ToString()); copyData.Append(TAB);
+            copyData.Append(w.AssignedMember.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Tags.ToString()); copyData.Append(TAB);
+            copyData.Append(w.State); copyData.Append(TAB);
+            copyData.Append(w.Period.From.ToString()); copyData.Append(TAB);
+            copyData.Append(w.Period.To.ToString()); copyData.Append(TAB);
             copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-                                                            copyData.Append(TAB);
+            copyData.Append(TAB);
             copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-                                                            copyData.AppendLine(TAB);
+            copyData.AppendLine(TAB);
         }
 
         private void CopyToClipboard()
@@ -111,7 +150,7 @@ namespace ProjectsTM.UI.TaskList
             return true;
         }
 
-        private void SelectRange(int from,int to)
+        private void SelectRange(int from, int to)
         {
             SwapIfUpsideDown(ref from, ref to);
             var selects = new WorkItems();
@@ -130,18 +169,6 @@ namespace ProjectsTM.UI.TaskList
             int buf = from;
             from = to;
             to = buf;
-        }
-
-        private void TaskListGrid_MouseClick(object sender, MouseEventArgs e)
-        {
-            var rawLocation = Client2Raw(ClientPoint.Create(e));
-            var r = Y2Row(rawLocation.Y);
-            if (r.Value < FixedRowCount)
-            {
-                HandleSortRequest(rawLocation);
-                return;
-            }
-            SelectItems(r);
         }
 
         private void HandleSortRequest(RawPoint rawLocation)
@@ -206,11 +233,11 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, bool isAudit)
+        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths)
         {
-            this._isAudit = isAudit;
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
+            this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             AttachEvents();
@@ -221,7 +248,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             UpdateListItem();
-            ColCount = _isAudit ? 10 : 9;
+            ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             SetHeightAndWidth();
@@ -279,48 +306,71 @@ namespace ProjectsTM.UI.TaskList
         {
             var font = this.Font;
             var g = this.CreateGraphics();
-            var calculator = new HeightAndWidthCalcultor(font, g, _listItems, GetText, GetTitle, ColCount);
+            var unit = Size.Round(g.MeasureString("あ", Font));
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                ColWidths[c.Value] = calculator.GetWidth(c);
+                ColWidths[c.Value] = GetWidth(c, unit);
             }
             foreach (var r in RowIndex.Range(0, RowCount))
             {
-                RowHeights[r.Value] = calculator.GetHeight(r);
+                RowHeights[r.Value] = GetHeight(r, unit);
             }
+        }
+
+        int GetStringLineCount(string s)
+        {
+            int n = 1;
+            foreach (var c in s)
+            {
+                if (c == '\n') n++;
+            }
+            return n;
+        }
+
+        private int GetHeight(RowIndex r, Size unit)
+        {
+            if (r.Value == 0) return unit.Height;
+            return unit.Height * GetStringLineCount(_listItems[r.Value - FixedRowCount].WorkItem.Description);
+        }
+
+        private int GetWidth(ColIndex c, Size unit)
+        {
+            if (c.Value < _taskListColWidths.Count) return _taskListColWidths[c.Value];
+            return unit.Width * 5;
         }
 
         private void UpdateListItem()
         {
-            _listItems = _isAudit ? GetAuditList() : GetFilterList();
+            _listItems = GetFilterList();
             Sort();
             ListUpdated?.Invoke(this, null);
         }
 
-        private List<TaskListItem> GetAuditList()
+        private Dictionary<WorkItem, string> GetAuditList()
         {
-            var list = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).Select(w => CreateErrorItem(w, "期間重複")).ToList();
+            var result = new Dictionary<WorkItem, string>();
+            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "期間重複"));
+            var soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5);
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (list.Any(l => l.WorkItem.Equals(wi))) continue;
+                if (result.TryGetValue(wi, out var dummy)) continue;
                 if (IsNotStartedError(wi))
                 {
-                    list.Add(CreateErrorItem(wi, "未開始"));
+                    result.Add(wi, "未開始");
                     continue;
                 }
-                if (IsTooBigError(wi))
+                if (IsTooBigError(wi, soon))
                 {
-                    list.Add(CreateErrorItem(wi, "要分解"));
+                    result.Add(wi, "要分解");
                     continue;
                 }
                 if (IsNotEndError(wi))
                 {
-                    list.Add(CreateErrorItem(wi, "未終了"));
+                    result.Add(wi, "未終了");
                     continue;
                 }
             }
-            if (_pattern == null) return list;
-            return list.Where(l => Regex.IsMatch(l.WorkItem.ToString(), _pattern)).ToList();
+            return result;
         }
 
         private bool IsNotEndError(WorkItem wi)
@@ -330,11 +380,11 @@ namespace ProjectsTM.UI.TaskList
             return wi.Period.To < CallenderDay.Today;
         }
 
-        private bool IsTooBigError(WorkItem wi)
+        private bool IsTooBigError(WorkItem wi, CallenderDay soon)
         {
             if (wi.State == TaskState.Background) return false;
             if (wi.State == TaskState.Done) return false;
-            if (!IsStartSoon(wi)) return false;
+            if (!IsStartSoon(wi, soon)) return false;
             return IsTooBig(wi);
         }
 
@@ -343,10 +393,9 @@ namespace ProjectsTM.UI.TaskList
             return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
-        private bool IsStartSoon(WorkItem wi)
+        private bool IsStartSoon(WorkItem wi, CallenderDay soon)
         {
-            var restPeriod = new Period(_viewData.Original.Callender.NearestFromToday, wi.Period.From);
-            return _viewData.Original.Callender.GetPeriodDayCount(restPeriod) < 4;
+            return wi.Period.From <= soon;
         }
 
         private static bool IsNotStartedError(WorkItem wi)
@@ -360,18 +409,15 @@ namespace ProjectsTM.UI.TaskList
             return wi.State != TaskState.New || wi.State == TaskState.Background;
         }
 
-        private static TaskListItem CreateErrorItem(WorkItem wi, string msg)
-        {
-            return new TaskListItem(wi, Color.White, false, msg);
-        }
-
         private List<TaskListItem> GetFilterList()
         {
             var list = new List<TaskListItem>();
+            var audit = GetAuditList();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
-                list.Add(new TaskListItem(wi, GetColor(wi.State), false, string.Empty));
+                audit.TryGetValue(wi, out string error);
+                list.Add(new TaskListItem(wi, GetColor(wi.State), false, error));
             }
             foreach (var ms in _viewData.Original.MileStones)
             {
