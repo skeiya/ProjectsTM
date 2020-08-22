@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     public partial class FilterForm : Form
     {

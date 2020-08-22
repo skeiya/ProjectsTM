@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.UI
+﻿namespace ProjectsTM.UI.MainForm
 {
     partial class ManagementWokingDaysForm
     {

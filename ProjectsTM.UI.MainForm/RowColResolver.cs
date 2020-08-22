@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     class RowColResolver
     {
