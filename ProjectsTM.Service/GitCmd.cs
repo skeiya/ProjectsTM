@@ -6,19 +6,10 @@ namespace ProjectsTM.Service
 {
     class GitCmd
     {
-        public static bool IsActive
+        public static string GetVersion()
         {
-            get
-            {
-                try
-                {
-                    return !string.IsNullOrEmpty(GitCommand("--version"));
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+            var reader = new StringReader(GitCommand("--version"));
+            return reader.ReadLine();
         }
 
         internal static void Fetch(string gitRepoPath)

@@ -10,7 +10,7 @@ namespace ProjectsTM.Service
         {
             Task<bool> task = Task.Run(() =>
             {
-                if (!GitCmd.IsActive) return false;
+                if (!IsAcrive()) return false;
                 if (string.IsNullOrEmpty(filePath)) return false;
                 var gitRepoPath = SearchGitRepo(filePath);
                 if (string.IsNullOrEmpty(gitRepoPath)) return false;
@@ -18,6 +18,11 @@ namespace ProjectsTM.Service
             }
             );
             return task;
+        }
+
+        private static bool IsAcrive()
+        {
+            return !string.IsNullOrEmpty(GitCmd.GetVersion());
         }
 
         private static bool IsThereUnmergedRemoteCommits(string gitRepoPath)
