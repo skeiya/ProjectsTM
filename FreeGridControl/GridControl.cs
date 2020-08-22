@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace FreeGridControl
@@ -325,6 +324,18 @@ namespace FreeGridControl
                 if (_cache.GetLeft(c) <= x && x < _cache.GetRight(c)) return c;
             }
             return new ColIndex(ColCount - 1);
+        }
+
+        public ColIndex GetAdjustCol(Point location)
+        {
+            if (FixedRowCount == 0) return null;
+            if (FixedHeight < location.Y) return null;
+            foreach (var col in ColIndex.Range(0, ColCount - 1))
+            {
+                var center = _cache.GetRight(col);
+                if (center - 2 < location.X && location.X < center + 2) return col;
+            }
+            return null;
         }
 
         public Point Raw2Client(RawPoint raw)
