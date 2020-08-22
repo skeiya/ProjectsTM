@@ -53,6 +53,16 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
         }
 
+        private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
+        {
+            if (isRemoteBranchAppDataNew)
+            {
+                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
+                return;
+            }
+            this.Text = "ProjectsTM";
+        }
+
         private void Print(PrintPageEventArgs e)
         {
             using (var grid = new WorkItemGrid())
@@ -64,9 +74,11 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private void FileIOService_FileOpened(object sender, string e)
+        private async void FileIOService_FileOpened(object sender, string filePath)
         {
-            _filterComboBoxService.Initialize(e);
+            _filterComboBoxService.Initialize(filePath);
+            var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
+            UpdateTitlebarText(isRemoteBranchAppDataNew);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
