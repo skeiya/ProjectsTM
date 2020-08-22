@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Filter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HideMembers>
+    <Member>
+      <MemberElement>下村/圭矢/K</MemberElement>
+    </Member>
+    <Member>
+      <MemberElement>下村/充美/U</MemberElement>
+    </Member>
+  </HideMembers>
+</Filter>
