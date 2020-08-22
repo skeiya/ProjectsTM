@@ -1,6 +1,6 @@
-﻿using ProjectsTM.ViewModel;
+﻿using ProjectsTM.Model;
 
-namespace ProjectsTM.Model
+namespace ProjectsTM.ViewModel
 {
     public class UserSetting
     {

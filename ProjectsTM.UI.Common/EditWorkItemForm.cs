@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.Common
 {
     public partial class EditWorkItemForm : Form
     {

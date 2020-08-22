@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.Common
 {
     public partial class EditMemberForm : Form
     {

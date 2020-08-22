@@ -66,7 +66,7 @@ namespace ProjectsTM.UI.MainForm
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
-            this.workItemGrid1 = new ProjectsTM.UI.WorkItemGrid();
+            this.workItemGrid1 = new ProjectsTM.UI.MainForm.WorkItemGrid();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();

@@ -1,7 +1,7 @@
 ﻿using ProjectsTM.Model;
 using System.Drawing;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.TaskList
 {
     internal class TaskListItem
     {

@@ -3,7 +3,7 @@ using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     class ContextMenuHandler
     {

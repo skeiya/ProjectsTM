@@ -1,5 +1,5 @@
 ﻿using ProjectsTM.Logic;
-using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System.IO;
 using System.Xml.Serialization;
 

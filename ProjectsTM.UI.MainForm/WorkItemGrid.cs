@@ -2,6 +2,7 @@
 using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
+using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.UI.MainForm
 {
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {

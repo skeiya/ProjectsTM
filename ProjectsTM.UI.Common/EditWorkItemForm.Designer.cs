@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.UI
+﻿namespace ProjectsTM.UI.Common
 {
     partial class EditWorkItemForm
     {

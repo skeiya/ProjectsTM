@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace ProjectsTM.UI
+namespace ProjectsTM.Logic
 {
     public class PenCache
     {
