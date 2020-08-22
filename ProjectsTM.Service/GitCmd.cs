@@ -35,7 +35,7 @@ namespace ProjectsTM.Service
 
         internal static string GetDifferenceBitweenBranches(string gitRepoPath, string baseBranch, string targetBranch)
         {
-            return GitCommand("-C " + gitRepoPath + " log" + baseBranch + ".." + targetBranch);
+            return GitCommand("-C " + gitRepoPath + " log " + baseBranch + ".." + targetBranch);
         }
 
         internal static string GetRemoteBranchName(string gitRepoPath)
