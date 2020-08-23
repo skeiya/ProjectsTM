@@ -34,7 +34,17 @@ namespace ProjectsTM.UI.MainForm
         public event EventHandler<IEditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;
-        public WorkItemGrid() { }
+        public event EventHandler<DragDoneEventArgs> NotifyDragEditDone;
+
+        public WorkItemGrid() 
+        {
+            _workItemDragService.NotifyDragDone += _workItemDragService_NotifyDragDone;
+        }
+
+        private void _workItemDragService_NotifyDragDone(object sender, DragDoneEventArgs editedWorkItems)
+        {
+            NotifyDragEditDone?.Invoke(null, editedWorkItems);
+        }
 
         internal void Initialize(ViewData viewData)
         {
@@ -401,5 +411,7 @@ namespace ProjectsTM.UI.MainForm
             if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
         }
+
+        public bool IsDragActive() { return _workItemDragService.IsActive(); }
     }
 }

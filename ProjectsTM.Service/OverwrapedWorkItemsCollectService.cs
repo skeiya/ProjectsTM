@@ -6,6 +6,20 @@ namespace ProjectsTM.Service
 {
     public static class OverwrapedWorkItemsCollectService
     {
+        public static List<WorkItem> Get(WorkItem target, WorkItems workItems)
+        {
+            var result = new List<WorkItem>();
+            var workItemsOfMember = workItems.OfMember(target.AssignedMember);
+            foreach (var wi in workItemsOfMember)
+            {
+                if (!wi.Period.HasInterSection(target.Period)) continue;
+                if (wi.Equals(target)) continue;
+                result.Add(wi);
+                if (!result.Contains(target)) result.Add(target);
+            }
+            return result;
+        }
+
         public static List<WorkItem> Get(WorkItems workItems)
         {
             var result = new List<WorkItem>();

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Detail.cs" />
+    <Compile Include="DragDoneEventArgs.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="IEditedEventArgs.cs" />
     <Compile Include="ImageBuffer.cs" />

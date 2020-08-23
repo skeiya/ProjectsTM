@@ -49,8 +49,14 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
+            workItemGrid1.NotifyDragEditDone += WorkItemGrid1_NotifyDragEditDone;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void WorkItemGrid1_NotifyDragEditDone(object sender, DragDoneEventArgs editedWorkItems)
+        {
+            TaskListForm?.ApplyEdit(editedWorkItems.Before, editedWorkItems.After);
         }
 
         private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
@@ -403,7 +409,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize, workItemGrid1.IsDragActive);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }

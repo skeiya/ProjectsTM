@@ -28,6 +28,7 @@ namespace ProjectsTM.UI.TaskList
         private bool _isReverse = false;
         private RowIndex _lastSelect;
         private WidthAdjuster _widthAdjuster;
+        private Func<bool> _IsUpdteLock;
 
         public TaskListGrid()
         {
@@ -234,19 +235,21 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths)
+        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths, Func<bool> IsUpdateLock)
         {
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
+            this._IsUpdteLock = IsUpdateLock;
             AttachEvents();
             InitializeGrid();
         }
 
         private void InitializeGrid()
         {
+            if (_IsUpdteLock()) return;
             LockUpdate = true;
             UpdateListItem();
             ColCount = 10;
@@ -255,6 +258,59 @@ namespace ProjectsTM.UI.TaskList
             SetHeightAndWidth();
             LockUpdate = false;
             UpdateLastSelect();
+        }
+
+        private void AddToEditedWorkItems(WorkItems before, WorkItems after, WorkItem errWorkItem)
+        {
+            if (!before.Any(b => b.Equals(errWorkItem)))
+            {
+                before.Add(errWorkItem);
+                after.Add(errWorkItem);
+            }
+        }
+
+        private void AddToErrorList(Dictionary<WorkItem, string> errList, WorkItem errWorkItem, Dictionary<WorkItem, string> auditResult)
+        {
+            if (!errList.TryGetValue(errWorkItem, out string str))
+            {
+                auditResult.TryGetValue(errWorkItem, out string err);
+                errList.Add(errWorkItem, err);
+            }
+        }
+
+        private void AuditEditedWorkItems(WorkItems before, WorkItems after, Dictionary<WorkItem, string> errList)
+        {
+            foreach (var a in after.Clone())
+            {
+                var auditResult = GetAuditErrors(a);
+                foreach (var errWorkItem in auditResult.Keys)
+                {
+                    AddToEditedWorkItems(before, after, errWorkItem);
+                    AddToErrorList(errList, errWorkItem, auditResult);
+                }
+            }
+        }
+
+        private void ReplaceTaskListItems(WorkItems before, WorkItems after, Dictionary<WorkItem, string> errMessages)
+        {
+            for (int i = 0; i < before.Count(); i++)
+            {
+                var listIdx = _listItems.FindIndex(l => l.WorkItem.Equals(before.ElementAt(i)));
+                if (listIdx == -1) throw new Exception("タスクリストにReplace対象が見つかりませんでした。");
+                var item = _listItems[listIdx];
+                _listItems[listIdx] = new TaskListItem(after.ElementAt(i), item.Color, item.IsMilestone,
+                    errMessages.TryGetValue(after.ElementAt(i), out string errMsg) ? errMsg : item.ErrMsg);
+            }
+        }
+
+        internal void ApplyEdit(WorkItems before, WorkItems after)
+        {
+            var errList = new Dictionary<WorkItem, string>();
+            AuditEditedWorkItems(before, after, errList);
+            ReplaceTaskListItems(before, after, errList);
+            Sort();
+            ListUpdated?.Invoke(this, null);
+            SelectedWorkItemChanged();
         }
 
         private void AttachEvents()
@@ -282,6 +338,12 @@ namespace ProjectsTM.UI.TaskList
         }
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
+        {
+            if (_IsUpdteLock()) return;
+            SelectedWorkItemChanged();
+        }
+
+        private void SelectedWorkItemChanged()
         {
             UpdateLastSelect();
             MoveSelectedVisible();
@@ -347,6 +409,14 @@ namespace ProjectsTM.UI.TaskList
             ListUpdated?.Invoke(this, null);
         }
 
+        private Dictionary<WorkItem, string> GetAuditErrors(WorkItem wi)
+        {
+            var errors = new Dictionary<WorkItem, string>();
+            OverwrapedWorkItemsCollectService.Get(wi, _viewData.Original.WorkItems).ForEach(w => errors.Add(w, "期間重複"));
+            GetAuditErrors(wi, _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5), errors);
+            return errors;
+        }
+
         private Dictionary<WorkItem, string> GetAuditList()
         {
             var result = new Dictionary<WorkItem, string>();
@@ -354,24 +424,29 @@ namespace ProjectsTM.UI.TaskList
             var soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5);
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (result.TryGetValue(wi, out var dummy)) continue;
-                if (IsNotStartedError(wi))
-                {
-                    result.Add(wi, "未開始");
-                    continue;
-                }
-                if (IsTooBigError(wi, soon))
-                {
-                    result.Add(wi, "要分解");
-                    continue;
-                }
-                if (IsNotEndError(wi))
-                {
-                    result.Add(wi, "未終了");
-                    continue;
-                }
+                GetAuditErrors(wi, soon, result);
             }
             return result;
+        }
+
+        private void GetAuditErrors(WorkItem wi, CallenderDay soon, Dictionary<WorkItem, string> result)
+        {
+            if (result.TryGetValue(wi, out var dummy)) return;
+            if (IsNotStartedError(wi))
+            {
+                result.Add(wi, "未開始");
+                return;
+            }
+            if (IsTooBigError(wi, soon))
+            {
+                result.Add(wi, "要分解");
+                return;
+            }
+            if (IsNotEndError(wi))
+            {
+                result.Add(wi, "未終了");
+                return;
+            }
         }
 
         private bool IsNotEndError(WorkItem wi)

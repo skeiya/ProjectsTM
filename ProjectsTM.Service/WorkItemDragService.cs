@@ -18,6 +18,7 @@ namespace ProjectsTM.Service
         private RawPoint _draggedLocation;
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
+        public event EventHandler<DragDoneEventArgs> NotifyDragDone;
 
         private DragState _state = DragState.None;
         public DragState State
@@ -275,6 +276,12 @@ namespace ProjectsTM.Service
                     break;
             }
             viewData.Selected = edit;
+            NotifyApplyEditDone(_backup.Clone(), edit.Clone());
+        }
+
+        private void NotifyApplyEditDone(WorkItems before, WorkItems after)
+        {
+            NotifyDragDone?.Invoke(null, new DragDoneEventArgs(before, after));
         }
 
         private void ClearEdit(ViewData viewData)
