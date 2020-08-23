@@ -260,7 +260,7 @@ namespace ProjectsTM.UI.TaskList
             UpdateLastSelect();
         }
 
-        private void AddToEditedWorkItems(WorkItems before, WorkItems after, WorkItem errWorkItem)
+        private void AddErrToEditedWorkItems(WorkItem errWorkItem, WorkItems before, WorkItems after)
         {
             if (!before.Any(b => b.Equals(errWorkItem)))
             {
@@ -269,7 +269,7 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void AddToErrorList(Dictionary<WorkItem, string> errList, WorkItem errWorkItem, Dictionary<WorkItem, string> auditResult)
+        private void AddErrToErrorList(WorkItem errWorkItem, Dictionary<WorkItem, string> errList, Dictionary<WorkItem, string> auditResult)
         {
             if (!errList.TryGetValue(errWorkItem, out string str))
             {
@@ -285,8 +285,8 @@ namespace ProjectsTM.UI.TaskList
                 var auditResult = GetAuditErrors(a);
                 foreach (var errWorkItem in auditResult.Keys)
                 {
-                    AddToEditedWorkItems(before, after, errWorkItem);
-                    AddToErrorList(errList, errWorkItem, auditResult);
+                    AddErrToEditedWorkItems(errWorkItem, before, after);
+                    AddErrToErrorList(errWorkItem, errList, auditResult);
                 }
             }
         }
