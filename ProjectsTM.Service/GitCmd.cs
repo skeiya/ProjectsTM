@@ -46,7 +46,11 @@ namespace ProjectsTM.Service
                     CreateNoWindow = true,
                 }
             };
-            process.Start();
+            try
+            {
+                process.Start();
+            }
+            catch { output = string.Empty; return -1; }
             process.WaitForExit();
             output = process.StandardOutput.ReadToEnd();
             return process.ExitCode;
