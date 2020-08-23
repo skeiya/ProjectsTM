@@ -299,7 +299,7 @@ namespace ProjectsTM.UI.TaskList
                 if (listIdx == -1) throw new Exception("タスクリストにReplace対象が見つかりませんでした。");
                 var item = _listItems[listIdx];
                 _listItems[listIdx] = new TaskListItem(after.ElementAt(i), item.Color, item.IsMilestone,
-                    errMessages.TryGetValue(after.ElementAt(i), out string errMsg) ? errMsg : item.ErrMsg);
+                    errMessages.TryGetValue(after.ElementAt(i), out string errMsg) ? errMsg : String.Empty);
             }
         }
 
