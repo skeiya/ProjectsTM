@@ -39,7 +39,13 @@ namespace ProjectsTM.UI.TaskList
             this.MouseUp += TaskListGrid_MouseUp;
             this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
+            this.Resize += TaskListGrid_Resize;
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
+        }
+
+        private void TaskListGrid_Resize(object sender, EventArgs e)
+        {
+            UpdateExtendColWidth();
         }
 
         private void TaskListGrid_MouseUp(object sender, MouseEventArgs e)
@@ -303,9 +309,20 @@ namespace ProjectsTM.UI.TaskList
             this.Invalidate();
         }
 
+        private readonly ColIndex AutoExtendCol = new ColIndex(8);
+
+        private void UpdateExtendColWidth()
+        {
+            if (ColWidths.Count < AutoExtendCol.Value) return;
+            LockUpdate = true;
+            var g = this.CreateGraphics();
+            var unit = Size.Round(g.MeasureString("あ", Font));
+            ColWidths[AutoExtendCol.Value] = GetWidth(AutoExtendCol, unit);
+            LockUpdate = false;
+        }
+
         private void SetHeightAndWidth()
         {
-            var font = this.Font;
             var g = this.CreateGraphics();
             var unit = Size.Round(g.MeasureString("あ", Font));
             foreach (var c in ColIndex.Range(0, ColCount))
@@ -336,6 +353,15 @@ namespace ProjectsTM.UI.TaskList
 
         private int GetWidth(ColIndex c, Size unit)
         {
+            if (c.Equals(AutoExtendCol))
+            {
+                var w = this.Width;
+                foreach(var col in ColIndex.Range(0, ColCount))
+                {
+                    if (!col.Equals(AutoExtendCol)) w -= GetWidth(col, unit);
+                }
+                return w;
+            }
             if (c.Value < _taskListColWidths.Count) return _taskListColWidths[c.Value];
             return unit.Width * 5;
         }
