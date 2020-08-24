@@ -264,7 +264,7 @@ namespace ProjectsTM.UI.MainForm
             if (wi != null)
             {
                 var rowRange = GetRowRange(wi);
-                MoveVisibleRowColRange(rowRange.row, rowRange.count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
+                MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
             }
             this.Invalidate();
         }
@@ -335,15 +335,15 @@ namespace ProjectsTM.UI.MainForm
         public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.row == null) return null;
-            return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count);
+            if (rowRange.Row == null) return null;
+            return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count);
         }
 
         public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.row == null) return null;
-            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.row, rowRange.count, GetVisibleRect(false, false));
+            if (rowRange.Row == null) return null;
+            return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)
@@ -351,7 +351,7 @@ namespace ProjectsTM.UI.MainForm
             return _rowColResolver.Member2Col(m, members);
         }
 
-        private (RowIndex row, int count) GetRowRange(WorkItem wi)
+        private RowRange GetRowRange(WorkItem wi)
         {
             RowIndex row = null;
             int count = 0;
@@ -364,7 +364,7 @@ namespace ProjectsTM.UI.MainForm
                 }
                 count++;
             }
-            return (row, count);
+            return new RowRange(row, count);
         }
 
         internal void Redo()
