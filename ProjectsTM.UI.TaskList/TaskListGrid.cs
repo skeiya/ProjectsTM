@@ -360,14 +360,14 @@ namespace ProjectsTM.UI.TaskList
                     result.Add(wi, "未開始");
                     continue;
                 }
-                if (IsTooBigError(wi, soon))
-                {
-                    result.Add(wi, "要分解");
-                    continue;
-                }
                 if (IsNotEndError(wi))
                 {
                     result.Add(wi, "未終了");
+                    continue;
+                }
+                if (IsTooBigError(wi, soon))
+                {
+                    result.Add(wi, "要分解");
                     continue;
                 }
             }
