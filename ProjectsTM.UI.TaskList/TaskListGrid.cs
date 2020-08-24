@@ -313,7 +313,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateExtendColWidth()
         {
-            if (ColWidths.Count < AutoExtendCol.Value) return;
+            if (ColWidths.Count <= AutoExtendCol.Value) return;
             LockUpdate = true;
             var g = this.CreateGraphics();
             var unit = Size.Round(g.MeasureString("あ", Font));
@@ -356,11 +356,11 @@ namespace ProjectsTM.UI.TaskList
             if (c.Equals(AutoExtendCol))
             {
                 var w = this.Width;
-                foreach(var col in ColIndex.Range(0, ColCount))
+                foreach (var col in ColIndex.Range(0, ColCount))
                 {
                     if (!col.Equals(AutoExtendCol)) w -= GetWidth(col, unit);
                 }
-                return w;
+                return Math.Max(w, unit.Width * 5);
             }
             if (c.Value < _taskListColWidths.Count) return _taskListColWidths[c.Value];
             return unit.Width * 5;
