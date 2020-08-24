@@ -351,7 +351,7 @@ namespace ProjectsTM.UI.MainForm
             return _rowColResolver.Member2Col(m, members);
         }
 
-        private RawRange GetRowRange(WorkItem wi)
+        private RowRange GetRowRange(WorkItem wi)
         {
             RowIndex row = null;
             int count = 0;
@@ -364,7 +364,7 @@ namespace ProjectsTM.UI.MainForm
                 }
                 count++;
             }
-            return new RawRange(row, count);
+            return new RowRange(row, count);
         }
 
         internal void Redo()

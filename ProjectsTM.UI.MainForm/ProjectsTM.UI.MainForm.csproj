@@ -112,7 +112,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RawRange.cs" />
+    <Compile Include="RowRange.cs" />
     <Compile Include="RowColResolver.cs" />
     <Compile Include="RsExportSelectForm.cs">
       <SubType>Form</SubType>
