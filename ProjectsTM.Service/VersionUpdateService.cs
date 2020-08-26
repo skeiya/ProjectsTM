@@ -16,6 +16,7 @@ namespace ProjectsTM.Service
             if (!IsOldCurrentVersion(latestVersion)) return false;
             if (MessageBox.Show("ツールの最新版がリリースされています。配布先を開きますか？", "日程表ツール", MessageBoxButtons.YesNo) != DialogResult.Yes) return false;
             Process.Start(GetFileServerPath(dir));
+            Environment.Exit(0);
             return true;
         }
 

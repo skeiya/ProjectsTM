@@ -115,6 +115,7 @@ namespace ProjectsTM.Service
             if (IsFutureVersion(fileName))
             {
                 MessageBox.Show("ご使用のツールより新しいバージョンで保存されたファイルです。ツールを更新してから開いてください。");
+                Environment.Exit(0);
                 return null;
             }
             _previousFileName = fileName;
