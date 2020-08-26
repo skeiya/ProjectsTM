@@ -27,7 +27,7 @@ namespace ProjectsTM.UI.MainForm
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
-
+        private Timer _1minutTimer = new Timer();
         public MainForm()
         {
             InitializeComponent();
@@ -45,12 +45,24 @@ namespace ProjectsTM.UI.MainForm
             FileIOService.FileWatchChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
             FileIOService.FileOpened += FileIOService_FileOpened;
+            if (GitRepositoryService.IsActive())
+            {
+                _1minutTimer.Interval = 60 * 1000; // 1s間隔
+                _1minutTimer.Tick += _timer_Tick;
+                _1minutTimer.Start();
+            }
             LoadUserSetting();
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private async void _timer_Tick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(FileIOService.FilePath)) return;
+            await TriggerRemoteChangeCheck(FileIOService.FilePath);
         }
 
         private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
@@ -75,6 +87,11 @@ namespace ProjectsTM.UI.MainForm
         }
 
         private async void FileIOService_FileOpened(object sender, string filePath)
+        {
+            await TriggerRemoteChangeCheck(filePath);
+        }
+
+        private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
             _filterComboBoxService.Initialize(filePath);
             var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);

@@ -10,7 +10,7 @@ namespace ProjectsTM.Service
         {
             Task<bool> task = Task.Run(() =>
             {
-                if (!IsAcrive()) return false;
+                if (!IsActive()) return false;
                 if (string.IsNullOrEmpty(filePath)) return false;
                 var gitRepoPath = SearchGitRepo(filePath);
                 if (string.IsNullOrEmpty(gitRepoPath)) return false;
@@ -20,7 +20,7 @@ namespace ProjectsTM.Service
             return task;
         }
 
-        private static bool IsAcrive()
+        public static bool IsActive()
         {
             return !string.IsNullOrEmpty(GitCmd.GetVersion());
         }
