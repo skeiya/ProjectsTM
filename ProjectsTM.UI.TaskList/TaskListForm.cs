@@ -29,6 +29,12 @@ namespace ProjectsTM.UI.TaskList
         private void GridControl1_ListUpdated(object sender, System.EventArgs e)
         {
             UpdateLabelSum();
+            UpdateErrorCount();
+        }
+
+        private void UpdateErrorCount()
+        {
+            labelErrorCount.Text = "エラー数：" + gridControl1.GetErrorCount().ToString();
         }
 
         private void UpdateLabelSum()

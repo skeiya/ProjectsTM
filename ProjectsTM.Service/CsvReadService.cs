@@ -134,7 +134,7 @@ namespace ProjectsTM.Service
             var taskName = words[3];
             var period = ParsePeriod(words[1], words[2]);
             var member = ParseMember(words[0]);
-            return new WorkItem(project, taskName, tags, period, member, TaskState.New, string.Empty);
+            return new WorkItem(project, taskName, tags, period, member, TaskState.Active, string.Empty);
         }
     }
 }
