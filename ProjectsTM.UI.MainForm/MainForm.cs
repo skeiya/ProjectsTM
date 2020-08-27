@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace ProjectsTM.UI.MainForm
 {
@@ -88,6 +89,20 @@ namespace ProjectsTM.UI.MainForm
 
         private async void FileIOService_FileOpened(object sender, string filePath)
         {
+            var path = Path.Combine(Path.GetDirectoryName(filePath), "PatternHistory.xml");
+            if (File.Exists(path))
+            {
+                var s = new XmlSerializer(typeof(PatternHistory));
+                using (var r = new FileStream(path, FileMode.Open))
+                {
+                    var h = (PatternHistory)s.Deserialize(r);
+                    foreach (var p in h.Items)
+                    {
+                        _patternHistory.Append(p);
+                    }
+                }
+            }
+
             await TriggerRemoteChangeCheck(filePath);
         }
 
