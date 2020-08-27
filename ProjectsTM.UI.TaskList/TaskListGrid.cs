@@ -43,6 +43,11 @@ namespace ProjectsTM.UI.TaskList
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
         }
 
+        internal int GetErrorCount()
+        {
+            return _listItems.Count(l => !string.IsNullOrEmpty(l.ErrMsg));
+        }
+
         private void TaskListGrid_Resize(object sender, EventArgs e)
         {
             UpdateExtendColWidth();
