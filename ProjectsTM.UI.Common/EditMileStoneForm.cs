@@ -32,7 +32,7 @@ namespace ProjectsTM.UI.Common
             {
                 comboBoxState.Items.Add(e);
             }
-            comboBoxState.SelectedItem = m != null ? m.State : TaskState.New;
+            comboBoxState.SelectedItem = m != null ? m.State : TaskState.Active;
         }
 
         private void SetComboBoxItems()

@@ -34,8 +34,9 @@ namespace ProjectsTM.UI.Common
         private void InitDropDownList(TaskState state)
         {
             comboBoxState.Items.Clear();
-            foreach (var e in Enum.GetValues(typeof(TaskState)))
+            foreach (TaskState e in Enum.GetValues(typeof(TaskState)))
             {
+                if (e == TaskState.New) continue;
                 comboBoxState.Items.Add(e);
             }
             comboBoxState.SelectedItem = state;

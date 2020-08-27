@@ -381,11 +381,6 @@ namespace ProjectsTM.UI.TaskList
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
-                if (IsNotStartedError(wi))
-                {
-                    result.Add(wi, "未開始");
-                    continue;
-                }
                 if (IsNotEndError(wi))
                 {
                     result.Add(wi, "未終了");
@@ -425,17 +420,6 @@ namespace ProjectsTM.UI.TaskList
             return wi.Period.From <= soon;
         }
 
-        private static bool IsNotStartedError(WorkItem wi)
-        {
-            if (IsStarted(wi)) return false;
-            return CallenderDay.Today >= wi.Period.From;
-        }
-
-        private static bool IsStarted(WorkItem wi)
-        {
-            return wi.State != TaskState.New || wi.State == TaskState.Background;
-        }
-
         private List<TaskListItem> GetFilterList()
         {
             var list = new List<TaskListItem>();
@@ -444,7 +428,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
                 audit.TryGetValue(wi, out string error);
-                list.Add(new TaskListItem(wi, GetColor(wi.State), false, error));
+                list.Add(new TaskListItem(wi, GetColor(wi.State, error), false, error));
             }
             foreach (var ms in _viewData.Original.MileStones)
             {
@@ -458,18 +442,13 @@ namespace ProjectsTM.UI.TaskList
             return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
         }
 
-        private static Color GetColor(TaskState state)
+        private static Color GetColor(TaskState state, string error)
         {
+            if (!string.IsNullOrEmpty(error)) return Color.Red;
             switch (state)
             {
-                case TaskState.Active:
-                    return Color.White;
-                case TaskState.Background:
-                    return Color.LightGreen;
                 case TaskState.Done:
                     return Color.LightGray;
-                case TaskState.New:
-                    return Color.LightBlue;
                 default:
                     return Color.White;
             }
