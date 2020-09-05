@@ -35,7 +35,7 @@ namespace ProjectsTM.ViewModel
         public bool Equals(Filter other)
         {
             return other != null &&
-                   EqualityComparer<Members>.Default.Equals(HideMembers, other.HideMembers) &&　//TODO:matsukage showMembers
+                   EqualityComparer<Members>.Default.Equals(ShowMembers, other.ShowMembers) &&
                    EqualityComparer<Period>.Default.Equals(Period, other.Period) &&
                    WorkItem == other.WorkItem &&
                    IsFreeTimeMemberShow == other.IsFreeTimeMemberShow &&
@@ -45,7 +45,7 @@ namespace ProjectsTM.ViewModel
         public override int GetHashCode()
         {
             int hashCode = 69401243;
-            hashCode = hashCode * -1521134295 + EqualityComparer<Members>.Default.GetHashCode(HideMembers); //TODO:matsukage ShowMembers
+            hashCode = hashCode * -1521134295 + EqualityComparer<Members>.Default.GetHashCode(ShowMembers);
             hashCode = hashCode * -1521134295 + EqualityComparer<Period>.Default.GetHashCode(Period);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(WorkItem);
             hashCode = hashCode * -1521134295 + EqualityComparer<bool>.Default.GetHashCode(IsFreeTimeMemberShow);
