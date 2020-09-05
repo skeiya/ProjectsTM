@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
         }
 
         public Members HideMembers { get; private set; } = new Members(); //TODO:matsukage 過去バージョンを考慮してgetできるようにするが、ShowMembersへ変換する
-        //TODO:matsukage ShowMembers追加
+        public Members ShowMembers { get; private set; } = new Members();
         public Period Period { get; set; } = new Period();
         public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
