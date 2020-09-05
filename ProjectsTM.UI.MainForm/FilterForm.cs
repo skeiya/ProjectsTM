@@ -57,7 +57,7 @@ namespace ProjectsTM.UI.MainForm
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = !_filter.HideMembers.Contains(m); //TODO:matsukage ShowMembers
+                var check = _filter.ShowMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
 
