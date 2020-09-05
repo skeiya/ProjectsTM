@@ -39,7 +39,7 @@ namespace ProjectsTM.UI.MainForm
             _mileStones.Sort();
             foreach (var m in _mileStones)
             {
-                var item = new ListViewItem(new string[] { m.Name, m.Day.ToString(), m.MileStoneFilterName, m.State.ToString() });
+                var item = new ListViewItem(new string[] { m.Name, m.Project.ToString(), m.Day.ToString(), m.MileStoneFilterName, m.State.ToString() });
                 item.Tag = m;
                 item.BackColor = m.Color;
                 listView1.Items.Add(item);

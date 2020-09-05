@@ -437,14 +437,16 @@ namespace ProjectsTM.UI.TaskList
             }
             foreach (var ms in _viewData.Original.MileStones)
             {
-                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color, true, string.Empty));
+                var wi = ConvertWorkItem(ms);
+                if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
+                list.Add(new TaskListItem(wi, ms.Color, true, string.Empty));
             }
             return list;
         }
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(new Model.Project("noPrj"), ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
+            return new WorkItem(ms.Project, ms.Name, new Tags(new List<string>()), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
         }
 
         private static Color GetColor(TaskState state, string error)

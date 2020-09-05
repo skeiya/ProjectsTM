@@ -21,6 +21,7 @@ namespace ProjectsTM.UI.Common
             InitializeStateCombobox(m);
             if (m == null) return;
             textBoxName.Text = m.Name;
+            textBoxProject.Text = m.Project.ToString();
             textBoxDate.Text = m.Day.ToString();
             labelColor.BackColor = m.Color;
         }
@@ -93,7 +94,7 @@ namespace ProjectsTM.UI.Common
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
             if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
-            return new MileStone(textBoxName.Text, day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
+            return new MileStone(textBoxName.Text, new Project(textBoxProject.Text), day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)

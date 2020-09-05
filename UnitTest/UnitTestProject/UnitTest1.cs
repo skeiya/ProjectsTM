@@ -122,7 +122,7 @@ namespace UnitTestProject1
 
             orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue, Color.Black));
 
-            orgApp.MileStones.Add(new MileStone("all star", new CallenderDay(2018, 6, 3), Color.AliceBlue, new MileStoneFilter("testMileStoneFilter"), TaskState.Active));
+            orgApp.MileStones.Add(new MileStone("all star", new Project("Pro1"), new CallenderDay(2018, 6, 3), Color.AliceBlue, new MileStoneFilter("testMileStoneFilter"), TaskState.Active));
             return orgApp;
         }
 

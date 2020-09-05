@@ -11,9 +11,10 @@ namespace ProjectsTM.Model
     {
         public MileStone() { }
 
-        public MileStone(string name, CallenderDay day, Color color, MileStoneFilter mileStoneFilter, TaskState state)
+        public MileStone(string name, Project project, CallenderDay day, Color color, MileStoneFilter mileStoneFilter, TaskState state)
         {
             Name = name;
+            Project = project;
             Day = day;
             Color = color;
             State = state;
@@ -21,6 +22,16 @@ namespace ProjectsTM.Model
         }
 
         public string Name { set; get; }
+
+        [XmlIgnore]
+        public Project Project { set; get; } = new Project(string.Empty);
+        [XmlElement]
+        public string ProjectElement
+        {
+            get { return Project.ToString(); }
+            set { Project = new Project(value); }
+        }
+
         public CallenderDay Day { set; get; }
         [XmlIgnore]
         public Color Color { set; get; }
@@ -77,7 +88,7 @@ namespace ProjectsTM.Model
 
         public MileStone Clone()
         {
-            return new MileStone(Name, Day, Color, MileStoneFilter, State);
+            return new MileStone(Name, Project, Day, Color, MileStoneFilter, State);
         }
 
         public static bool operator ==(MileStone left, MileStone right)
