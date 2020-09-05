@@ -1,19 +1,27 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectsTM.ViewModel
 {
     public class Filter : IEquatable<Filter>
     {
         public Filter() { }
-        public Filter(string v, Period period, Members hideMembers, bool isFreeTimeMemberShow, string msFilterSearchPattern)　//TODO:matsukage showMembersを渡すようにする
+        public Filter(string v, Period period, Members showMembers, bool isFreeTimeMemberShow, string msFilterSearchPattern)
         {
             if (v != null) WorkItem = v;
             if (period != null) Period = period;
-            if (hideMembers != null) HideMembers = hideMembers;　//TODO:matsukage showMembers
+            if (showMembers != null) ShowMembers = showMembers;
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
             if (MSFilterSearchPattern != null) MSFilterSearchPattern = msFilterSearchPattern;
+        }
+
+        public void SetShowMemersFromHideMembers(List<Member> allMembers) //TODO:HideMembersが撲滅されたら消す
+        {
+            if (this.HideMembers.Count == 0) return;
+            this.ShowMembers = (Members)allMembers.Where(m => !this.HideMembers.Contains(m));
+            this.HideMembers = new Members();
         }
 
         public Members HideMembers { get; private set; } = new Members(); //TODO:matsukage 過去バージョンを考慮してgetできるようにするが、ShowMembersへ変換する

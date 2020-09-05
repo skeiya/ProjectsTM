@@ -93,7 +93,7 @@ namespace ProjectsTM.ViewModel
             return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();//TODO:matsukageShowMembers
         }
 
-        private List<Member> CreateAllMembersList()
+        public List<Member> CreateAllMembersList()
         {
             return this.Original.Members.ToList();
         }

@@ -153,7 +153,7 @@ namespace ProjectsTM.Service
             var members = new Members();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
+                if (IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
             return new Filter(null, null, members, false, com);
         }
@@ -170,7 +170,7 @@ namespace ProjectsTM.Service
             var members = new Members();
             foreach (var m in _viewData.Original.Members)
             {
-                if (!IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
+                if (IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
             return new Filter(null, null, members, false, pro.ToString());
         }
@@ -190,7 +190,9 @@ namespace ProjectsTM.Service
             using (var rs = StreamFactory.CreateReader(path))
             {
                 var x = new XmlSerializer(typeof(Filter));
-                return (Filter)x.Deserialize(rs);
+                Filter filter = (Filter)x.Deserialize(rs);
+                filter.SetShowMemersFromHideMembers(_viewData.CreateAllMembersList());
+                return filter;
             }
         }
     }
