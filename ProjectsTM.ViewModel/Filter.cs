@@ -24,7 +24,7 @@ namespace ProjectsTM.ViewModel
             this.HideMembers = new Members();
         }
 
-        public Members HideMembers { get; private set; } = new Members(); //TODO:matsukage 過去バージョンを考慮してgetできるようにするが、ShowMembersへ変換する
+        public Members HideMembers { get; private set; } = new Members(); //TODO:過去バージョン考慮して残す。HideMembersが撲滅されたら消す
         public Members ShowMembers { get; private set; } = new Members();
         public Period Period { get; set; } = new Period();
         public string WorkItem { get; set; } = string.Empty;
