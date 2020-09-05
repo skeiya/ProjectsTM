@@ -19,6 +19,7 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
+        private bool _isShowMS = true;
         private string _pattern;
         private WorkItemEditService _editService;
         private List<int> _taskListColWidths;
@@ -245,13 +246,14 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths)
+        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths, bool isShowMS)
         {
             this._pattern = pattern;
             this._editService = new WorkItemEditService(viewData);
             this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
+            this._isShowMS = isShowMS;
             AttachEvents();
             InitializeGrid();
         }
@@ -435,9 +437,12 @@ namespace ProjectsTM.UI.TaskList
                 audit.TryGetValue(wi, out string error);
                 list.Add(new TaskListItem(wi, GetColor(wi.State, error), false, error));
             }
-            foreach (var ms in _viewData.Original.MileStones)
+            if (_isShowMS)
             {
-                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color, true, string.Empty));
+                foreach (var ms in _viewData.Original.MileStones)
+                {
+                    list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color, true, string.Empty));
+                }
             }
             return list;
         }
