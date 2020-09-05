@@ -362,7 +362,7 @@ namespace ProjectsTM.UI.TaskList
         {
             if (c.Equals(AutoExtendCol))
             {
-                var w = this.Width;
+                var w = this.Width - this.VScrollBarWidth;
                 foreach (var col in ColIndex.Range(0, ColCount))
                 {
                     if (!col.Equals(AutoExtendCol)) w -= GetWidth(col, unit);
