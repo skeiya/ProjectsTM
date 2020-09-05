@@ -4,7 +4,7 @@ namespace ProjectsTM.Model
 {
     public class AppData
     {
-        static public int DataVersion = 2; // 互換性のなくなる変更をしたときにこの数字を増やす //TODO:matsukage showMembers
+        static public int DataVersion = 2; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version
         {
             set {; }
