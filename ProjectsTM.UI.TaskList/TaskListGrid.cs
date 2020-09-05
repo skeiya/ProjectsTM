@@ -437,7 +437,9 @@ namespace ProjectsTM.UI.TaskList
             }
             foreach (var ms in _viewData.Original.MileStones)
             {
-                list.Add(new TaskListItem(ConvertWorkItem(ms), ms.Color, true, string.Empty));
+                var wi = ConvertWorkItem(ms);
+                if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
+                list.Add(new TaskListItem(wi, ms.Color, true, string.Empty));
             }
             return list;
         }
