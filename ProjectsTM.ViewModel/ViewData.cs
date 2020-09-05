@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
         {
             _appData = appData;
             UndoService = undoService;
-            AddFreeTimeMembersToHideMembers(GetFilteredMembers());
+            AddFreeTimeMembersToHideMembers(GetFilteredMembers()); //TODO:matsukage RemoveFreeTimeMembersFromShowMembers
             AppDataChanged?.Invoke(this, null);
         }
 
@@ -62,7 +62,7 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
-            AddFreeTimeMembersToHideMembers(GetFilteredMembers());
+            AddFreeTimeMembersToHideMembers(GetFilteredMembers()); //TODO:matsukage RemoveFreeTimeMemberersFromShowMembers
             FilterChanged(this, null);
         }
 
@@ -74,23 +74,23 @@ namespace ProjectsTM.ViewModel
         public IEnumerable<Member> GetFilteredMembers()
         {
             var result = CreateAllMembersList();
-            return RemoveFilterSettingMembers(result);
+            return RemoveFilterSettingMembers(result); //TODO:matsukage GetFilterShowMembers
         }
 
-        private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members)
+        private void AddFreeTimeMembersToHideMembers(IEnumerable<Member> members) //TODO:matsukage RemoveFreeTimeMemberersFromShowMembers
         {
             if (Filter.IsFreeTimeMemberShow) return;
             if (members == null || members.Count() > 0) return;
             var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period));
             foreach (var m in freeTimeMember)
             {
-                if (!Filter.HideMembers.Contains(m)) Filter.HideMembers.Add(m);
+                if (!Filter.HideMembers.Contains(m)) Filter.HideMembers.Add(m); //TODO:matsukage ShowMembers
             }
         }
 
-        private List<Member> RemoveFilterSettingMembers(List<Member> members)
+        private List<Member> RemoveFilterSettingMembers(List<Member> members) //GetFilterShowMemberes
         {
-            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();
+            return members.Where(m => !Filter.HideMembers.Contains(m)).ToList();//TODO:matsukageShowMembers
         }
 
         private List<Member> CreateAllMembersList()
