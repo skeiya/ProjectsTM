@@ -21,6 +21,12 @@ namespace ProjectsTM.Model
             _members.Add(member);
         }
 
+        public void Remove(Member member)
+        {
+            if (!_members.Contains(member)) return;
+            _members.Remove(member);
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _members.GetEnumerator();
