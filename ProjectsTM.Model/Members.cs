@@ -10,6 +10,13 @@ namespace ProjectsTM.Model
 
         public int Count => _members.Count;
 
+        public Members() { }
+
+        public Members(List<Member> memberList)
+        {
+            this._members = memberList;
+        }
+
         public IEnumerator<Member> GetEnumerator()
         {
             return _members.GetEnumerator();
@@ -19,6 +26,12 @@ namespace ProjectsTM.Model
         {
             if (_members.Contains(member)) return;
             _members.Add(member);
+        }
+
+        public void Remove(Member member)
+        {
+            if (!_members.Contains(member)) return;
+            _members.Remove(member);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

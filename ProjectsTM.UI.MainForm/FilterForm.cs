@@ -57,7 +57,7 @@ namespace ProjectsTM.UI.MainForm
             checkedListBox1.DisplayMember = "NaturalString";
             foreach (var m in _members)
             {
-                var check = !_filter.HideMembers.Contains(m);
+                var check = _filter.ShowMembers.Contains(m);
                 checkedListBox1.Items.Add(m, check);
             }
 
@@ -124,7 +124,7 @@ namespace ProjectsTM.UI.MainForm
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetHiddenMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text);
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetCheckedMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text);
         }
 
         private string GetWorkItemFilter()
@@ -139,17 +139,6 @@ namespace ProjectsTM.UI.MainForm
             var to = CallenderDay.Parse(textBoxTo.Text);
             if (from == null || to == null) return null;
             return new Period(from, to);
-        }
-
-        private Members GetHiddenMembers()
-        {
-            var result = new Members();
-            foreach (var c in checkedListBox1.Items)
-            {
-                var m = (Member)c;
-                if (!GetCheckedMembers().Contains(m)) result.Add(m);
-            }
-            return result;
         }
 
         private Members GetCheckedMembers()
@@ -194,6 +183,7 @@ namespace ProjectsTM.UI.MainForm
                 {
                     var s = new XmlSerializer(typeof(Filter));
                     _filter = (Filter)s.Deserialize(reader);
+                    _filter.SetShowMemersFromHideMembers(_originalMembers.ToList());
                     UpdateAllField();
                 }
             }
