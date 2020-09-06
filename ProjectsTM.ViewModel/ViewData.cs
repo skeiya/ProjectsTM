@@ -17,7 +17,7 @@ namespace ProjectsTM.ViewModel
         {
             _appData = appData;
             UndoService = undoService;
-            if (this.Filter.Equals(Filter.All(null))) this.Filter = Filter.All(this);
+            this.Filter = Filter.All(this);
             RemoveFreeTimeMembersFromFilter();
             AppDataChanged?.Invoke(this, null);
         }
