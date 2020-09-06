@@ -19,11 +19,17 @@ namespace ProjectsTM.UI.TaskList
             this._history = patternHistory;
             this._formSize = formSize;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths);
+            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
             var offset = gridControl1.GridWidth - gridControl1.Width;
             this.Width += offset + gridControl1.VScrollBarWidth;
             this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
             this.FormClosed += TaskListForm_FormClosed;
+            this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged; 
+        }
+
+        private void CheckBoxShowMS_CheckedChanged(object sender, System.EventArgs e)
+        {
+            UpdateList();
         }
 
         private void GridControl1_ListUpdated(object sender, System.EventArgs e)
@@ -56,7 +62,7 @@ namespace ProjectsTM.UI.TaskList
 
         public void Clear()
         {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -73,7 +79,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
         }
     }
 }

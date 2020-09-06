@@ -223,7 +223,7 @@ namespace ProjectsTM.Service
             var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
-                result.Add(new MileStone("Today", today, Color.Red, null, TaskState.Active));
+                result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));
             }
             return result;
         }
