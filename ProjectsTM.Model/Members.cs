@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -14,7 +15,7 @@ namespace ProjectsTM.Model
 
         public Members(List<Member> memberList)
         {
-            this._members = memberList;
+            this._members = memberList.Select(item => item.Clone()).ToList();
         }
 
         public IEnumerator<Member> GetEnumerator()
