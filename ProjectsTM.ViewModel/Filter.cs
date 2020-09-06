@@ -20,7 +20,7 @@ namespace ProjectsTM.ViewModel
         public void SetShowMemersFromHideMembers(List<Member> allMembers) //TODO:HideMembersが撲滅されたら消す
         {
             if (this.HideMembers.Count == 0) return;
-            this.ShowMembers = (Members)allMembers.Where(m => !this.HideMembers.Contains(m));
+            this.ShowMembers = new Members(allMembers.Where(m => !this.HideMembers.Contains(m)).ToList());
             this.HideMembers = new Members();
         }
 
@@ -30,7 +30,7 @@ namespace ProjectsTM.ViewModel
         public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public string MSFilterSearchPattern { get; set; } = "ALL";
-        public static Filter All => new Filter(null, null, new Members(), false, "ALL");
+        public static Filter All(ViewData viewData) => new Filter(null, null, viewData != null? viewData.Original.Members:new Members(), false, "ALL");
 
         public bool Equals(Filter other)
         {
@@ -55,8 +55,8 @@ namespace ProjectsTM.ViewModel
 
         public Filter Clone()
         {
-            var result = Filter.All;
-            result.HideMembers = this.HideMembers.Clone(); //TODO:ShowMembers
+            var result = Filter.All(null);
+            result.ShowMembers = this.ShowMembers.Clone();
             result.WorkItem = (string)this.WorkItem.Clone();
             result.Period = this.Period.Clone();
             result.IsFreeTimeMemberShow = this.IsFreeTimeMemberShow;

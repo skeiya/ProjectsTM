@@ -10,6 +10,13 @@ namespace ProjectsTM.Model
 
         public int Count => _members.Count;
 
+        public Members() { }
+
+        public Members(List<Member> memberList)
+        {
+            this._members = memberList;
+        }
+
         public IEnumerator<Member> GetEnumerator()
         {
             return _members.GetEnumerator();

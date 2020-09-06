@@ -8,7 +8,7 @@ namespace ProjectsTM.ViewModel
 {
     public class ViewData
     {
-        public Filter Filter { get; private set; } = Filter.All;
+        public Filter Filter { get; private set; } = Filter.All(null);
         public Detail Detail { get; set; } = new Detail();
 
         public AppData Original => _appData;
@@ -17,6 +17,7 @@ namespace ProjectsTM.ViewModel
         {
             _appData = appData;
             UndoService = undoService;
+            if (this.Filter.Equals(Filter.All(null))) this.Filter = Filter.All(this);
             RemoveFreeTimeMembersFromFilter();
             AppDataChanged?.Invoke(this, null);
         }
