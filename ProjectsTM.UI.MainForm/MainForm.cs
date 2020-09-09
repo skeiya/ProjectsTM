@@ -110,6 +110,7 @@ namespace ProjectsTM.UI.MainForm
         {
             _filterComboBoxService.Initialize(filePath);
             var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
+            if (isRemoteBranchAppDataNew) isRemoteBranchAppDataNew = !GitRepositoryService.TryAutoPull(filePath);
             UpdateTitlebarText(isRemoteBranchAppDataNew);
         }
 

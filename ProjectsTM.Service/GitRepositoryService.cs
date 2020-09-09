@@ -48,5 +48,26 @@ namespace ProjectsTM.Service
             if (dir == null) return string.Empty;
             return GitCmd.GetRepositoryPath(dir);
         }
+
+        public static bool TryAutoPull(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) return false;
+            var gitRepoPath = SearchGitRepo(filePath);
+            if (string.IsNullOrEmpty(gitRepoPath)) return false;
+            if (IsThereAnyLocalChange(gitRepoPath)) return false;
+            return GitCmd.Pull(gitRepoPath);
+        }
+
+        private static bool IsThereAnyLocalChange(string gitRepoPath)
+        {
+            GitCmd.Fetch(gitRepoPath);
+            var branchName = GitCmd.GetCurrentBranchName(gitRepoPath);
+            if (string.IsNullOrEmpty(branchName)) return false;
+            var remoteName = GitCmd.GetRemoteBranchName(gitRepoPath);
+            if (string.IsNullOrEmpty(remoteName)) return false;
+            var diff = GitCmd.GetDifferenceBitweenBranches(gitRepoPath, remoteName, branchName);
+            if (0 < ParseCommitsCount(diff)) return true;
+            return !string.IsNullOrEmpty(GitCmd.Status(gitRepoPath));
+        }
     }
 }

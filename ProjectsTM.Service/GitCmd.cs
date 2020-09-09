@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace ProjectsTM.Service
@@ -32,6 +33,11 @@ namespace ProjectsTM.Service
         {
             var reader = new StringReader(GitCommand("-C " + gitRepoPath + " rev-parse --abbrev-ref --symbolic-full-name @{u}"));
             return reader.ReadLine();
+        }
+
+        internal static bool Pull(string gitRepoPath)
+        {
+            return string.IsNullOrEmpty(GitCommand("-C " + gitRepoPath + " pull"));
         }
 
         private static int ExecuteCommand(out string output, string command, string arguments = "")
@@ -69,6 +75,12 @@ namespace ProjectsTM.Service
         internal static string GetRepositoryPath(string dir)
         {
             var reader = new StringReader(GitCommand("-C " + dir + " rev-parse --show-toplevel"));
+            return reader.ReadLine();
+        }
+
+        internal static string Status(string gitRepoPath)
+        {
+            var reader = new StringReader(GitCommand("-C " + gitRepoPath + " status -s"));
             return reader.ReadLine();
         }
     }
