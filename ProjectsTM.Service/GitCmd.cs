@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace ProjectsTM.Service
 {
@@ -57,15 +59,22 @@ namespace ProjectsTM.Service
                 process.Start();
             }
             catch { output = string.Empty; return -1; }
+            var tmp = new StringBuilder();
+            while (!process.HasExited)
+            {
+                tmp.Append(process.StandardOutput.ReadToEnd());
+                Thread.Sleep(0);
+            }
             process.WaitForExit();
-            output = process.StandardOutput.ReadToEnd();
+            tmp.Append(process.StandardOutput.ReadToEnd());
+            output = tmp.ToString();
             return process.ExitCode;
         }
 
         internal static string GitCommand(string arguments)
         {
             string output;
-            if (ExecuteCommand(out output, "git", arguments) != 0)
+            if (ExecuteCommand(out output, "git --no-pager ", arguments) != 0)
             {
                 return string.Empty;
             }
