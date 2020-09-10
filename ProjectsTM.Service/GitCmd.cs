@@ -74,7 +74,7 @@ namespace ProjectsTM.Service
         internal static string GitCommand(string arguments)
         {
             string output;
-            if (ExecuteCommand(out output, "git --no-pager ", arguments) != 0)
+            if (ExecuteCommand(out output, "git", " --no-pager " + arguments) != 0)
             {
                 return string.Empty;
             }
