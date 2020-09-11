@@ -45,11 +45,23 @@ namespace ProjectsTM.Service
         {
             var repo = GitCmdRepository.FromFilePath(filePath);
             if (repo == null) return false;
-            if (IsThereAnyLocalChange(repo)) return false;
+            if (!IsLocalChangeEmpty(repo)) return false;
             return repo.Pull();
         }
 
-        private static bool IsThereAnyLocalChange(GitCmdRepository repo)
+        /// <summary>
+        /// ローカルの変更が無いことを確認できた場合のみtrueを変えす。異常時含め、それ以外のはすべてfalseを返す。
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        private static bool IsLocalChangeEmpty(GitCmdRepository repo)
+        {
+            if (!IsUncommitChangeEmpty(repo)) return false;
+            if (!IsUnpushedCommitEmpty(repo)) return false;
+            return true;
+        }
+
+        private static bool IsUnpushedCommitEmpty(GitCmdRepository repo)
         {
             repo.Fetch();
             var branchName = repo.GetCurrentBranchName();
@@ -57,8 +69,12 @@ namespace ProjectsTM.Service
             var remoteName = repo.GetRemoteBranchName();
             if (string.IsNullOrEmpty(remoteName)) return false;
             var diff = repo.GetDifferenceBitweenBranches(remoteName, branchName);
-            if (0 < ParseCommitsCount(diff)) return true;
-            return !string.IsNullOrEmpty(repo.Status());
+            return 0 == ParseCommitsCount(diff);
+        }
+
+        private static bool IsUncommitChangeEmpty(GitCmdRepository repo)
+        {
+            return string.IsNullOrEmpty(repo.Status());
         }
     }
 }
