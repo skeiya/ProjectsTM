@@ -1,6 +1,5 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,11 +63,6 @@ namespace ProjectsTM.Service
             workItems.Remove(selected);
             workItems.Add(d1);
             workItems.Add(d2);
-        }
-
-        public void Replace(object workItem, WorkItem newWi)
-        {
-            throw new NotImplementedException();
         }
 
         public void Replace(WorkItems before, WorkItems after)

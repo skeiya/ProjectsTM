@@ -24,7 +24,7 @@ namespace ProjectsTM.UI.TaskList
             this.Width += offset + gridControl1.VScrollBarWidth;
             this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
             this.FormClosed += TaskListForm_FormClosed;
-            this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged; 
+            this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
         }
 
         private void CheckBoxShowMS_CheckedChanged(object sender, System.EventArgs e)

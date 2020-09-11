@@ -30,7 +30,7 @@ namespace ProjectsTM.ViewModel
         public string WorkItem { get; set; } = string.Empty;
         public bool IsFreeTimeMemberShow { get; set; } = true;
         public string MSFilterSearchPattern { get; set; } = "ALL";
-        public static Filter All(ViewData viewData) => new Filter(null, null, viewData != null? viewData.Original.Members:new Members(), false, "ALL");
+        public static Filter All(ViewData viewData) => new Filter(null, null, viewData != null ? viewData.Original.Members : new Members(), false, "ALL");
 
         public bool Equals(Filter other)
         {
