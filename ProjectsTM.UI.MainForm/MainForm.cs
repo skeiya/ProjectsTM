@@ -89,6 +89,18 @@ namespace ProjectsTM.UI.MainForm
 
         private async void FileIOService_FileOpened(object sender, string filePath)
         {
+            LoadAssociatedFiles(filePath);
+            await TriggerRemoteChangeCheck(filePath);
+        }
+
+        private void LoadAssociatedFiles(string filePath)
+        {
+            LoadFilterComboboxFile(filePath);
+            LoadPatternHistoryFile(filePath);
+        }
+
+        private void LoadPatternHistoryFile(string filePath)
+        {
             var path = Path.Combine(Path.GetDirectoryName(filePath), "PatternHistory.xml");
             if (File.Exists(path))
             {
@@ -102,13 +114,15 @@ namespace ProjectsTM.UI.MainForm
                     }
                 }
             }
+        }
 
-            await TriggerRemoteChangeCheck(filePath);
+        private void LoadFilterComboboxFile(string filePath)
+        {
+            _filterComboBoxService.Initialize(filePath);
         }
 
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
-            _filterComboBoxService.Initialize(filePath);
             var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
             if (isRemoteBranchAppDataNew) isRemoteBranchAppDataNew = !GitRepositoryService.TryAutoPull(filePath);
             UpdateTitlebarText(isRemoteBranchAppDataNew);
