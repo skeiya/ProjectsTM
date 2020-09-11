@@ -66,11 +66,6 @@ namespace ProjectsTM.Service
             workItems.Add(d2);
         }
 
-        public void Replace(object workItem, WorkItem newWi)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Replace(WorkItems before, WorkItems after)
         {
             _viewData.Original.WorkItems.Remove(before);
