@@ -123,9 +123,12 @@ namespace ProjectsTM.UI.MainForm
 
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
-            var isRemoteBranchAppDataNew = await GitRepositoryService.CheckRemoteBranchAppDataFile(filePath);
-            if (isRemoteBranchAppDataNew) isRemoteBranchAppDataNew = !GitRepositoryService.TryAutoPull(filePath);
-            UpdateTitlebarText(isRemoteBranchAppDataNew);
+            var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath);
+            if (hasUnmergedRemoteCommit)
+            {
+                if (GitRepositoryService.TryAutoPull(filePath)) hasUnmergedRemoteCommit = false;
+            }
+            UpdateTitlebarText(hasUnmergedRemoteCommit);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
