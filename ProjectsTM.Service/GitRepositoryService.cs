@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjectsTM.Service
@@ -12,9 +11,9 @@ namespace ProjectsTM.Service
             {
                 if (!IsActive()) return false;
                 if (string.IsNullOrEmpty(filePath)) return false;
-                var gitRepoPath = SearchGitRepo(filePath);
-                if (string.IsNullOrEmpty(gitRepoPath)) return false;
-                return IsThereUnmergedRemoteCommits(gitRepoPath);
+                var repo = GitCmdRepository.FromFilePath(filePath);
+                if (repo == null) return false;
+                return IsThereUnmergedRemoteCommits(repo);
             }
             );
             return task;
@@ -22,17 +21,17 @@ namespace ProjectsTM.Service
 
         public static bool IsActive()
         {
-            return !string.IsNullOrEmpty(GitCmd.GetVersion());
+            return !string.IsNullOrEmpty(GitCmdRepository.GetVersion());
         }
 
-        private static bool IsThereUnmergedRemoteCommits(string gitRepoPath)
+        private static bool IsThereUnmergedRemoteCommits(GitCmdRepository repo)
         {
-            GitCmd.Fetch(gitRepoPath);
-            var branchName = GitCmd.GetCurrentBranchName(gitRepoPath);
+            repo.Fetch();
+            var branchName = repo.GetCurrentBranchName();
             if (string.IsNullOrEmpty(branchName)) return false;
-            var remoteName = GitCmd.GetRemoteBranchName(gitRepoPath);
+            var remoteName = repo.GetRemoteBranchName();
             if (string.IsNullOrEmpty(remoteName)) return false;
-            var diff = GitCmd.GetDifferenceBitweenBranches(gitRepoPath, branchName, remoteName);
+            var diff = repo.GetDifferenceBitweenBranches(branchName, remoteName);
             return 0 < ParseCommitsCount(diff);
         }
 
@@ -42,32 +41,24 @@ namespace ProjectsTM.Service
             return matches.Count;
         }
 
-        private static string SearchGitRepo(string path)
-        {
-            var dir = Path.GetDirectoryName(path);
-            if (dir == null) return string.Empty;
-            return GitCmd.GetRepositoryPath(dir);
-        }
-
         public static bool TryAutoPull(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath)) return false;
-            var gitRepoPath = SearchGitRepo(filePath);
-            if (string.IsNullOrEmpty(gitRepoPath)) return false;
-            if (IsThereAnyLocalChange(gitRepoPath)) return false;
-            return GitCmd.Pull(gitRepoPath);
+            var repo = GitCmdRepository.FromFilePath(filePath);
+            if (repo == null) return false;
+            if (IsThereAnyLocalChange(repo)) return false;
+            return repo.Pull();
         }
 
-        private static bool IsThereAnyLocalChange(string gitRepoPath)
+        private static bool IsThereAnyLocalChange(GitCmdRepository repo)
         {
-            GitCmd.Fetch(gitRepoPath);
-            var branchName = GitCmd.GetCurrentBranchName(gitRepoPath);
+            repo.Fetch();
+            var branchName = repo.GetCurrentBranchName();
             if (string.IsNullOrEmpty(branchName)) return false;
-            var remoteName = GitCmd.GetRemoteBranchName(gitRepoPath);
+            var remoteName = repo.GetRemoteBranchName();
             if (string.IsNullOrEmpty(remoteName)) return false;
-            var diff = GitCmd.GetDifferenceBitweenBranches(gitRepoPath, remoteName, branchName);
+            var diff = repo.GetDifferenceBitweenBranches(remoteName, branchName);
             if (0 < ParseCommitsCount(diff)) return true;
-            return !string.IsNullOrEmpty(GitCmd.Status(gitRepoPath));
+            return !string.IsNullOrEmpty(repo.Status());
         }
     }
 }
