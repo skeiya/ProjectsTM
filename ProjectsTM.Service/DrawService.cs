@@ -219,13 +219,12 @@ namespace ProjectsTM.Service
 
         private static MileStones GetMileStonesWithToday(ViewData viewData)
         {
-            var result = new MileStones();
+            var result = viewData.Original.MileStones.Clone();
             var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
                 result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));
             }
-            foreach (var m in viewData.Original.MileStones) result.Add(m.Clone());
             return result;
         }
 
@@ -254,7 +253,7 @@ namespace ProjectsTM.Service
                         var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
                         g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
                         g.DrawString(m.Name, font, brush, x, y - 10);
-                        if (!m.Name.Equals("Today")) x += (int)g.MeasureString(m.Name.ToString(), font).Width;
+                        x += (int) g.MeasureString(m.Name.ToString(), font).Width;
                     }
                 }
             }
