@@ -219,12 +219,13 @@ namespace ProjectsTM.Service
 
         private static MileStones GetMileStonesWithToday(ViewData viewData)
         {
-            var result = viewData.Original.MileStones.Clone();
+            var result = new MileStones();
             var today = CallenderDay.Today;
             if (viewData.Original.Callender.Days.Contains(today))
             {
                 result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));
             }
+            foreach (var m in viewData.Original.MileStones) result.Add(m.Clone());
             return result;
         }
 
@@ -241,15 +242,20 @@ namespace ProjectsTM.Service
             var visibleArea = _grid.GetVisibleRect(false, false);
             foreach (var r in range.Rows)
             {
-                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (DoesFilterSuppressMileStoneDraw(m)) continue;
-                var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
-                if (!rect.HasValue) continue;
-                using (var brush = new SolidBrush(m.Color))
+                var mSs = mileStones.Where((i) => i.Day.Equals(_grid.Row2Day(r)));
+                int x = 0;
+                foreach (var m in mSs)
                 {
-                    var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
-                    g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
-                    g.DrawString(m.Name, font, brush, 0, y - 10);
+                    if (DoesFilterSuppressMileStoneDraw(m)) continue;
+                    var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
+                    if (!rect.HasValue) continue;
+                    using (var brush = new SolidBrush(m.Color))
+                    {
+                        var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
+                        g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
+                        g.DrawString(m.Name, font, brush, x, y - 10);
+                        if (!m.Name.Equals("Today")) x += (int)g.MeasureString(m.Name.ToString(), font).Width;
+                    }
                 }
             }
         }
