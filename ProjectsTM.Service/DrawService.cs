@@ -241,15 +241,18 @@ namespace ProjectsTM.Service
             var visibleArea = _grid.GetVisibleRect(false, false);
             foreach (var r in range.Rows)
             {
-                var m = mileStones.FirstOrDefault((i) => i.Day.Equals(_grid.Row2Day(r)));
-                if (DoesFilterSuppressMileStoneDraw(m)) continue;
-                var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
-                if (!rect.HasValue) continue;
-                using (var brush = new SolidBrush(m.Color))
+                var mSs = mileStones.Where((i) => i.Day.Equals(_grid.Row2Day(r)));
+                foreach (var m in mSs)
                 {
-                    var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
-                    g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
-                    g.DrawString(m.Name, font, brush, 0, y - 10);
+                    if (DoesFilterSuppressMileStoneDraw(m)) continue;
+                    var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
+                    if (!rect.HasValue) continue;
+                    using (var brush = new SolidBrush(m.Color))
+                    {
+                        var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
+                        g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
+                        g.DrawString(m.Name, font, brush, 0, y - 10);
+                    }
                 }
             }
         }
