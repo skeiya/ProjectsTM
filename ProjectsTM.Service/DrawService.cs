@@ -242,6 +242,7 @@ namespace ProjectsTM.Service
             foreach (var r in range.Rows)
             {
                 var mSs = mileStones.Where((i) => i.Day.Equals(_grid.Row2Day(r)));
+                int x = 0;
                 foreach (var m in mSs)
                 {
                     if (DoesFilterSuppressMileStoneDraw(m)) continue;
@@ -251,7 +252,8 @@ namespace ProjectsTM.Service
                     {
                         var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
                         g.FillRectangle(brush, 0, y, _grid.VisibleSize.Width, 1);
-                        g.DrawString(m.Name, font, brush, 0, y - 10);
+                        g.DrawString(m.Name, font, brush, x, y - 10);
+                        x += (int) g.MeasureString(m.Name.ToString(), font).Width;
                     }
                 }
             }
