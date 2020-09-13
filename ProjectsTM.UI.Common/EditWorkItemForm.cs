@@ -150,7 +150,7 @@ namespace ProjectsTM.UI.Common
         {
             var wi = CreateWorkItem(_callender);
             if (wi == null) return;
-            using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
+            using (var dlg = new EditStringForm(Regex.Escape(wi.ToString())))
             {
                 dlg.Text = "正規表現エスケープ";
                 dlg.ReadOnly = true;

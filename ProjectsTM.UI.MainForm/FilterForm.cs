@@ -271,7 +271,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void buttonGenerateFromWorkItems_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMemberForm(""))
+            using (var dlg = new EditStringForm(""))
             {
                 dlg.Text = "作業項目の正規表現";
                 if (dlg.ShowDialog() != DialogResult.OK) return;
