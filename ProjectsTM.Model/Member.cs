@@ -36,7 +36,7 @@ namespace ProjectsTM.Model
 
         internal Member Clone()
         {
-            return Member.Parse(ToSerializeString());
+            return Member.Parse(this.ToSerializeString(), this.State);
         }
 
         /// <summary>
@@ -44,11 +44,12 @@ namespace ProjectsTM.Model
         /// </summary>
         public Member() { }
 
-        public Member(string lastName, string firstName, string company)
+        public Member(string lastName, string firstName, string company, MemberState state)
         {
             FirstName = firstName;
             LastName = lastName;
             Company = company;
+            State = state;
         }
 
         public string DisplayName
@@ -65,13 +66,14 @@ namespace ProjectsTM.Model
             }
         }
 
-        public void EditApply(string text)
+        public void EditApply(string text, MemberState state)
         {
-            var m = Member.Parse(text);
+            var m = Member.Parse(text, state);
             if (m == null) return;
             LastName = m.LastName;
             FirstName = m.FirstName;
             Company = m.Company;
+            State = m.State;
         }
 
         public string ToSerializeString()
@@ -81,11 +83,11 @@ namespace ProjectsTM.Model
 
         public string NaturalString => LastName + " " + FirstName + "(" + Company + ")";
 
-        public static Member Parse(string text)
+        public static Member Parse(string text, MemberState state)
         {
             var words = text.Split('/');
             if (words.Length < 3) return null;
-            return new Member(words[0], words[1], words[2]);
+            return new Member(words[0], words[1], words[2], state);
         }
 
         public override string ToString()

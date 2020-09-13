@@ -64,7 +64,7 @@ namespace ProjectsTM.UI.Common
 
         private bool ValidateAssignedMember()
         {
-            return _members.Contains(Member.Parse(textBoxMember.Text));
+            return _members.Contains(Member.Parse(textBoxMember.Text, Member.MemberState.Woking));
         }
 
         bool CheckEdit()
@@ -92,7 +92,7 @@ namespace ProjectsTM.UI.Common
 
         private Member GetAssignedMember()
         {
-            return Member.Parse(textBoxMember.Text);
+            return Member.Parse(textBoxMember.Text, Member.MemberState.Woking);
         }
 
         private static Period GetPeriod(Callender callender, string fromText, string toText)

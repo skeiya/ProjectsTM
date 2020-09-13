@@ -131,7 +131,7 @@ namespace ProjectsTM.UI.MainForm
                     "↑" + ms.Name,
                     new Tags(new List<string>() { "" }),
                     new Period(ms.Day, ms.Day),
-                    new Member(string.Empty, string.Empty, string.Empty),
+                    new Member(string.Empty, string.Empty, string.Empty, Member.MemberState.Woking),
                     TaskState.Active,
                     string.Empty
                     );

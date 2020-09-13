@@ -55,16 +55,17 @@ namespace ProjectsTM.UI.MainForm
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
-            using (var dlg = new EditMemberForm(m.ToSerializeString()))
+            using (var dlg = new EditMemberForm(m.ToSerializeString(), m.State))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var after = Member.Parse(dlg.EditText);
+                var state = (Member.MemberState)dlg.Selected;
+                var after = Member.Parse(dlg.EditText, state);
                 if (after == null) return;
                 foreach (var w in _appData.WorkItems)
                 {
                     if (m.Equals(w.AssignedMember)) w.AssignedMember = after;
                 }
-                m.EditApply(dlg.EditText);
+                m.EditApply(dlg.EditText, state);
             }
             UpdateList();
         }
@@ -76,10 +77,10 @@ namespace ProjectsTM.UI.MainForm
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMemberForm((new Member()).ToSerializeString()))
+            using (var dlg = new EditMemberForm((new Member()).ToSerializeString(), Member.MemberState.Woking))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var after = Member.Parse(dlg.EditText);
+                var after = Member.Parse(dlg.EditText, (Member.MemberState)dlg.Selected);
                 if (after == null) return;
                 _appData.Members.Add(after);
             }
