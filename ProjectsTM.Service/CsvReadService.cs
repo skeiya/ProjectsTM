@@ -42,9 +42,9 @@ namespace ProjectsTM.Service
             switch (groups.Count)
             {
                 case 2:
-                    return new Member(groups[1].Value, "", "", Member.MemberState.Woking); //TODO:matsukage mada
+                    return new Member(groups[1].Value, "", "", Member.MemberState.Woking);
                 case 3:
-                    return new Member(groups[2].Value, "", groups[1].Value, Member.MemberState.Woking); //TODO:matsukage mada
+                    return new Member(groups[2].Value, "", groups[1].Value, Member.MemberState.Woking);
                 default:
                     break;
             }
