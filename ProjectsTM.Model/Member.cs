@@ -26,6 +26,14 @@ namespace ProjectsTM.Model
             }
         }
 
+        public MemberState State { get; set; } = MemberState.Woking;
+
+        public enum MemberState
+        {
+            Woking,
+            Retirement,
+        }
+
         internal Member Clone()
         {
             return Member.Parse(ToSerializeString());
