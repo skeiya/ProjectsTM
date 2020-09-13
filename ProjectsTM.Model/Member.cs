@@ -31,7 +31,7 @@ namespace ProjectsTM.Model
         public enum MemberState
         {
             Woking,
-            Retirement,
+            Retired,
         }
 
         internal Member Clone()
