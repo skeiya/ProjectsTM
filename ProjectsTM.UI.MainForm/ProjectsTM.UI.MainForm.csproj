@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -126,6 +129,7 @@
     <Compile Include="SearchWorkitemForm.Designer.cs">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SizeInfoManager.cs" />
     <Compile Include="VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +217,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\icon_129150_48.png" />
   </ItemGroup>
   <ItemGroup>
