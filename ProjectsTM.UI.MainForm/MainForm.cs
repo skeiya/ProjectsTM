@@ -28,6 +28,7 @@ namespace ProjectsTM.UI.MainForm
         private PatternHistory _patternHistory = new PatternHistory();
         private FormSize _formSize = new FormSize();
         private Timer _1minutTimer = new Timer();
+        private SizeInfoManager _sizeInfoManager;
         public MainForm()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace ProjectsTM.UI.MainForm
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
+            _sizeInfoManager = new SizeInfoManager();
             statusStrip1.Items.Add("");
             InitializeTaskDrawArea();
             InitializeViewData();
@@ -44,6 +46,7 @@ namespace ProjectsTM.UI.MainForm
             FileIOService.FileWatchChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
             FileIOService.FileOpened += FileIOService_FileOpened;
+            Load += MainForm_Load;
             if (GitRepositoryService.IsActive())
             {
                 _1minutTimer.Interval = 60 * 1000; // 1s間隔
@@ -56,6 +59,14 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            _sizeInfoManager.CheckSourceFile();
+            var sizeInfo = _sizeInfoManager.LoadSizeInfo();
+            Height = sizeInfo.height;
+            Width = sizeInfo.width;
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -173,6 +184,7 @@ namespace ProjectsTM.UI.MainForm
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             if (!FileIOService.Save(_viewData.Original, ShowOverwrapCheck)) e.Cancel = true;
+            
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -187,6 +199,7 @@ namespace ProjectsTM.UI.MainForm
                 FormSize = _formSize
             };
             UserSettingUIService.Save(UserSettingPath, setting);
+            _sizeInfoManager.SaveSizeInfo(Height, Width);
         }
 
         private void InitializeViewData()
