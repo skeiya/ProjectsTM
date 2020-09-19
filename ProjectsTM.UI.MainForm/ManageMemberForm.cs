@@ -55,7 +55,7 @@ namespace ProjectsTM.UI.MainForm
         {
             var m = listBox1.SelectedItem as Member;
             if (m == null) return;
-            using (var dlg = new EditMemberForm(m.ToSerializeString(), m.State))
+            using (var dlg = new EditMemberForm(m.Clone()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var state = (Member.MemberState)dlg.Selected;
@@ -77,7 +77,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dlg = new EditMemberForm((new Member()).ToSerializeString(), Member.MemberState.Woking))
+            using (var dlg = new EditMemberForm(new Member()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var after = Member.Parse(dlg.EditText, (Member.MemberState)dlg.Selected);

@@ -34,7 +34,7 @@ namespace ProjectsTM.Model
             Retired,
         }
 
-        internal Member Clone()
+        public Member Clone()
         {
             return Member.Parse(this.ToSerializeString(), this.State);
         }

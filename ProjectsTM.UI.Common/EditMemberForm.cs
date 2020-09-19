@@ -6,15 +6,15 @@ namespace ProjectsTM.UI.Common
 {
     public partial class EditMemberForm : Form
     {
-        public EditMemberForm(string value, Member.MemberState state)
+        public EditMemberForm(Member m)
         {
             InitializeComponent();
-            textBox1.Text = value;
+            textBox1.Text = m.ToSerializeString();
             foreach(var s in System.Enum.GetValues(typeof(Member.MemberState)))
             {
                 comboBox1.Items.Add(s.ToString());
             }
-            comboBox1.SelectedIndex = (int)state;
+            comboBox1.SelectedIndex = (int)m.State;
         }
 
         public string EditText => textBox1.Text;
