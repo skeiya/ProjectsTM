@@ -97,7 +97,7 @@ namespace ProjectsTM.ViewModel
 
         public List<Member> CreateAllMembersList()
         {
-            return this.Original.Members.Where(item => item.State == Member.MemberState.Woking).ToList();
+            return this.Original.Members.Where(item => item.State == MemberState.Woking).ToList();
         }
 
         public WorkItem PickFilterdWorkItem(Member m, CallenderDay d)

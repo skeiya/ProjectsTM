@@ -40,7 +40,7 @@ namespace ProjectsTM.Service
             appData.Members = new Members();
             for (var member = 00; member < 100; member++)
             {
-                appData.Members.Add(new Member(member.ToString(), (100 - member).ToString(), "A", Member.MemberState.Woking));
+                appData.Members.Add(new Member(member.ToString(), (100 - member).ToString(), "A", MemberState.Woking));
             }
             appData.WorkItems = new WorkItems();
             var p = new Project("PRJ");

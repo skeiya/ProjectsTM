@@ -52,6 +52,7 @@
     <Compile Include="FormSize.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Members.cs" />
+    <Compile Include="MemberState.cs" />
     <Compile Include="MembersWorkItems.cs" />
     <Compile Include="MileStone.cs" />
     <Compile Include="MileStoneFilter.cs" />

@@ -37,7 +37,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestTeamMemberFormat()
         {
-            var member = new Member("下村", "圭矢", "AA", Member.MemberState.Woking);
+            var member = new Member("下村", "圭矢", "AA", MemberState.Woking);
             Assert.AreEqual<string>("下村 圭矢(AA)", member.ToString());
         }
 
@@ -55,7 +55,7 @@ namespace UnitTestProject1
         public void TestWorkItemFormat()
         {
             var callender = new Callender();
-            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C", Member.MemberState.Woking), TaskState.Active, "TestDescription");
+            var wi = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C", MemberState.Woking), TaskState.Active, "TestDescription");
             callender.Add(new CallenderDay(2019, 3, 20));
             callender.Add(new CallenderDay(2019, 3, 21));
             callender.Add(new CallenderDay(2019, 3, 22));
@@ -98,8 +98,8 @@ namespace UnitTestProject1
         private static AppData BuildDummyData()
         {
             var orgApp = new AppData();
-            var ichiro = new Member("鈴木", "イチロー", "マリナーズ", Member.MemberState.Woking);
-            var gozzila = new Member("松井", "秀喜", "ヤンキース", Member.MemberState.Woking);
+            var ichiro = new Member("鈴木", "イチロー", "マリナーズ", MemberState.Woking);
+            var gozzila = new Member("松井", "秀喜", "ヤンキース", MemberState.Woking);
             orgApp.Members.Add(ichiro);
             orgApp.Members.Add(gozzila);
             orgApp.Callender.Add(new CallenderDay(2018, 4, 1));
@@ -156,7 +156,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void DesirializeReternCode()
         {
-            var w = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C", Member.MemberState.Woking), TaskState.Active, "TestDescription");
+            var w = new WorkItem(new Project("Z123"), "仕様検討", new Tags(new List<string> { "a", "b" }), new Period(new CallenderDay(2019, 3, 20), new CallenderDay(2019, 3, 22)), new Member("A", "B", "C", MemberState.Woking), TaskState.Active, "TestDescription");
             w.Description = "aaa" + Environment.NewLine + "bbb";
             var c = w.Clone();
             Assert.AreEqual(w.Description, c.Description);

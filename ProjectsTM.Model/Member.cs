@@ -28,12 +28,6 @@ namespace ProjectsTM.Model
 
         public MemberState State { get; set; } = MemberState.Woking;
 
-        public enum MemberState
-        {
-            Woking,
-            Retired,
-        }
-
         public Member Clone()
         {
             return Member.Parse(this.ToSerializeString(), this.State);

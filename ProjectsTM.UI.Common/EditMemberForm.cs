@@ -10,7 +10,7 @@ namespace ProjectsTM.UI.Common
         {
             InitializeComponent();
             textBox1.Text = m.ToSerializeString();
-            foreach(var s in System.Enum.GetValues(typeof(Member.MemberState)))
+            foreach(var s in System.Enum.GetValues(typeof(MemberState)))
             {
                 comboBox1.Items.Add(s.ToString());
             }

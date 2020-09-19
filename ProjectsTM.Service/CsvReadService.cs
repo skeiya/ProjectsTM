@@ -42,13 +42,13 @@ namespace ProjectsTM.Service
             switch (groups.Count)
             {
                 case 2:
-                    return new Member(groups[1].Value, "", "", Member.MemberState.Woking);
+                    return new Member(groups[1].Value, "", "", MemberState.Woking);
                 case 3:
-                    return new Member(groups[2].Value, "", groups[1].Value, Member.MemberState.Woking);
+                    return new Member(groups[2].Value, "", groups[1].Value, MemberState.Woking);
                 default:
                     break;
             }
-            return new Member("", "", "", Member.MemberState.Woking);
+            return new Member("", "", "", MemberState.Woking);
         }
 
         private static Period ParsePeriod(string from, string to)
