@@ -33,7 +33,7 @@ namespace ProjectsTM.Model
             set { Tags = Tags.Parse(value); }
         }
 
-        private TaskState _state;
+        private TaskState _state = TaskState.Active;
         public TaskState State
         {
             get { return _state; }
