@@ -58,7 +58,7 @@ namespace ProjectsTM.UI.MainForm
             using (var dlg = new EditMemberForm(m.Clone()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var state = (Member.MemberState)dlg.Selected;
+                var state = (MemberState)dlg.Selected;
                 var after = Member.Parse(dlg.EditText, state);
                 if (after == null) return;
                 foreach (var w in _appData.WorkItems)
@@ -80,7 +80,7 @@ namespace ProjectsTM.UI.MainForm
             using (var dlg = new EditMemberForm(new Member()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var after = Member.Parse(dlg.EditText, (Member.MemberState)dlg.Selected);
+                var after = Member.Parse(dlg.EditText, (MemberState)dlg.Selected);
                 if (after == null) return;
                 _appData.Members.Add(after);
             }
