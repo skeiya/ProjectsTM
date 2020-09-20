@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Xml.Linq;
 
 namespace ProjectsTM.UI.MainForm
@@ -9,17 +9,26 @@ namespace ProjectsTM.UI.MainForm
     {
         private static readonly int DEFAULT_HEIGHT = 250;
         private static readonly int DEFAULT_WIDTH = 250;
-        public static Size Load(string userSettingPath)
+        public static Size Load(string sizeInfoPath)
         {
-            var xml = XElement.Load(userSettingPath);
-            XElement sizeInfo;
+            XDocument xDocument;
+            if (!File.Exists(sizeInfoPath))
+                {
+                    xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
+                        new XElement("MainFormSize",
+                            new XElement("height", DEFAULT_WIDTH.ToString()),
+                            new XElement("width", DEFAULT_HEIGHT.ToString())
+                            ));
+
+                    xDocument.Save(sizeInfoPath);
+                }
+            var xml = XElement.Load(sizeInfoPath);
             string heightStr;
             string widthStr;
             try
             {
-                sizeInfo = xml.Elements("MainFormSize").Select(b => b).Single();
-                heightStr = sizeInfo.Element("height").Value;
-                widthStr = sizeInfo.Element("width").Value;
+                heightStr = xml.Element("height").Value;
+                widthStr = xml.Element("width").Value;
             }
             catch
             {
@@ -32,15 +41,14 @@ namespace ProjectsTM.UI.MainForm
             }
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
-        public static void Save(int height, int width, string useSettingPath)
+        public static void Save(int height, int width, string sizeInfoPath)
         {
-            var xml = XElement.Load(useSettingPath);
-            XElement datas = new XElement("MainFormSize",
-                            new XElement("height", height.ToString()),
-                            new XElement("width", width.ToString()));
-            xml.Add(datas);
+            var xml = XElement.Load(sizeInfoPath);
 
-            xml.Save(useSettingPath);
+            xml.Element("height").Value = height.ToString();
+            xml.Element("width").Value = width.ToString();
+
+            xml.Save(sizeInfoPath);
         }
 
     }
