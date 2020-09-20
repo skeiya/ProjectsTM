@@ -171,6 +171,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RsExportSelectForm.resx">
       <DependentUpon>RsExportSelectForm.cs</DependentUpon>
@@ -211,9 +212,6 @@
       <Project>{8e66a8da-c23e-4d86-a83f-ab8c2574e129}</Project>
       <Name>ProjectsTM.ViewModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon_129150_48.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-filter-24.png" />

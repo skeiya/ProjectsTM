@@ -189,9 +189,9 @@ namespace FreeGridControl
             set { hScrollBar.Value = value; }
         }
 
-        private void DrawGrid(Graphics graphics, bool isPrint)
+        private void DrawGrid(Graphics graphics, bool isAllDraw)
         {
-            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
+            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isAllDraw));
         }
 
         public RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount)
@@ -312,7 +312,7 @@ namespace FreeGridControl
 
         public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
 
-        public void Print(Graphics graphics)
+        public void OutputImage(Graphics graphics)
         {
             DrawGrid(graphics, true);
         }

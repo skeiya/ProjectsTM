@@ -82,23 +82,6 @@ namespace ProjectsTM.UI.MainForm
             return neighbers;
         }
 
-
-        internal void AdjustForPrint(Rectangle printRect)
-        {
-            var vRatio = printRect.Height / (float)GridHeight;
-            var hRatio = printRect.Width / (float)GridWidth;
-            LockUpdate = true;
-            for (var c = 0; c < ColCount; c++)
-            {
-                ColWidths[c] = (int)(ColWidths[c] * hRatio);
-            }
-            for (var r = 0; r < RowCount; r++)
-            {
-                RowHeights[r] = (int)(RowHeights[r] * vRatio);
-            }
-            LockUpdate = false;
-        }
-
         private void ApplyDetailSetting()
         {
             var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
@@ -317,7 +300,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
-            _drawService.Draw(e.Graphics, e.IsPrint);
+            _drawService.Draw(e.Graphics, e.IsAllDraw);
         }
 
         public void DecRatio()

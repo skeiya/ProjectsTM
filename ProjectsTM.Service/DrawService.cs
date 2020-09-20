@@ -42,7 +42,7 @@ namespace ProjectsTM.Service
             this._font = font;
         }
 
-        public void Draw(Graphics g, bool isPrint)
+        public void Draw(Graphics g, bool isAllDraw)
         {
             if (_redrawLock) return;
             DrawImageBufferBase();
@@ -50,7 +50,7 @@ namespace ProjectsTM.Service
             {
                 var transferGraphics = Graphics.FromImage(transferImage);
                 TransferImage(transferGraphics);
-                DrawAroundAndOverlay(isPrint, transferGraphics);
+                DrawAroundAndOverlay(isAllDraw, transferGraphics);
                 TransferScale(g, transferImage);
             }
         }
@@ -62,7 +62,7 @@ namespace ProjectsTM.Service
             g.DrawImage(transferImage, dst, src, GraphicsUnit.Pixel);
         }
 
-        private void DrawAroundAndOverlay(bool isPrint, Graphics transferGraphics)
+        private void DrawAroundAndOverlay(bool isAllDraw, Graphics transferGraphics)
         {
             var g = transferGraphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -70,7 +70,7 @@ namespace ProjectsTM.Service
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
             DrawCalender(font, g);
             DrawMember(font, g);
-            DrawEdgeWorkItems(font, g, isPrint);
+            DrawEdgeWorkItems(font, g, isAllDraw);
             DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
             DrawSelectedWorkItemBound(g, font);
             DrawRangeSelectBound(g);
@@ -96,23 +96,23 @@ namespace ProjectsTM.Service
             return _viewData.Selected.Unique.Name == wi.Name;
         }
 
-        private void DrawEdgeWorkItems(Font font, Graphics g, bool isPrint)
+        private void DrawEdgeWorkItems(Font font, Graphics g, bool isAllDraw)
         {
             var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
-                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isPrint)))
+                foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isAllDraw)))
                 {
                     DrawWorkItemClient(wi, Pens.Black, font, g, members);
                 }
             }
         }
 
-        private static int GetRowCount(RowColRange range, ColIndex c, bool isPrint)
+        private static int GetRowCount(RowColRange range, ColIndex c, bool isAllDraw)
         {
-            if (isPrint) return range.RowCount;
+            if (isAllDraw) return range.RowCount;
             return c.Equals(range.LeftCol) || c.Equals(range.Cols.Last()) ? range.RowCount : 1;
         }
 

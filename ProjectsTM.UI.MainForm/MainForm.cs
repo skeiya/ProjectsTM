@@ -20,7 +20,6 @@ namespace ProjectsTM.UI.MainForm
         private ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private SearchWorkitemForm SearchForm { get; set; }
         private TaskListForm TaskListForm { get; set; }
-        private PrintService PrintService { get; set; }
         private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
@@ -33,7 +32,6 @@ namespace ProjectsTM.UI.MainForm
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            PrintService = new PrintService(_viewData, workItemGrid1.Font, Print);
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
@@ -74,17 +72,6 @@ namespace ProjectsTM.UI.MainForm
                 return;
             }
             this.Text = "ProjectsTM";
-        }
-
-        private void Print(PrintPageEventArgs e)
-        {
-            using (var grid = new WorkItemGrid())
-            {
-                grid.Size = e.PageBounds.Size;
-                grid.Initialize(_viewData);
-                grid.AdjustForPrint(e.PageBounds);
-                grid.Print(e.Graphics);
-            }
         }
 
         private async void FileIOService_FileOpened(object sender, string filePath)
@@ -283,10 +270,26 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
             _viewData.Selected = null;
-            PrintService.Print();
+            using (var grid = new WorkItemGrid())
+            {
+                var size = new Size(workItemGrid1.GridWidth, workItemGrid1.GridHeight);
+                grid.Size = size;
+                grid.Initialize(_viewData);
+                using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+                {
+                    var g = Graphics.FromImage(bmp);
+                    grid.OutputImage(g);
+                    using (var dlg = new SaveFileDialog())
+                    {
+                        dlg.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
+                        if (dlg.ShowDialog() != DialogResult.OK) return;
+                        bmp.Save(dlg.FileName);
+                    }
+                }
+            }
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)

@@ -4,12 +4,12 @@ namespace FreeGridControl
 {
     public class DrawNormalAreaEventArgs
     {
-        public DrawNormalAreaEventArgs(Graphics graphics, bool isPrint)
+        public DrawNormalAreaEventArgs(Graphics graphics, bool isAllDraw)
         {
             Graphics = graphics;
-            IsPrint = isPrint;
+            IsAllDraw = isAllDraw;
         }
         public Graphics Graphics { get; set; }
-        public bool IsPrint { get; }
+        public bool IsAllDraw { get; }
     }
 }
