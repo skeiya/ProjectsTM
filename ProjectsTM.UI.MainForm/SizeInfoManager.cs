@@ -1,49 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Drawing;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.UI.MainForm
 {
-    class SizeInfoManager
+    static class SizeInfoManager
     {
-        private readonly int DEFAULT_HEIGHT = 250;
-        private readonly int DEFAULT_WIDTH = 250;
-        private readonly string _dirPath = @".\Resource";
-        private readonly string _filePath = @".\Resource\sizeInfo.txt";
-        public void CheckSourceFile()
+        private static readonly int DEFAULT_HEIGHT = 250;
+        private static readonly int DEFAULT_WIDTH = 250;
+        public static Size Load(string userSettingPath)
         {
-            if (!Directory.Exists(_dirPath))
+            var xml = XElement.Load(userSettingPath);
+            XElement sizeInfo;
+            string heightStr;
+            string widthStr;
+            try
             {
-                Directory.CreateDirectory(_dirPath);
+                sizeInfo = xml.Elements("MainFormSize").Select(b => b).Single();
+                heightStr = sizeInfo.Element("height").Value;
+                widthStr = sizeInfo.Element("width").Value;
             }
-            if (!File.Exists(_filePath))
+            catch
             {
-                using (StreamWriter writer = File.CreateText(_filePath))
-                {
-                    writer.WriteLine(DEFAULT_HEIGHT.ToString());
-                    writer.WriteLine(DEFAULT_WIDTH.ToString());
-                }
+                return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
+            
+            if (Int32.TryParse(widthStr, out int width) && Int32.TryParse(heightStr, out int height))
+            {
+                return new Size(width, height);
+            }
+            return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
-        public void SaveSizeInfo(int height, int width)
+        public static void Save(int height, int width, string useSettingPath)
         {
-            using (var writer = new StreamWriter(_filePath))
-            {
-                writer.WriteLine(height.ToString());
-                writer.WriteLine(width.ToString());
-            }
+            var xml = XElement.Load(useSettingPath);
+            XElement datas = new XElement("MainFormSize",
+                            new XElement("height", height.ToString()),
+                            new XElement("width", width.ToString()));
+            xml.Add(datas);
+
+            xml.Save(useSettingPath);
         }
-        public (int height, int width) LoadSizeInfo()
-        {
-            var info = new List<string>();
-            using (var reader = new StreamReader(_filePath))
-            {
-                while (reader.Peek() != -1)
-                {
-                    info.Add(reader.ReadLine());
-                }
-            }
-            return (Convert.ToInt32(info[0]), Convert.ToInt32(info[1]));
-        }
+
     }
 }
