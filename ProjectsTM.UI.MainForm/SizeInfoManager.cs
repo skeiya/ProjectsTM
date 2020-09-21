@@ -13,15 +13,15 @@ namespace ProjectsTM.UI.MainForm
         {
             XDocument xDocument;
             if (!File.Exists(sizeInfoPath))
-                {
-                    xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
-                        new XElement("MainFormSize",
-                            new XElement("height", DEFAULT_WIDTH.ToString()),
-                            new XElement("width", DEFAULT_HEIGHT.ToString())
-                            ));
+            {
+                xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
+                    new XElement("MainFormSize",
+                        new XElement("height", DEFAULT_WIDTH.ToString()),
+                        new XElement("width", DEFAULT_HEIGHT.ToString())
+                        ));
 
-                    xDocument.Save(sizeInfoPath);
-                }
+                xDocument.Save(sizeInfoPath);
+            }
             var xml = XElement.Load(sizeInfoPath);
             string heightStr;
             string widthStr;
@@ -34,7 +34,7 @@ namespace ProjectsTM.UI.MainForm
             {
                 return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
-            
+
             if (Int32.TryParse(widthStr, out int width) && Int32.TryParse(heightStr, out int height))
             {
                 return new Size(width, height);
