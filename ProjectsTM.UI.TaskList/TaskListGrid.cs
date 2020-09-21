@@ -21,6 +21,7 @@ namespace ProjectsTM.UI.TaskList
         private ViewData _viewData;
         private bool _isShowMS = true;
         private string _pattern;
+        private string _andPattern;
         private WorkItemEditService _editService;
         private List<int> _taskListColWidths;
 
@@ -246,9 +247,10 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths, bool isShowMS)
+        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths, bool isShowMS, string andPattern)
         {
             this._pattern = pattern;
+            this._andPattern = andPattern;
             this._editService = new WorkItemEditService(viewData);
             this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
@@ -433,7 +435,7 @@ namespace ProjectsTM.UI.TaskList
             var audit = GetAuditList();
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
-                if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
+                if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);
                 list.Add(new TaskListItem(wi, GetColor(wi.State, error), false, error));
             }
@@ -442,11 +444,18 @@ namespace ProjectsTM.UI.TaskList
                 foreach (var ms in _viewData.Original.MileStones)
                 {
                     var wi = ConvertWorkItem(ms);
-                    if (_pattern != null && !Regex.IsMatch(wi.ToString(), _pattern)) continue;
+                    if (!IsMatchPattern(wi.ToString())) continue;
                     list.Add(new TaskListItem(wi, ms.Color, true, string.Empty));
                 }
             }
             return list;
+        }
+
+        private bool IsMatchPattern(string target)
+        {
+            if (!string.IsNullOrEmpty(_pattern) && !Regex.IsMatch(target, _pattern)) return false;
+            if (!string.IsNullOrEmpty(_andPattern) && !Regex.IsMatch(target, _andPattern)) return false;
+            return true;
         }
 
         private static WorkItem ConvertWorkItem(MileStone ms)
