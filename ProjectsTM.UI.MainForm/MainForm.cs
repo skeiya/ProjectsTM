@@ -185,9 +185,10 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "UserSetting.xml");
+        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
+        private static string UserSettingPath => Path.Combine(AppConfigDir, "UserSetting.xml");
+        private static string SizeInfoPath => Path.Combine(AppConfigDir, "MainFormSizeInfo.xml");
 
-        private static string SizeInfoPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "MainFormSizeInfo.xml");
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_isDirty) return;
