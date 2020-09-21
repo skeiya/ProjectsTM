@@ -103,6 +103,9 @@ namespace ProjectsTM.UI.TaskList
             else if (KeyState.IsControlDown && (e.KeyCode == Keys.C))
             {
                 CopyToClipboard();
+            }else if(KeyState.IsControlDown && (e.KeyCode == Keys.A))
+            {
+                SelectAll();
             }
         }
 
@@ -175,6 +178,10 @@ namespace ProjectsTM.UI.TaskList
                 selects.Add(l.WorkItem);
             }
             _viewData.Selected = selects;
+        }
+        private void SelectAll()
+        {
+            SelectRange(0, _listItems.Count - 1);
         }
 
         private void SwapIfUpsideDown(ref int from, ref int to)
