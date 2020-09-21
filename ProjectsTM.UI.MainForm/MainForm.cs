@@ -44,6 +44,7 @@ namespace ProjectsTM.UI.MainForm
             FileIOService.FileWatchChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
             FileIOService.FileOpened += FileIOService_FileOpened;
+            Load += MainForm_Load;
             if (GitRepositoryService.IsActive())
             {
                 _1minutTimer.Interval = 60 * 1000; // 1s間隔
@@ -56,6 +57,11 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Size = SizeInfoManager.Load(SizeInfoPath);
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -166,7 +172,9 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "UserSetting.xml");
+        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
+        private static string UserSettingPath => Path.Combine(AppConfigDir, "UserSetting.xml");
+        private static string SizeInfoPath => Path.Combine(AppConfigDir, "MainFormSizeInfo.xml");
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -187,6 +195,7 @@ namespace ProjectsTM.UI.MainForm
                 FormSize = _formSize
             };
             UserSettingUIService.Save(UserSettingPath, setting);
+            SizeInfoManager.Save(Height, Width, SizeInfoPath);
         }
 
         private void InitializeViewData()

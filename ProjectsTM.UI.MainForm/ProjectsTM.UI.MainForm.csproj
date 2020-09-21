@@ -126,6 +126,7 @@
     <Compile Include="SearchWorkitemForm.Designer.cs">
       <DependentUpon>SearchWorkitemForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SizeInfoManager.cs" />
     <Compile Include="VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
