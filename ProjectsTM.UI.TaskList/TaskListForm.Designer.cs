@@ -34,6 +34,8 @@
             this.labelSum = new System.Windows.Forms.Label();
             this.labelErrorCount = new System.Windows.Forms.Label();
             this.checkBoxShowMS = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxAndCondition = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -106,12 +108,33 @@
             this.checkBoxShowMS.Text = "MS表示";
             this.checkBoxShowMS.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(269, 288);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(12, 12);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "&&";
+            // 
+            // textBoxAndCondition
+            // 
+            this.textBoxAndCondition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxAndCondition.Location = new System.Drawing.Point(287, 285);
+            this.textBoxAndCondition.Name = "textBoxAndCondition";
+            this.textBoxAndCondition.Size = new System.Drawing.Size(451, 19);
+            this.textBoxAndCondition.TabIndex = 9;
+            // 
             // TaskListForm
             // 
             this.AcceptButton = this.buttonUpdate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 307);
+            this.Controls.Add(this.textBoxAndCondition);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxShowMS);
             this.Controls.Add(this.labelErrorCount);
             this.Controls.Add(this.labelSum);
@@ -134,5 +157,7 @@
         private System.Windows.Forms.Label labelSum;
         private System.Windows.Forms.Label labelErrorCount;
         private System.Windows.Forms.CheckBox checkBoxShowMS;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxAndCondition;
     }
 }
