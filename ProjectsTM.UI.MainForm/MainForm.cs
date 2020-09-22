@@ -60,7 +60,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Size = SizeInfoManager.Load(SizeInfoPath);
+            Size = FormSizeManager.Load(SizeInfoPath, "MainFormSize");
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -173,7 +173,7 @@ namespace ProjectsTM.UI.MainForm
 
         private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
         private static string UserSettingPath => Path.Combine(AppConfigDir, "UserSetting.xml");
-        private static string SizeInfoPath => Path.Combine(AppConfigDir, "MainFormSizeInfo.xml");
+        private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -194,7 +194,7 @@ namespace ProjectsTM.UI.MainForm
                 FormSize = _formSize
             };
             UserSettingUIService.Save(UserSettingPath, setting);
-            SizeInfoManager.Save(Height, Width, SizeInfoPath);
+            FormSizeManager.Save(Height, Width, SizeInfoPath, "MainFormSize");
         }
 
         private void InitializeViewData()
