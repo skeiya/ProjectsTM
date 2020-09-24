@@ -49,8 +49,8 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateLabelSum()
         {
             var dayCount = gridControl1.GetDayCount();
-            var monthCount = dayCount / 20;
-            labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
+            var monthCount = (dayCount / 20f);
+            labelSum.Text = string.Format("{0}day {1:0.0}人月 ", dayCount, monthCount);
         }
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -66,7 +66,7 @@ namespace ProjectsTM.UI.TaskList
 
         public void Clear()
         {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -82,7 +82,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
         }
     }
 }
