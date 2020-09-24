@@ -6,17 +6,20 @@ using System.Xml.Linq;
 
 namespace ProjectsTM.Service
 {
-    public static class FormSizeManager
+    public static class FormSizeRestoreService
     {
         private static readonly int DEFAULT_HEIGHT = 250;
         private static readonly int DEFAULT_WIDTH = 500;
-        public static Size Load(string sizeInfoPath, string form)
+        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
+        private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
+
+        public static Size Load( string form)
         {
             XDocument xDocument;
-            if (!File.Exists(sizeInfoPath))
+            if (!File.Exists(SizeInfoPath))
             {
                 xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
-                    new XElement("FormSize",
+                        new XElement("FormSize",
                         new XElement("MainFormSize",
                         new XElement("height", DEFAULT_HEIGHT.ToString()),
                         new XElement("width", DEFAULT_WIDTH.ToString())),
@@ -25,10 +28,9 @@ namespace ProjectsTM.Service
                         new XElement("width", DEFAULT_WIDTH.ToString()))
                         ));
 
-                xDocument.Save(sizeInfoPath);
+                xDocument.Save(SizeInfoPath);
             }
-            var xml = XElement.Load(sizeInfoPath);
-
+            var xml = XElement.Load(SizeInfoPath);
             var sizeInfo = xml.Elements(form).Select(b => b).Single();
 
             string heightStr;
@@ -49,16 +51,15 @@ namespace ProjectsTM.Service
             }
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
-        public static void Save(int height, int width, string sizeInfoPath, string form)
+        public static void Save(int height, int width, string form)
         {
-            var xml = XElement.Load(sizeInfoPath);
+            var xml = XElement.Load(SizeInfoPath);
             var sizeInfo = xml.Elements(form).Select(b => b).Single();
 
             sizeInfo.Element("height").Value = height.ToString();
             sizeInfo.Element("width").Value = width.ToString();
 
-            xml.Save(sizeInfoPath);
+            xml.Save(SizeInfoPath);
         }
-
     }
 }

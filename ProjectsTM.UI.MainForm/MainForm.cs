@@ -60,7 +60,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Size = FormSizeManager.Load(SizeInfoPath, "MainFormSize");
+            Size = FormSizeRestoreService.Load("MainFormSize");
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -157,7 +157,7 @@ namespace ProjectsTM.UI.MainForm
         {
             try
             {
-                var setting = UserSettingUIService.Load(UserSettingPath);
+                var setting = UserSettingUIService.Load();
                 _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
@@ -171,9 +171,6 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
-        private static string UserSettingPath => Path.Combine(AppConfigDir, "UserSetting.xml");
-        private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -193,8 +190,8 @@ namespace ProjectsTM.UI.MainForm
                 PatternHistory = _patternHistory,
                 FormSize = _formSize
             };
-            UserSettingUIService.Save(UserSettingPath, setting);
-            FormSizeManager.Save(Height, Width, SizeInfoPath, "MainFormSize");
+            UserSettingUIService.Save(setting);
+            FormSizeRestoreService.Save(Height, Width, "MainFormSize");
         }
 
         private void InitializeViewData()

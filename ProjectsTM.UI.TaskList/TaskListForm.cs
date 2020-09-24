@@ -25,7 +25,7 @@ namespace ProjectsTM.UI.TaskList
             this._formSize = formSize;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
-            this.Size = FormSizeManager.Load(SizeInfoPath, "TaskListFormSize");
+            this.Size = FormSizeRestoreService.Load("TaskListFormSize");
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
         }
@@ -61,7 +61,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 _formSize.TaskListColWidths.Add(gridControl1.ColWidths[idx]);
             }
-            FormSizeManager.Save(Height, Width, SizeInfoPath, "TaskListFormSize");
+            FormSizeRestoreService.Save(Height, Width, "TaskListFormSize");
         }
 
         public void Clear()
