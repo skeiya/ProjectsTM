@@ -13,8 +13,6 @@ namespace ProjectsTM.UI.TaskList
         private readonly ViewData _viewData;
         private PatternHistory _history;
         private FormSize _formSize;
-        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
-        private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, FormSize formSize)
         {
@@ -24,7 +22,7 @@ namespace ProjectsTM.UI.TaskList
             this._history = patternHistory;
             this._formSize = formSize;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
+            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
             this.Size = FormSizeRestoreService.Load("TaskListFormSize");
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;

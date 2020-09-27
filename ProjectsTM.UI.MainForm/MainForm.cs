@@ -162,7 +162,6 @@ namespace ProjectsTM.UI.MainForm
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
-                _formSize = setting.FormSize;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -188,7 +187,6 @@ namespace ProjectsTM.UI.MainForm
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                FormSize = _formSize
             };
             UserSettingUIService.Save(setting);
             FormSizeRestoreService.Save(Height, Width, "MainFormSize");
