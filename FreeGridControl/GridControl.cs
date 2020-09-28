@@ -123,18 +123,33 @@ namespace FreeGridControl
 
         private void _cache_Updated(object sender, System.EventArgs e)
         {
-            vScrollBar.LargeChange = this.Height;
-            hScrollBar.LargeChange = this.Width;
-            this.vScrollBar.Minimum = 0;
-            var vMax = Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
-            if (this.vScrollBar.Value > vMax) this.vScrollBar.Value = 0;
-            this.vScrollBar.Maximum = vMax;
-            this.hScrollBar.Minimum = 0;
-            var hMax = Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
-            if (this.hScrollBar.Value > hMax) this.hScrollBar.Value = 0;
-            this.hScrollBar.Maximum = hMax;
+            UpdateScrollBarMinMax();
+            UpdateScrollBarValue();
+            UpdateScrollBarLargeChange();
             UpdateVisibleRange();
             this.Invalidate();
+        }
+
+        private void UpdateScrollBarLargeChange()
+        {
+            vScrollBar.LargeChange = this.Height;
+            hScrollBar.LargeChange = this.Width;
+        }
+
+        private void UpdateScrollBarValue()
+        {
+            if (this.vScrollBar.Value > this.vScrollBar.Maximum) this.vScrollBar.Value = 0;
+            if (this.vScrollBar.Value < this.vScrollBar.Minimum || this.vScrollBar.Maximum - this.vScrollBar.LargeChange < this.vScrollBar.Value) this.vScrollBar.Value = 0;
+            if (this.hScrollBar.Value > this.hScrollBar.Maximum) this.hScrollBar.Value = 0;
+            if (this.hScrollBar.Value < this.hScrollBar.Minimum || this.hScrollBar.Maximum - this.hScrollBar.LargeChange < this.hScrollBar.Value) this.hScrollBar.Value = 0;
+        }
+
+        private void UpdateScrollBarMinMax()
+        {
+            this.vScrollBar.Minimum = 0;
+            this.vScrollBar.Maximum = Math.Max(0, _cache.GridHeight + hScrollBar.Height);
+            this.hScrollBar.Minimum = 0;
+            this.hScrollBar.Maximum = Math.Max(0, _cache.GridWidth + vScrollBar.Width);
         }
 
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
