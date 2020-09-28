@@ -15,20 +15,9 @@ namespace ProjectsTM.Service
 
         public static Size Load( string form)
         {
-            XDocument xDocument;
             if (!File.Exists(SizeInfoPath))
             {
-                xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
-                        new XElement("FormSize",
-                        new XElement("MainFormSize",
-                        new XElement("height", DEFAULT_HEIGHT.ToString()),
-                        new XElement("width", DEFAULT_WIDTH.ToString())),
-                        new XElement("TaskListFormSize",
-                        new XElement("height", DEFAULT_HEIGHT.ToString()),
-                        new XElement("width", DEFAULT_WIDTH.ToString()))
-                        ));
-
-                xDocument.Save(SizeInfoPath);
+                return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
             var xml = XElement.Load(SizeInfoPath);
             var sizeInfo = xml.Elements(form).Select(b => b).Single();
@@ -53,6 +42,11 @@ namespace ProjectsTM.Service
         }
         public static void Save(int height, int width, string form)
         {
+            if (!File.Exists(SizeInfoPath))
+            {
+                CreateDefaultFile();
+            }
+
             var xml = XElement.Load(SizeInfoPath);
             var sizeInfo = xml.Elements(form).Select(b => b).Single();
 
@@ -60,6 +54,21 @@ namespace ProjectsTM.Service
             sizeInfo.Element("width").Value = width.ToString();
 
             xml.Save(SizeInfoPath);
+        }
+        private static void CreateDefaultFile()
+        {
+            XDocument xDocument;
+            xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "true"),
+                        new XElement("FormSize",
+                        new XElement("MainFormSize",
+                        new XElement("height", string.Empty),
+                        new XElement("width", string.Empty)),
+                        new XElement("TaskListFormSize",
+                        new XElement("height", string.Empty),
+                        new XElement("width", string.Empty))
+                        ));
+
+            xDocument.Save(SizeInfoPath);
         }
     }
 }

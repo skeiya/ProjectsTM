@@ -53,7 +53,6 @@ namespace ProjectsTM.UI.TaskList
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _formSize.TaskListFormHeight = this.Height;
             _formSize.TaskListColWidths.Clear();
             for (var idx = 0; idx < gridControl1.ColCount; idx++)
             {
