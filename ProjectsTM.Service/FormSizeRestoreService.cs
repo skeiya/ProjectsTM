@@ -15,38 +15,28 @@ namespace ProjectsTM.Service
 
         public static Size Load( string form)
         {
-            if (!File.Exists(SizeInfoPath))
-            {
-                return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            }
-            var xml = XElement.Load(SizeInfoPath);
-            var sizeInfo = xml.Elements(form).Select(b => b).Single();
-
-            string heightStr;
-            string widthStr;
             try
             {
-                heightStr = sizeInfo.Element("height").Value;
-                widthStr = sizeInfo.Element("width").Value;
+                var xml = XElement.Load(SizeInfoPath);
+                var sizeInfo = xml.Elements(form).Select(b => b).Single();
+                var heightStr = sizeInfo.Element("height").Value;
+                var widthStr = sizeInfo.Element("width").Value;
+                if (Int32.TryParse(widthStr, out int width) && Int32.TryParse(heightStr, out int height))
+                {
+                    return new Size(width, height);
+                }
             }
             catch
             {
-                return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            }
-
-            if (Int32.TryParse(widthStr, out int width) && Int32.TryParse(heightStr, out int height))
-            {
-                return new Size(width, height);
+                if (!File.Exists(SizeInfoPath))
+                {
+                    CreateDefaultFile();
+                }
             }
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
         public static void Save(int height, int width, string form)
         {
-            if (!File.Exists(SizeInfoPath))
-            {
-                CreateDefaultFile();
-            }
-
             var xml = XElement.Load(SizeInfoPath);
             var sizeInfo = xml.Elements(form).Select(b => b).Single();
 
@@ -67,7 +57,6 @@ namespace ProjectsTM.Service
                         new XElement("height", string.Empty),
                         new XElement("width", string.Empty))
                         ));
-
             xDocument.Save(SizeInfoPath);
         }
     }
