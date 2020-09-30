@@ -138,18 +138,16 @@ namespace FreeGridControl
 
         private void UpdateScrollBarValue()
         {
-            if (this.vScrollBar.Value > this.vScrollBar.Maximum) this.vScrollBar.Value = 0;
-            if (this.vScrollBar.Value < this.vScrollBar.Minimum || this.vScrollBar.Maximum - this.vScrollBar.LargeChange < this.vScrollBar.Value) this.vScrollBar.Value = 0;
-            if (this.hScrollBar.Value > this.hScrollBar.Maximum) this.hScrollBar.Value = 0;
-            if (this.hScrollBar.Value < this.hScrollBar.Minimum || this.hScrollBar.Maximum - this.hScrollBar.LargeChange < this.hScrollBar.Value) this.hScrollBar.Value = 0;
+            if (this.vScrollBar.Maximum - this.vScrollBar.LargeChange < this.vScrollBar.Value) this.vScrollBar.Value = 0;
+            if (this.hScrollBar.Maximum - this.hScrollBar.LargeChange < this.hScrollBar.Value) this.hScrollBar.Value = 0;
         }
 
         private void UpdateScrollBarMinMax()
         {
             this.vScrollBar.Minimum = 0;
-            this.vScrollBar.Maximum = Math.Max(0, _cache.GridHeight + hScrollBar.Height);
+            this.vScrollBar.Maximum = _cache.GridHeight + hScrollBar.Height;
             this.hScrollBar.Minimum = 0;
-            this.hScrollBar.Maximum = Math.Max(0, _cache.GridWidth + vScrollBar.Width);
+            this.hScrollBar.Maximum = _cache.GridWidth + vScrollBar.Width;
         }
 
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
