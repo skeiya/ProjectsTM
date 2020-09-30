@@ -65,13 +65,23 @@ namespace FreeGridControl
             if (!IsVisible(row))
             {
                 var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
-                this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
+                this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * GetActualVScrollMaximum());
             }
             if (!IsVisible(col))
             {
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
-                this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
+                this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * GetActualHScrollMaximum());
             }
+        }
+
+        private int GetActualHScrollMaximum()
+        {
+            return this.hScrollBar.Maximum - this.hScrollBar.LargeChange;
+        }
+
+        private int GetActualVScrollMaximum()
+        {
+            return this.vScrollBar.Maximum - this.vScrollBar.LargeChange;
         }
 
         private bool IsVisibleRange(RowIndex row, int count, ColIndex col)
@@ -138,8 +148,8 @@ namespace FreeGridControl
 
         private void UpdateScrollBarValue()
         {
-            if (this.vScrollBar.Maximum - this.vScrollBar.LargeChange < this.vScrollBar.Value) this.vScrollBar.Value = 0;
-            if (this.hScrollBar.Maximum - this.hScrollBar.LargeChange < this.hScrollBar.Value) this.hScrollBar.Value = 0;
+            if (GetActualVScrollMaximum() < this.vScrollBar.Value) this.vScrollBar.Value = 0;
+            if (GetActualHScrollMaximum() < this.hScrollBar.Value) this.hScrollBar.Value = 0;
         }
 
         private void UpdateScrollBarMinMax()
