@@ -120,7 +120,7 @@ namespace FreeGridControl
             if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
-            var maximum = 1 + vScrollBar.Maximum - vScrollBar.LargeChange;
+            var maximum = 1 + GetActualVScrollMaximum();
             var delta = -(e.Delta / 120) * vScrollBar.SmallChange * 2 * 10;
             var offset = Math.Min(Math.Max(vScrollBar.Value + delta, vScrollBar.Minimum), maximum);
 
