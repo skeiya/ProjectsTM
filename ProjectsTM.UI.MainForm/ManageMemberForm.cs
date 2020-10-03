@@ -1,7 +1,10 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using ProjectsTM.Service;
 
 namespace ProjectsTM.UI.MainForm
 {
@@ -15,6 +18,7 @@ namespace ProjectsTM.UI.MainForm
             _appData = appData;
             listBox1.DisplayMember = "NaturalString";
             UpdateList();
+            UpdateDiplay();
         }
 
         private void ButtonUp_Click(object sender, EventArgs e)
@@ -67,13 +71,13 @@ namespace ProjectsTM.UI.MainForm
                 m.EditApply(dlg.EditText);
             }
             UpdateList();
+            UpdateDiplay();
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Edit();
         }
-
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
             using (var dlg = new EditMemberForm((new Member()).ToSerializeString()))
@@ -84,6 +88,12 @@ namespace ProjectsTM.UI.MainForm
                 _appData.Members.Add(after);
             }
             UpdateList();
+            UpdateDiplay();
+        }
+
+        private void UpdateDiplay()
+        {
+            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData);
         }
     }
 }
