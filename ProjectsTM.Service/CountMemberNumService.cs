@@ -1,31 +1,28 @@
-﻿using System;
+﻿using ProjectsTM.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjectsTM.Model;
 
 
 namespace ProjectsTM.Service
 {
     public static class CountMemberNumService
     {
-        public  static string GetCountStr(AppData appData )
+        public  static string GetCountStr(Members members )
         {
             var temp = new HashSet<string>();
-            foreach (var m in appData.Members)
+            foreach (var m in members)
             {
                 var belengTo = m.Company;
                 temp.Add(belengTo);
             }
-            var CompanyList = temp.ToArray();
+            var companyList = temp.ToArray();
 
             var countList = new List<int>();
             int count;
-            foreach (var i in CompanyList)
+            foreach (var i in companyList)
             {
                 count = 0;
-                foreach (var m in appData.Members)
+                foreach (var m in members)
                 {
                     if (i.Equals(m.Company))
                     {
@@ -35,8 +32,8 @@ namespace ProjectsTM.Service
                 countList.Add(count);
             }
             count = 0;
-            string dispStr = string.Format("Total:{0} (", appData.Members.Count);
-            foreach (var i in CompanyList)
+            string dispStr = string.Format("Total:{0} (", members.Count);
+            foreach (var i in companyList)
             {
                 dispStr += Concat(i, countList[count]);
                 count++;

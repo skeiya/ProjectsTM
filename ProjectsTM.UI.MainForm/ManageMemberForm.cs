@@ -1,10 +1,8 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
-using ProjectsTM.Service;
 
 namespace ProjectsTM.UI.MainForm
 {
@@ -29,15 +27,6 @@ namespace ProjectsTM.UI.MainForm
             _appData.Members.Up(m);
             UpdateList();
             listBox1.SelectedIndex = index == 0 ? index : index - 1;
-        }
-
-        private void UpdateList()
-        {
-            listBox1.Items.Clear();
-            foreach (var m in _appData.Members)
-            {
-                listBox1.Items.Add(m);
-            }
         }
 
         private void ButtonDown_Click(object sender, EventArgs e)
@@ -90,10 +79,18 @@ namespace ProjectsTM.UI.MainForm
             UpdateList();
             UpdateDiplay();
         }
+        private void UpdateList()
+        {
+            listBox1.Items.Clear();
+            foreach (var m in _appData.Members)
+            {
+                listBox1.Items.Add(m);
+            }
+        }
 
         private void UpdateDiplay()
         {
-            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData);
+            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData.Members);
         }
     }
 }
