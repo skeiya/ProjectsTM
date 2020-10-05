@@ -120,7 +120,6 @@
     <Compile Include="RsExportSelectForm.Designer.cs">
       <DependentUpon>RsExportSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SizeInfoManager.cs" />
     <Compile Include="VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>

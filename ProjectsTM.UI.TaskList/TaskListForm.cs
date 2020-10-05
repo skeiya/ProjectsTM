@@ -1,5 +1,8 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,9 +23,7 @@ namespace ProjectsTM.UI.TaskList
             this._formSize = formSize;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
-            var offset = gridControl1.GridWidth - gridControl1.Width;
-            this.Width += offset + gridControl1.VScrollBarWidth;
-            this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
+            this.Size = FormSizeRestoreService.Load("TaskListFormSize");
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
         }
@@ -52,12 +53,12 @@ namespace ProjectsTM.UI.TaskList
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _formSize.TaskListFormHeight = this.Height;
             _formSize.TaskListColWidths.Clear();
             for (var idx = 0; idx < gridControl1.ColCount; idx++)
             {
                 _formSize.TaskListColWidths.Add(gridControl1.ColWidths[idx]);
             }
+            FormSizeRestoreService.Save(Height, Width, "TaskListFormSize");
         }
 
         public void Clear()
@@ -70,7 +71,6 @@ namespace ProjectsTM.UI.TaskList
             comboBoxPattern.Items.Clear();
             comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
-
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
             UpdateList();
