@@ -17,7 +17,6 @@ namespace ProjectsTM.UI.MainForm
     public partial class MainForm : Form
     {
         private ViewData _viewData = new ViewData(new AppData(), new UndoService());
-        private SearchWorkitemForm SearchForm { get; set; }
         private TaskListForm TaskListForm { get; set; }
         private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
@@ -175,7 +174,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original, ShowOverwrapCheck)) e.Cancel = true;
+            if (!FileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -244,7 +243,6 @@ namespace ProjectsTM.UI.MainForm
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _viewData.Selected = new WorkItems();
-            SearchForm?.Clear();
             if (TaskListForm != null && TaskListForm.Visible) TaskListForm.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
@@ -302,7 +300,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original, ShowOverwrapCheck);
+            FileIOService.Save(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -331,33 +329,6 @@ namespace ProjectsTM.UI.MainForm
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetColorConditions(dlg.GetColorConditions());
             }
-        }
-
-        private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
-        {
-            ShowSearchForm(false);
-        }
-
-        private void ShowOverwrapCheck()
-        {
-            ShowSearchForm(true);
-        }
-
-        private void ShowSearchForm(bool checkOverWrap)
-        {
-            if (SearchForm == null || SearchForm.IsDisposed)
-            {
-                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory, _formSize);
-            }
-            if (checkOverWrap)
-            {
-                SearchForm.Visible = false;
-            }
-            if (checkOverWrap)
-            {
-                SearchForm.Visible = false;
-            }
-            if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -391,7 +362,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original, ShowOverwrapCheck);
+            FileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -456,6 +427,11 @@ namespace ProjectsTM.UI.MainForm
         }
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            ShowTaskListForm();
+        }
+
+        private void ShowTaskListForm()
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
