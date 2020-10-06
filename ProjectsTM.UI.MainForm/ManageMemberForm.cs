@@ -16,7 +16,7 @@ namespace ProjectsTM.UI.MainForm
             _appData = appData;
             listBox1.DisplayMember = "NaturalString";
             UpdateList();
-            UpdateDiplay();
+            UpdateDisplay();
         }
 
         private void ButtonUp_Click(object sender, EventArgs e)
@@ -27,6 +27,7 @@ namespace ProjectsTM.UI.MainForm
             _appData.Members.Up(m);
             UpdateList();
             listBox1.SelectedIndex = index == 0 ? index : index - 1;
+            UpdateDisplay();
         }
 
         private void ButtonDown_Click(object sender, EventArgs e)
@@ -35,8 +36,8 @@ namespace ProjectsTM.UI.MainForm
             if (m == null) return;
             var index = listBox1.SelectedIndex;
             _appData.Members.Down(m);
-            UpdateList();
             listBox1.SelectedIndex = listBox1.Items.Count == index + 1 ? index : index + 1;
+            UpdateDisplay();
         }
 
         private void ButtonEdit_Click(object sender, EventArgs e)
@@ -60,7 +61,7 @@ namespace ProjectsTM.UI.MainForm
                 m.EditApply(dlg.EditText);
             }
             UpdateList();
-            UpdateDiplay();
+            UpdateDisplay();
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -77,7 +78,7 @@ namespace ProjectsTM.UI.MainForm
                 _appData.Members.Add(after);
             }
             UpdateList();
-            UpdateDiplay();
+            UpdateDisplay();
         }
         private void UpdateList()
         {
@@ -87,10 +88,21 @@ namespace ProjectsTM.UI.MainForm
                 listBox1.Items.Add(m);
             }
         }
-
-        private void UpdateDiplay()
+        
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData.Members);
+            UpdateDisplay();
+        }
+
+        private void UpdateDisplay()
+        {
+            var m = listBox1.SelectedItem as Member;
+            if (m == null)
+            {
+                _labelMenmberNum.Text = "Total:" + _appData.Members.Count.ToString();
+                return;
+            }
+            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData.Members, m.Company);
         }
     }
 }
