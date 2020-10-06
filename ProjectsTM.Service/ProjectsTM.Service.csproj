@@ -49,6 +49,7 @@
     <Compile Include="AppDataSerializeService.cs" />
     <Compile Include="AtomicAction.cs" />
     <Compile Include="CalculateSumService.cs" />
+    <Compile Include="CountMemberNumService.cs" />
     <Compile Include="CsvReadService.cs" />
     <Compile Include="DragState.cs" />
     <Compile Include="DrawService.cs" />
