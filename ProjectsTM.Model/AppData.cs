@@ -15,6 +15,7 @@ namespace ProjectsTM.Model
         public WorkItems WorkItems = new WorkItems();
         public ColorConditions ColorConditions = new ColorConditions();
         public MileStones MileStones = new MileStones();
+        public AbsentInfo AbsentInfo = new AbsentInfo();
 
         public AppData()
         {
