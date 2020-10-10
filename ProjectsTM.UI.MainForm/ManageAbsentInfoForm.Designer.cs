@@ -1,6 +1,6 @@
 ﻿namespace ProjectsTM.UI.MainForm
 {
-    partial class ManageMemberForm
+    partial class ManageAbsentInfoForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.buttonUp = new System.Windows.Forms.Button();
-            this.buttonDown = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
-            this.buttonAbsentManagement = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
@@ -50,34 +48,10 @@
             this.listBox1.TabIndex = 0;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
-            // buttonUp
-            // 
-            this.buttonUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUp.Location = new System.Drawing.Point(306, 27);
-            this.buttonUp.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.buttonUp.Name = "buttonUp";
-            this.buttonUp.Size = new System.Drawing.Size(50, 26);
-            this.buttonUp.TabIndex = 1;
-            this.buttonUp.Text = "UP";
-            this.buttonUp.UseVisualStyleBackColor = true;
-            this.buttonUp.Click += new System.EventHandler(this.ButtonUp_Click);
-            // 
-            // buttonDown
-            // 
-            this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDown.Location = new System.Drawing.Point(306, 69);
-            this.buttonDown.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.buttonDown.Name = "buttonDown";
-            this.buttonDown.Size = new System.Drawing.Size(50, 26);
-            this.buttonDown.TabIndex = 1;
-            this.buttonDown.Text = "DOWN";
-            this.buttonDown.UseVisualStyleBackColor = true;
-            this.buttonDown.Click += new System.EventHandler(this.ButtonDown_Click);
-            // 
             // buttonEdit
             // 
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(306, 109);
+            this.buttonEdit.Location = new System.Drawing.Point(306, 116);
             this.buttonEdit.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(50, 26);
@@ -88,7 +62,7 @@
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Location = new System.Drawing.Point(306, 149);
+            this.buttonAdd.Location = new System.Drawing.Point(306, 150);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(50, 26);
             this.buttonAdd.TabIndex = 2;
@@ -96,33 +70,30 @@
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
-            // buttonAbsentManagement
+            // buttonRemove
             // 
-            this.buttonAbsentManagement.Font = new System.Drawing.Font("MS UI Gothic", 6.75F);
-            this.buttonAbsentManagement.Location = new System.Drawing.Point(306, 189);
-            this.buttonAbsentManagement.Name = "buttonAbsentManagement";
-            this.buttonAbsentManagement.Size = new System.Drawing.Size(50, 26);
-            this.buttonAbsentManagement.TabIndex = 3;
-            this.buttonAbsentManagement.Text = "不在管理";
-            this.buttonAbsentManagement.UseVisualStyleBackColor = true;
-            this.buttonAbsentManagement.Click += new System.EventHandler(this.buttonAbsentManagement_Click);
+            this.buttonRemove.Location = new System.Drawing.Point(306, 184);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(50, 26);
+            this.buttonRemove.TabIndex = 3;
+            this.buttonRemove.Text = "削除";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 
-            // ManageMemberForm
+            // ManageAbsentInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 225);
-            this.Controls.Add(this.buttonAbsentManagement);
+            this.Controls.Add(this.buttonRemove);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonEdit);
-            this.Controls.Add(this.buttonDown);
-            this.Controls.Add(this.buttonUp);
             this.Controls.Add(this.listBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.Name = "ManageMemberForm";
+            this.Name = "ManageAbsentInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "メンバーの編集";
+            this.Text = "メンバー不在情報の編集";
             this.ResumeLayout(false);
 
         }
@@ -130,10 +101,8 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button buttonUp;
-        private System.Windows.Forms.Button buttonDown;
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.Button buttonAdd;
-        private System.Windows.Forms.Button buttonAbsentManagement;
+        private System.Windows.Forms.Button buttonRemove;
     }
 }

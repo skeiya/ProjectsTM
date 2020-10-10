@@ -85,5 +85,17 @@ namespace ProjectsTM.UI.MainForm
             }
             UpdateList();
         }
+
+        private void buttonAbsentManagement_Click(object sender, EventArgs e)
+        {
+            var m = listBox1.SelectedItem as Member;
+            if (m == null) return;
+            using (var dlg = new ManageAbsentInfoForm(m, _appData.AbsentInfo.OfMember(m), _appData.Callender))
+            {
+                dlg.ShowDialog();
+                _appData.AbsentInfo.Replace(m, dlg.Edited);
+            }
+            UpdateList();
+        }
     }
 }
