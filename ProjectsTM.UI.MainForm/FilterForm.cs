@@ -124,7 +124,7 @@ namespace ProjectsTM.UI.MainForm
 
         public Filter GetFilter()
         {
-            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetCheckedMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text);
+            return new Filter(GetWorkItemFilter(), GetPeriodFilter(), GetCheckedMembers(), checkBox_IsFreeTimeMemberShow.Checked, comboBox_MSFiltersSearchPattern.Text, false);
         }
 
         private string GetWorkItemFilter()
