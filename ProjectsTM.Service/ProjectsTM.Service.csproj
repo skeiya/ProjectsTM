@@ -49,6 +49,7 @@
     <Compile Include="AppDataSerializeService.cs" />
     <Compile Include="AtomicAction.cs" />
     <Compile Include="CalculateSumService.cs" />
+    <Compile Include="CountMemberNumService.cs" />
     <Compile Include="CsvReadService.cs" />
     <Compile Include="DragState.cs" />
     <Compile Include="DrawService.cs" />
@@ -58,12 +59,12 @@
     <Compile Include="EditedEventArgs.cs" />
     <Compile Include="FileDragService.cs" />
     <Compile Include="FilterComboBoxService.cs" />
+    <Compile Include="FormSizeRestoreService.cs" />
     <Compile Include="GitCmdRepository.cs" />
     <Compile Include="GitRepositoryService.cs" />
     <Compile Include="KeyAndMouseHandleService.cs" />
     <Compile Include="OldFileService.cs" />
     <Compile Include="OverwrapedWorkItemsCollectService.cs" />
-    <Compile Include="PrintService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedrawLock.cs" />
     <Compile Include="RSFileExportService.cs" />

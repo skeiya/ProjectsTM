@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace ProjectsTM.UI.MainForm
             _appData = appData;
             listBox1.DisplayMember = "NaturalString";
             UpdateList();
+            UpdateDisplay();
         }
 
         private void ButtonUp_Click(object sender, EventArgs e)
@@ -25,15 +27,7 @@ namespace ProjectsTM.UI.MainForm
             _appData.Members.Up(m);
             UpdateList();
             listBox1.SelectedIndex = index == 0 ? index : index - 1;
-        }
-
-        private void UpdateList()
-        {
-            listBox1.Items.Clear();
-            foreach (var m in _appData.Members)
-            {
-                listBox1.Items.Add(m);
-            }
+            UpdateDisplay();
         }
 
         private void ButtonDown_Click(object sender, EventArgs e)
@@ -42,8 +36,8 @@ namespace ProjectsTM.UI.MainForm
             if (m == null) return;
             var index = listBox1.SelectedIndex;
             _appData.Members.Down(m);
-            UpdateList();
             listBox1.SelectedIndex = listBox1.Items.Count == index + 1 ? index : index + 1;
+            UpdateDisplay();
         }
 
         private void ButtonEdit_Click(object sender, EventArgs e)
@@ -67,13 +61,13 @@ namespace ProjectsTM.UI.MainForm
                 m.EditApply(dlg.EditText);
             }
             UpdateList();
+            UpdateDisplay();
         }
 
         private void ListBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Edit();
         }
-
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
             using (var dlg = new EditMemberForm((new Member()).ToSerializeString()))
@@ -84,6 +78,31 @@ namespace ProjectsTM.UI.MainForm
                 _appData.Members.Add(after);
             }
             UpdateList();
+            UpdateDisplay();
+        }
+        private void UpdateList()
+        {
+            listBox1.Items.Clear();
+            foreach (var m in _appData.Members)
+            {
+                listBox1.Items.Add(m);
+            }
+        }
+        
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateDisplay();
+        }
+
+        private void UpdateDisplay()
+        {
+            var m = listBox1.SelectedItem as Member;
+            if (m == null)
+            {
+                _labelMenmberNum.Text = "Total:" + _appData.Members.Count.ToString();
+                return;
+            }
+            _labelMenmberNum.Text = CountMemberNumService.GetCountStr(_appData.Members, m.Company);
         }
 
         private void buttonAbsentManagement_Click(object sender, EventArgs e)

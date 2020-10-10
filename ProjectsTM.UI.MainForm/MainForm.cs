@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,9 +17,7 @@ namespace ProjectsTM.UI.MainForm
     public partial class MainForm : Form
     {
         private ViewData _viewData = new ViewData(new AppData(), new UndoService());
-        private SearchWorkitemForm SearchForm { get; set; }
         private TaskListForm TaskListForm { get; set; }
-        private PrintService PrintService { get; set; }
         private AppDataFileIOService FileIOService { get; set; }
         private CalculateSumService _calculateSumService = new CalculateSumService();
         private FilterComboBoxService _filterComboBoxService;
@@ -33,7 +30,6 @@ namespace ProjectsTM.UI.MainForm
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            PrintService = new PrintService(_viewData, workItemGrid1.Font, Print);
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
@@ -46,6 +42,7 @@ namespace ProjectsTM.UI.MainForm
             FileIOService.FileWatchChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
             FileIOService.FileOpened += FileIOService_FileOpened;
+            Load += MainForm_Load;
             if (GitRepositoryService.IsActive())
             {
                 _1minutTimer.Interval = 60 * 1000; // 1s間隔
@@ -58,6 +55,11 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Size = FormSizeRestoreService.Load("MainFormSize");
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -74,17 +76,6 @@ namespace ProjectsTM.UI.MainForm
                 return;
             }
             this.Text = "ProjectsTM";
-        }
-
-        private void Print(PrintPageEventArgs e)
-        {
-            using (var grid = new WorkItemGrid())
-            {
-                grid.Size = e.PageBounds.Size;
-                grid.Initialize(_viewData);
-                grid.AdjustForPrint(e.PageBounds);
-                grid.Print(e.Graphics);
-            }
         }
 
         private async void FileIOService_FileOpened(object sender, string filePath)
@@ -165,12 +156,11 @@ namespace ProjectsTM.UI.MainForm
         {
             try
             {
-                var setting = UserSettingUIService.Load(UserSettingPath);
+                var setting = UserSettingUIService.Load();
                 _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
-                _formSize = setting.FormSize;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
             }
             catch
@@ -179,13 +169,12 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private static string UserSettingPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM", "UserSetting.xml");
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_isDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original, ShowOverwrapCheck)) e.Cancel = true;
+            if (!FileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -197,9 +186,9 @@ namespace ProjectsTM.UI.MainForm
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                FormSize = _formSize
             };
-            UserSettingUIService.Save(UserSettingPath, setting);
+            UserSettingUIService.Save(setting);
+            FormSizeRestoreService.Save(Height, Width, "MainFormSize");
         }
 
         private void InitializeViewData()
@@ -254,7 +243,6 @@ namespace ProjectsTM.UI.MainForm
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _viewData.Selected = new WorkItems();
-            SearchForm?.Clear();
             if (TaskListForm != null && TaskListForm.Visible) TaskListForm.Clear();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
@@ -283,10 +271,26 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private void ToolStripMenuItemPrint_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
             _viewData.Selected = null;
-            PrintService.Print();
+            using (var grid = new WorkItemGrid())
+            {
+                var size = new Size(workItemGrid1.GridWidth, workItemGrid1.GridHeight);
+                grid.Size = size;
+                grid.Initialize(_viewData);
+                using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+                {
+                    var g = Graphics.FromImage(bmp);
+                    grid.OutputImage(g);
+                    using (var dlg = new SaveFileDialog())
+                    {
+                        dlg.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
+                        if (dlg.ShowDialog() != DialogResult.OK) return;
+                        bmp.Save(dlg.FileName);
+                    }
+                }
+            }
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
@@ -296,7 +300,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original, ShowOverwrapCheck);
+            FileIOService.Save(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -325,33 +329,6 @@ namespace ProjectsTM.UI.MainForm
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetColorConditions(dlg.GetColorConditions());
             }
-        }
-
-        private void ToolStripMenuItemSearch_Click(object sender, EventArgs e)
-        {
-            ShowSearchForm(false);
-        }
-
-        private void ShowOverwrapCheck()
-        {
-            ShowSearchForm(true);
-        }
-
-        private void ShowSearchForm(bool checkOverWrap)
-        {
-            if (SearchForm == null || SearchForm.IsDisposed)
-            {
-                SearchForm = new SearchWorkitemForm(_viewData, workItemGrid1.EditService, _patternHistory, _formSize);
-            }
-            if (checkOverWrap)
-            {
-                SearchForm.Visible = false;
-            }
-            if (checkOverWrap)
-            {
-                SearchForm.Visible = false;
-            }
-            if (!SearchForm.Visible) SearchForm.Show(this, checkOverWrap);
         }
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
@@ -385,7 +362,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original, ShowOverwrapCheck);
+            FileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -450,6 +427,11 @@ namespace ProjectsTM.UI.MainForm
         }
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
+        {
+            ShowTaskListForm();
+        }
+
+        private void ShowTaskListForm()
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {

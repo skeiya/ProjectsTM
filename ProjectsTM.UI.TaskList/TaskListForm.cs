@@ -1,5 +1,8 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -19,10 +22,8 @@ namespace ProjectsTM.UI.TaskList
             this._history = patternHistory;
             this._formSize = formSize;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
-            var offset = gridControl1.GridWidth - gridControl1.Width;
-            this.Width += offset + gridControl1.VScrollBarWidth;
-            this.Height = formSize?.TaskListFormHeight > this.Height ? formSize.TaskListFormHeight : this.Height;
+            gridControl1.Initialize(viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            this.Size = FormSizeRestoreService.Load("TaskListFormSize");
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
         }
@@ -46,23 +47,23 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateLabelSum()
         {
             var dayCount = gridControl1.GetDayCount();
-            var monthCount = dayCount / 20;
-            labelSum.Text = dayCount.ToString() + "day (" + monthCount.ToString() + "人月)";
+            var monthCount = (dayCount / 20f);
+            labelSum.Text = string.Format("{0}day {1:0.0}人月 ", dayCount, monthCount);
         }
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _formSize.TaskListFormHeight = this.Height;
             _formSize.TaskListColWidths.Clear();
             for (var idx = 0; idx < gridControl1.ColCount; idx++)
             {
                 _formSize.TaskListColWidths.Add(gridControl1.ColWidths[idx]);
             }
+            FormSizeRestoreService.Save(Height, Width, "TaskListFormSize");
         }
 
         public void Clear()
         {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -70,7 +71,6 @@ namespace ProjectsTM.UI.TaskList
             comboBoxPattern.Items.Clear();
             comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
-
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
             UpdateList();
@@ -79,7 +79,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked);
+            gridControl1.Initialize(_viewData, comboBoxPattern.Text, _formSize.TaskListColWidths, checkBoxShowMS.Checked, textBoxAndCondition.Text);
         }
     }
 }

@@ -65,13 +65,23 @@ namespace FreeGridControl
             if (!IsVisible(row))
             {
                 var targetHeight = _cache.GetTop(row) - _cache.FixedHeight;
-                this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * (this.vScrollBar.Maximum - this.vScrollBar.LargeChange));
+                this.vScrollBar.Value = (int)((targetHeight / (float)_cache.GridHeight) * GetActualVScrollMaximum());
             }
             if (!IsVisible(col))
             {
                 var targetWidth = _cache.GetLeft(col.Offset(1)) - _cache.FixedWidth;
-                this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * (this.hScrollBar.Maximum - this.hScrollBar.LargeChange));
+                this.hScrollBar.Value = (int)((targetWidth / (float)_cache.GridWidth) * GetActualHScrollMaximum());
             }
+        }
+
+        private int GetActualHScrollMaximum()
+        {
+            return this.hScrollBar.Maximum - this.hScrollBar.LargeChange;
+        }
+
+        private int GetActualVScrollMaximum()
+        {
+            return this.vScrollBar.Maximum - this.vScrollBar.LargeChange;
         }
 
         private bool IsVisibleRange(RowIndex row, int count, ColIndex col)
@@ -110,7 +120,7 @@ namespace FreeGridControl
             if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
-            var maximum = 1 + vScrollBar.Maximum - vScrollBar.LargeChange;
+            var maximum = 1 + GetActualVScrollMaximum();
             var delta = -(e.Delta / 120) * vScrollBar.SmallChange * 2 * 10;
             var offset = Math.Min(Math.Max(vScrollBar.Value + delta, vScrollBar.Minimum), maximum);
 
@@ -123,18 +133,31 @@ namespace FreeGridControl
 
         private void _cache_Updated(object sender, System.EventArgs e)
         {
-            vScrollBar.LargeChange = this.Height;
-            hScrollBar.LargeChange = this.Width;
-            this.vScrollBar.Minimum = 0;
-            var vMax = Math.Max(0, _cache.GridHeight - this.Height + hScrollBar.Height + vScrollBar.LargeChange);
-            if (this.vScrollBar.Value > vMax) this.vScrollBar.Value = 0;
-            this.vScrollBar.Maximum = vMax;
-            this.hScrollBar.Minimum = 0;
-            var hMax = Math.Max(0, _cache.GridWidth - this.Width + vScrollBar.Width + hScrollBar.LargeChange);
-            if (this.hScrollBar.Value > hMax) this.hScrollBar.Value = 0;
-            this.hScrollBar.Maximum = hMax;
+            UpdateScrollBarMinMax();
+            UpdateScrollBarValue();
+            UpdateScrollBarLargeChange();
             UpdateVisibleRange();
             this.Invalidate();
+        }
+
+        private void UpdateScrollBarLargeChange()
+        {
+            vScrollBar.LargeChange = this.Height;
+            hScrollBar.LargeChange = this.Width;
+        }
+
+        private void UpdateScrollBarValue()
+        {
+            if (GetActualVScrollMaximum() < this.vScrollBar.Value) this.vScrollBar.Value = 0;
+            if (GetActualHScrollMaximum() < this.hScrollBar.Value) this.hScrollBar.Value = 0;
+        }
+
+        private void UpdateScrollBarMinMax()
+        {
+            this.vScrollBar.Minimum = 0;
+            this.vScrollBar.Maximum = _cache.GridHeight + hScrollBar.Height;
+            this.hScrollBar.Minimum = 0;
+            this.hScrollBar.Maximum = _cache.GridWidth + vScrollBar.Width;
         }
 
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
@@ -189,9 +212,9 @@ namespace FreeGridControl
             set { hScrollBar.Value = value; }
         }
 
-        private void DrawGrid(Graphics graphics, bool isPrint)
+        private void DrawGrid(Graphics graphics, bool isAllDraw)
         {
-            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isPrint));
+            OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isAllDraw));
         }
 
         public RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount)
@@ -312,7 +335,7 @@ namespace FreeGridControl
 
         public RowColRange VisibleRowColRange => new RowColRange(VisibleNormalLeftCol, VisibleNormalTopRow, VisibleNormalColCount, VisibleNormalRowCount);
 
-        public void Print(Graphics graphics)
+        public void OutputImage(Graphics graphics)
         {
             DrawGrid(graphics, true);
         }
