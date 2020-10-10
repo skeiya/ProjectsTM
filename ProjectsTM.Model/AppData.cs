@@ -4,7 +4,7 @@ namespace ProjectsTM.Model
 {
     public class AppData
     {
-        static public int DataVersion = 3; // 互換性のなくなる変更をしたときにこの数字を増やす
+        static public int DataVersion = 4; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version
         {
             set {; }
