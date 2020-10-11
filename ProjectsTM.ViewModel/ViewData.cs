@@ -18,6 +18,7 @@ namespace ProjectsTM.ViewModel
             _appData = appData;
             UndoService = undoService;
             this.Filter = Filter.All(this);
+            RemoveAbsentMembersFromFilter();
             RemoveFreeTimeMembersFromFilter();
             AppDataChanged?.Invoke(this, null);
         }
@@ -63,6 +64,7 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
+            RemoveAbsentMembersFromFilter();
             RemoveFreeTimeMembersFromFilter();
             FilterChanged(this, null);
         }
@@ -85,6 +87,23 @@ namespace ProjectsTM.ViewModel
             if (members == null || members.Count() == 0) return;
             var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
             foreach (var m in freeTimeMember)
+            {
+                if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
+            }
+        }
+
+        private void RemoveAbsentMembersFromFilter()
+        {
+            var members = GetFilteredMembers();
+            if (members == null || members.Count() == 0) return;
+            Members absentMembers = new Members();
+            foreach(var m in members)
+            {
+                var absentTerms = _appData.AbsentInfo.OfMember(m);
+                if (!absentTerms.Any(a => (a.Period.Contains(this.Filter.Period)))) continue;
+                absentMembers.Add(m);
+            }
+            foreach (var m in absentMembers)
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
             }
