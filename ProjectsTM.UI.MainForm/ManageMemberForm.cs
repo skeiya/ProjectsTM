@@ -36,6 +36,7 @@ namespace ProjectsTM.UI.MainForm
             if (m == null) return;
             var index = listBox1.SelectedIndex;
             _appData.Members.Down(m);
+            UpdateList();
             listBox1.SelectedIndex = listBox1.Items.Count == index + 1 ? index : index + 1;
             UpdateDisplay();
         }
