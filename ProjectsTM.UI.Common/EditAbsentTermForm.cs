@@ -22,6 +22,10 @@ namespace ProjectsTM.UI.Common
             textBoxFrom.Text = absentTerm.Period?.From == null ? string.Empty : absentTerm.Period.From.ToString();
             textBoxTo.Text = absentTerm.Period?.To == null ? string.Empty : absentTerm.Period.To.ToString();
             InitDropDownList(absentTerm.State);
+
+            // TODO:少し考えて使い道なさそうなら削除する
+            label7.Visible = false;
+            comboBoxState.Visible = false;
         }
 
         private void InitDropDownList(AbsentState state)
