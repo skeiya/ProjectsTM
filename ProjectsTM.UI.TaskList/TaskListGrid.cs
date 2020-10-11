@@ -239,7 +239,7 @@ namespace ProjectsTM.UI.TaskList
             if (r.Value < FixedRowCount) return;
             var item = _listItems[r.Value - FixedRowCount];
             if (item.IsMilestone) return;
-            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();

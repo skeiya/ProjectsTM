@@ -114,6 +114,8 @@ namespace ProjectsTM.UI.MainForm
 
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
+            var hasUnsavedChange = await FileIOService.HasUnsavedChange(filePath, _viewData.Original);
+            if (hasUnsavedChange) return;
             var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath);
             if (hasUnmergedRemoteCommit)
             {

@@ -155,7 +155,7 @@ namespace ProjectsTM.Service
             {
                 if (IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, com);
+            return new Filter(null, null, members, false, com, false);
         }
 
         private Filter GetFilterByProjects(ref int idx)
@@ -172,7 +172,7 @@ namespace ProjectsTM.Service
             {
                 if (IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, pro.ToString());
+            return new Filter(null, null, members, false, pro.ToString(), false);
         }
 
         private Filter GetFilterByFiles(ref int idx)

@@ -13,21 +13,22 @@ namespace ProjectsTM.UI.Common
         private readonly Callender _callender;
         private readonly IEnumerable<Member> _members;
 
-        public EditWorkItemForm(WorkItem wi, Callender callender, IEnumerable<Member> members)
+        public EditWorkItemForm(WorkItem wi, WorkItems workItems, Callender callender, IEnumerable<Member> members)
         {
             InitializeComponent();
             if (wi == null) wi = new WorkItem();
             this._wi = wi;
             this._callender = callender;
             this._members = members;
-            textBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
-            textBoxProject.Text = wi.Project == null ? string.Empty : wi.Project.ToString();
-            textBoxMember.Text = wi.AssignedMember == null ? string.Empty : wi.AssignedMember.ToSerializeString();
+            comboBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
+            comboBoxProject.Text = wi.Project == null ? string.Empty : wi.Project.ToString();
+            comboBoxMember.Text = wi.AssignedMember == null ? string.Empty : wi.AssignedMember.ToSerializeString();
             textBoxFrom.Text = wi.Period == null ? string.Empty : wi.Period.From.ToString();
             textBoxTo.Text = wi.Period == null ? string.Empty : _callender.GetPeriodDayCount(wi.Period).ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
             textBoxDescription.Text = wi.Description == null ? string.Empty : wi.Description;
             InitDropDownList(wi.State);
+            InitCombbox(members, workItems);
             UpdateEndDay();
         }
 
@@ -42,17 +43,32 @@ namespace ProjectsTM.UI.Common
             comboBoxState.SelectedItem = state;
         }
 
-        public WorkItem GetWorkItem()
+        private void InitCombbox(IEnumerable<Member> members, WorkItems workItems)
         {
-            var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState(), GetDescrption());
+            foreach (var m in members)
+            {
+                comboBoxMember.Items.Add(m.ToSerializeString());
+            }
+            comboBoxWorkItemName.Items.AddRange(GetTasks(workItems));
+            comboBoxProject.Items.AddRange(GetProjects(workItems).ToArray());
         }
-
-        private string GetDescrption() { return textBoxDescription.Text; }
-
-        private TaskState GetState()
+        private static List<Project> GetProjects(WorkItems workItems)
         {
-            return (TaskState)comboBoxState.SelectedItem;
+            var result = new List<Project>();
+            foreach (var wi in workItems)
+            {
+                if (!result.Contains(wi.Project)) result.Add(wi.Project);
+            }
+            return result;
+        }
+        private static string[] GetTasks(WorkItems workItems)
+        {
+            var result = new List<string>();
+            foreach (var wi in workItems)
+            {
+                if (!result.Contains(wi.Name)) result.Add(wi.Name);
+            }
+            return result.ToArray();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -62,9 +78,27 @@ namespace ProjectsTM.UI.Common
             Close();
         }
 
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void buttonRegexEscape_Click(object sender, EventArgs e)
+        {
+            var wi = CreateWorkItem(_callender);
+            if (wi == null) return;
+            using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
+            {
+                dlg.Text = "正規表現エスケープ";
+                dlg.ReadOnly = true;
+                dlg.ShowDialog();
+            }
+        }
+
         private bool ValidateAssignedMember()
         {
-            return _members.Contains(Member.Parse(textBoxMember.Text));
+            return _members.Contains(Member.Parse(comboBoxMember.Text));
         }
 
         bool CheckEdit()
@@ -92,7 +126,7 @@ namespace ProjectsTM.UI.Common
 
         private Member GetAssignedMember()
         {
-            return Member.Parse(textBoxMember.Text);
+            return Member.Parse(comboBoxMember.Text);
         }
 
         private static Period GetPeriod(Callender callender, string fromText, string toText)
@@ -124,38 +158,33 @@ namespace ProjectsTM.UI.Common
 
         private string GetWorkItemName()
         {
-            if (string.IsNullOrEmpty(textBoxWorkItemName.Text)) return null;
-            return textBoxWorkItemName.Text;
+            if (string.IsNullOrEmpty(comboBoxWorkItemName.Text)) return null;
+            return comboBoxWorkItemName.Text;
         }
 
         private Project GetProject()
         {
             //return comboBoxProject.SelectedItem as Project;
-            return new Project(textBoxProject.Text);
+            return new Project(comboBoxProject.Text);
         }
 
-        private void Button2_Click(object sender, EventArgs e)
+        public WorkItem GetWorkItem()
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
+            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState(), GetDescrption());
+        }
+
+        private string GetDescrption() { return textBoxDescription.Text; }
+
+        private TaskState GetState()
+        {
+            return (TaskState)comboBoxState.SelectedItem;
         }
 
         private void UpdateEndDay()
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
             textBoxTo.Text = period == null ? string.Empty : _callender.GetPeriodDayCount(period).ToString();
-        }
-
-        private void buttonRegexEscape_Click(object sender, EventArgs e)
-        {
-            var wi = CreateWorkItem(_callender);
-            if (wi == null) return;
-            using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
-            {
-                dlg.Text = "正規表現エスケープ";
-                dlg.ReadOnly = true;
-                dlg.ShowDialog();
-            }
         }
     }
 }
