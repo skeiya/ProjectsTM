@@ -134,7 +134,7 @@ namespace ProjectsTM.Service
             Task<bool> task = Task.Run(() =>
             {
                 var existing = AppDataSerializeService.Deserialize(filePath);
-                if (existing == null) return false;
+                if (existing == null) return true;
                 return !original.Equals(existing);
             }
             );
