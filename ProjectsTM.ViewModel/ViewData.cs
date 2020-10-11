@@ -17,12 +17,12 @@ namespace ProjectsTM.ViewModel
         {
             _appData = appData;
             UndoService = undoService;
-            UpdateAllFilter();
+            UpdateFilter();
             RemoveFreeTimeMembersFromFilter();
             AppDataChanged?.Invoke(this, null);
         }
 
-        private void UpdateAllFilter()
+        private void UpdateFilter()
         {
             if (!this.Filter.IsAllFilter) return;
             this.Filter = Filter.All(this);
