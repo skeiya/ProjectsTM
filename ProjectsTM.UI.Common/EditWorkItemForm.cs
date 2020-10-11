@@ -64,7 +64,7 @@ namespace ProjectsTM.UI.Common
             }
             return result;
         }
-        private static IEnumerable<string> GetTasks(WorkItems workItems)
+        private static List<string> GetTasks(WorkItems workItems)
         {
             var result = new List<string>();
             foreach (var wi in workItems)
