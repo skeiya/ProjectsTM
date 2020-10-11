@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -126,6 +127,18 @@ namespace ProjectsTM.Service
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
             return AppDataSerializeService.Deserialize(fileName);
+        }
+
+        public Task<bool> HasUnsavedChange(string filePath, AppData original)
+        {
+            Task<bool> task = Task.Run(() =>
+            {
+                var existing = AppDataSerializeService.Deserialize(filePath);
+                if (existing == null) return false;
+                return !original.Equals(existing);
+            }
+            );
+            return task;
         }
 
         private bool IsFutureVersion(string fileName)
