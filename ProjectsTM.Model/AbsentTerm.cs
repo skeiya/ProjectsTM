@@ -12,10 +12,12 @@ namespace ProjectsTM.Model
         public Member Member { get; set; }
         public Period Period { get; set; }
 
+        // TODO:少し考えて使い道なさそうなら削除する
         [XmlIgnore]
         public AbsentState State { get; set; }
 
-        [XmlElement]
+        // TODO:少し考えて使い道なさそうなら削除する
+        [XmlIgnore]
         public string AbsentStateElement
         {
             get { return State.ToString(); }
