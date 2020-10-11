@@ -277,7 +277,7 @@
             this.comboBoxProject.FormattingEnabled = true;
             this.comboBoxProject.Location = new System.Drawing.Point(172, 46);
             this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(552, 26);
+            this.comboBoxProject.Size = new System.Drawing.Size(554, 26);
             this.comboBoxProject.TabIndex = 23;
             // 
             // EditWorkItemForm

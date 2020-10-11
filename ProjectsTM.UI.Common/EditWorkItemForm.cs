@@ -42,6 +42,7 @@ namespace ProjectsTM.UI.Common
             }
             comboBoxState.SelectedItem = state;
         }
+
         private void InitCombbox(IEnumerable<Member> members, WorkItems workItems)
         {
             var projects = GetProjects(workItems);
@@ -54,17 +55,20 @@ namespace ProjectsTM.UI.Common
             }
             comboBoxProject.Items.AddRange(projects.ToArray());
         }
+
         private void Button1_Click(object sender, EventArgs e)
         {
             if (!CheckEdit()) return;
             DialogResult = DialogResult.OK;
             Close();
         }
+
         private void Button2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
         private void buttonRegexEscape_Click(object sender, EventArgs e)
         {
             var wi = CreateWorkItem(_callender);
@@ -76,6 +80,7 @@ namespace ProjectsTM.UI.Common
                 dlg.ShowDialog();
             }
         }
+
         private bool ValidateAssignedMember()
         {
             return _members.Contains(Member.Parse(comboBoxMember.Text));
@@ -90,6 +95,7 @@ namespace ProjectsTM.UI.Common
             }
             return CreateWorkItem(_callender) != null;
         }
+
         private WorkItem CreateWorkItem(Callender callender)
         {
             var p = GetProject();
@@ -102,10 +108,12 @@ namespace ProjectsTM.UI.Common
             if (m == null) return null;
             return new WorkItem(p, w, GetTags(), period, m, GetState(), GetDescrption());
         }
+
         private Member GetAssignedMember()
         {
             return Member.Parse(comboBoxMember.Text);
         }
+
         private static Period GetPeriod(Callender callender, string fromText, string toText)
         {
             var from = GetDayByDate(fromText);
@@ -115,6 +123,7 @@ namespace ProjectsTM.UI.Common
             if (callender.GetPeriodDayCount(result) == 0) return null;
             return result;
         }
+
         private static CallenderDay GetDayByDate(string text)
         {
             return CallenderDay.Parse(text);
@@ -126,20 +135,24 @@ namespace ProjectsTM.UI.Common
             if (!int.TryParse(countText, out dayCount)) return null;
             return callender.ApplyOffset(from, dayCount - 1);
         }
+
         private Tags GetTags()
         {
             return new Tags(textBoxTags.Text.Split('|').ToList());
         }
+
         private string GetWorkItemName()
         {
             if (string.IsNullOrEmpty(comboBoxWorkItemName.Text)) return null;
             return comboBoxWorkItemName.Text;
         }
+
         private Project GetProject()
         {
             //return comboBoxProject.SelectedItem as Project;
             return new Project(comboBoxProject.Text);
         }
+
         private static List<Project> GetProjects(WorkItems workItems)
         {
             var result = new List<Project>();
@@ -149,6 +162,7 @@ namespace ProjectsTM.UI.Common
             }
             return result;
         }
+
         private static IEnumerable<string> GetTasks(WorkItems workItems)
         {
             var result = new List<string>();
@@ -158,6 +172,7 @@ namespace ProjectsTM.UI.Common
             }
             return result;
         }
+
         public WorkItem GetWorkItem()
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
@@ -170,6 +185,7 @@ namespace ProjectsTM.UI.Common
         {
             return (TaskState)comboBoxState.SelectedItem;
         }
+
         private void UpdateEndDay()
         {
             var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
