@@ -45,15 +45,12 @@ namespace ProjectsTM.UI.Common
 
         private void InitCombbox(IEnumerable<Member> members, WorkItems workItems)
         {
-            var projects = GetProjects(workItems);
-            var tasks = GetTasks(workItems);
-            comboBoxWorkItemName.Items.AddRange(tasks.ToArray());
-
             foreach (var m in members)
             {
                 comboBoxMember.Items.Add(m.ToSerializeString());
             }
-            comboBoxProject.Items.AddRange(projects.ToArray());
+            comboBoxWorkItemName.Items.AddRange(GetTasks(workItems));
+            comboBoxProject.Items.AddRange(GetProjects(workItems).ToArray());
         }
         private static List<Project> GetProjects(WorkItems workItems)
         {
@@ -64,14 +61,14 @@ namespace ProjectsTM.UI.Common
             }
             return result;
         }
-        private static List<string> GetTasks(WorkItems workItems)
+        private static string[] GetTasks(WorkItems workItems)
         {
             var result = new List<string>();
             foreach (var wi in workItems)
             {
                 if (!result.Contains(wi.Name)) result.Add(wi.Name);
             }
-            return result;
+            return result.ToArray();
         }
 
         private void Button1_Click(object sender, EventArgs e)
