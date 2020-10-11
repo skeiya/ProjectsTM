@@ -18,8 +18,7 @@ namespace ProjectsTM.ViewModel
             _appData = appData;
             UndoService = undoService;
             this.Filter = Filter.All(this);
-            RemoveAbsentMembersFromFilter();
-            RemoveFreeTimeMembersFromFilter();
+            UpdateShowMembers();
             AppDataChanged?.Invoke(this, null);
         }
 
@@ -64,8 +63,7 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
-            RemoveAbsentMembersFromFilter();
-            RemoveFreeTimeMembersFromFilter();
+            UpdateShowMembers();
             FilterChanged(this, null);
         }
 
@@ -78,6 +76,12 @@ namespace ProjectsTM.ViewModel
         {
             var result = CreateAllMembersList();
             return GetFilterShowMembers(result);
+        }
+
+        private void UpdateShowMembers()
+        {
+            RemoveAbsentMembersFromFilter();
+            RemoveFreeTimeMembersFromFilter();
         }
 
         private void RemoveFreeTimeMembersFromFilter()
