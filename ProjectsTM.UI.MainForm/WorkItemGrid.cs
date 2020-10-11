@@ -59,8 +59,6 @@ namespace ProjectsTM.UI.MainForm
                 this,
                 () => _workItemDragService.IsActive(),
                 this.Font);
-            var temp = _viewData.Original.WorkItems;
-
         }
 
         private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
