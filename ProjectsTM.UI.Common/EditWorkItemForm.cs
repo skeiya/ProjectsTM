@@ -55,6 +55,24 @@ namespace ProjectsTM.UI.Common
             }
             comboBoxProject.Items.AddRange(projects.ToArray());
         }
+        private static List<Project> GetProjects(WorkItems workItems)
+        {
+            var result = new List<Project>();
+            foreach (var wi in workItems)
+            {
+                if (!result.Contains(wi.Project)) result.Add(wi.Project);
+            }
+            return result;
+        }
+        private static IEnumerable<string> GetTasks(WorkItems workItems)
+        {
+            var result = new List<string>();
+            foreach (var wi in workItems)
+            {
+                if (!result.Contains(wi.Name)) result.Add(wi.Name);
+            }
+            return result;
+        }
 
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -151,26 +169,6 @@ namespace ProjectsTM.UI.Common
         {
             //return comboBoxProject.SelectedItem as Project;
             return new Project(comboBoxProject.Text);
-        }
-
-        private static List<Project> GetProjects(WorkItems workItems)
-        {
-            var result = new List<Project>();
-            foreach (var wi in workItems)
-            {
-                if (!result.Contains(wi.Project)) result.Add(wi.Project);
-            }
-            return result;
-        }
-
-        private static IEnumerable<string> GetTasks(WorkItems workItems)
-        {
-            var result = new List<string>();
-            foreach (var wi in workItems)
-            {
-                if (!result.Contains(wi.Name)) result.Add(wi.Name);
-            }
-            return result;
         }
 
         public WorkItem GetWorkItem()
