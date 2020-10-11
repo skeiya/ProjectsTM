@@ -216,7 +216,7 @@ namespace ProjectsTM.UI.MainForm
 
         public void AddNewWorkItem(WorkItem proto)
         {
-            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
@@ -230,7 +230,7 @@ namespace ProjectsTM.UI.MainForm
         {
             var wi = GetUniqueSelect();
             if (wi == null) return;
-            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
