@@ -53,6 +53,11 @@ namespace ProjectsTM.UI.TaskList
 
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            SaveColWidths();
+        }
+
+        private void SaveColWidths()
+        {
             _formSize.TaskListColWidths.Clear();
             for (var idx = 0; idx < gridControl1.ColCount; idx++)
             {
@@ -73,6 +78,7 @@ namespace ProjectsTM.UI.TaskList
         }
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
+            SaveColWidths();
             UpdateList();
         }
 
