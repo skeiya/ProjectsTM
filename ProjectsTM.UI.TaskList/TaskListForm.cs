@@ -21,9 +21,20 @@ namespace ProjectsTM.UI.TaskList
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Initialize(viewData, comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
-            this.Size = FormSizeRestoreService.Load("TaskListFormSize");
+            this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
+        }
+
+        private void TaskListForm_Load(object sender, EventArgs e)
+        {
+            this.Size = FormSizeRestoreService.LoadFormSize("TaskListFormSize");
+            var colWidths = FormSizeRestoreService.LoadColWidths("TaskListColWidths");
+            for (var idx = 0; idx < this.gridControl1.ColWidths.Count; idx++)
+            {
+                if (colWidths == null || colWidths.Count() <= idx) break;
+                this.gridControl1.ColWidths[idx] = colWidths[idx];
+            }
         }
 
         private void CheckBoxShowMS_CheckedChanged(object sender, System.EventArgs e)
@@ -52,11 +63,17 @@ namespace ProjectsTM.UI.TaskList
         private void TaskListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveFormSize();
+            SaveColWidths();
+        }
+
+        private void SaveColWidths()
+        {
+            FormSizeRestoreService.SaveColWidths(this.gridControl1.ColWidths.ToIntArray(), "TaskListColWidths");
         }
 
         private void SaveFormSize()
         {
-            FormSizeRestoreService.Save(Height, Width, "TaskListFormSize");
+            FormSizeRestoreService.SaveFormSize(Height, Width, "TaskListFormSize");
         }
 
         public void UpdateView()

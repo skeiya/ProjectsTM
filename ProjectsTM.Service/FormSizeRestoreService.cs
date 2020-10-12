@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ProjectsTM.Service
         private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
         private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
 
-        public static Size Load(string form)
+        public static Size LoadFormSize(string form)
         {
             try
             {
@@ -33,7 +34,44 @@ namespace ProjectsTM.Service
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
 
-        public static void Save(int height, int width, string form)
+        public static int[] LoadColWidths(string form)
+        {
+            try
+            {
+                var result = new List<int>();
+                var xml = XElement.Load(SizeInfoPath);
+                var colWidthsElement = xml.Elements(form).Single().Elements("colwidths");
+                for (var idx = 0; idx < colWidthsElement.Elements().Count(); idx++)
+                {
+                    var col = colWidthsElement.Single().Elements("col" + idx.ToString());
+                    if (!col.Any()) continue;
+                    if (!int.TryParse(col.Single().Value, out var w)) continue;
+                    result.Add(w);
+                }
+                return result.ToArray();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static void SaveColWidths(int[] colWidths, string form)
+        {
+            var root = GetRootElement(SizeInfoPath);
+            var formElement = GetSubElement(root, form);
+            var colWidthsElement = GetSubElement(formElement, "colwidths");
+            var idx = 0;
+            foreach (var colWidth in colWidths)
+            {
+                var colWidthElement = GetSubElement(colWidthsElement, "col" + idx.ToString());
+                colWidthElement.Value = colWidth.ToString();
+                idx++;
+            }
+            root.Save(SizeInfoPath);
+        }
+
+        public static void SaveFormSize(int height, int width, string form)
         {
             var root = GetRootElement(SizeInfoPath);
             var formElement = GetSubElement(root, form);

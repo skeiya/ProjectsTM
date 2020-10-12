@@ -59,7 +59,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Size = FormSizeRestoreService.Load("MainFormSize");
+            Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -190,7 +190,7 @@ namespace ProjectsTM.UI.MainForm
                 PatternHistory = _patternHistory,
             };
             UserSettingUIService.Save(setting);
-            FormSizeRestoreService.Save(Height, Width, "MainFormSize");
+            FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");
         }
 
         private void InitializeViewData()

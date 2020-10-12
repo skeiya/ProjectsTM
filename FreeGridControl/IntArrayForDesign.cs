@@ -28,6 +28,16 @@ namespace FreeGridControl
             }
         }
 
+        public int[] ToIntArray()
+        {
+            var result = new List<int>();
+            for(var idx = 0; idx < this.Count; idx++)
+            {
+                result.Add(this[idx]);
+            }
+            return result.ToArray();
+        }
+
         internal int Sum(int r)
         {
             if (r == 0) return 0;
