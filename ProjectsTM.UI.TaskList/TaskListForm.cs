@@ -59,9 +59,9 @@ namespace ProjectsTM.UI.TaskList
             FormSizeRestoreService.Save(Height, Width, "TaskListFormSize");
         }
 
-        public void Clear()
+        public void UpdateView()
         {
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            gridControl1.UpdateView();
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -78,7 +78,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
-            gridControl1.Initialize(_viewData, comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            gridControl1.UpdateView();
         }
     }
 }

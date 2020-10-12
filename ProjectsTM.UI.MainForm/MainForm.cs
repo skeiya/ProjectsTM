@@ -245,7 +245,7 @@ namespace ProjectsTM.UI.MainForm
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _viewData.Selected = new WorkItems();
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.Clear();
+            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }

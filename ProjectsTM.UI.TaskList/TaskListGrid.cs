@@ -203,7 +203,7 @@ namespace ProjectsTM.UI.TaskList
                 _isReverse = false;
             }
             _sortCol = c;
-            InitializeGrid();
+            UpdateView();
         }
 
         private void Sort()
@@ -265,6 +265,15 @@ namespace ProjectsTM.UI.TaskList
             InitializeGrid();
         }
 
+        public void UpdateView()
+        {
+            LockUpdate = true;
+            UpdateListItem();
+            InitializeRowHeight();
+            LockUpdate = false;
+            UpdateLastSelect();
+        }
+
         private void InitializeGrid()
         {
             LockUpdate = true;
@@ -272,7 +281,8 @@ namespace ProjectsTM.UI.TaskList
             ColCount = 10;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
-            SetHeightAndWidth();
+            InitializeColWidth();
+            InitializeRowHeight();
             LockUpdate = false;
             UpdateLastSelect();
         }
@@ -319,7 +329,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
-            InitializeGrid();
+            UpdateView();
             this.Invalidate();
         }
 
@@ -335,7 +345,7 @@ namespace ProjectsTM.UI.TaskList
             LockUpdate = false;
         }
 
-        private void SetHeightAndWidth()
+        private void InitializeColWidth()
         {
             var g = this.CreateGraphics();
             var unit = Size.Round(g.MeasureString("あ", Font));
@@ -343,6 +353,13 @@ namespace ProjectsTM.UI.TaskList
             {
                 ColWidths[c.Value] = GetWidth(c, unit);
             }
+        }
+
+        private void InitializeRowHeight()
+        {
+            var g = this.CreateGraphics();
+            var unit = Size.Round(g.MeasureString("あ", Font));
+
             foreach (var r in RowIndex.Range(0, RowCount))
             {
                 RowHeights[r.Value] = GetHeight(r, unit);
