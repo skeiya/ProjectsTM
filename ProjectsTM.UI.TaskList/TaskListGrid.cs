@@ -23,7 +23,6 @@ namespace ProjectsTM.UI.TaskList
         private string _pattern;
         private string _andPattern;
         private WorkItemEditService _editService;
-        private List<int> _taskListColWidths;
 
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = new ColIndex(6);
@@ -254,12 +253,11 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, string pattern, List<int> taskListColWidths, bool isShowMS, string andPattern)
+        internal void Initialize(ViewData viewData, string pattern, bool isShowMS, string andPattern)
         {
             this._pattern = pattern;
             this._andPattern = andPattern;
             this._editService = new WorkItemEditService(viewData);
-            this._taskListColWidths = taskListColWidths;
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
             this._isShowMS = isShowMS;
@@ -378,7 +376,6 @@ namespace ProjectsTM.UI.TaskList
                 }
                 return Math.Max(w, unit.Width * 5);
             }
-            if (c.Value < _taskListColWidths.Count) return _taskListColWidths[c.Value];
             return unit.Width * 5;
         }
 

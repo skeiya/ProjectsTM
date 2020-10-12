@@ -24,8 +24,8 @@ namespace ProjectsTM.UI.MainForm
         private ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
-        private FormSize _formSize = new FormSize();
         private Timer _1minutTimer = new Timer();
+
         public MainForm()
         {
             InitializeComponent();
@@ -437,7 +437,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }

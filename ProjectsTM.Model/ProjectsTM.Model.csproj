@@ -49,7 +49,6 @@
     <Compile Include="CallenderDay.cs" />
     <Compile Include="ColorCondition.cs" />
     <Compile Include="ColorConditions.cs" />
-    <Compile Include="FormSize.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Members.cs" />
     <Compile Include="MembersWorkItems.cs" />
