@@ -24,8 +24,8 @@ namespace ProjectsTM.UI.MainForm
         private ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
-        private FormSize _formSize = new FormSize();
         private Timer _1minutTimer = new Timer();
+
         public MainForm()
         {
             InitializeComponent();
@@ -59,7 +59,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Size = FormSizeRestoreService.Load("MainFormSize");
+            Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -189,7 +189,7 @@ namespace ProjectsTM.UI.MainForm
                 PatternHistory = _patternHistory,
             };
             UserSettingUIService.Save(setting);
-            FormSizeRestoreService.Save(Height, Width, "MainFormSize");
+            FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");
         }
 
         private void InitializeViewData()
@@ -244,7 +244,7 @@ namespace ProjectsTM.UI.MainForm
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
             _viewData.Selected = new WorkItems();
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.Clear();
+            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
             workItemGrid1.Initialize(_viewData);
             UpdateDisplayOfSum(null);
         }
@@ -436,7 +436,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, _formSize);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
