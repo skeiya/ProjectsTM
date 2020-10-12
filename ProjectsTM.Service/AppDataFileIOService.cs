@@ -129,18 +129,6 @@ namespace ProjectsTM.Service
             return AppDataSerializeService.Deserialize(fileName);
         }
 
-        public Task<bool> HasUnsavedChange(string filePath, AppData original)
-        {
-            Task<bool> task = Task.Run(() =>
-            {
-                var existing = AppDataSerializeService.Deserialize(filePath);
-                if (existing == null) return true;
-                return !original.Equals(existing);
-            }
-            );
-            return task;
-        }
-
         private bool IsFutureVersion(string fileName)
         {
             XmlDocument oDom = new XmlDocument();
