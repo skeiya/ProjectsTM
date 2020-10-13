@@ -20,7 +20,8 @@ namespace ProjectsTM.UI.TaskList
             this._viewData = viewData;
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            var option = new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            gridControl1.Initialize(viewData, option);
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
