@@ -59,6 +59,7 @@
       <DependentUpon>TaskListGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="TaskListItem.cs" />
+    <Compile Include="TaskListOption.cs" />
     <Compile Include="WidthAdjuster.cs" />
   </ItemGroup>
   <ItemGroup>

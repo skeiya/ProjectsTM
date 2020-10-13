@@ -2,7 +2,6 @@
 using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,10 +19,16 @@ namespace ProjectsTM.UI.TaskList
             this._viewData = viewData;
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Initialize(viewData, comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            gridControl1.Option = GetOption();
+            gridControl1.Initialize(viewData);
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
+        }
+
+        private TaskListOption GetOption()
+        {
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
@@ -88,13 +93,13 @@ namespace ProjectsTM.UI.TaskList
         }
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
-            SaveFormSize();
             UpdateList();
         }
 
         private void UpdateList()
         {
             _history.Append(comboBoxPattern.Text);
+            gridControl1.Option = GetOption();
             gridControl1.UpdateView();
         }
     }
