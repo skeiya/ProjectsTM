@@ -88,7 +88,6 @@ namespace ProjectsTM.UI.TaskList
         }
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
-            SaveFormSize();
             UpdateList();
         }
 
