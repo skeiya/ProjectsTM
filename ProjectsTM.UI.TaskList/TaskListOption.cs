@@ -1,10 +1,14 @@
 ﻿namespace ProjectsTM.UI.TaskList
 {
-    class TaskListOption
+    public class TaskListOption
     {
         public string Pattern;
         public string AndPattern;
-        public bool IsShowMS;
+        public bool IsShowMS = true;
+
+        public TaskListOption()
+        {
+        }
 
         public TaskListOption(string pattern, bool isShowMS, string andPattern)
         {

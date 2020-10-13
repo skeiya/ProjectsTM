@@ -19,7 +19,7 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
-        private TaskListOption _option;
+        public TaskListOption Option = new TaskListOption();
         private WorkItemEditService _editService;
 
         public event EventHandler ListUpdated;
@@ -251,12 +251,11 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData, TaskListOption option)
+        internal void Initialize(ViewData viewData)
         {
             this._editService = new WorkItemEditService(viewData);
             if (_viewData != null) DetatchEvents();
             this._viewData = viewData;
-            this._option = option;
             AttachEvents();
             InitializeGrid();
         }
@@ -265,6 +264,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             UpdateListItem();
+            RowCount = _listItems.Count + FixedRowCount;
             InitializeRowHeight();
             LockUpdate = false;
             UpdateLastSelect();
@@ -456,7 +456,7 @@ namespace ProjectsTM.UI.TaskList
                 audit.TryGetValue(wi, out string error);
                 list.Add(new TaskListItem(wi, GetColor(wi.State, error), false, error));
             }
-            if (_option.IsShowMS)
+            if (Option.IsShowMS)
             {
                 foreach (var ms in _viewData.Original.MileStones)
                 {
@@ -470,8 +470,8 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsMatchPattern(string target)
         {
-            if (!string.IsNullOrEmpty(_option.Pattern) && !Regex.IsMatch(target, _option.Pattern)) return false;
-            if (!string.IsNullOrEmpty(_option.AndPattern) && !Regex.IsMatch(target, _option.AndPattern)) return false;
+            if (!string.IsNullOrEmpty(Option.Pattern) && !Regex.IsMatch(target, Option.Pattern)) return false;
+            if (!string.IsNullOrEmpty(Option.AndPattern) && !Regex.IsMatch(target, Option.AndPattern)) return false;
             return true;
         }
 
