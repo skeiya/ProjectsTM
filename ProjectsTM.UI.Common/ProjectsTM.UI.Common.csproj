@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EazyRegexForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EazyRegexForm.Designer.cs">
+      <DependentUpon>EazyRegexForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditMemberForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EazyRegexForm.resx">
+      <DependentUpon>EazyRegexForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditMemberForm.resx">
       <DependentUpon>EditMemberForm.cs</DependentUpon>
     </EmbeddedResource>
