@@ -212,6 +212,15 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EazyRegexForm())
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                comboBoxPattern.Text = dlg.RegexPattern;
+            }
+        }
+
         private void CheckBoxSort_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxSort.Checked)

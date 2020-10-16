@@ -64,6 +64,12 @@
     <Compile Include="DevideWorkItemForm.Designer.cs">
       <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EazyRegexForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EazyRegexForm.Designer.cs">
+      <DependentUpon>EazyRegexForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DevideWorkItemForm.resx">
       <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EazyRegexForm.resx">
+      <DependentUpon>EazyRegexForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>

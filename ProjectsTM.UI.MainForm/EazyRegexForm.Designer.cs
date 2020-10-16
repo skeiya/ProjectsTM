@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.UI.TaskList
+﻿namespace ProjectsTM.UI.MainForm
 {
     partial class EazyRegexForm
     {
