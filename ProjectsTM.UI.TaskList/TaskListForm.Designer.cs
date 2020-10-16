@@ -36,7 +36,7 @@
             this.checkBoxShowMS = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxAndCondition = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonEazyRegex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -133,16 +133,16 @@
             this.textBoxAndCondition.Size = new System.Drawing.Size(749, 25);
             this.textBoxAndCondition.TabIndex = 9;
             // 
-            // button1
+            // buttonEazyRegex
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(970, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 34);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "簡易指定...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonEazyRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEazyRegex.Location = new System.Drawing.Point(970, 15);
+            this.buttonEazyRegex.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.buttonEazyRegex.Name = "buttonEazyRegex";
+            this.buttonEazyRegex.Size = new System.Drawing.Size(125, 34);
+            this.buttonEazyRegex.TabIndex = 10;
+            this.buttonEazyRegex.Text = "簡易指定...";
+            this.buttonEazyRegex.UseVisualStyleBackColor = true;
             // 
             // TaskListForm
             // 
@@ -150,7 +150,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1250, 460);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonEazyRegex);
             this.Controls.Add(this.textBoxAndCondition);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxShowMS);
@@ -177,6 +177,6 @@
         private System.Windows.Forms.CheckBox checkBoxShowMS;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxAndCondition;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonEazyRegex;
     }
 }

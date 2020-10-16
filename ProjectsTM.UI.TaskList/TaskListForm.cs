@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.Service;
+using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
 using System.Linq;
@@ -24,6 +25,16 @@ namespace ProjectsTM.UI.TaskList
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
+            this.buttonEazyRegex.Click += buttonEazyRegex_Click;
+        }
+
+        private void buttonEazyRegex_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EazyRegexForm())
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                comboBoxPattern.Text = dlg.RegexPattern;
+            }
         }
 
         private TaskListOption GetOption()
