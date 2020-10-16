@@ -2,7 +2,6 @@
 using ProjectsTM.Service;
 using ProjectsTM.ViewModel;
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -26,6 +25,7 @@ namespace ProjectsTM.UI.TaskList
             this.Size = FormSizeRestoreService.Load("TaskListFormSize");
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
+            this.buttonEazyRegex.Click += ButtonEazyRegex_Click;
         }
 
         private void CheckBoxShowMS_CheckedChanged(object sender, System.EventArgs e)
@@ -74,6 +74,14 @@ namespace ProjectsTM.UI.TaskList
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
             UpdateList();
+        }
+        private void ButtonEazyRegex_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new EazyRegexForm())
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                comboBoxPattern.Text = dlg.RegexPattern;
+            }
         }
 
         private void UpdateList()

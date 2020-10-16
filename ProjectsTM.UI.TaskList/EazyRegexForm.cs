@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ProjectsTM.UI.MainForm
+namespace ProjectsTM.UI.TaskList
 {
     public partial class EazyRegexForm : Form
     {
