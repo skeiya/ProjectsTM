@@ -13,20 +13,25 @@ namespace ProjectsTM.Service
     public class FilterComboBoxService
     {
         private ViewData _viewData;
-        private ToolStripComboBox toolStripComboBoxFilter;
+        private ToolStripComboBox _toolStripComboBoxFilter;
         private string DirPath => Path.Combine(Path.GetDirectoryName(_filepPath), "filters");
         private List<string> _allPaths = new List<string>();
         private Func<Member, string, bool> IsMemberMatchText;
+
+        private readonly string FilePrefix = "file:";
+        private readonly string CompanyPrefix = "company:";
+        private readonly string ProjectPrefix = "project:";
+        private readonly string AllKeyword = "ALL";
 
         public string Text
         {
             get
             {
-                return toolStripComboBoxFilter.Text;
+                return _toolStripComboBoxFilter.Text;
             }
             set
             {
-                toolStripComboBoxFilter.Text = value;
+                _toolStripComboBoxFilter.Text = value;
             }
         }
 
@@ -34,50 +39,91 @@ namespace ProjectsTM.Service
         public FilterComboBoxService(ViewData viewData, ToolStripComboBox toolStripComboBoxFilter, Func<Member, string, bool> isMemberMatchText)
         {
             _viewData = viewData;
-            this.toolStripComboBoxFilter = toolStripComboBoxFilter;
+            this._toolStripComboBoxFilter = toolStripComboBoxFilter;
+            this._toolStripComboBoxFilter.Items.Add(AllKeyword);
             this.IsMemberMatchText = isMemberMatchText;
-            this.toolStripComboBoxFilter.DropDown += ToolStripComboBoxFilter_DropDown;
+            this._toolStripComboBoxFilter.DropDown += ToolStripComboBoxFilter_DropDown;
         }
 
         private void ToolStripComboBoxFilter_DropDown(object sender, EventArgs e)
         {
-            Initialize(_filepPath);
+            UpdateFilePart(_filepPath);
         }
 
         private string _filepPath = string.Empty;
-        public void Initialize(string filePath)
+
+        public void UpdateFilePart(string filePath)
         {
             _filepPath = filePath;
-            var selectedItem = toolStripComboBoxFilter.SelectedItem;
-            var selectedText = selectedItem == null ? null : toolStripComboBoxFilter.SelectedItem.ToString();
-            if (toolStripComboBoxFilter.Items.Count != 0) DetachEvent();
-            toolStripComboBoxFilter.Items.Clear();
-            toolStripComboBoxFilter.Items.Add("ALL");
-            AppendByFiles();
-            AppendByProjects();
-            AppendByCompany();
-            toolStripComboBoxFilter.SelectedIndex = GetIndexBinder(selectedText);
+            var selectedItem = _toolStripComboBoxFilter.SelectedItem;
+            var selectedText = selectedItem == null ? null : _toolStripComboBoxFilter.SelectedItem.ToString();
+            if (_toolStripComboBoxFilter.Items.Count != 0) DetachEvent();
+            UpdateByFiles();
+            _toolStripComboBoxFilter.SelectedIndex = GetIndexBinder(selectedText);
             AttachEvent();
         }
 
-        private void AppendByCompany()
+        public void UpdateAppDataPart()
         {
+            var selectedItem = _toolStripComboBoxFilter.SelectedItem;
+            var selectedText = selectedItem == null ? null : _toolStripComboBoxFilter.SelectedItem.ToString();
+            UpdateByProjects();
+            UpdateByCompany();
+            _toolStripComboBoxFilter.SelectedIndex = GetIndexBinder(selectedText);
+        }
+
+        private void UpdateByCompany()
+        {
+            PartClear(CompanyPrefix);
+            var insertIdx = GetCompanyTopIndex();
             foreach (var com in GetCompanies())
             {
-                toolStripComboBoxFilter.Items.Add("company:" + com);
+                _toolStripComboBoxFilter.Items.Insert(insertIdx, CompanyPrefix + com);
             }
         }
+
+        private void PartClear(string prefix)
+        {
+            for (var idx = _toolStripComboBoxFilter.Items.Count - 1; idx >= 0; idx--)
+            {
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(prefix)) continue;
+                _toolStripComboBoxFilter.Items.RemoveAt(idx);
+            }
+        }
+
+        private int GetCompanyTopIndex()
+        {
+            for (int idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            {
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(CompanyPrefix)) continue;
+                return idx + 1;
+            }
+            return GetProjectTopIndex();
+        }
+
         private IEnumerable<string> GetCompanies()
         {
             return _viewData.Original.WorkItems.Select(w => w.AssignedMember.Company).Distinct();
         }
 
-        private void AppendByProjects()
+        private void UpdateByProjects()
         {
+            PartClear(ProjectPrefix);
+            var insertIdx = GetProjectTopIndex();
             foreach (var pro in GetProjects())
             {
-                toolStripComboBoxFilter.Items.Add("project:" + pro);
+                _toolStripComboBoxFilter.Items.Insert(insertIdx, ProjectPrefix + pro);
             }
+        }
+
+        private int GetProjectTopIndex()
+        {
+            for (var idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            {
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(FilePrefix)) continue;
+                return idx + 1;
+            }
+            return GetFileTopIndex();
         }
 
         private IEnumerable<Project> GetProjects()
@@ -89,7 +135,9 @@ namespace ProjectsTM.Service
         {
             try
             {
-                return toolStripComboBoxFilter.Items.IndexOf(selectedText);
+                var idx = _toolStripComboBoxFilter.Items.IndexOf(selectedText);
+                if (idx < 0) idx = 0;
+                return idx;
             }
             catch
             {
@@ -97,32 +145,39 @@ namespace ProjectsTM.Service
             }
         }
 
-        private void AppendByFiles()
+        private void UpdateByFiles()
         {
+            PartClear(FilePrefix);
             _allPaths.Clear();
             if (string.IsNullOrEmpty(_filepPath)) return;
             if (!Directory.Exists(DirPath)) return;
             _allPaths.AddRange(Directory.GetFiles(DirPath));
+            int insertIdx = GetFileTopIndex();
             foreach (var f in _allPaths)
             {
-                toolStripComboBoxFilter.Items.Add("file:" + Path.GetFileNameWithoutExtension(f));
+                _toolStripComboBoxFilter.Items.Insert(insertIdx++, FilePrefix + Path.GetFileNameWithoutExtension(f));
             }
+        }
+
+        private int GetFileTopIndex()
+        {
+            return _toolStripComboBoxFilter.Items.IndexOf(AllKeyword) + 1;
         }
 
         private void AttachEvent()
         {
-            toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
+            _toolStripComboBoxFilter.SelectedIndexChanged += ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
         private void DetachEvent()
         {
-            toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
+            _toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
         public void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = null;
-            var idx = toolStripComboBoxFilter.SelectedIndex;
+            var idx = _toolStripComboBoxFilter.SelectedIndex;
             if (idx == 0)
             {
                 _viewData.SetFilter(Filter.All(_viewData));
