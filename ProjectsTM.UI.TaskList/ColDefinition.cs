@@ -3,68 +3,47 @@ using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectsTM.UI.TaskList
 {
     class ColDefinition
     {
-        public static int Count => 10;
+        public static int Count => Enum.GetNames(typeof(ColIds)).Count();
 
-        public static ColIndex InitialSortCol => new ColIndex(7);
+        public static ColIndex InitialSortCol => ToIndex(ColIds.End);
+
+        private static Dictionary<ColIds, ColSpecification> _colTable = new Dictionary<ColIds, ColSpecification>() {
+            {ColIds.Name, new ColSpecification("名前", (i,cal)=>i.WorkItem.Name) },
+            {ColIds.Error, new ColSpecification("エラー", (i, cal) => i.ErrMsg) },
+            {ColIds.Project, new ColSpecification( "プロジェクト", (i, cal) => i.WorkItem.Project.ToString()) },
+            {ColIds.Assign, new ColSpecification( "担当", (i, cal) => i.WorkItem.AssignedMember.ToString()) },
+            {ColIds.Tag, new ColSpecification( "タグ", (i, cal) => i.WorkItem.Tags.ToString()) },
+            {ColIds.State, new ColSpecification( "状態", (i,cal) => i.WorkItem.State.ToString())},
+            {ColIds.Start, new ColSpecification( "開始", (i, cal) => i.WorkItem.Period.From.ToString()) },
+            {ColIds.End, new ColSpecification( "終了", (i, cal) => i.WorkItem.Period.To.ToString()) },
+            {ColIds.DayCount, new ColSpecification( "人日", (i, cal) =>  cal.GetPeriodDayCount(i.WorkItem.Period).ToString())},
+            {ColIds.Desktiprion, new ColSpecification( "備考", (i, cal) => i.WorkItem.Description) },
+        };
 
         public static string GetTitle(ColIndex c)
         {
-            string[] titles = new string[] { "名前", "エラー", "プロジェクト", "担当", "タグ", "状態", "開始", "終了", "人日", "備考" };
-            return titles[c.Value];
+            return _colTable[ToId(c)].Title;
+        }
+
+        private static ColIndex ToIndex(ColIds id)
+        {
+            var idx = (int)id;
+            return new ColIndex(idx);
+        }
+
+        private static ColIds ToId(ColIndex c)
+        {
+            return (ColIds)c.Value;
         }
 
         public static string GetText(TaskListItem item, ColIndex c, ViewData viewData)
         {
-            var colIndex = c.Value;
-            var wi = item.WorkItem;
-            if (colIndex == 0)
-            {
-                return wi.Name;
-            }
-            else if (colIndex == 1)
-            {
-                return item.ErrMsg;
-            }
-            else if (colIndex == 2)
-            {
-                return wi.Project.ToString();
-            }
-            else if (colIndex == 3)
-            {
-                return wi.AssignedMember.ToString();
-            }
-            else if (colIndex == 4)
-            {
-                return wi.Tags.ToString();
-            }
-            else if (colIndex == 5)
-            {
-                return wi.State.ToString();
-            }
-            else if (colIndex == 6)
-            {
-                return wi.Period.From.ToString();
-            }
-            else if (colIndex == 7)
-            {
-                return wi.Period.To.ToString();
-            }
-            else if (colIndex == 8)
-            {
-                return viewData.Original.Callender.GetPeriodDayCount(wi.Period).ToString();
-            }
-            else if (colIndex == 9)
-            {
-                return wi.Description;
-            }
-            return string.Empty;
+            return _colTable[ToId(c)].GetText(item, viewData.Original.Callender);
         }
 
         private static bool IsDayCountCol(ColIndex c)
