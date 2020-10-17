@@ -23,7 +23,7 @@ namespace ProjectsTM.UI.TaskList
         private WorkItemEditService _editService;
 
         public event EventHandler ListUpdated;
-        private ColIndex _sortCol = new ColIndex(6);
+        private ColIndex _sortCol = ColDefinition.InitialSortCol;
         private bool _isReverse = false;
         private RowIndex _lastSelect;
         private WidthAdjuster _widthAdjuster;
@@ -215,23 +215,11 @@ namespace ProjectsTM.UI.TaskList
 
         private void Sort()
         {
-            if (IsDayCountCol(_sortCol))
-            {
-                _listItems = _listItems.OrderBy(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period)).ToList();
-            }
-            else
-            {
-                _listItems = _listItems.OrderBy(l => GetText(l, _sortCol)).ToList();
-            }
+            ColDefinition.Sort(_sortCol, _listItems, _viewData);
             if (_isReverse)
             {
                 _listItems.Reverse();
             }
-        }
-
-        private static bool IsDayCountCol(ColIndex c)
-        {
-            return c.Value == 7;
         }
 
         private void TaskListGrid_Disposed(object sender, EventArgs e)
@@ -283,7 +271,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             UpdateListItem();
-            ColCount = 10;
+            ColCount = ColDefinition.Count;
             FixedRowCount = 1;
             RowCount = _listItems.Count + FixedRowCount;
             InitializeColWidth();
@@ -338,7 +326,7 @@ namespace ProjectsTM.UI.TaskList
             this.Invalidate();
         }
 
-        private readonly ColIndex AutoExtendCol = new ColIndex(8);
+        private readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
 
         private void UpdateExtendColWidth()
         {
@@ -444,7 +432,7 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsTooBig(WorkItem wi)
         {
-            return 10 < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
+            return ColDefinition.Count < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
         private bool IsStartSoon(WorkItem wi, CallenderDay soon)
@@ -521,7 +509,7 @@ namespace ProjectsTM.UI.TaskList
                 if (!res.HasValue) continue;
                 g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value.Value);
                 g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value.Value));
-                var text = GetText(item, c);
+                var text = ColDefinition.GetText(item, c, _viewData);
                 var rect = res.Value;
                 rect.Y += 1;
                 g.DrawString(text, this.Font, Brushes.Black, rect.Value, format);
@@ -536,52 +524,6 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private string GetText(TaskListItem item, ColIndex c)
-        {
-            var colIndex = c.Value;
-            var wi = item.WorkItem;
-            if (colIndex == 0)
-            {
-                return wi.Name;
-            }
-            else if (colIndex == 1)
-            {
-                return wi.Project.ToString();
-            }
-            else if (colIndex == 2)
-            {
-                return wi.AssignedMember.ToString();
-            }
-            else if (colIndex == 3)
-            {
-                return wi.Tags.ToString();
-            }
-            else if (colIndex == 4)
-            {
-                return wi.State.ToString();
-            }
-            else if (colIndex == 5)
-            {
-                return wi.Period.From.ToString();
-            }
-            else if (colIndex == 6)
-            {
-                return wi.Period.To.ToString();
-            }
-            else if (colIndex == 7)
-            {
-                return _viewData.Original.Callender.GetPeriodDayCount(wi.Period).ToString();
-            }
-            else if (colIndex == 8)
-            {
-                return wi.Description;
-            }
-            else if (colIndex == 9)
-            {
-                return item.ErrMsg;
-            }
-            return string.Empty;
-        }
 
         private void DrawTitleRow(Graphics g)
         {
@@ -596,16 +538,10 @@ namespace ProjectsTM.UI.TaskList
                     g.DrawRectangle(Pens.Black, res.Value.Value);
                     var rect = res.Value;
                     rect.Y += 1;
-                    g.DrawString(GetTitle(c), this.Font, Brushes.Black, rect.Value);
+                    g.DrawString(ColDefinition.GetTitle(c), this.Font, Brushes.Black, rect.Value);
                     if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect.Value, format);
                 }
             }
-        }
-
-        private static string GetTitle(ColIndex c)
-        {
-            string[] titles = new string[] { "名前", "プロジェクト", "担当", "タグ", "状態", "開始", "終了", "人日", "備考", "エラー" };
-            return titles[c.Value];
         }
     }
 }
