@@ -71,10 +71,11 @@ namespace ProjectsTM.UI.TaskList
 
         private void TaskListGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            var col = GetAdjustCol(e.Location);
+            var rawPoint = this.Client2Raw(new ClientPoint(e.Location));
+            var col = GetAdjustCol(rawPoint);
             if (col == null) return;
             var width = ColWidths[col.Value];
-            _widthAdjuster.Start(e.Location, width, GetWidthAdjuster(col));
+            _widthAdjuster.Start(rawPoint, width, GetWidthAdjuster(col));
         }
 
         private Action<int> GetWidthAdjuster(ColIndex col)
@@ -82,7 +83,7 @@ namespace ProjectsTM.UI.TaskList
             return new Action<int>(
                 (w) =>
                 {
-                    ColWidths[col.Value] = w;
+                    ColWidths[col.Value] = Math.Max(w, 35);
                     UpdateExtendColWidth();
                 }
             );
@@ -90,7 +91,8 @@ namespace ProjectsTM.UI.TaskList
 
         private void TaskListGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            Cursor = _widthAdjuster.Update(e.Location);
+            var rawPoint = this.Client2Raw(new ClientPoint(e.Location));
+            Cursor = _widthAdjuster.Update(rawPoint);
         }
 
         private void TaskListGrid_KeyDown(object sender, KeyEventArgs e)

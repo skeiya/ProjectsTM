@@ -1,23 +1,22 @@
 ﻿using FreeGridControl;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.TaskList
 {
     internal class WidthAdjuster
     {
-        private Point _orgLocation;
+        private RawPoint _orgLocation;
         private int _orgWidth = -1;
-        private Func<Point, ColIndex> _getAdjustCol;
+        private Func<RawPoint, ColIndex> _getAdjustCol;
         private Action<int> _adjustWidth;
 
-        public WidthAdjuster(Func<Point, ColIndex> getAdjustCol)
+        public WidthAdjuster(Func<RawPoint, ColIndex> getAdjustCol)
         {
             this._getAdjustCol = getAdjustCol;
         }
 
-        internal void Start(Point location, int orgWidth, Action<int> adjustWidth)
+        internal void Start(RawPoint location, int orgWidth, Action<int> adjustWidth)
         {
             _orgLocation = location;
             _orgWidth = orgWidth;
@@ -30,7 +29,7 @@ namespace ProjectsTM.UI.TaskList
             _adjustWidth = null;
         }
 
-        internal Cursor Update(Point location)
+        internal Cursor Update(RawPoint location)
         {
             var updatedWidth = _orgWidth + (location.X - _orgLocation.X);
             _adjustWidth?.Invoke(updatedWidth);

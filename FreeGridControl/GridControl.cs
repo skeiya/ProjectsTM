@@ -349,7 +349,7 @@ namespace FreeGridControl
             return new ColIndex(ColCount - 1);
         }
 
-        public ColIndex GetAdjustCol(Point location)
+        public ColIndex GetAdjustCol(RawPoint location)
         {
             if (FixedRowCount == 0) return null;
             if (FixedHeight < location.Y) return null;
