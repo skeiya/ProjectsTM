@@ -79,7 +79,13 @@ namespace ProjectsTM.UI.TaskList
 
         private Action<int> GetWidthAdjuster(ColIndex col)
         {
-            return new Action<int>((w) => ColWidths[col.Value] = w);
+            return new Action<int>(
+                (w) =>
+                {
+                    ColWidths[col.Value] = w;
+                    UpdateExtendColWidth();
+                }
+            );
         }
 
         private void TaskListGrid_MouseMove(object sender, MouseEventArgs e)
@@ -100,7 +106,8 @@ namespace ProjectsTM.UI.TaskList
             else if (KeyState.IsControlDown && (e.KeyCode == Keys.C))
             {
                 CopyToClipboard();
-            }else if(KeyState.IsControlDown && (e.KeyCode == Keys.A))
+            }
+            else if (KeyState.IsControlDown && (e.KeyCode == Keys.A))
             {
                 SelectAll();
             }
@@ -336,18 +343,15 @@ namespace ProjectsTM.UI.TaskList
             if (ColWidths.Count <= AutoExtendCol.Value) return;
             LockUpdate = true;
             var g = this.CreateGraphics();
-            var unit = Size.Round(g.MeasureString("あ", Font));
-            ColWidths[AutoExtendCol.Value] = GetWidth(AutoExtendCol, unit);
+            ColWidths[AutoExtendCol.Value] = GetWidth(AutoExtendCol);
             LockUpdate = false;
         }
 
         private void InitializeColWidth()
         {
-            var g = this.CreateGraphics();
-            var unit = Size.Round(g.MeasureString("あ", Font));
             foreach (var c in ColIndex.Range(0, ColCount))
             {
-                ColWidths[c.Value] = GetWidth(c, unit);
+                ColWidths[c.Value] = GetWidth(c);
             }
         }
 
@@ -378,18 +382,18 @@ namespace ProjectsTM.UI.TaskList
             return unit.Height * GetStringLineCount(_listItems[r.Value - FixedRowCount].WorkItem.Description);
         }
 
-        private int GetWidth(ColIndex c, Size unit)
+        private int GetWidth(ColIndex c)
         {
             if (c.Equals(AutoExtendCol))
             {
                 var w = this.Width - this.VScrollBarWidth;
                 foreach (var col in ColIndex.Range(0, ColCount))
                 {
-                    if (!col.Equals(AutoExtendCol)) w -= GetWidth(col, unit);
+                    if (!col.Equals(AutoExtendCol)) w -= GetWidth(col);
                 }
-                return Math.Max(w, unit.Width * 5);
+                return Math.Max(w, 35);
             }
-            return unit.Width * 5;
+            return this.ColWidths[c.Value];
         }
 
         private void UpdateListItem()
