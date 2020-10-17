@@ -11,6 +11,6 @@
         Start,
         End,
         DayCount,
-        Desktiprion,
+        Description,
     }
 }

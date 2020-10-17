@@ -326,7 +326,7 @@ namespace ProjectsTM.UI.TaskList
             this.Invalidate();
         }
 
-        private readonly ColIndex AutoExtendCol = new ColIndex(8);
+        private readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
 
         private void UpdateExtendColWidth()
         {

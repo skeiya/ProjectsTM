@@ -12,6 +12,8 @@ namespace ProjectsTM.UI.TaskList
 
         public static ColIndex InitialSortCol => ToIndex(ColIds.End);
 
+        public static ColIndex AutoExtendCol => ToIndex(ColIds.Description);
+
         private static Dictionary<ColIds, ColSpecification> _colTable = new Dictionary<ColIds, ColSpecification>() {
             {ColIds.Name, new ColSpecification("名前", (i,cal)=>i.WorkItem.Name) },
             {ColIds.Error, new ColSpecification("エラー", (i, cal) => i.ErrMsg) },
@@ -22,7 +24,7 @@ namespace ProjectsTM.UI.TaskList
             {ColIds.Start, new ColSpecification( "開始", (i, cal) => i.WorkItem.Period.From.ToString()) },
             {ColIds.End, new ColSpecification( "終了", (i, cal) => i.WorkItem.Period.To.ToString()) },
             {ColIds.DayCount, new ColSpecification( "人日", (i, cal) =>  cal.GetPeriodDayCount(i.WorkItem.Period).ToString())},
-            {ColIds.Desktiprion, new ColSpecification( "備考", (i, cal) => i.WorkItem.Description) },
+            {ColIds.Description, new ColSpecification( "備考", (i, cal) => i.WorkItem.Description) },
         };
 
         public static string GetTitle(ColIndex c)
@@ -48,7 +50,7 @@ namespace ProjectsTM.UI.TaskList
 
         private static bool IsDayCountCol(ColIndex c)
         {
-            return c.Value == 8;
+            return ToIndex(ColIds.DayCount).Equals(c);
         }
 
         internal static void Sort(ColIndex sortCol, List<TaskListItem> listItems, ViewData viewData)
