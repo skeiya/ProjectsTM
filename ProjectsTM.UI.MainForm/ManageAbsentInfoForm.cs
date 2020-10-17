@@ -41,7 +41,9 @@ namespace ProjectsTM.UI.MainForm
 
         private void Edit()
         {
-            var before = ParseAbsentTerm((string)listBox1.SelectedItem);
+            string selectedItem = (string)listBox1.SelectedItem;
+            if (selectedItem == null) return;
+            var before = ParseAbsentTerm(selectedItem);
             if (before == null) return;
             using (var dlg = new EditAbsentTermForm(_member, before, _callender))
             {
@@ -72,7 +74,9 @@ namespace ProjectsTM.UI.MainForm
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            var absentTerm = ParseAbsentTerm((string)listBox1.SelectedItem);
+            string selectedItem = (string)listBox1.SelectedItem;
+            if (selectedItem == null) return;
+            var absentTerm = ParseAbsentTerm(selectedItem);
             if (absentTerm == null) return;
             _absentTerms.Remove(absentTerm);
             UpdateList();
