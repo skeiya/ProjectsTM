@@ -89,7 +89,7 @@ namespace ProjectsTM.UI.MainForm
                 listBox1.Items.Add(m);
             }
         }
-        
+
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateDisplay();
