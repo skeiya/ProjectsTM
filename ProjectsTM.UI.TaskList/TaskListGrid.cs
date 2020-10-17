@@ -408,19 +408,19 @@ namespace ProjectsTM.UI.TaskList
         private Dictionary<WorkItem, string> GetAuditList()
         {
             var result = new Dictionary<WorkItem, string>();
-            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "期間重複"));
+            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "衝突"));
             var soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5);
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
                 if (IsNotEndError(wi))
                 {
-                    result.Add(wi, "未終了");
+                    result.Add(wi, "未完");
                     continue;
                 }
                 if (IsTooBigError(wi, soon))
                 {
-                    result.Add(wi, "要分解");
+                    result.Add(wi, "過大");
                     continue;
                 }
             }
