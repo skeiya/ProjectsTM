@@ -31,7 +31,7 @@ namespace FreeGridControl
         public int[] ToIntArray()
         {
             var result = new List<int>();
-            for(var idx = 0; idx < this.Count; idx++)
+            for (var idx = 0; idx < this.Count; idx++)
             {
                 result.Add(this[idx]);
             }
