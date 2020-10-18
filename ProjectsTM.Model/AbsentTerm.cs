@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Xml.Serialization;
+﻿using System.Diagnostics;
 
 namespace ProjectsTM.Model
 {
@@ -12,42 +10,17 @@ namespace ProjectsTM.Model
         public Member Member { get; set; }
         public Period Period { get; set; }
 
-        // TODO:少し考えて使い道なさそうなら削除する
-        [XmlIgnore]
-        public AbsentState State { get; set; }
-
-        // TODO:少し考えて使い道なさそうなら削除する
-        [XmlIgnore]
-        public string AbsentStateElement
-        {
-            get { return State.ToString(); }
-            set { State = ParseAbsentState(value); }
-        }
-
-        public AbsentTerm(Member member, AbsentState state, Period period)
+        public AbsentTerm(Member member, Period period)
         {
             this.Member = member;
-            this.State = state;
             this.Period = period;
         }
 
-        public AbsentTerm(Member member, string absentState, Period period)
-        {
-            EditApply(new AbsentTerm(member, ParseAbsentState(absentState), period));
-        }
-
-        public void EditApply(AbsentTerm absentTerm)
-        {
-            this.Member = absentTerm.Member;
-            this.State = absentTerm.State;
-            this.Period = absentTerm.Period;
-        }
 
         public override bool Equals(object obj)
         {
             return obj is AbsentTerm absentTerm &&
                    Member.Equals(absentTerm.Member) &&
-                   State.Equals(absentTerm.State) &&
                    Period.Equals(absentTerm.Period);
         }
 
@@ -55,19 +28,8 @@ namespace ProjectsTM.Model
         {
             int hashCode = -1667148998;
             hashCode = hashCode * -1521134295 + Member.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<AbsentState>.Default.GetHashCode(State);
             hashCode = hashCode * -1521134295 + Period.GetHashCode();
             return hashCode;
-        }
-
-        private AbsentState ParseAbsentState(string str)
-        {
-            foreach (AbsentState a in System.Enum.GetValues(typeof(AbsentState)))
-            {
-                if (a.ToString() == str) return a;
-            }
-            Debug.Assert(false);
-            return default;
         }
     }
 }

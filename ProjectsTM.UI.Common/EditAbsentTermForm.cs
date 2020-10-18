@@ -16,31 +16,11 @@ namespace ProjectsTM.UI.Common
         {
             InitializeComponent();
             this._member = member;
-            if (absentTerm == null) absentTerm = new AbsentTerm(member, AbsentState.Absence, new Period());
+            if (absentTerm == null) absentTerm = new AbsentTerm(member, new Period());
             this._absentTerm = absentTerm;
             this._callender = callender;
             textBoxFrom.Text = absentTerm.Period?.From == null ? string.Empty : absentTerm.Period.From.ToString();
             textBoxTo.Text = absentTerm.Period?.To == null ? string.Empty : absentTerm.Period.To.ToString();
-            InitDropDownList(absentTerm.State);
-
-            // TODO:少し考えて使い道なさそうなら削除する
-            label7.Visible = false;
-            comboBoxState.Visible = false;
-        }
-
-        private void InitDropDownList(AbsentState state)
-        {
-            comboBoxState.Items.Clear();
-            foreach (AbsentState a in Enum.GetValues(typeof(AbsentState)))
-            {
-                comboBoxState.Items.Add(a);
-            }
-            comboBoxState.SelectedItem = state;
-        }
-
-        private AbsentState GetState()
-        {
-            return (AbsentState)comboBoxState.SelectedItem;
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -59,7 +39,7 @@ namespace ProjectsTM.UI.Common
         {
             var period = GetPeriod(callender, textBoxFrom.Text, textBoxTo.Text);
             if (period == null) return null;
-            return new AbsentTerm(member, GetState(), period);
+            return new AbsentTerm(member, period);
         }
 
         private Period GetPeriod(Callender callender, string fromText, string toText)

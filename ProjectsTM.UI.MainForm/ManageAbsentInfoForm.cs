@@ -30,7 +30,7 @@ namespace ProjectsTM.UI.MainForm
             listBox1.Items.Clear();
             foreach (var a in _absentTerms)
             {
-                listBox1.Items.Add($"{a.State} : {a.Period.From} - {a.Period.To}");
+                listBox1.Items.Add($"不在期間 : {a.Period.From} - {a.Period.To}");
             }
         }
 
@@ -84,9 +84,9 @@ namespace ProjectsTM.UI.MainForm
 
         public AbsentTerm ParseAbsentTerm(string str)
         {
-            var m = Regex.Match(str, @"(.+) : (.+) - (.+)");
+            var m = Regex.Match(str, @"不在期間 : (.+) - (.+)");
             if (!m.Success) return null;
-            return new AbsentTerm(_member, m.Groups[1].Value, ParsePeriod(m.Groups[2].Value, m.Groups[3].Value));
+            return new AbsentTerm(_member, ParsePeriod(m.Groups[1].Value, m.Groups[2].Value));
         }
 
         public Period ParsePeriod(string from, string to)
