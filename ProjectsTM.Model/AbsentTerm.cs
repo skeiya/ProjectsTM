@@ -10,6 +10,11 @@ namespace ProjectsTM.Model
         public Member Member { get; set; }
         public Period Period { get; set; }
 
+        public static CallenderDay UnlimitedFrom => new CallenderDay(1900, 01, 01);
+        public static CallenderDay UnlimitedTo => new CallenderDay(3000, 01, 01);
+
+        public static string UnlimitedStr => "無期限";
+
         public AbsentTerm(Member member, Period period)
         {
             this.Member = member;
