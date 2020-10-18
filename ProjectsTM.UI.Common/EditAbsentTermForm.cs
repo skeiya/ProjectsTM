@@ -48,8 +48,7 @@ namespace ProjectsTM.UI.Common
             var from = fromText == string.Empty ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
             var to = toText == string.Empty ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
             if (!CheckAbsentPeriod(from, to)) return null;
-            var result = new Period(from, to);
-            return result;
+            return new Period(from, to);
         }
 
         private bool CheckAbsentPeriod(CallenderDay from, CallenderDay to)
