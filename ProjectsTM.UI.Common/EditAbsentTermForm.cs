@@ -10,7 +10,7 @@ namespace ProjectsTM.UI.Common
         private readonly AbsentTerm _absentTerm;
         private readonly Callender _callender;
 
-        public AbsentTerm EditAbsentTerm => CreateAbsentTerm(_member, _callender);
+        public AbsentTerm EditAbsentTerm => CreateAbsentTerm();
 
         public EditAbsentTermForm(Member member, AbsentTerm absentTerm, Callender callender)
         {
@@ -33,31 +33,31 @@ namespace ProjectsTM.UI.Common
 
         bool CheckEdit()
         {
-            return CreateAbsentTerm(_member, _callender) != null;
+            return CreateAbsentTerm() != null;
         }
 
-        private AbsentTerm CreateAbsentTerm(Member member, Callender callender)
+        private AbsentTerm CreateAbsentTerm()
         {
-            var period = GetPeriod(callender, textBoxFrom.Text, textBoxTo.Text);
+            var period = GetPeriod(textBoxFrom.Text, textBoxTo.Text);
             if (period == null) return null;
-            return new AbsentTerm(member, period);
+            return new AbsentTerm(_member, period);
         }
 
-        private Period GetPeriod(Callender callender, string fromText, string toText)
+        private Period GetPeriod(string fromText, string toText)
         {
             var from = fromText == string.Empty ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
             var to = toText == string.Empty ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
-            if (!CheckAbsentPeriod(callender, from, to)) return null;
+            if (!CheckAbsentPeriod(from, to)) return null;
             var result = new Period(from, to);
             return result;
         }
 
-        private bool CheckAbsentPeriod(Callender callender, CallenderDay from, CallenderDay to)
+        private bool CheckAbsentPeriod(CallenderDay from, CallenderDay to)
         {
             if (from == null || to == null) return false;
             if (from == AbsentTerm.UnlimitedFrom && to == AbsentTerm.UnlimitedTo) return false;
-            if (from != AbsentTerm.UnlimitedFrom && !callender.Days.Contains(from)) return false;
-            if (to != AbsentTerm.UnlimitedTo && !callender.Days.Contains(to)) return false;
+            if (from != AbsentTerm.UnlimitedFrom && !_callender.Days.Contains(from)) return false;
+            if (to != AbsentTerm.UnlimitedTo && !_callender.Days.Contains(to)) return false;
             if (from >= to) return false;
             return true;
         }
