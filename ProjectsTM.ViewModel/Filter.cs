@@ -18,14 +18,6 @@ namespace ProjectsTM.ViewModel
             IsAllFilter = isAllFilter;
         }
 
-        public void SetShowMemersFromHideMembers(List<Member> allMembers) //TODO:HideMembersが撲滅されたら消す
-        {
-            if (this.HideMembers.Count == 0) return;
-            this.ShowMembers = new Members(allMembers.Where(m => !this.HideMembers.Contains(m)).ToList());
-            this.HideMembers = new Members();
-        }
-
-        public Members HideMembers { get; private set; } = new Members(); //TODO:過去バージョン考慮して残す。HideMembersが撲滅されたら消す
         public Members ShowMembers { get; private set; } = new Members();
         public Period Period { get; set; } = new Period();
         public string WorkItem { get; set; } = string.Empty;

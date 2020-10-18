@@ -246,7 +246,6 @@ namespace ProjectsTM.Service
             {
                 var x = new XmlSerializer(typeof(Filter));
                 Filter filter = (Filter)x.Deserialize(rs);
-                filter.SetShowMemersFromHideMembers(_viewData.CreateAllMembersList());
                 return filter;
             }
         }
