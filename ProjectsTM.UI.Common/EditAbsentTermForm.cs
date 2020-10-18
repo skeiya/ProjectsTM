@@ -19,8 +19,9 @@ namespace ProjectsTM.UI.Common
             if (absentTerm == null) absentTerm = new AbsentTerm(member, new Period());
             this._absentTerm = absentTerm;
             this._callender = callender;
-            textBoxFrom.Text = absentTerm.Period?.From == null ? string.Empty : absentTerm.Period.From.ToString();
-            textBoxTo.Text = absentTerm.Period?.To == null ? string.Empty : absentTerm.Period.To.ToString();
+            Period p = absentTerm.Period;
+            textBoxFrom.Text = (p?.From == null || p.From == AbsentTerm.UnlimitedFrom ) ? string.Empty :  p.From.ToString();
+            textBoxTo.Text = (p?.To == null || p.To == AbsentTerm.UnlimitedTo) ? string.Empty : absentTerm.Period.To.ToString();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -44,12 +45,21 @@ namespace ProjectsTM.UI.Common
 
         private Period GetPeriod(Callender callender, string fromText, string toText)
         {
-            var from = GetDayByDate(fromText);
-            var to = GetDayByDate(toText);
-            if (from == null || to == null) return null;
+            var from = fromText == string.Empty ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
+            var to = toText == string.Empty ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
+            if (!CheckAbsentPeriod(callender, from, to)) return null;
             var result = new Period(from, to);
-            if (callender.GetPeriodDayCount(result) == 0) return null;
             return result;
+        }
+
+        private bool CheckAbsentPeriod(Callender callender, CallenderDay from, CallenderDay to)
+        {
+            if (from == null || to == null) return false;
+            if (from == AbsentTerm.UnlimitedFrom && to == AbsentTerm.UnlimitedTo) return false;
+            if (from != AbsentTerm.UnlimitedFrom && !callender.Days.Contains(from)) return false;
+            if (to != AbsentTerm.UnlimitedTo && !callender.Days.Contains(to)) return false;
+            if (from >= to) return false;
+            return true;
         }
 
         private CallenderDay GetDayByDate(string text)

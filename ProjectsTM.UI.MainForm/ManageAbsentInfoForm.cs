@@ -30,7 +30,9 @@ namespace ProjectsTM.UI.MainForm
             listBox1.Items.Clear();
             foreach (var a in _absentTerms)
             {
-                listBox1.Items.Add($"不在期間 : {a.Period.From} - {a.Period.To}");
+                var from = a.Period.From == AbsentTerm.UnlimitedFrom ? AbsentTerm.UnlimitedStr : a.Period.From.ToString();
+                var to = a.Period.To == AbsentTerm.UnlimitedTo ? AbsentTerm.UnlimitedStr : a.Period.To.ToString();
+                listBox1.Items.Add($"不在期間 : {from} - {to}");
             }
         }
 
@@ -91,8 +93,8 @@ namespace ProjectsTM.UI.MainForm
 
         public Period ParsePeriod(string from, string to)
         {
-            var f = CallenderDay.Parse(from);
-            var t = CallenderDay.Parse(to);
+            var f = from == AbsentTerm.UnlimitedStr ? AbsentTerm.UnlimitedFrom : CallenderDay.Parse(from);
+            var t = to == AbsentTerm.UnlimitedStr ? AbsentTerm.UnlimitedTo : CallenderDay.Parse(to);
             return new Period(f, t);
         }
     }
