@@ -109,7 +109,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void LoadFilterComboboxFile(string filePath)
         {
-            _filterComboBoxService.Initialize(filePath);
+            _filterComboBoxService.UpdateFilePart(filePath);
         }
 
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
@@ -158,11 +158,11 @@ namespace ProjectsTM.UI.MainForm
             try
             {
                 var setting = UserSettingUIService.Load();
-                _filterComboBoxService.Text = setting.FilterName;
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
+                _filterComboBoxService.Text = setting.FilterName;
             }
             catch
             {
@@ -212,6 +212,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
+            _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(null);
         }
 
