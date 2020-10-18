@@ -78,7 +78,8 @@ namespace ProjectsTM.Service
             var insertIdx = GetCompanyTopIndex();
             foreach (var com in GetCompanies())
             {
-                _toolStripComboBoxFilter.Items.Insert(insertIdx, CompanyPrefix + com);
+                var members = GetMembersConcerningWithCompany(com);
+                _toolStripComboBoxFilter.Items.Insert(insertIdx, CompanyPrefix + com + "(" + members.Count.ToString() + ")");
             }
         }
 
@@ -204,13 +205,20 @@ namespace ProjectsTM.Service
                 idx -= companies.Count();
                 return null;
             }
-            var com = companies.ElementAt(idx);
+            var company = companies.ElementAt(idx);
+            var members = GetMembersConcerningWithCompany(company);
+            return new Filter(null, null, members, false, company, false);
+        }
+
+        private Members GetMembersConcerningWithCompany(string com)
+        {
             var members = new Members();
             foreach (var m in _viewData.Original.Members)
             {
                 if (IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
-            return new Filter(null, null, members, false, com, false);
+
+            return members;
         }
 
         private Filter GetFilterByProjects(ref int idx)
