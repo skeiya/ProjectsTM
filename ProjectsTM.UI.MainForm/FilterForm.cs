@@ -183,7 +183,6 @@ namespace ProjectsTM.UI.MainForm
                 {
                     var s = new XmlSerializer(typeof(Filter));
                     _filter = (Filter)s.Deserialize(reader);
-                    _filter.SetShowMemersFromHideMembers(_originalMembers.ToList());
                     UpdateAllField();
                 }
             }
