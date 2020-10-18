@@ -23,6 +23,12 @@ namespace ProjectsTM.Model
             return From.LesserThan(day) && day.LesserThan(To);
         }
 
+        public bool Contains(Period period)
+        {
+            if (period == null) return false;
+            return Contains(period.From) && Contains(period.To);
+        }
+
         public Period ApplyOffset(int offset, Callender callender)
         {
             var from = callender.ApplyOffset(From, offset);

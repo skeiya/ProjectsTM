@@ -18,7 +18,7 @@ namespace ProjectsTM.ViewModel
             _appData = appData;
             UndoService = undoService;
             UpdateFilter();
-            RemoveFreeTimeMembersFromFilter();
+            UpdateShowMembers();
             AppDataChanged?.Invoke(this, null);
         }
 
@@ -69,7 +69,7 @@ namespace ProjectsTM.ViewModel
         {
             if (!Changed(filter)) return;
             Filter = filter;
-            RemoveFreeTimeMembersFromFilter();
+            UpdateShowMembers();
             FilterChanged(this, null);
         }
 
@@ -84,6 +84,12 @@ namespace ProjectsTM.ViewModel
             return GetFilterShowMembers(result);
         }
 
+        private void UpdateShowMembers()
+        {
+            RemoveAbsentMembersFromFilter();
+            RemoveFreeTimeMembersFromFilter();
+        }
+
         private void RemoveFreeTimeMembersFromFilter()
         {
             if (Filter.IsFreeTimeMemberShow) return;
@@ -91,6 +97,23 @@ namespace ProjectsTM.ViewModel
             if (members == null || members.Count() == 0) return;
             var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
             foreach (var m in freeTimeMember)
+            {
+                if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
+            }
+        }
+
+        private void RemoveAbsentMembersFromFilter()
+        {
+            var members = GetFilteredMembers();
+            if (members == null || members.Count() == 0) return;
+            Members absentMembers = new Members();
+            foreach(var m in members)
+            {
+                var absentTerms = _appData.AbsentInfo.OfMember(m);
+                if (!absentTerms.Any(a => (a.Period.Contains(this.Filter.Period)))) continue;
+                absentMembers.Add(m);
+            }
+            foreach (var m in absentMembers)
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
             }
