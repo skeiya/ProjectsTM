@@ -63,6 +63,12 @@
     <Compile Include="EditMileStoneForm.Designer.cs">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditAbsentTermForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditAbsentTermForm.Designer.cs">
+      <DependentUpon>EditAbsentTermForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditMileStoneForm.resx">
       <DependentUpon>EditMileStoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditAbsentTermForm.resx">
+      <DependentUpon>EditAbsentTermForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditWorkItemForm.resx">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>

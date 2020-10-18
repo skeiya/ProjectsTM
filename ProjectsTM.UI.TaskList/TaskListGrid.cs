@@ -517,7 +517,7 @@ namespace ProjectsTM.UI.TaskList
             }
             if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
             {
-                var res = GetRectClient(new ColIndex(0), r, 1, visibleArea);
+                var res = GetRectClient(VisibleNormalLeftCol, r, 1, visibleArea);
                 if (!res.HasValue) return;
                 var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);

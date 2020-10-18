@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsentInfo.cs" />
+    <Compile Include="AbsentTerm.cs" />
+    <Compile Include="AbsentTerms.cs" />
     <Compile Include="AppData.cs" />
     <Compile Include="Callender.cs" />
     <Compile Include="CallenderDay.cs" />

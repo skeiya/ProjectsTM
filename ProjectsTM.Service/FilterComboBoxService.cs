@@ -127,6 +127,16 @@ namespace ProjectsTM.Service
             return GetFileTopIndex();
         }
 
+        private int GetProjectTopIndex()
+        {
+            for (var idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            {
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(FilePrefix)) continue;
+                return idx + 1;
+            }
+            return GetFileTopIndex();
+        }
+
         private IEnumerable<Project> GetProjects()
         {
             return _viewData.Original.WorkItems.Select(w => w.Project).Distinct();
@@ -254,7 +264,6 @@ namespace ProjectsTM.Service
             {
                 var x = new XmlSerializer(typeof(Filter));
                 Filter filter = (Filter)x.Deserialize(rs);
-                filter.SetShowMemersFromHideMembers(_viewData.CreateAllMembersList());
                 return filter;
             }
         }
