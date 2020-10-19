@@ -94,9 +94,9 @@ namespace ProjectsTM.Service
 
         private int GetCompanyTopIndex()
         {
-            for (int idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            for (int idx = _toolStripComboBoxFilter.Items.Count - 1; idx >= 0; idx--)
             {
-                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(CompanyPrefix)) continue;
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(ProjectPrefix)) continue;
                 return idx + 1;
             }
             return GetProjectTopIndex();
@@ -119,7 +119,7 @@ namespace ProjectsTM.Service
 
         private int GetProjectTopIndex()
         {
-            for (var idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            for (var idx = _toolStripComboBoxFilter.Items.Count - 1; idx >= 0; idx--)
             {
                 if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(FilePrefix)) continue;
                 return idx + 1;
