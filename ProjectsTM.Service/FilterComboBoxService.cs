@@ -48,6 +48,7 @@ namespace ProjectsTM.Service
         private void ToolStripComboBoxFilter_DropDown(object sender, EventArgs e)
         {
             UpdateFilePart(_filepPath);
+            UpdateAppDataPart();
         }
 
         private string _filepPath = string.Empty;
@@ -79,7 +80,7 @@ namespace ProjectsTM.Service
             foreach (var com in GetCompanies())
             {
                 var members = GetMembersConcerningWithCompany(com);
-                _toolStripComboBoxFilter.Items.Insert(insertIdx, CompanyPrefix + com + "(" + members.Count.ToString() + ")");
+                _toolStripComboBoxFilter.Items.Insert(insertIdx++, CompanyPrefix + com + "(" + members.Count.ToString() + ")");
             }
         }
 
@@ -113,7 +114,7 @@ namespace ProjectsTM.Service
             var insertIdx = GetProjectTopIndex();
             foreach (var pro in GetProjects())
             {
-                _toolStripComboBoxFilter.Items.Insert(insertIdx, ProjectPrefix + pro);
+                _toolStripComboBoxFilter.Items.Insert(insertIdx++, ProjectPrefix + pro);
             }
         }
 
