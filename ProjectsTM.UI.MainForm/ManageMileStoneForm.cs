@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ManageMileStoneForm : Form
+    public partial class ManageMileStoneForm : BaseForm
     {
         private readonly MileStones _mileStones;
         private readonly Callender _callender;

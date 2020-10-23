@@ -43,9 +43,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.listView1.Location = new System.Drawing.Point(12, 12);
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(6, 6);
+            this.listView1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(632, 424);
+            this.listView1.Size = new System.Drawing.Size(289, 214);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -58,22 +60,24 @@
             // buttonDelete
             // 
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDelete.Location = new System.Drawing.Point(650, 49);
+            this.buttonDelete.Location = new System.Drawing.Point(297, 24);
+            this.buttonDelete.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(138, 42);
+            this.buttonDelete.Size = new System.Drawing.Size(77, 24);
             this.buttonDelete.TabIndex = 1;
-            this.buttonDelete.Text = "削除";
+            this.buttonDelete.Text = "削除(&D)";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(650, 446);
+            this.buttonAdd.Location = new System.Drawing.Point(297, 225);
+            this.buttonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(138, 48);
-            this.buttonAdd.TabIndex = 2;
-            this.buttonAdd.Text = "追加";
+            this.buttonAdd.Size = new System.Drawing.Size(77, 24);
+            this.buttonAdd.TabIndex = 4;
+            this.buttonAdd.Text = "追加(&A)";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
@@ -81,33 +85,36 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 455);
+            this.textBox1.Location = new System.Drawing.Point(6, 228);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(632, 31);
+            this.textBox1.Size = new System.Drawing.Size(289, 19);
             this.textBox1.TabIndex = 3;
             // 
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(650, 126);
+            this.buttonImport.Location = new System.Drawing.Point(297, 63);
+            this.buttonImport.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(138, 47);
-            this.buttonImport.TabIndex = 4;
-            this.buttonImport.Text = "インポート";
+            this.buttonImport.Size = new System.Drawing.Size(77, 24);
+            this.buttonImport.TabIndex = 2;
+            this.buttonImport.Text = "インポート(&I)";
             this.buttonImport.UseVisualStyleBackColor = true;
             this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
             // ManagementWokingDaysForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 506);
+            this.ClientSize = new System.Drawing.Size(379, 253);
             this.Controls.Add(this.buttonImport);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "ManagementWokingDaysForm";
             this.Text = "稼働日管理";
             this.ResumeLayout(false);

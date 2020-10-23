@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
 {
-    public partial class EditAbsentTermForm : Form
+    public partial class EditAbsentTermForm : BaseForm
     {
         private readonly Member _member;
         private readonly AbsentTerm _absentTerm;

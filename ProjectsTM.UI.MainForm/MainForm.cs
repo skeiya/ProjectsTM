@@ -441,5 +441,10 @@ namespace ProjectsTM.UI.MainForm
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

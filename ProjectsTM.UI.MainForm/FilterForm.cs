@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class FilterForm : Form
+    public partial class FilterForm : BaseForm
     {
         private Members _members;
         private Members _originalMembers;

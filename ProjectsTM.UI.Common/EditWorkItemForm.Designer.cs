@@ -56,60 +56,60 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 51);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(8, 34);
+            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 18);
+            this.label1.Size = new System.Drawing.Size(71, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "プロジェクト";
+            this.label1.Text = "プロジェクト(&P)";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 86);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(8, 57);
+            this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 18);
+            this.label2.Size = new System.Drawing.Size(81, 12);
             this.label2.TabIndex = 4;
-            this.label2.Text = "氏/名/所属";
+            this.label2.Text = "氏/名/所属(&N)";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 120);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(8, 80);
+            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 18);
+            this.label3.Size = new System.Drawing.Size(45, 12);
             this.label3.TabIndex = 6;
-            this.label3.Text = "期間";
+            this.label3.Text = "期間(&D)";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 15);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(8, 11);
+            this.label4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 18);
+            this.label4.Size = new System.Drawing.Size(76, 12);
             this.label4.TabIndex = 0;
-            this.label4.Text = "作業項目名";
+            this.label4.Text = "作業項目名(&I)";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 150);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(8, 100);
+            this.label5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 18);
+            this.label5.Size = new System.Drawing.Size(37, 12);
             this.label5.TabIndex = 11;
-            this.label5.Text = "タグ";
+            this.label5.Text = "タグ(&T)";
             // 
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(560, 400);
-            this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonOK.Location = new System.Drawing.Point(307, 267);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(58, 34);
+            this.buttonOK.Size = new System.Drawing.Size(64, 23);
             this.buttonOK.TabIndex = 19;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -119,10 +119,10 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(622, 400);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonCancel.Location = new System.Drawing.Point(373, 267);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(107, 34);
+            this.buttonCancel.Size = new System.Drawing.Size(64, 23);
             this.buttonCancel.TabIndex = 20;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -132,38 +132,38 @@
             // 
             this.textBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTags.Location = new System.Drawing.Point(172, 150);
-            this.textBoxTags.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.textBoxTags.Location = new System.Drawing.Point(103, 100);
+            this.textBoxTags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTags.Multiline = true;
             this.textBoxTags.Name = "textBoxTags";
-            this.textBoxTags.Size = new System.Drawing.Size(554, 60);
+            this.textBoxTags.Size = new System.Drawing.Size(334, 41);
             this.textBoxTags.TabIndex = 13;
             // 
             // textBoxFrom
             // 
-            this.textBoxFrom.Location = new System.Drawing.Point(172, 116);
-            this.textBoxFrom.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.textBoxFrom.Location = new System.Drawing.Point(103, 77);
+            this.textBoxFrom.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxFrom.Name = "textBoxFrom";
-            this.textBoxFrom.Size = new System.Drawing.Size(184, 25);
+            this.textBoxFrom.Size = new System.Drawing.Size(112, 19);
             this.textBoxFrom.TabIndex = 7;
             // 
             // textBoxTo
             // 
             this.textBoxTo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTo.Location = new System.Drawing.Point(403, 116);
-            this.textBoxTo.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.textBoxTo.Location = new System.Drawing.Point(242, 77);
+            this.textBoxTo.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxTo.Name = "textBoxTo";
-            this.textBoxTo.Size = new System.Drawing.Size(261, 25);
+            this.textBoxTo.Size = new System.Drawing.Size(158, 19);
             this.textBoxTo.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(362, 120);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(217, 80);
+            this.label6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 18);
+            this.label6.Size = new System.Drawing.Size(23, 12);
             this.label6.TabIndex = 8;
             this.label6.Text = "から";
             // 
@@ -171,11 +171,10 @@
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(20, 172);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.textBox1.Location = new System.Drawing.Point(12, 115);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(148, 39);
+            this.textBox1.Size = new System.Drawing.Size(89, 26);
             this.textBox1.TabIndex = 12;
             this.textBox1.Text = "例：abc|xyx";
             // 
@@ -189,12 +188,12 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 362);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(8, 244);
+            this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(44, 18);
+            this.label7.Size = new System.Drawing.Size(44, 12);
             this.label7.TabIndex = 16;
-            this.label7.Text = "状態";
+            this.label7.Text = "状態(&S)";
             // 
             // comboBoxState
             // 
@@ -202,21 +201,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxState.FormattingEnabled = true;
-            this.comboBoxState.Location = new System.Drawing.Point(172, 362);
-            this.comboBoxState.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.comboBoxState.Location = new System.Drawing.Point(103, 241);
             this.comboBoxState.Name = "comboBoxState";
-            this.comboBoxState.Size = new System.Drawing.Size(554, 26);
+            this.comboBoxState.Size = new System.Drawing.Size(334, 20);
             this.comboBoxState.TabIndex = 17;
             // 
             // buttonRegexEscape
             // 
             this.buttonRegexEscape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRegexEscape.Location = new System.Drawing.Point(20, 400);
-            this.buttonRegexEscape.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.buttonRegexEscape.Location = new System.Drawing.Point(12, 267);
             this.buttonRegexEscape.Name = "buttonRegexEscape";
-            this.buttonRegexEscape.Size = new System.Drawing.Size(242, 34);
+            this.buttonRegexEscape.Size = new System.Drawing.Size(161, 23);
             this.buttonRegexEscape.TabIndex = 18;
-            this.buttonRegexEscape.Text = "正規表現エスケープ表示";
+            this.buttonRegexEscape.Text = "正規表現エスケープ表示(&R)";
             this.buttonRegexEscape.UseVisualStyleBackColor = true;
             this.buttonRegexEscape.Click += new System.EventHandler(this.buttonRegexEscape_Click);
             // 
@@ -226,67 +223,69 @@
             this.textBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDescription.Location = new System.Drawing.Point(172, 218);
-            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.textBoxDescription.Location = new System.Drawing.Point(103, 145);
+            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBoxDescription.MaxLength = 0;
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDescription.Size = new System.Drawing.Size(554, 134);
+            this.textBoxDescription.Size = new System.Drawing.Size(334, 91);
             this.textBoxDescription.TabIndex = 15;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 222);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(10, 148);
+            this.label8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 18);
+            this.label8.Size = new System.Drawing.Size(87, 12);
             this.label8.TabIndex = 14;
-            this.label8.Text = "作業項目メモ";
+            this.label8.Text = "作業項目メモ(&M)";
             // 
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(680, 120);
-            this.label9.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label9.Location = new System.Drawing.Point(408, 80);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 18);
+            this.label9.Size = new System.Drawing.Size(29, 12);
             this.label9.TabIndex = 10;
             this.label9.Text = "人日";
             // 
             // comboBoxWorkItemName
             // 
             this.comboBoxWorkItemName.FormattingEnabled = true;
-            this.comboBoxWorkItemName.Location = new System.Drawing.Point(172, 12);
+            this.comboBoxWorkItemName.Location = new System.Drawing.Point(103, 8);
+            this.comboBoxWorkItemName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxWorkItemName.Name = "comboBoxWorkItemName";
-            this.comboBoxWorkItemName.Size = new System.Drawing.Size(554, 26);
-            this.comboBoxWorkItemName.TabIndex = 21;
+            this.comboBoxWorkItemName.Size = new System.Drawing.Size(334, 20);
+            this.comboBoxWorkItemName.TabIndex = 1;
             // 
             // comboBoxMember
             // 
             this.comboBoxMember.FormattingEnabled = true;
-            this.comboBoxMember.Location = new System.Drawing.Point(172, 78);
+            this.comboBoxMember.Location = new System.Drawing.Point(103, 52);
+            this.comboBoxMember.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxMember.Name = "comboBoxMember";
-            this.comboBoxMember.Size = new System.Drawing.Size(554, 26);
-            this.comboBoxMember.TabIndex = 22;
+            this.comboBoxMember.Size = new System.Drawing.Size(334, 20);
+            this.comboBoxMember.TabIndex = 5;
             // 
             // comboBoxProject
             // 
             this.comboBoxProject.FormattingEnabled = true;
-            this.comboBoxProject.Location = new System.Drawing.Point(172, 46);
+            this.comboBoxProject.Location = new System.Drawing.Point(103, 31);
+            this.comboBoxProject.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(554, 26);
-            this.comboBoxProject.TabIndex = 23;
+            this.comboBoxProject.Size = new System.Drawing.Size(334, 20);
+            this.comboBoxProject.TabIndex = 3;
             // 
             // EditWorkItemForm
             // 
             this.AcceptButton = this.buttonOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(740, 448);
+            this.ClientSize = new System.Drawing.Size(444, 299);
             this.Controls.Add(this.comboBoxProject);
             this.Controls.Add(this.comboBoxMember);
             this.Controls.Add(this.comboBoxWorkItemName);
@@ -309,7 +308,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "EditWorkItemForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "作業項目編集";

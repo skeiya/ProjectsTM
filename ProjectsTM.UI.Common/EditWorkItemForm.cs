@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
 {
-    public partial class EditWorkItemForm : Form
+    public partial class EditWorkItemForm : BaseForm
     {
         private readonly WorkItem _wi;
         private readonly Callender _callender;

@@ -49,14 +49,14 @@
             this.bottonAdd.Name = "bottonAdd";
             this.bottonAdd.Size = new System.Drawing.Size(77, 23);
             this.bottonAdd.TabIndex = 1;
-            this.bottonAdd.Text = "追加...";
+            this.bottonAdd.Text = "追加(&A)...";
             this.bottonAdd.UseVisualStyleBackColor = true;
             this.bottonAdd.Click += new System.EventHandler(this.bottonAdd_Click);
             // 
             // listView1
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
@@ -91,7 +91,7 @@
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(77, 23);
             this.buttonDelete.TabIndex = 2;
-            this.buttonDelete.Text = "削除";
+            this.buttonDelete.Text = "削除(&D)";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.bottonDelete_Click);
             // 
@@ -103,7 +103,7 @@
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(77, 27);
             this.buttonEdit.TabIndex = 3;
-            this.buttonEdit.Text = "編集...";
+            this.buttonEdit.Text = "編集(&E)...";
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
             // 
