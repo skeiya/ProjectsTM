@@ -148,7 +148,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemGenerateDummyData});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
             this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.詳細ToolStripMenuItem.Text = "詳細(&D)";
+            this.詳細ToolStripMenuItem.Text = "詳細(&D)";
             // 
             // ToolStripMenuItemImportOldFile
             // 
