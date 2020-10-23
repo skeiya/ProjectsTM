@@ -48,6 +48,7 @@ namespace ProjectsTM.Service
         private void ToolStripComboBoxFilter_DropDown(object sender, EventArgs e)
         {
             UpdateFilePart(_filepPath);
+            UpdateAppDataPart();
         }
 
         private string _filepPath = string.Empty;
@@ -79,7 +80,7 @@ namespace ProjectsTM.Service
             foreach (var com in GetCompanies())
             {
                 var members = GetMembersConcerningWithCompany(com);
-                _toolStripComboBoxFilter.Items.Insert(insertIdx, CompanyPrefix + com + "(" + members.Count.ToString() + ")");
+                _toolStripComboBoxFilter.Items.Insert(insertIdx++, CompanyPrefix + com + "(" + members.Count.ToString() + ")");
             }
         }
 
@@ -94,9 +95,9 @@ namespace ProjectsTM.Service
 
         private int GetCompanyTopIndex()
         {
-            for (int idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            for (int idx = _toolStripComboBoxFilter.Items.Count - 1; idx >= 0; idx--)
             {
-                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(CompanyPrefix)) continue;
+                if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(ProjectPrefix)) continue;
                 return idx + 1;
             }
             return GetProjectTopIndex();
@@ -113,13 +114,13 @@ namespace ProjectsTM.Service
             var insertIdx = GetProjectTopIndex();
             foreach (var pro in GetProjects())
             {
-                _toolStripComboBoxFilter.Items.Insert(insertIdx, ProjectPrefix + pro);
+                _toolStripComboBoxFilter.Items.Insert(insertIdx++, ProjectPrefix + pro);
             }
         }
 
         private int GetProjectTopIndex()
         {
-            for (var idx = 0; idx < _toolStripComboBoxFilter.Items.Count; idx++)
+            for (var idx = _toolStripComboBoxFilter.Items.Count - 1; idx >= 0; idx--)
             {
                 if (!_toolStripComboBoxFilter.Items[idx].ToString().StartsWith(FilePrefix)) continue;
                 return idx + 1;

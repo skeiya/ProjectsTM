@@ -53,7 +53,7 @@ namespace ProjectsTM.UI.TaskList
             return ToIndex(ColIds.DayCount).Equals(c);
         }
 
-        internal static void Sort(ColIndex sortCol, List<TaskListItem> listItems, ViewData viewData)
+        internal static void Sort(ColIndex sortCol, ref List<TaskListItem> listItems, ViewData viewData)
         {
             if (IsDayCountCol(sortCol))
             {

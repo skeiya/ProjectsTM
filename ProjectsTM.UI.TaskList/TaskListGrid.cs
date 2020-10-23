@@ -215,7 +215,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void Sort()
         {
-            ColDefinition.Sort(_sortCol, _listItems, _viewData);
+            ColDefinition.Sort(_sortCol, ref _listItems, _viewData);
             if (_isReverse)
             {
                 _listItems.Reverse();
