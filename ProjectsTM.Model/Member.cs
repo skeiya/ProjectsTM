@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -41,6 +42,13 @@ namespace ProjectsTM.Model
             FirstName = firstName;
             LastName = lastName;
             Company = company;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(Member));
+            xml.Value = ToSerializeString();
+            return xml;
         }
 
         public string DisplayName

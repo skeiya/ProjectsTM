@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -41,6 +43,13 @@ namespace ProjectsTM.Model
         public void Delete(MileStone m)
         {
             _list.Remove(m);
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(MileStones));
+            _list.ForEach(m => xml.Add(m.ToXml()));
+            return xml;
         }
 
         public void Sort()

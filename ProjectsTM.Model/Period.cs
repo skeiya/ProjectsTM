@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -65,6 +66,14 @@ namespace ProjectsTM.Model
             if (this.Contains(period.From)) return true;
             if (this.Contains(period.To)) return true;
             return false;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(Period));
+            xml.Add(new XElement(nameof(From), From.ToString()));
+            xml.Add(new XElement(nameof(To), To.ToString()));
+            return xml;
         }
     }
 }

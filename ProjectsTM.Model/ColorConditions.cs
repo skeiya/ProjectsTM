@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -46,6 +47,13 @@ namespace ProjectsTM.Model
                 index++;
             }
             return null;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(ColorConditions));
+            _list.ForEach(c => xml.Add(c.ToXml()));
+            return xml;
         }
 
         public override bool Equals(object obj)

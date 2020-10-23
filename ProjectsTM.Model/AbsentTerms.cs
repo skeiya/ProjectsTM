@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -34,6 +36,13 @@ namespace ProjectsTM.Model
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _absentTerms.GetEnumerator();
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(AbsentTerms));
+            _absentTerms.ForEach(a => xml.Add(a.ToXml()));
+            return xml;
         }
     }
 }

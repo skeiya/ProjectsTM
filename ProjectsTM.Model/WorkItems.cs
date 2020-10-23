@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -32,6 +34,19 @@ namespace ProjectsTM.Model
         }
 
         public MembersWorkItems OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new MembersWorkItems();
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(WorkItems));
+            foreach(var m in _items)
+            {
+                var eachMember = new XElement("WorkItemsOfEachMember");
+                eachMember.SetAttributeValue("Name", m.Key.ToSerializeString());
+                eachMember.Add(m.Value.ToXml());
+                xml.Add(eachMember);
+            }
+            return xml;
+        }
 
         public void Add(WorkItems wis)
         {

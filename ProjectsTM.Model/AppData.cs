@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
     public class AppData
     {
-        static public int DataVersion = 4; // 互換性のなくなる変更をしたときにこの数字を増やす
+        static public int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version
         {
             set {; }
@@ -19,6 +20,19 @@ namespace ProjectsTM.Model
 
         public AppData()
         {
+        }
+
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(AppData));
+            xml.Add(new XElement(nameof(Version), Version));
+            xml.Add(Callender.ToXml());
+            xml.Add(Members.ToXml());
+            xml.Add(WorkItems.ToXml());
+            xml.Add(ColorConditions.ToXml());
+            xml.Add(MileStones.ToXml());
+            xml.Add(AbsentInfo.ToXml());
+            return xml;
         }
 
         public override bool Equals(object obj)

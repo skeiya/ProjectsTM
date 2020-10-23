@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -33,6 +35,19 @@ namespace ProjectsTM.Model
             if (m == null) return;
             if (!_items.ContainsKey(m)) return;
             _items.Remove(m);
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(AbsentInfo));
+            foreach(var a in _items)
+            {
+                var eachMember = new XElement("Info");
+                eachMember.SetAttributeValue("Name", a.Key.ToSerializeString());
+                eachMember.Add(a.Value.ToXml());
+                xml.Add(eachMember);
+            }
+            return xml;
         }
 
         public IEnumerator<AbsentTerm> GetEnumerator()

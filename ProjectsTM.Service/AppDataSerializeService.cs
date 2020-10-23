@@ -2,6 +2,7 @@
 using ProjectsTM.Model;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
@@ -10,6 +11,10 @@ namespace ProjectsTM.Service
     {
         public static void Serialize(string fileName, AppData appData)
         {
+            if (true)
+            {
+                fileName += "a";
+            }
             using (var stream = StreamFactory.CreateWriter(fileName))
             {
                 WriteToStream(appData, stream);
@@ -18,8 +23,8 @@ namespace ProjectsTM.Service
 
         public static void WriteToStream(AppData appData, StreamWriter stream)
         {
-            var serializer = new XmlSerializer(typeof(AppData));
-            serializer.Serialize(stream, appData);
+            var xml = appData.ToXml();
+            xml.Save(stream);
         }
 
         public static AppData Deserialize(string fileName)

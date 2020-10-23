@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -35,12 +36,26 @@ namespace ProjectsTM.Model
         public CallenderDay Day { set; get; }
         [XmlIgnore]
         public Color Color { set; get; }
+
         [XmlElement]
         public string ColorText
         {
             get { return ColorSerializer.Serialize(Color); }
             set { Color = ColorSerializer.Deserialize(value); }
         }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(MileStone));
+            xml.SetAttributeValue("Name", Name);
+            xml.Add(new XElement(nameof(Project), Project.ToString()));
+            xml.Add(Day.ToXml());
+            xml.Add(new XElement(nameof(Color), ColorText));
+            xml.Add(new XElement(nameof(MileStoneFilterName), MileStoneFilterName));
+            xml.Add(new XElement(nameof(State), State));
+            return xml;
+        }
+
         [XmlIgnore]
         public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter("ALL");
 

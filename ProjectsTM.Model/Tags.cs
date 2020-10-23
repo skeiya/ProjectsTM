@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -52,6 +53,13 @@ namespace ProjectsTM.Model
             }
             result.Remove(result.Length - 1, 1);
             return result.ToString();
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(Tags));
+            xml.Value = ToString();
+            return xml;
         }
     }
 }

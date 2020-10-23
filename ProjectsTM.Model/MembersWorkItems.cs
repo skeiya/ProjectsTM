@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -45,6 +46,13 @@ namespace ProjectsTM.Model
         public bool Remove(WorkItem selected)
         {
             return _items.Remove(selected);
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(MembersWorkItems));
+            _items.ForEach(w => xml.Add(w.ToXml()));
+            return xml;
         }
 
         public override bool Equals(object obj)
