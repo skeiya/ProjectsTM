@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -50,6 +51,16 @@ namespace ProjectsTM.Model
             var xml = new XElement(nameof(MileStones));
             _list.ForEach(m => xml.Add(m.ToXml()));
             return xml;
+        }
+
+        internal static MileStones FromXml(XElement xml)
+        {
+            var result = new MileStones();
+            foreach(var m in xml.Elements(nameof(MileStones)).Single().Elements(nameof(MileStone)))
+            {
+                result.Add(MileStone.FromXml(m));
+            }
+            return result;
         }
 
         public void Sort()

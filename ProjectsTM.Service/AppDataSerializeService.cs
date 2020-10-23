@@ -1,6 +1,8 @@
 ﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
+using System;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -31,19 +33,34 @@ namespace ProjectsTM.Service
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader);
+                return LoadFromStream(reader, IsOldFormat(fileName));
             }
         }
 
-        public static AppData LoadFromStream(StreamReader reader)
+        public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.PreserveWhitespace = false;
-            doc.Load(reader);
-            using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+            if (isOld)
             {
-                var x = new XmlSerializer(typeof(AppData));
-                return (AppData)x.Deserialize(nodeReader);
+                XmlDocument doc = new XmlDocument();
+                doc.PreserveWhitespace = false;
+                doc.Load(reader);
+                using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+                {
+                    var x = new XmlSerializer(typeof(AppData));
+                    return (AppData)x.Deserialize(nodeReader);
+                }
+            }
+
+            return AppData.FromXml(XElement.Load(reader));
+        }
+
+        private static bool IsOldFormat(string path)
+        {
+            using (var reader = StreamFactory.CreateReader(path))
+            {
+                var xml = XElement.Load(reader);
+                var ver = int.Parse(xml.Elements("Version").Single().Value);
+                return ver < 5;
             }
         }
     }

@@ -61,5 +61,10 @@ namespace ProjectsTM.Model
             xml.Value = ToString();
             return xml;
         }
+
+        internal static Tags FromXml(XElement w)
+        {
+            return Parse(w.Elements(nameof(Tags)).Single().Value);
+        }
     }
 }

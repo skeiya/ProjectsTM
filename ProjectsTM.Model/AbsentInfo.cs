@@ -40,7 +40,7 @@ namespace ProjectsTM.Model
         internal XElement ToXml()
         {
             var xml = new XElement(nameof(AbsentInfo));
-            foreach(var a in _items)
+            foreach (var a in _items)
             {
                 var eachMember = new XElement("Info");
                 eachMember.SetAttributeValue("Name", a.Key.ToSerializeString());
@@ -48,6 +48,21 @@ namespace ProjectsTM.Model
                 xml.Add(eachMember);
             }
             return xml;
+        }
+
+        internal static AbsentInfo FromXml(XElement xml)
+        {
+            var result = new AbsentInfo();
+            foreach (var a in xml.Elements(nameof(AbsentInfo)).Single().Elements("Info"))
+            {
+                var member = Member.Parse(a.Attribute("Name").Value);
+                foreach (var t in a.Elements(nameof(AbsentTerms)).Single().Elements(nameof(AbsentTerm)))
+                {
+                    var period = Period.FromXml(t);
+                    result.Add(new AbsentTerm(member, period));
+                }
+            }
+            return result;
         }
 
         public IEnumerator<AbsentTerm> GetEnumerator()

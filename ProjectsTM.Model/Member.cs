@@ -51,6 +51,13 @@ namespace ProjectsTM.Model
             return xml;
         }
 
+        internal static Member FromXml(XElement m)
+        {
+            var result = new Member();
+            result.MemberElement = m.Value;
+            return result;
+        }
+
         public string DisplayName
         {
             get

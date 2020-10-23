@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -40,6 +41,17 @@ namespace ProjectsTM.Model
             var xml = new XElement(nameof(Members));
             _members.ForEach(m => xml.Add(m.ToXml()));
             return xml;
+        }
+
+        internal static Members FromXml(XElement xml)
+        {
+            var result = new Members();
+            var membersElement = xml.Elements(nameof(Members)).Single();
+            foreach (var m in membersElement.Elements(nameof(Member)))
+            {
+                result.Add(Member.FromXml(m));
+            }
+            return result;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

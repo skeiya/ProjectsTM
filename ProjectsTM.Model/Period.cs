@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -74,6 +75,15 @@ namespace ProjectsTM.Model
             xml.Add(new XElement(nameof(From), From.ToString()));
             xml.Add(new XElement(nameof(To), To.ToString()));
             return xml;
+        }
+
+        internal static Period FromXml(XElement w)
+        {
+            var result = new Period();
+            var periodElement = w.Elements(nameof(Period)).Single();
+            result.From = CallenderDay.Parse(periodElement.Elements(nameof(From)).Single().Value);
+            result.To = CallenderDay.Parse(periodElement.Elements(nameof(To)).Single().Value);
+            return result;
         }
     }
 }

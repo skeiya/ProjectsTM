@@ -45,6 +45,18 @@ namespace ProjectsTM.Model
             return WorkItems.Equals(target.WorkItems);
         }
 
+        public static AppData FromXml(XElement xml)
+        {
+            var result = new AppData();
+            result.Callender = Callender.FromXml(xml);
+            result.Members = Members.FromXml(xml);
+            result.WorkItems = WorkItems.FromXml(xml);
+            result.ColorConditions = ColorConditions.FromXml(xml);
+            result.MileStones = MileStones.FromXml(xml);
+            result.AbsentInfo = AbsentInfo.FromXml(xml);
+            return result;
+        }
+
         public override int GetHashCode()
         {
             var hashCode = 1155948461;

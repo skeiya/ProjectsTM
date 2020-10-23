@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -54,6 +55,18 @@ namespace ProjectsTM.Model
             xml.Add(new XElement(nameof(MileStoneFilterName), MileStoneFilterName));
             xml.Add(new XElement(nameof(State), State));
             return xml;
+        }
+
+        internal static MileStone FromXml(XElement m)
+        {
+            var result = new MileStone();
+            result.Name = m.Attribute("Name").Value;
+            result.Project = Project.FromXml(m);
+            result.Day = CallenderDay.FromXml(m.Elements("Date").Single());
+            result.ColorText = m.Elements("Color").Single().Value;
+            result.MileStoneFilter = new MileStoneFilter(m.Elements(nameof(MileStoneFilterName)).Single().Value);
+            result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Elements(nameof(State)).Single().Value);
+            return result;
         }
 
         [XmlIgnore]

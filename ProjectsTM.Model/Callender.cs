@@ -34,6 +34,18 @@ namespace ProjectsTM.Model
             return xml;
         }
 
+        internal static Callender FromXml(XElement xml)
+        {
+            var result = new Callender();
+            var ca = xml.Elements(nameof(Callender)).Single();
+
+            foreach(var e in ca.Elements("Date"))
+            {
+                result.Add(CallenderDay.FromXml(e));
+            }
+            return result;
+        }
+
         public void Add(CallenderDay callenderDay)
         {
             Days.Add(callenderDay);

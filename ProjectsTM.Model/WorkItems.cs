@@ -38,7 +38,7 @@ namespace ProjectsTM.Model
         internal XElement ToXml()
         {
             var xml = new XElement(nameof(WorkItems));
-            foreach(var m in _items)
+            foreach (var m in _items)
             {
                 var eachMember = new XElement("WorkItemsOfEachMember");
                 eachMember.SetAttributeValue("Name", m.Key.ToSerializeString());
@@ -46,6 +46,28 @@ namespace ProjectsTM.Model
                 xml.Add(eachMember);
             }
             return xml;
+        }
+
+        internal static WorkItems FromXml(XElement xml)
+        {
+            var result = new WorkItems();
+            foreach (var m in xml.Elements(nameof(WorkItems)).Single()
+                .Elements("WorkItemsOfEachMember"))
+            {
+                var assign = Member.Parse(m.Attribute("Name").Value);
+                foreach (var w in m.Elements(nameof(MembersWorkItems)).Single()
+                    .Elements(nameof(WorkItem)))
+                {
+                    var taskName = w.Attribute("Name").Value;
+                    var project = Project.FromXml(w);
+                    var period = Period.FromXml(w);
+                    var tags = Tags.FromXml(w);
+                    var state = (TaskState)Enum.Parse(typeof(TaskState), w.Elements("State").Single().Value);
+                    var description = w.Elements("Description").Single().Value;
+                    result.Add(new WorkItem(project, taskName, tags, period, assign, state, description));
+                }
+            }
+            return result;
         }
 
         public void Add(WorkItems wis)
