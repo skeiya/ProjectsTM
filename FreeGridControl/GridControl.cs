@@ -120,19 +120,35 @@ namespace FreeGridControl
             if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
-            if(ModifierKeys == Keys.Shift)
+            if(IsShiftKeyPressed())
             {
-                var maximumH = 1 + GetActualHScrollMaximum();
-                var deltaH = -(e.Delta / 120) * hScrollBar.SmallChange * 2 * 10;
-                var offsetH = Math.Min(Math.Max(hScrollBar.Value + deltaH, hScrollBar.Minimum), maximumH);
-                hScrollBar.Value = offsetH;
+                _horizontalScroll(e.Delta);
                 return;
             }
+            _verticalScroll(e.Delta);
+        }
+
+        private void _horizontalScroll(int delta)
+        {
+            var maximumH = 1 + GetActualHScrollMaximum();
+            var deltaH = -(delta / 120) * hScrollBar.SmallChange * 2 * 10;
+            var offsetH = Math.Min(Math.Max(hScrollBar.Value + deltaH, hScrollBar.Minimum), maximumH);
+            hScrollBar.Value = offsetH;
+        }
+
+        private void _verticalScroll(int delta)
+        {
             var maximumV = 1 + GetActualVScrollMaximum();
-            var deltaV = -(e.Delta / 120) * vScrollBar.SmallChange * 2 * 10;
+            var deltaV = -(delta / 120) * vScrollBar.SmallChange * 2 * 10;
             var offsetV = Math.Min(Math.Max(vScrollBar.Value + deltaV, vScrollBar.Minimum), maximumV);
             vScrollBar.Value = offsetV;
         }
+
+        private bool IsShiftKeyPressed()
+        {
+            return (ModifierKeys == Keys.Shift);
+        }
+
         public bool IsControlDown()
         {
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
