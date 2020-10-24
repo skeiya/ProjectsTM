@@ -32,8 +32,12 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.buttonImport = new System.Windows.Forms.Button();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.numericUpDownSeq = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxContainsWeekEnd = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeq)).BeginInit();
             this.SuspendLayout();
             // 
             // listView1
@@ -72,24 +76,14 @@
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(297, 225);
+            this.buttonAdd.Location = new System.Drawing.Point(297, 196);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(77, 24);
-            this.buttonAdd.TabIndex = 4;
+            this.buttonAdd.TabIndex = 7;
             this.buttonAdd.Text = "追加(&A)";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(6, 228);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(289, 19);
-            this.textBox1.TabIndex = 3;
             // 
             // buttonImport
             // 
@@ -103,13 +97,62 @@
             this.buttonImport.UseVisualStyleBackColor = true;
             this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(6, 226);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(135, 19);
+            this.dateTimePicker1.TabIndex = 3;
+            // 
+            // numericUpDownSeq
+            // 
+            this.numericUpDownSeq.Location = new System.Drawing.Point(212, 226);
+            this.numericUpDownSeq.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownSeq.Name = "numericUpDownSeq";
+            this.numericUpDownSeq.Size = new System.Drawing.Size(80, 19);
+            this.numericUpDownSeq.TabIndex = 5;
+            this.numericUpDownSeq.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 231);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "連続日数";
+            // 
+            // checkBoxContainsWeekEnd
+            // 
+            this.checkBoxContainsWeekEnd.AutoSize = true;
+            this.checkBoxContainsWeekEnd.Location = new System.Drawing.Point(297, 227);
+            this.checkBoxContainsWeekEnd.Name = "checkBoxContainsWeekEnd";
+            this.checkBoxContainsWeekEnd.Size = new System.Drawing.Size(70, 16);
+            this.checkBoxContainsWeekEnd.TabIndex = 6;
+            this.checkBoxContainsWeekEnd.Text = "土日含む";
+            this.checkBoxContainsWeekEnd.UseVisualStyleBackColor = true;
+            // 
             // ManagementWokingDaysForm
             // 
+            this.AcceptButton = this.buttonAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(379, 253);
+            this.Controls.Add(this.checkBoxContainsWeekEnd);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numericUpDownSeq);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.buttonImport);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.listView1);
@@ -117,6 +160,7 @@
             this.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.Name = "ManagementWokingDaysForm";
             this.Text = "稼働日管理";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSeq)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,7 +172,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button buttonImport;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.NumericUpDown numericUpDownSeq;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBoxContainsWeekEnd;
     }
 }
