@@ -85,6 +85,7 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected.Remove(wi);
                     }
+                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
                 }
                 else
                 {
@@ -92,16 +93,6 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected = new WorkItems(wi);
                     }
-                }
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                if (KeyState.IsControlDown)
-                {
-                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
-                }
-                else
-                {
                     _workItemDragService.StartMove(_viewData.Selected, curOnRaw, _grid.Y2Day(curOnRaw.Y));
                 }
             }
