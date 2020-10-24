@@ -100,14 +100,49 @@ namespace ProjectsTM.Service
         {
             var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
+
+            var curOnRaw = _grid.Global2Raw(Cursor.Position);
+            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
+
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isAllDraw)))
                 {
-                    DrawWorkItemClient(wi, Pens.Black, font, g, members);
+                    if (wi.Equals(curWi))
+                    {
+                        DrawCursorWorkItem(font, g, members, wi);
+                    }
+                    else
+                    {
+                        DrawWorkItemClient(wi, Pens.Black, font, g, members);
+                    }
                 }
             }
+            if (curWi == null)
+            {
+                DrawCursorBackgroundRectangle(g, curOnRaw);
+            }
+        }
+
+        private void DrawCursorBackgroundRectangle(Graphics g, RawPoint curOnRaw)
+        {
+            var c = _grid.X2Col(curOnRaw.X);
+            var r = _grid.Y2Row(curOnRaw.Y);
+            if (!_grid.VisibleRowColRange.Contains(r, c)) return;
+            var reternRect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false));
+            if (!reternRect.HasValue) return;
+            var rect = reternRect.Value.Value;
+            var pen = PenCache.GetPen(Color.LightGray, 3f);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        private void DrawCursorWorkItem(Font font, Graphics g, IEnumerable<Member> members, WorkItem wi)
+        {
+            var pen = PenCache.GetPen(Color.Red, 3f);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            DrawWorkItemClient(wi, pen, font, g, members);
         }
 
         private static int GetRowCount(RowColRange range, ColIndex c, bool isAllDraw)

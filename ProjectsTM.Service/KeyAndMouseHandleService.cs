@@ -182,24 +182,6 @@ namespace ProjectsTM.Service
             HoveringTextChanged?.Invoke(this, wi);
         }
 
-        public CallenderDay SelectedCallenderDay(System.Drawing.Point point)
-        {
-            var client = new ClientPoint(point);
-            if (_grid.IsFixedArea(client)) return null;
-
-            var rawPoint =_grid.Client2Raw(client);
-            return _grid.Y2Day(rawPoint.Y);
-        }
-
-        public Member SelectedMember(System.Drawing.Point point)
-        {
-            var client = new ClientPoint(point);
-            if (_grid.IsFixedArea(client)) return null;
-
-            var rawPoint = _grid.Client2Raw(client);
-            return _grid.X2Member(rawPoint.X);
-        }
-
         public void DoubleClick(MouseEventArgs e)
         {
             var locaion = ClientPoint.Create(e);
@@ -214,7 +196,7 @@ namespace ProjectsTM.Service
             var day = _grid.Y2Day(curOnRaw.Y);
             var member = _grid.X2Member(curOnRaw.X);
             if (day == null || member == null) return;
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active, string.Empty);
+            var proto = WorkItem.CreateProto(new Period(day, day), member);
             _grid.AddNewWorkItem(proto);
         }
 
