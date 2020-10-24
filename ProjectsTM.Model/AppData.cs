@@ -49,10 +49,10 @@ namespace ProjectsTM.Model
         public static AppData FromXml(XElement xml)
         {
             var result = new AppData();
-            result.Callender = Callender.FromXml(xml.Elements(nameof(Callender)).Single());
-            result.Members = Members.FromXml(xml.Elements(nameof(Members)).Single());
-            result.WorkItems = WorkItems.FromXml(xml.Elements(nameof(WorkItems)).Single());
-            result.ColorConditions = ColorConditions.FromXml(xml);
+            result.Callender = Callender.FromXml(xml.Element(nameof(Callender)));
+            result.Members = Members.FromXml(xml.Element(nameof(Members)));
+            result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)));
+            result.ColorConditions = ColorConditions.FromXml(xml.Element(nameof(ColorConditions)));
             result.MileStones = MileStones.FromXml(xml);
             result.AbsentInfo = AbsentInfo.FromXml(xml);
             return result;

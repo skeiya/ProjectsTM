@@ -60,5 +60,16 @@ namespace UnitTestProject
             var actual = WorkItems.FromXml(xml);
             Assert.AreEqual(workItems, actual);
         }
+
+        [TestMethod]
+        public void ColorConditionsTest()
+        {
+            var conditions = new ColorConditions();
+            conditions.Add(new ColorCondition("a", System.Drawing.Color.White, System.Drawing.Color.Black));
+            conditions.Add(new ColorCondition("b", System.Drawing.Color.Red, System.Drawing.Color.Blue));
+            var xml = conditions.ToXml();
+            var actual = ColorConditions.FromXml(xml);
+            Assert.AreEqual(conditions, actual);
+        }
     }
 }

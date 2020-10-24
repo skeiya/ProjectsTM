@@ -50,18 +50,17 @@ namespace ProjectsTM.Model
             return null;
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(ColorConditions));
             _list.ForEach(c => xml.Add(c.ToXml()));
             return xml;
         }
 
-        internal static ColorConditions FromXml(XElement xml)
+        public static ColorConditions FromXml(XElement xml)
         {
             var result = new ColorConditions();
-            foreach(var c in xml.Elements(nameof(ColorConditions)).Single()
-                .Elements(nameof(ColorCondition)))
+            foreach (var c in xml.Elements(nameof(ColorCondition)))
             {
                 result.Add(ColorCondition.FromXml(c));
             }
