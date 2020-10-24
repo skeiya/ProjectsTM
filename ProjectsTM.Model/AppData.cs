@@ -53,7 +53,7 @@ namespace ProjectsTM.Model
             result.Members = Members.FromXml(xml.Element(nameof(Members)));
             result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)));
             result.ColorConditions = ColorConditions.FromXml(xml.Element(nameof(ColorConditions)));
-            result.MileStones = MileStones.FromXml(xml);
+            result.MileStones = MileStones.FromXml(xml.Element(nameof(MileStones)));
             result.AbsentInfo = AbsentInfo.FromXml(xml);
             return result;
         }

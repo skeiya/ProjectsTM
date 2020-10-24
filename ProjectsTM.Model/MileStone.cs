@@ -98,7 +98,7 @@ namespace ProjectsTM.Model
             if (!(obj is MileStone stone)) return false;
             return Name == stone.Name &&
                    EqualityComparer<CallenderDay>.Default.Equals(Day, stone.Day) &&
-                   EqualityComparer<Color>.Default.Equals(Color, stone.Color) &&
+                   Color.ToArgb().Equals(stone.Color.ToArgb()) &&
                    ColorText == stone.ColorText &&
                    MileStoneFilter.Name == stone.MileStoneFilter.Name;
         }

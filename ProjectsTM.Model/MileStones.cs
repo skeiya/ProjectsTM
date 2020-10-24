@@ -46,17 +46,17 @@ namespace ProjectsTM.Model
             _list.Remove(m);
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(MileStones));
             _list.ForEach(m => xml.Add(m.ToXml()));
             return xml;
         }
 
-        internal static MileStones FromXml(XElement xml)
+        public static MileStones FromXml(XElement xml)
         {
             var result = new MileStones();
-            foreach(var m in xml.Elements(nameof(MileStones)).Single().Elements(nameof(MileStone)))
+            foreach(var m in xml.Elements(nameof(MileStone)))
             {
                 result.Add(MileStone.FromXml(m));
             }
@@ -99,6 +99,23 @@ namespace ProjectsTM.Model
                 return result;
             }
             catch { return new MileStoneFilters(); }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as MileStones;
+            if (target == null) return false;
+            if (target._list.Count != _list.Count) return false;
+            for(var idx = 0; idx <_list.Count; idx++)
+            {
+                if (!target._list[idx].Equals(_list[idx])) return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

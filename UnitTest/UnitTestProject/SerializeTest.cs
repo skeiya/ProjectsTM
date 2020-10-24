@@ -71,5 +71,16 @@ namespace UnitTestProject
             var actual = ColorConditions.FromXml(xml);
             Assert.AreEqual(conditions, actual);
         }
+
+        [TestMethod]
+        public void MileStonesTest()
+        {
+            var milestones = new MileStones();
+            milestones.Add(new MileStone("a", new Project("b"), new CallenderDay(1, 2, 3), System.Drawing.Color.Gray, new MileStoneFilter("c"), TaskState.Background));
+            milestones.Add(new MileStone("d", new Project("e"), new CallenderDay(11, 12, 13), System.Drawing.Color.Green, new MileStoneFilter("g"), TaskState.Done));
+            var xml = milestones.ToXml();
+            var actual = MileStones.FromXml(xml);
+            Assert.AreEqual(milestones, actual);
+        }
     }
 }
