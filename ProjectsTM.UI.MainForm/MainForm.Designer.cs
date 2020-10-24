@@ -67,6 +67,7 @@ namespace ProjectsTM.UI.MainForm
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new ProjectsTM.UI.MainForm.WorkItemGrid();
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemTrendChart = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -270,7 +271,8 @@ namespace ProjectsTM.UI.MainForm
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember,
-            this.ToolStripMenuItemMileStone});
+            this.ToolStripMenuItemMileStone,
+            this.ToolStripMenuItemTrendChart});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
             this.管理ToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
             this.管理ToolStripMenuItem.Text = "管理(&M)";
@@ -378,6 +380,13 @@ namespace ProjectsTM.UI.MainForm
             this.toolStripMenuItemExit.Text = "終了(&X)";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.toolStripMenuItemExit_Click);
             // 
+            // ToolStripMenuItemTrendChart
+            // 
+            this.ToolStripMenuItemTrendChart.Name = "ToolStripMenuItemTrendChart";
+            this.ToolStripMenuItemTrendChart.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemTrendChart.Text = "総工数トレンド";
+            this.ToolStripMenuItemTrendChart.Click += new System.EventHandler(this.ToolStripMenuItemTrendChart_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -437,6 +446,7 @@ namespace ProjectsTM.UI.MainForm
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemVersion;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTaskList;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
     }
 }
 

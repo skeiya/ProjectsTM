@@ -446,5 +446,15 @@ namespace ProjectsTM.UI.MainForm
         {
             Close();
         }
+
+        private void ToolStripMenuItemTrendChart_Click(object sender, EventArgs e)
+        {
+            ShowTrendChartForm();
+        }
+
+        private void ShowTrendChartForm()
+        {
+
+        }
     }
 }
