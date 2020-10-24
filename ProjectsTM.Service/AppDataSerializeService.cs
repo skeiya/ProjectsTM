@@ -12,10 +12,6 @@ namespace ProjectsTM.Service
     {
         public static void Serialize(string fileName, AppData appData)
         {
-            if (true)
-            {
-                fileName += "a";
-            }
             using (var stream = StreamFactory.CreateWriter(fileName))
             {
                 WriteToStream(appData, stream);
