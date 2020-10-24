@@ -2,6 +2,7 @@
 using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
@@ -30,10 +31,15 @@ namespace ProjectsTM.UI.MainForm
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            var selectedDay = GetSelectedDay();
-            if (selectedDay == null) return;
-            if (!Deletable(selectedDay)) return;
-            _callender.Delete(selectedDay);
+            var selectedDays = GetSelectedDays();
+            if (selectedDays.Count == 0) return;
+
+            foreach (var d in selectedDays)
+            {
+                if (!Deletable(d)) return;
+                _callender.Delete(d);
+            }
+            
             UpdateListView();
         }
 
@@ -47,13 +53,14 @@ namespace ProjectsTM.UI.MainForm
             return true;
         }
 
-        private CallenderDay GetSelectedDay()
+        private List<CallenderDay> GetSelectedDays()
         {
+            var selectedDays = new List<CallenderDay>();
             foreach (int index in listView1.SelectedIndices)
             {
-                return CallenderDay.Parse(listView1.Items[index].Text);
+                selectedDays.Add(CallenderDay.Parse(listView1.Items[index].Text));
             }
-            return null;
+            return selectedDays;
         }
 
         private void ButtonAdd_Click(object sender, EventArgs e)
