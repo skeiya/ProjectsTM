@@ -248,22 +248,23 @@ namespace ProjectsTM.UI.MainForm
 
             _copiedWorkItem = _viewData.Selected.Unique.Clone();
         }
+
         public void PasteWorkItem()
         {
             if (_copiedWorkItem == null) return;
 
-            var selectedDay = CurrentCallenderDay();
-            if (selectedDay == null) return;
+            var cursorDay = CursorCallenderDay();
+            if (cursorDay == null) return;
 
-            var selectedMember = CurrentMember();
-            if (selectedMember == null) return;
+            var cursorMember = CursorMember();
+            if (cursorMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
-            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, selectedDay);
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, cursorDay);
             copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
             if (copyItem.Period == null) return;
 
-            copyItem.AssignedMember = selectedMember;
+            copyItem.AssignedMember = cursorMember;
 
             _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
@@ -272,10 +273,10 @@ namespace ProjectsTM.UI.MainForm
 
         public RawPoint Global2Raw(Point global)
         {
-            return Client2Raw(new ClientPoint(global));
+            return Client2Raw(new ClientPoint(PointToClient(global)));
         }
 
-        public CallenderDay CurrentCallenderDay()
+        public CallenderDay CursorCallenderDay()
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
@@ -285,7 +286,7 @@ namespace ProjectsTM.UI.MainForm
             return Y2Day(rawPoint.Y);
         }
 
-        public Member CurrentMember()
+        public Member CursorMember()
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
