@@ -261,11 +261,8 @@ namespace ProjectsTM.UI.MainForm
             var copyItem = _copiedWorkItem.Clone();
             var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, selectedDay);
             copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
-
             if (copyItem.Period == null) return;
 
-            if (dayCount <= 0) return;
-            copyItem.Period = copyItem.Period.ApplyOffset(selectedDay.DayDistance(copyItem.Period.From), _viewData.Original.Callender);
             copyItem.AssignedMember = selectedMember;
 
             _viewData.UpdateCallenderAndMembers(copyItem);
