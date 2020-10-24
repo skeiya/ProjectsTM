@@ -252,10 +252,10 @@ namespace ProjectsTM.UI.MainForm
         {
             if (_copiedWorkItem == null) return;
 
-            var selectedDay = CurrentCallenderDay(PointToClient(Cursor.Position));
+            var selectedDay = CurrentCallenderDay();
             if (selectedDay == null) return;
 
-            var selectedMember = CurrentMember(PointToClient(Cursor.Position));
+            var selectedMember = CurrentMember();
             if (selectedMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
@@ -270,8 +270,17 @@ namespace ProjectsTM.UI.MainForm
             _viewData.UndoService.Push();
         }
 
-        public CallenderDay CurrentCallenderDay(Point point)
+        public RawPoint CurrentRawPoint()
         {
+            var point = PointToClient(Cursor.Position);
+            var client = new ClientPoint(point);
+
+            return Client2Raw(client);
+        }
+
+        public CallenderDay CurrentCallenderDay()
+        {
+            var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
             if (IsFixedArea(client)) return null;
 
@@ -279,8 +288,9 @@ namespace ProjectsTM.UI.MainForm
             return Y2Day(rawPoint.Y);
         }
 
-        public Member CurrentMember(Point point)
+        public Member CurrentMember()
         {
+            var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
             if (IsFixedArea(client)) return null;
 
@@ -432,6 +442,14 @@ namespace ProjectsTM.UI.MainForm
             var d = Y2Day(location.Y);
             if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
+        }
+
+        public WorkItem EmptyWorkItem(RawPoint location)
+        {
+            var m = X2Member(location.X);
+            var d = Y2Day(location.Y);
+            if (m == null || d == null) return null;
+            return WorkItem.CreateProto(new Period(d, d), m);
         }
     }
 }

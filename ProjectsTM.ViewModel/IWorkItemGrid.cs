@@ -30,11 +30,14 @@ namespace ProjectsTM.ViewModel
         RowColRange VisibleRowColRange { get; }
         ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol);
 
+        RawPoint CurrentRawPoint();
+
         ClientRectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
         void Invalidate();
         WorkItem PickWorkItemFromPoint(RawPoint curOnRaw);
+        WorkItem EmptyWorkItem(RawPoint location);
         bool IsFixedArea(ClientPoint location);
         RawPoint Client2Raw(ClientPoint location);
         void IncRatio();

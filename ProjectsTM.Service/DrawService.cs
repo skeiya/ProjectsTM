@@ -100,12 +100,35 @@ namespace ProjectsTM.Service
         {
             var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
+
+            var curOnRaw = _grid.CurrentRawPoint();
+            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
+
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isAllDraw)))
                 {
-                    DrawWorkItemClient(wi, Pens.Black, font, g, members);
+                    if (wi.Equals(curWi))
+                    {
+                        var pen = PenCache.GetPen(Color.Red, 3f);
+                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        DrawWorkItemClient(wi, pen, font, g, members);
+                    }
+                    else
+                    {
+                        DrawWorkItemClient(wi, Pens.Black, font, g, members);
+                    }
+                }
+            }
+            if (curWi == null)
+            {
+                var empty = _grid.EmptyWorkItem(curOnRaw);
+                if (empty != null)
+                {
+                    var pen = PenCache.GetPen(Color.LightGray, 3f);
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    DrawWorkItemClient(empty, pen, font, g, members);
                 }
             }
         }
