@@ -47,11 +47,16 @@ namespace ProjectsTM.Model
             }
         }
 
-        public CallenderDay AddDays(int days)
+        public int DayDistance(CallenderDay target)
         {
-            var current = new DateTime(Year, Month, Day);
-            var newDate = current.AddDays(days);
-            return new CallenderDay(newDate.Year, newDate.Month, newDate.Day);
+            var src = ToDateTime(this);
+            var dst = ToDateTime(target);
+            return src.Subtract(dst).Days;
+        }
+
+        private DateTime ToDateTime(CallenderDay target)
+        {
+            return new DateTime(target.Year, target.Month, target.Day);
         }
 
         public static CallenderDay Parse(string text)

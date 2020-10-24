@@ -262,9 +262,9 @@ namespace ProjectsTM.UI.MainForm
             var dayCount = _viewData.Original.Callender.GetPeriodDayCount(copyItem.Period) - 1;
 
             if (dayCount <= 0) return;
-            copyItem.Period = new Period(selectedDay, selectedDay.AddDays(dayCount));
+            copyItem.Period = copyItem.Period.ApplyOffset(selectedDay.DayDistance(copyItem.Period.From), _viewData.Original.Callender);
             copyItem.AssignedMember = selectedMember;
-            
+
             _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
             _viewData.UndoService.Push();
