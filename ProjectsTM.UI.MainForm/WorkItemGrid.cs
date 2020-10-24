@@ -270,12 +270,9 @@ namespace ProjectsTM.UI.MainForm
             _viewData.UndoService.Push();
         }
 
-        public RawPoint CurrentRawPoint()
+        public RawPoint Global2Raw(Point global)
         {
-            var point = PointToClient(Cursor.Position);
-            var client = new ClientPoint(point);
-
-            return Client2Raw(client);
+            return Client2Raw(new ClientPoint(global));
         }
 
         public CallenderDay CurrentCallenderDay()

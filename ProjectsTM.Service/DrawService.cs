@@ -101,7 +101,7 @@ namespace ProjectsTM.Service
             var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
 
-            var curOnRaw = _grid.CurrentRawPoint();
+            var curOnRaw = _grid.Global2Raw(Cursor.Position);
             var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
 
             foreach (var c in range.Cols)

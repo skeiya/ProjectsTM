@@ -30,7 +30,7 @@ namespace ProjectsTM.ViewModel
         RowColRange VisibleRowColRange { get; }
         ClientRectangle GetVisibleRect(bool isFixedRow, bool isFixedCol);
 
-        RawPoint CurrentRawPoint();
+        RawPoint Global2Raw(Point global);
 
         ClientRectangle? GetRangeSelectBound();
         bool IsSelected(Member m);
