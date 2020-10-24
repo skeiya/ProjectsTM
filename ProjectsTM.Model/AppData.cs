@@ -51,7 +51,7 @@ namespace ProjectsTM.Model
             var result = new AppData();
             result.Callender = Callender.FromXml(xml.Elements(nameof(Callender)).Single());
             result.Members = Members.FromXml(xml.Elements(nameof(Members)).Single());
-            result.WorkItems = WorkItems.FromXml(xml);
+            result.WorkItems = WorkItems.FromXml(xml.Elements(nameof(WorkItems)).Single());
             result.ColorConditions = ColorConditions.FromXml(xml);
             result.MileStones = MileStones.FromXml(xml);
             result.AbsentInfo = AbsentInfo.FromXml(xml);

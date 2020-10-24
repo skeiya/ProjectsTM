@@ -35,7 +35,7 @@ namespace ProjectsTM.Model
 
         public MembersWorkItems OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new MembersWorkItems();
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(WorkItems));
             foreach (var m in _items)
@@ -48,11 +48,10 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static WorkItems FromXml(XElement xml)
+        public static WorkItems FromXml(XElement xml)
         {
             var result = new WorkItems();
-            foreach (var m in xml.Elements(nameof(WorkItems)).Single()
-                .Elements("WorkItemsOfEachMember"))
+            foreach (var m in xml.Elements("WorkItemsOfEachMember"))
             {
                 var assign = Member.Parse(m.Attribute("Name").Value);
                 foreach (var w in m.Elements(nameof(MembersWorkItems)).Single()

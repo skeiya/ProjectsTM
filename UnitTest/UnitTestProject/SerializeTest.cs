@@ -41,5 +41,24 @@ namespace UnitTestProject
             var actual = Members.FromXml(xml);
             Assert.AreEqual(members, actual);
         }
+
+        [TestMethod]
+        public void WorkItemsTest()
+        {
+            var workItems = new WorkItems();
+            var project = new Project("a");
+            var name = "b";
+            var tags = new Tags(new System.Collections.Generic.List<string>() { "c" });
+            var period = new Period(new CallenderDay(1, 2, 3), new CallenderDay(4, 5, 6));
+            var member = new Member("d", "e", "f");
+            var state = TaskState.Active;
+            var description = "ggg\nhhh";
+            var w = new WorkItem(project, name, tags, period, member, state, description);
+            workItems.Add(w);
+
+            var xml = workItems.ToXml();
+            var actual = WorkItems.FromXml(xml);
+            Assert.AreEqual(workItems, actual);
+        }
     }
 }
