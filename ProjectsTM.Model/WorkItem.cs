@@ -63,6 +63,11 @@ namespace ProjectsTM.Model
             Description = description;
         }
 
+        public static WorkItem CreateProto(Period period, Member member)
+        {
+            return new WorkItem(new Project(""), "", new Tags(new List<string>()), period, member, TaskState.Active, string.Empty);
+        }
+
         public string ToDrawString(Callender callender, bool isAppendDays)
         {
             var result = new StringBuilder();
