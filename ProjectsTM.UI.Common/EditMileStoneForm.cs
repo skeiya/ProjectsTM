@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
 {
-    public partial class EditMileStoneForm : Form
+    public partial class EditMileStoneForm : BaseForm
     {
         private readonly Callender _callender;
         private MileStone _mileStone;

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ProjectsTM.UI.Common;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ProjectSelectForm : Form
+    public partial class ProjectSelectForm : BaseForm
     {
         public ProjectSelectForm()
         {

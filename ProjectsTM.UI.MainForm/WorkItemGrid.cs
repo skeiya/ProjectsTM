@@ -239,6 +239,36 @@ namespace ProjectsTM.UI.MainForm
                 _viewData.Selected = new WorkItems(newWi);
             }
         }
+        private WorkItem _copiedWorkItem;
+
+        public void CopyWorkItem()
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+
+            _copiedWorkItem = _viewData.Selected.Unique.Clone();
+        }
+        public void PasteWorkItem()
+        {
+            if (_copiedWorkItem == null) return;
+
+            var selectedDay = _keyAndMouseHandleService.SelectedCallenderDay(PointToClient(Cursor.Position));
+            if (selectedDay == null) return;
+
+            var selectedMember = _keyAndMouseHandleService.SelectedMember(PointToClient(Cursor.Position));
+            if (selectedMember == null) return;
+
+            var copyItem = _copiedWorkItem.Clone();
+            var dayCount = _viewData.Original.Callender.GetPeriodDayCount(copyItem.Period) - 1;
+
+            if (dayCount <= 0) return;
+            copyItem.Period = new Period(selectedDay, selectedDay.AddDays(dayCount));
+            copyItem.AssignedMember = selectedMember;
+            
+            _viewData.UpdateCallenderAndMembers(copyItem);
+            _editService.Add(copyItem);
+            _viewData.UndoService.Push();
+        }
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ProjectsTM.UI.Common;
+using System;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class DivideWorkItemForm : Form
+    public partial class DivideWorkItemForm : BaseForm
     {
         private readonly int _originalCount;
 

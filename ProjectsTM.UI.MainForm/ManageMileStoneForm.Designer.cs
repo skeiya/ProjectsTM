@@ -30,6 +30,7 @@
         {
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderProject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderFilter = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -37,7 +38,6 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
-            this.columnHeaderProject = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -68,6 +68,11 @@
             this.columnHeaderName.Text = "名前";
             this.columnHeaderName.Width = 100;
             // 
+            // columnHeaderProject
+            // 
+            this.columnHeaderProject.Text = "プロジェクト";
+            this.columnHeaderProject.Width = 73;
+            // 
             // columnHeaderDate
             // 
             this.columnHeaderDate.Text = "日付";
@@ -90,7 +95,7 @@
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(60, 25);
             this.buttonAdd.TabIndex = 1;
-            this.buttonAdd.Text = "追加...";
+            this.buttonAdd.Text = "追加(&A)...";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
@@ -100,7 +105,7 @@
             this.buttonOK.Location = new System.Drawing.Point(469, 177);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(60, 25);
-            this.buttonOK.TabIndex = 2;
+            this.buttonOK.TabIndex = 4;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.ButtonOK_Click);
@@ -112,8 +117,8 @@
             this.buttonEdit.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(60, 25);
-            this.buttonEdit.TabIndex = 1;
-            this.buttonEdit.Text = "編集...";
+            this.buttonEdit.TabIndex = 2;
+            this.buttonEdit.Text = "編集(&E)...";
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
             // 
@@ -124,18 +129,14 @@
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(60, 25);
-            this.buttonDelete.TabIndex = 1;
-            this.buttonDelete.Text = "削除";
+            this.buttonDelete.TabIndex = 3;
+            this.buttonDelete.Text = "削除(&D)";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
-            // columnHeaderProject
-            // 
-            this.columnHeaderProject.Text = "プロジェクト";
-            this.columnHeaderProject.Width = 73;
-            // 
             // ManageMileStoneForm
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(539, 207);

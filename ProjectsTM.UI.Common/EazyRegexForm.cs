@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
 {
-    public partial class EazyRegexForm : Form
+    public partial class EazyRegexForm : BaseForm
     {
         public EazyRegexForm()
         {
