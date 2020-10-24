@@ -47,13 +47,6 @@ namespace ProjectsTM.Model
             }
         }
 
-        public CallenderDay AddDays(int days)
-        {
-            var current = new DateTime(Year, Month, Day);
-            var newDate = current.AddDays(days);
-            return new CallenderDay(newDate.Year, newDate.Month, newDate.Day);
-        }
-
         public static CallenderDay Parse(string text)
         {
             try
