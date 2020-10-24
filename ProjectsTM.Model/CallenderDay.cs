@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -47,11 +48,18 @@ namespace ProjectsTM.Model
             }
         }
 
-        public CallenderDay AddDays(int days)
+        internal XElement ToXml()
         {
-            var current = new DateTime(Year, Month, Day);
-            var newDate = current.AddDays(days);
-            return new CallenderDay(newDate.Year, newDate.Month, newDate.Day);
+            var xml = new XElement("Date");
+            xml.Value = Date;
+            return xml;
+        }
+
+        internal static CallenderDay FromXml(XElement e)
+        {
+            var result = new CallenderDay();
+            result.Date = e.Value;
+            return result;
         }
 
         public static CallenderDay Parse(string text)

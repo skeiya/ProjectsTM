@@ -1,7 +1,6 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjectsTM.ViewModel
 {

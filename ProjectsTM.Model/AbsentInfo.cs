@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -35,6 +36,34 @@ namespace ProjectsTM.Model
             _items.Remove(m);
         }
 
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(AbsentInfo));
+            foreach (var a in _items)
+            {
+                var eachMember = new XElement("Info");
+                eachMember.SetAttributeValue("Name", a.Key.ToSerializeString());
+                eachMember.Add(a.Value.ToXml());
+                xml.Add(eachMember);
+            }
+            return xml;
+        }
+
+        public static AbsentInfo FromXml(XElement xml)
+        {
+            var result = new AbsentInfo();
+            foreach (var a in xml.Elements("Info"))
+            {
+                var member = Member.Parse(a.Attribute("Name").Value);
+                foreach (var t in a.Elements(nameof(AbsentTerms)).Single().Elements(nameof(AbsentTerm)))
+                {
+                    var period = Period.FromXml(t);
+                    result.Add(new AbsentTerm(member, period));
+                }
+            }
+            return result;
+        }
+
         public IEnumerator<AbsentTerm> GetEnumerator()
         {
             return _items.SelectMany((s) => s.Value).GetEnumerator();
@@ -43,6 +72,24 @@ namespace ProjectsTM.Model
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _items.GetEnumerator();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as AbsentInfo;
+            if (target == null) return false;
+            if (target._items.Count != this._items.Count) return false;
+            for (var idx = 0; idx < _items.Count; idx++)
+            {
+                var key = _items.Keys.ElementAt(idx);
+                if (!_items[key].Equals(target._items[key])) return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return -566117206 + EqualityComparer<SortedDictionary<Member, AbsentTerms>>.Default.GetHashCode(_items);
         }
     }
 }

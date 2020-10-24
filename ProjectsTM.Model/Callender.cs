@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -24,6 +25,23 @@ namespace ProjectsTM.Model
         {
             Days.Remove(d);
             _nearestDayCache.Clear();
+        }
+
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(Callender));
+            Days.ForEach(d => xml.Add(d.ToXml()));
+            return xml;
+        }
+
+        public static Callender FromXml(XElement xml)
+        {
+            var result = new Callender();
+            foreach (var e in xml.Elements("Date"))
+            {
+                result.Add(CallenderDay.FromXml(e));
+            }
+            return result;
         }
 
         public void Add(CallenderDay callenderDay)

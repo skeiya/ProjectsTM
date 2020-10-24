@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -32,6 +34,40 @@ namespace ProjectsTM.Model
         }
 
         public MembersWorkItems OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new MembersWorkItems();
+
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(WorkItems));
+            foreach (var m in _items)
+            {
+                var eachMember = new XElement("WorkItemsOfEachMember");
+                eachMember.SetAttributeValue("Name", m.Key.ToSerializeString());
+                eachMember.Add(m.Value.ToXml());
+                xml.Add(eachMember);
+            }
+            return xml;
+        }
+
+        public static WorkItems FromXml(XElement xml)
+        {
+            var result = new WorkItems();
+            foreach (var m in xml.Elements("WorkItemsOfEachMember"))
+            {
+                var assign = Member.Parse(m.Attribute("Name").Value);
+                foreach (var w in m.Elements(nameof(MembersWorkItems)).Single()
+                    .Elements(nameof(WorkItem)))
+                {
+                    var taskName = w.Attribute("Name").Value;
+                    var project = Project.FromXml(w);
+                    var period = Period.FromXml(w);
+                    var tags = Tags.FromXml(w);
+                    var state = (TaskState)Enum.Parse(typeof(TaskState), w.Elements("State").Single().Value);
+                    var description = w.Elements("Description").Single().Value;
+                    result.Add(new WorkItem(project, taskName, tags, period, assign, state, description));
+                }
+            }
+            return result;
+        }
 
         public void Add(WorkItems wis)
         {
