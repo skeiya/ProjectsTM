@@ -252,10 +252,10 @@ namespace ProjectsTM.UI.MainForm
         {
             if (_copiedWorkItem == null) return;
 
-            var selectedDay = _keyAndMouseHandleService.SelectedCallenderDay(PointToClient(Cursor.Position));
+            var selectedDay = CurrentCallenderDay(PointToClient(Cursor.Position));
             if (selectedDay == null) return;
 
-            var selectedMember = _keyAndMouseHandleService.SelectedMember(PointToClient(Cursor.Position));
+            var selectedMember = CurrentMember(PointToClient(Cursor.Position));
             if (selectedMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
@@ -269,6 +269,25 @@ namespace ProjectsTM.UI.MainForm
             _editService.Add(copyItem);
             _viewData.UndoService.Push();
         }
+
+        public CallenderDay CurrentCallenderDay(Point point)
+        {
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return Y2Day(rawPoint.Y);
+        }
+
+        public Member CurrentMember(Point point)
+        {
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return X2Member(rawPoint.X);
+        }
+
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
