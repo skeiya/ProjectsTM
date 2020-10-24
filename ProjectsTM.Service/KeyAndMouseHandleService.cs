@@ -182,6 +182,24 @@ namespace ProjectsTM.Service
             HoveringTextChanged?.Invoke(this, wi);
         }
 
+        public CallenderDay SelectedCallenderDay(System.Drawing.Point point)
+        {
+            var client = new ClientPoint(point);
+            if (_grid.IsFixedArea(client)) return null;
+
+            var rawPoint =_grid.Client2Raw(client);
+            return _grid.Y2Day(rawPoint.Y);
+        }
+
+        public Member SelectedMember(System.Drawing.Point point)
+        {
+            var client = new ClientPoint(point);
+            if (_grid.IsFixedArea(client)) return null;
+
+            var rawPoint = _grid.Client2Raw(client);
+            return _grid.X2Member(rawPoint.X);
+        }
+
         public void DoubleClick(MouseEventArgs e)
         {
             var locaion = ClientPoint.Create(e);
