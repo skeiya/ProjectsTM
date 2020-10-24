@@ -247,7 +247,9 @@ namespace ProjectsTM.Service
             var before = _viewData.Selected.Unique;
             var after = before.Clone();
             after.Period = after.Period.ApplyOffset(shift, _viewData.Original.Callender);
-            
+
+            if (after.Period == null) return;
+
             Replace(before, after);
             _viewData.Selected = new WorkItems(after);
         }
