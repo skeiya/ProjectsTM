@@ -48,18 +48,6 @@ namespace ProjectsTM.Model
             }
         }
 
-        public int DayDistance(CallenderDay target)
-        {
-            var src = ToDateTime(this);
-            var dst = ToDateTime(target);
-            return src.Subtract(dst).Days;
-        }
-
-        private DateTime ToDateTime(CallenderDay target)
-        {
-            return new DateTime(target.Year, target.Month, target.Day);
-        }
-
         internal XElement ToXml()
         {
             var xml = new XElement("Date");
