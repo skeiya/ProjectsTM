@@ -107,7 +107,7 @@ namespace ProjectsTM.ViewModel
             var members = GetFilteredMembers();
             if (members == null || members.Count() == 0) return;
             Members absentMembers = new Members();
-            foreach(var m in members)
+            foreach (var m in members)
             {
                 var absentTerms = _appData.AbsentInfo.OfMember(m);
                 if (!absentTerms.Any(a => (a.Period.Contains(this.Filter.Period)))) continue;

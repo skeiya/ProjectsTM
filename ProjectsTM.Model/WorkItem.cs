@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -61,6 +62,18 @@ namespace ProjectsTM.Model
             AssignedMember = assignedMember;
             State = state;
             Description = description;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(WorkItem));
+            xml.SetAttributeValue("Name", Name);
+            xml.Add(Period.ToXml());
+            xml.Add(new XElement(nameof(Description), Description));
+            xml.Add(Project.ToXml());
+            xml.Add(Tags.ToXml());
+            xml.Add(new XElement(nameof(State), State));
+            return xml;
         }
 
         public string ToDrawString(Callender callender, bool isAppendDays)
