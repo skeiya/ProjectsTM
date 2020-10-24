@@ -21,7 +21,7 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void CallenderText()
+        public void CallenderTest()
         {
             var cal = new Callender();
             cal.Add(new CallenderDay(1, 2, 3));
@@ -29,6 +29,17 @@ namespace UnitTestProject
             var xml = cal.ToXml();
             var actual = Callender.FromXml(xml);
             Assert.AreEqual(cal, actual);
+        }
+
+        [TestMethod]
+        public void MembersTest()
+        {
+            var members = new Members();
+            members.Add(new Member("a", "b", "c"));
+            members.Add(new Member("d", "e", "f"));
+            var xml = members.ToXml();
+            var actual = Members.FromXml(xml);
+            Assert.AreEqual(members, actual);
         }
     }
 }

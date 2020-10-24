@@ -36,18 +36,17 @@ namespace ProjectsTM.Model
             _members.Remove(member);
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(Members));
             _members.ForEach(m => xml.Add(m.ToXml()));
             return xml;
         }
 
-        internal static Members FromXml(XElement xml)
+        public static Members FromXml(XElement xml)
         {
             var result = new Members();
-            var membersElement = xml.Elements(nameof(Members)).Single();
-            foreach (var m in membersElement.Elements(nameof(Member)))
+            foreach (var m in xml.Elements(nameof(Member)))
             {
                 result.Add(Member.FromXml(m));
             }
