@@ -50,33 +50,35 @@
             // 
             // buttonEdit
             // 
-            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(306, 116);
+            this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEdit.Location = new System.Drawing.Point(301, 122);
             this.buttonEdit.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(50, 26);
+            this.buttonEdit.Size = new System.Drawing.Size(60, 26);
             this.buttonEdit.TabIndex = 1;
-            this.buttonEdit.Text = "編集";
+            this.buttonEdit.Text = "編集(&E)";
             this.buttonEdit.UseVisualStyleBackColor = true;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Location = new System.Drawing.Point(306, 150);
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAdd.Location = new System.Drawing.Point(301, 153);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(50, 26);
+            this.buttonAdd.Size = new System.Drawing.Size(60, 26);
             this.buttonAdd.TabIndex = 2;
-            this.buttonAdd.Text = "追加";
+            this.buttonAdd.Text = "追加(&A)";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
             // buttonRemove
             // 
-            this.buttonRemove.Location = new System.Drawing.Point(306, 184);
+            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRemove.Location = new System.Drawing.Point(301, 187);
             this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(50, 26);
+            this.buttonRemove.Size = new System.Drawing.Size(60, 26);
             this.buttonRemove.TabIndex = 3;
-            this.buttonRemove.Text = "削除";
+            this.buttonRemove.Text = "削除(&D)";
             this.buttonRemove.UseVisualStyleBackColor = true;
             this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 

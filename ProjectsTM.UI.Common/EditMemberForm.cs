@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
 {
-    public partial class EditMemberForm : Form
+    public partial class EditMemberForm : BaseForm
     {
         public EditMemberForm(string value)
         {

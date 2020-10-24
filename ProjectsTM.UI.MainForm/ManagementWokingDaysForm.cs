@@ -1,11 +1,12 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.Service;
+using ProjectsTM.UI.Common;
 using System;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ManagementWokingDaysForm : Form
+    public partial class ManagementWokingDaysForm : BaseForm
     {
         private Callender _callender;
         private readonly WorkItems _workItems;

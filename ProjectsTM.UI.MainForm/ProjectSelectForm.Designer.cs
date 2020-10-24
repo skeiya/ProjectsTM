@@ -49,7 +49,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(353, 10);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -61,7 +61,7 @@
             this.comboBox1.Location = new System.Drawing.Point(12, 12);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(254, 20);
-            this.comboBox1.TabIndex = 2;
+            this.comboBox1.TabIndex = 0;
             // 
             // ProjectSelectForm
             // 

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ManageMemberForm : Form
+    public partial class ManageMemberForm : BaseForm
     {
         private readonly AppData _appData;
 

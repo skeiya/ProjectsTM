@@ -59,7 +59,18 @@ namespace ProjectsTM.UI.MainForm
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
+            FormWindowState state;
+            state = FormSizeRestoreService.LoadLastTimeFormState("MainFormState");
+
+            switch (state) 
+            {
+                case FormWindowState.Maximized:
+                    this.WindowState = state;
+                    break;
+                case FormWindowState.Normal:
+                    Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
+                    break;
+            }
         }
 
         private async void _timer_Tick(object sender, EventArgs e)
@@ -190,6 +201,7 @@ namespace ProjectsTM.UI.MainForm
             };
             UserSettingUIService.Save(setting);
             FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");
+            FormSizeRestoreService.SaveFormState(this.WindowState, "MainFormState");
         }
 
         private void InitializeViewData()
@@ -440,6 +452,11 @@ namespace ProjectsTM.UI.MainForm
                 TaskListForm = new TaskListForm(_viewData, _patternHistory);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
+        }
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

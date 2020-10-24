@@ -41,16 +41,16 @@
             this.textBox1.Location = new System.Drawing.Point(6, 9);
             this.textBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(371, 19);
+            this.textBox1.Size = new System.Drawing.Size(353, 19);
             this.textBox1.TabIndex = 0;
             // 
             // buttonOK
             // 
             this.buttonOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.buttonOK.Location = new System.Drawing.Point(379, 9);
+            this.buttonOK.Location = new System.Drawing.Point(361, 8);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(47, 19);
+            this.buttonOK.Size = new System.Drawing.Size(65, 20);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -64,7 +64,7 @@
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(65, 20);
-            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);

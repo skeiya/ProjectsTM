@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ManageAbsentInfoForm : Form
+    public partial class ManageAbsentInfoForm : BaseForm
     {
         private readonly Member _member;
         public readonly AbsentTerms _absentTerms;

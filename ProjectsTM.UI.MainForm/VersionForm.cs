@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using ProjectsTM.UI.Common;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class VersionForm : Form
+    public partial class VersionForm : BaseForm
     {
         public VersionForm()
         {

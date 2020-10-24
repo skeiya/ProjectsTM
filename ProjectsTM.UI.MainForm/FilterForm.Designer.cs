@@ -62,7 +62,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 12);
-            this.label1.TabIndex = 3;
+            this.label1.TabIndex = 4;
             this.label1.Text = "日付の範囲";
             // 
             // textBoxFrom
@@ -73,7 +73,7 @@
             this.textBoxFrom.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(377, 19);
-            this.textBoxFrom.TabIndex = 4;
+            this.textBoxFrom.TabIndex = 5;
             // 
             // textBoxTo
             // 
@@ -83,7 +83,7 @@
             this.textBoxTo.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(517, 19);
-            this.textBoxTo.TabIndex = 6;
+            this.textBoxTo.TabIndex = 9;
             // 
             // label2
             // 
@@ -92,7 +92,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 12);
-            this.label2.TabIndex = 8;
+            this.label2.TabIndex = 10;
             this.label2.Text = "メンバーの選択";
             // 
             // checkedListBox1
@@ -104,7 +104,7 @@
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(576, 158);
-            this.checkedListBox1.TabIndex = 10;
+            this.checkedListBox1.TabIndex = 16;
             // 
             // buttonApply
             // 
@@ -113,7 +113,7 @@
             this.buttonApply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(62, 23);
-            this.buttonApply.TabIndex = 11;
+            this.buttonApply.TabIndex = 23;
             this.buttonApply.Text = "OK";
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonOK_Click);
@@ -126,8 +126,8 @@
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(62, 23);
-            this.buttonCancel.TabIndex = 0;
-            this.buttonCancel.Text = "閉じる";
+            this.buttonCancel.TabIndex = 24;
+            this.buttonCancel.Text = "閉じる(&C)";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -148,7 +148,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(23, 12);
-            this.label4.TabIndex = 5;
+            this.label4.TabIndex = 8;
             this.label4.Text = "から";
             // 
             // buttonClearWorkItem
@@ -182,7 +182,7 @@
             this.buttonClearMembers.Margin = new System.Windows.Forms.Padding(2);
             this.buttonClearMembers.Name = "buttonClearMembers";
             this.buttonClearMembers.Size = new System.Drawing.Size(39, 20);
-            this.buttonClearMembers.TabIndex = 9;
+            this.buttonClearMembers.TabIndex = 15;
             this.buttonClearMembers.Text = "クリア";
             this.buttonClearMembers.UseVisualStyleBackColor = true;
             this.buttonClearMembers.Click += new System.EventHandler(this.buttonClearMembers_Click);
@@ -190,24 +190,24 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonImport.Location = new System.Drawing.Point(413, 399);
+            this.buttonImport.Location = new System.Drawing.Point(368, 400);
             this.buttonImport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(85, 20);
-            this.buttonImport.TabIndex = 9;
-            this.buttonImport.Text = "インポート...";
+            this.buttonImport.Size = new System.Drawing.Size(105, 20);
+            this.buttonImport.TabIndex = 21;
+            this.buttonImport.Text = "インポート(&I)...";
             this.buttonImport.UseVisualStyleBackColor = true;
             this.buttonImport.Click += new System.EventHandler(this.buttonImport_Click);
             // 
             // buttonExport
             // 
             this.buttonExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExport.Location = new System.Drawing.Point(500, 400);
+            this.buttonExport.Location = new System.Drawing.Point(477, 400);
             this.buttonExport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(82, 20);
-            this.buttonExport.TabIndex = 9;
-            this.buttonExport.Text = "エクスポート...";
+            this.buttonExport.Size = new System.Drawing.Size(105, 20);
+            this.buttonExport.TabIndex = 22;
+            this.buttonExport.Text = "エクスポート(&E)...";
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
@@ -216,7 +216,7 @@
             this.button1.Location = new System.Drawing.Point(22, 50);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 12;
+            this.button1.TabIndex = 3;
             this.button1.Text = "簡易指定...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
@@ -247,7 +247,7 @@
             this.buttonGenerateFromProject.Location = new System.Drawing.Point(87, 157);
             this.buttonGenerateFromProject.Name = "buttonGenerateFromProject";
             this.buttonGenerateFromProject.Size = new System.Drawing.Size(126, 23);
-            this.buttonGenerateFromProject.TabIndex = 15;
+            this.buttonGenerateFromProject.TabIndex = 11;
             this.buttonGenerateFromProject.Text = "プロジェクトから生成...";
             this.buttonGenerateFromProject.UseVisualStyleBackColor = true;
             this.buttonGenerateFromProject.Click += new System.EventHandler(this.buttonGenerateFromProject_Click);
@@ -257,7 +257,7 @@
             this.buttonGenerateFromWorkItems.Location = new System.Drawing.Point(219, 157);
             this.buttonGenerateFromWorkItems.Name = "buttonGenerateFromWorkItems";
             this.buttonGenerateFromWorkItems.Size = new System.Drawing.Size(140, 23);
-            this.buttonGenerateFromWorkItems.TabIndex = 16;
+            this.buttonGenerateFromWorkItems.TabIndex = 12;
             this.buttonGenerateFromWorkItems.Text = "作業項目マッチから生成...";
             this.buttonGenerateFromWorkItems.UseVisualStyleBackColor = true;
             this.buttonGenerateFromWorkItems.Click += new System.EventHandler(this.buttonGenerateFromWorkItems_Click);
@@ -268,7 +268,7 @@
             this.buttonFromTodayToSpecialDay.Location = new System.Drawing.Point(404, 100);
             this.buttonFromTodayToSpecialDay.Name = "buttonFromTodayToSpecialDay";
             this.buttonFromTodayToSpecialDay.Size = new System.Drawing.Size(135, 23);
-            this.buttonFromTodayToSpecialDay.TabIndex = 17;
+            this.buttonFromTodayToSpecialDay.TabIndex = 6;
             this.buttonFromTodayToSpecialDay.Text = "今日から";
             this.buttonFromTodayToSpecialDay.UseVisualStyleBackColor = true;
             this.buttonFromTodayToSpecialDay.Click += new System.EventHandler(this.buttonFromTodayToSpecialDay_Click);
@@ -280,7 +280,7 @@
             this.checkBox_IsFreeTimeMemberShow.Location = new System.Drawing.Point(22, 345);
             this.checkBox_IsFreeTimeMemberShow.Name = "checkBox_IsFreeTimeMemberShow";
             this.checkBox_IsFreeTimeMemberShow.Size = new System.Drawing.Size(168, 16);
-            this.checkBox_IsFreeTimeMemberShow.TabIndex = 18;
+            this.checkBox_IsFreeTimeMemberShow.TabIndex = 17;
             this.checkBox_IsFreeTimeMemberShow.Text = "タスクがないメンバーを表示する";
             this.checkBox_IsFreeTimeMemberShow.UseVisualStyleBackColor = true;
             // 
@@ -292,7 +292,7 @@
             this.comboBoxPattern.Location = new System.Drawing.Point(22, 26);
             this.comboBoxPattern.Name = "comboBoxPattern";
             this.comboBoxPattern.Size = new System.Drawing.Size(517, 20);
-            this.comboBoxPattern.TabIndex = 19;
+            this.comboBoxPattern.TabIndex = 1;
             this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
             // 
             // label5
@@ -302,7 +302,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(140, 12);
-            this.label5.TabIndex = 21;
+            this.label5.TabIndex = 18;
             this.label5.Text = "マイルストンフィルタ検索設定";
             // 
             // comboBox_MSFiltersSearchPattern
@@ -311,7 +311,7 @@
             this.comboBox_MSFiltersSearchPattern.Location = new System.Drawing.Point(151, 370);
             this.comboBox_MSFiltersSearchPattern.Name = "comboBox_MSFiltersSearchPattern";
             this.comboBox_MSFiltersSearchPattern.Size = new System.Drawing.Size(121, 20);
-            this.comboBox_MSFiltersSearchPattern.TabIndex = 22;
+            this.comboBox_MSFiltersSearchPattern.TabIndex = 19;
             // 
             // label6
             // 
@@ -320,7 +320,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(126, 12);
-            this.label6.TabIndex = 24;
+            this.label6.TabIndex = 20;
             this.label6.Text = "(\"|\"区切り, 正規表現可)";
             // 
             // FilterForm

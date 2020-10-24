@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.UI.Common;
 using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ColorConditionEditorForm : Form
+    public partial class ColorConditionEditorForm : BaseForm
     {
         public ColorConditionEditorForm(ColorCondition init)
         {
