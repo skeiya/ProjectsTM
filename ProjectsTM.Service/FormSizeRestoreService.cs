@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Service
@@ -31,6 +32,21 @@ namespace ProjectsTM.Service
             {
             }
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        }
+        
+        public static FormWindowState LoadLastTimeFormState(string form)
+        {
+            try
+            {
+                var xml = XElement.Load(SizeInfoPath);
+                var sizeInfo = xml.Elements(form).Single();
+                var lastTimeStateStr = sizeInfo.Element("lastTimeFormState").Value;
+                if (lastTimeStateStr.Equals("Maximized")) return FormWindowState.Maximized;
+            }
+            catch
+            {
+            }
+            return FormWindowState.Normal;
         }
 
         public static int[] LoadColWidths(string form)
@@ -78,6 +94,15 @@ namespace ProjectsTM.Service
             var widthElement = GetSubElement(formElement, "width");
             heightElement.Value = height.ToString();
             widthElement.Value = width.ToString();
+            root.Save(SizeInfoPath);
+        }
+
+        public static void SaveFormState(FormWindowState state, string form)
+        {
+            var root = GetRootElement(SizeInfoPath);
+            var formElement = GetSubElement(root, form);
+            var lastTimeFormState = GetSubElement(formElement, "lastTimeFormState");
+            lastTimeFormState.Value = state.ToString();
             root.Save(SizeInfoPath);
         }
 
