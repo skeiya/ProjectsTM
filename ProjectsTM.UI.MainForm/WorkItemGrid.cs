@@ -248,28 +248,54 @@ namespace ProjectsTM.UI.MainForm
 
             _copiedWorkItem = _viewData.Selected.Unique.Clone();
         }
+
         public void PasteWorkItem()
         {
             if (_copiedWorkItem == null) return;
 
-            var selectedDay = _keyAndMouseHandleService.SelectedCallenderDay(PointToClient(Cursor.Position));
-            if (selectedDay == null) return;
+            var cursorDay = CursorCallenderDay();
+            if (cursorDay == null) return;
 
-            var selectedMember = _keyAndMouseHandleService.SelectedMember(PointToClient(Cursor.Position));
-            if (selectedMember == null) return;
+            var cursorMember = CursorMember();
+            if (cursorMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
-            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, selectedDay);
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, cursorDay);
             copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
-
             if (copyItem.Period == null) return;
 
-            copyItem.AssignedMember = selectedMember;
+            copyItem.AssignedMember = cursorMember;
 
             _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
             _viewData.UndoService.Push();
         }
+
+        public RawPoint Global2Raw(Point global)
+        {
+            return Client2Raw(new ClientPoint(PointToClient(global)));
+        }
+
+        public CallenderDay CursorCallenderDay()
+        {
+            var point = PointToClient(Cursor.Position);
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return Y2Day(rawPoint.Y);
+        }
+
+        public Member CursorMember()
+        {
+            var point = PointToClient(Cursor.Position);
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return X2Member(rawPoint.X);
+        }
+
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
