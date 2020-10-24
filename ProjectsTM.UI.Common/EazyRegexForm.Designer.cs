@@ -66,7 +66,7 @@
             this.textBoxProjectName.Location = new System.Drawing.Point(86, 37);
             this.textBoxProjectName.Name = "textBoxProjectName";
             this.textBoxProjectName.Size = new System.Drawing.Size(147, 19);
-            this.textBoxProjectName.TabIndex = 1;
+            this.textBoxProjectName.TabIndex = 3;
             // 
             // textBoxMemberName
             // 
@@ -75,7 +75,7 @@
             this.textBoxMemberName.Location = new System.Drawing.Point(86, 62);
             this.textBoxMemberName.Name = "textBoxMemberName";
             this.textBoxMemberName.Size = new System.Drawing.Size(147, 19);
-            this.textBoxMemberName.TabIndex = 1;
+            this.textBoxMemberName.TabIndex = 5;
             // 
             // textBoxTagText
             // 
@@ -84,7 +84,7 @@
             this.textBoxTagText.Location = new System.Drawing.Point(86, 87);
             this.textBoxTagText.Name = "textBoxTagText";
             this.textBoxTagText.Size = new System.Drawing.Size(147, 19);
-            this.textBoxTagText.TabIndex = 1;
+            this.textBoxTagText.TabIndex = 7;
             // 
             // label2
             // 
@@ -92,7 +92,7 @@
             this.label2.Location = new System.Drawing.Point(12, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 12);
-            this.label2.TabIndex = 0;
+            this.label2.TabIndex = 2;
             this.label2.Text = "プロジェクト名";
             // 
             // label3
@@ -101,7 +101,7 @@
             this.label3.Location = new System.Drawing.Point(12, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 12);
-            this.label3.TabIndex = 0;
+            this.label3.TabIndex = 4;
             this.label3.Text = "メンバ名";
             // 
             // label4
@@ -110,7 +110,7 @@
             this.label4.Location = new System.Drawing.Point(12, 90);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(22, 12);
-            this.label4.TabIndex = 0;
+            this.label4.TabIndex = 6;
             this.label4.Text = "タグ";
             // 
             // label5
@@ -119,7 +119,7 @@
             this.label5.Location = new System.Drawing.Point(12, 117);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 12);
-            this.label5.TabIndex = 0;
+            this.label5.TabIndex = 8;
             this.label5.Text = "(\"|\"区切り)";
             // 
             // buttonOK
@@ -127,7 +127,7 @@
             this.buttonOK.Location = new System.Drawing.Point(86, 123);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(66, 23);
-            this.buttonOK.TabIndex = 2;
+            this.buttonOK.TabIndex = 9;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.ButtonOK_Click);
@@ -138,7 +138,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(158, 123);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 2;
+            this.buttonCancel.TabIndex = 10;
             this.buttonCancel.Text = "キャンセル";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -160,7 +160,10 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "EazyRegexForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EazyRegexForm";
             this.ResumeLayout(false);
