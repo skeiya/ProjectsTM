@@ -259,7 +259,10 @@ namespace ProjectsTM.UI.MainForm
             if (selectedMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
-            var dayCount = _viewData.Original.Callender.GetPeriodDayCount(copyItem.Period) - 1;
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, selectedDay);
+            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
+
+            if (copyItem.Period == null) return;
 
             if (dayCount <= 0) return;
             copyItem.Period = copyItem.Period.ApplyOffset(selectedDay.DayDistance(copyItem.Period.From), _viewData.Original.Callender);

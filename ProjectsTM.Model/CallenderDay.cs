@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -57,6 +58,20 @@ namespace ProjectsTM.Model
         private DateTime ToDateTime(CallenderDay target)
         {
             return new DateTime(target.Year, target.Month, target.Day);
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement("Date");
+            xml.Value = Date;
+            return xml;
+        }
+
+        internal static CallenderDay FromXml(XElement e)
+        {
+            var result = new CallenderDay();
+            result.Date = e.Value;
+            return result;
         }
 
         public static CallenderDay Parse(string text)

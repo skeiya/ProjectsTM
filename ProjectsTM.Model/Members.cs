@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -32,6 +33,23 @@ namespace ProjectsTM.Model
         {
             if (!_members.Contains(member)) return;
             _members.Remove(member);
+        }
+
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(Members));
+            _members.ForEach(m => xml.Add(m.ToXml()));
+            return xml;
+        }
+
+        public static Members FromXml(XElement xml)
+        {
+            var result = new Members();
+            foreach (var m in xml.Elements(nameof(Member)))
+            {
+                result.Add(Member.FromXml(m));
+            }
+            return result;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

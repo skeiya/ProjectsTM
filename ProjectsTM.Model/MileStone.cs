@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
@@ -35,12 +37,38 @@ namespace ProjectsTM.Model
         public CallenderDay Day { set; get; }
         [XmlIgnore]
         public Color Color { set; get; }
+
         [XmlElement]
         public string ColorText
         {
             get { return ColorSerializer.Serialize(Color); }
             set { Color = ColorSerializer.Deserialize(value); }
         }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(MileStone));
+            xml.SetAttributeValue("Name", Name);
+            xml.Add(new XElement(nameof(Project), Project.ToString()));
+            xml.Add(Day.ToXml());
+            xml.Add(new XElement(nameof(Color), ColorText));
+            xml.Add(new XElement(nameof(MileStoneFilterName), MileStoneFilterName));
+            xml.Add(new XElement(nameof(State), State));
+            return xml;
+        }
+
+        internal static MileStone FromXml(XElement m)
+        {
+            var result = new MileStone();
+            result.Name = m.Attribute("Name").Value;
+            result.Project = Project.FromXml(m);
+            result.Day = CallenderDay.FromXml(m.Elements("Date").Single());
+            result.ColorText = m.Elements("Color").Single().Value;
+            result.MileStoneFilter = new MileStoneFilter(m.Elements(nameof(MileStoneFilterName)).Single().Value);
+            result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Elements(nameof(State)).Single().Value);
+            return result;
+        }
+
         [XmlIgnore]
         public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter("ALL");
 
@@ -70,7 +98,7 @@ namespace ProjectsTM.Model
             if (!(obj is MileStone stone)) return false;
             return Name == stone.Name &&
                    EqualityComparer<CallenderDay>.Default.Equals(Day, stone.Day) &&
-                   EqualityComparer<Color>.Default.Equals(Color, stone.Color) &&
+                   Color.ToArgb().Equals(stone.Color.ToArgb()) &&
                    ColorText == stone.ColorText &&
                    MileStoneFilter.Name == stone.MileStoneFilter.Name;
         }

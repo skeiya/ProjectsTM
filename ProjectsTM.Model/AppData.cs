@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
     public class AppData
     {
-        static public int DataVersion = 4; // 互換性のなくなる変更をしたときにこの数字を増やす
+        static public int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version
         {
             set {; }
@@ -21,6 +22,19 @@ namespace ProjectsTM.Model
         {
         }
 
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(AppData));
+            xml.Add(new XElement(nameof(Version), Version));
+            xml.Add(Callender.ToXml());
+            xml.Add(Members.ToXml());
+            xml.Add(WorkItems.ToXml());
+            xml.Add(ColorConditions.ToXml());
+            xml.Add(MileStones.ToXml());
+            xml.Add(AbsentInfo.ToXml());
+            return xml;
+        }
+
         public override bool Equals(object obj)
         {
             var target = obj as AppData;
@@ -29,6 +43,18 @@ namespace ProjectsTM.Model
             if (!Members.Equals(target.Members)) return false;
             if (!ColorConditions.Equals(target.ColorConditions)) return false;
             return WorkItems.Equals(target.WorkItems);
+        }
+
+        public static AppData FromXml(XElement xml)
+        {
+            var result = new AppData();
+            result.Callender = Callender.FromXml(xml.Element(nameof(Callender)));
+            result.Members = Members.FromXml(xml.Element(nameof(Members)));
+            result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)));
+            result.ColorConditions = ColorConditions.FromXml(xml.Element(nameof(ColorConditions)));
+            result.MileStones = MileStones.FromXml(xml.Element(nameof(MileStones)));
+            result.AbsentInfo = AbsentInfo.FromXml(xml);
+            return result;
         }
 
         public override int GetHashCode()
