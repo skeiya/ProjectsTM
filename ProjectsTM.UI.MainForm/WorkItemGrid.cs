@@ -264,7 +264,7 @@ namespace ProjectsTM.UI.MainForm
             if (dayCount <= 0) return;
             copyItem.Period = new Period(selectedDay, selectedDay.AddDays(dayCount));
             copyItem.AssignedMember = selectedMember;
-            
+
             _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
             _viewData.UndoService.Push();

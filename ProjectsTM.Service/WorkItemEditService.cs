@@ -238,5 +238,18 @@ namespace ProjectsTM.Service
             workItems.Add(add);
             _viewData.Selected = add;
         }
+
+        internal void ShiftDays(int shift)
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+
+            var before = _viewData.Selected.Unique;
+            var after = before.Clone();
+            after.Period = after.Period.ApplyOffset(shift, _viewData.Original.Callender);
+            
+            Replace(before, after);
+            _viewData.Selected = new WorkItems(after);
+        }
     }
 }

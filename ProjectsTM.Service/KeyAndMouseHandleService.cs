@@ -187,7 +187,7 @@ namespace ProjectsTM.Service
             var client = new ClientPoint(point);
             if (_grid.IsFixedArea(client)) return null;
 
-            var rawPoint =_grid.Client2Raw(client);
+            var rawPoint = _grid.Client2Raw(client);
             return _grid.Y2Day(rawPoint.Y);
         }
 
@@ -220,6 +220,17 @@ namespace ProjectsTM.Service
 
         public void KeyDown(KeyEventArgs e)
         {
+            var ctrl = e.Modifiers == Keys.Control;
+            if (ctrl && e.KeyCode == Keys.Up)
+            {
+                _editService.ShiftDays(-1);
+                return;
+            }
+            if (ctrl && e.KeyCode == Keys.Down)
+            {
+                _editService.ShiftDays(1);
+                return;
+            }
             if (e.KeyCode == Keys.ControlKey)
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);
