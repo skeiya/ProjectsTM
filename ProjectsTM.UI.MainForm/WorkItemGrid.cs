@@ -441,13 +441,5 @@ namespace ProjectsTM.UI.MainForm
             if (m == null || d == null) return null;
             return _viewData.PickFilterdWorkItem(m, d);
         }
-
-        public WorkItem EmptyWorkItem(RawPoint location)
-        {
-            var m = X2Member(location.X);
-            var d = Y2Day(location.Y);
-            if (m == null || d == null) return null;
-            return WorkItem.CreateProto(new Period(d, d), m);
-        }
     }
 }

@@ -121,19 +121,21 @@ namespace ProjectsTM.Service
             }
             if (curWi == null)
             {
-                DrawCursorBackgroundRectangle(font, g, members, curOnRaw);
+                DrawCursorBackgroundRectangle(g, curOnRaw);
             }
         }
 
-        private void DrawCursorBackgroundRectangle(Font font, Graphics g, IEnumerable<Member> members, RawPoint curOnRaw)
+        private void DrawCursorBackgroundRectangle(Graphics g, RawPoint curOnRaw)
         {
-            var empty = _grid.EmptyWorkItem(curOnRaw);
-            if (empty != null)
-            {
-                var pen = PenCache.GetPen(Color.LightGray, 3f);
-                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                DrawWorkItemClient(empty, pen, font, g, members);
-            }
+            var c = _grid.X2Col(curOnRaw.X);
+            var r = _grid.Y2Row(curOnRaw.Y);
+            if (!_grid.VisibleRowColRange.Contains(r, c)) return;
+            var reternRect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false));
+            if (!reternRect.HasValue) return;
+            var rect = reternRect.Value.Value;
+            var pen = PenCache.GetPen(Color.LightGray, 3f);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         private void DrawCursorWorkItem(Font font, Graphics g, IEnumerable<Member> members, WorkItem wi)

@@ -37,7 +37,6 @@ namespace ProjectsTM.ViewModel
         bool IsSelected(CallenderDay d);
         void Invalidate();
         WorkItem PickWorkItemFromPoint(RawPoint curOnRaw);
-        WorkItem EmptyWorkItem(RawPoint location);
         bool IsFixedArea(ClientPoint location);
         RawPoint Client2Raw(ClientPoint location);
         void IncRatio();
