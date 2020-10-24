@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -56,7 +54,7 @@ namespace ProjectsTM.Model
         public static MileStones FromXml(XElement xml)
         {
             var result = new MileStones();
-            foreach(var m in xml.Elements(nameof(MileStone)))
+            foreach (var m in xml.Elements(nameof(MileStone)))
             {
                 result.Add(MileStone.FromXml(m));
             }
@@ -106,7 +104,7 @@ namespace ProjectsTM.Model
             var target = obj as MileStones;
             if (target == null) return false;
             if (target._list.Count != _list.Count) return false;
-            for(var idx = 0; idx <_list.Count; idx++)
+            for (var idx = 0; idx < _list.Count; idx++)
             {
                 if (!target._list[idx].Equals(_list[idx])) return false;
             }

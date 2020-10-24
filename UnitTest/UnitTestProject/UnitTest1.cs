@@ -10,7 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-namespace UnitTestProject1
+namespace UnitTestProject
 {
     [TestClass]
     public class UnitTest1

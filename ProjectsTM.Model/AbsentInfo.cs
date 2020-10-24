@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -80,7 +79,7 @@ namespace ProjectsTM.Model
             var target = obj as AbsentInfo;
             if (target == null) return false;
             if (target._items.Count != this._items.Count) return false;
-            for(var idx = 0; idx < _items.Count; idx++)
+            for (var idx = 0; idx < _items.Count; idx++)
             {
                 var key = _items.Keys.ElementAt(idx);
                 if (!_items[key].Equals(target._items[key])) return false;

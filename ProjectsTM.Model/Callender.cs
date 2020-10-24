@@ -37,7 +37,7 @@ namespace ProjectsTM.Model
         public static Callender FromXml(XElement xml)
         {
             var result = new Callender();
-            foreach(var e in xml.Elements("Date"))
+            foreach (var e in xml.Elements("Date"))
             {
                 result.Add(CallenderDay.FromXml(e));
             }
