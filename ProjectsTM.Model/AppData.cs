@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -48,7 +49,7 @@ namespace ProjectsTM.Model
         public static AppData FromXml(XElement xml)
         {
             var result = new AppData();
-            result.Callender = Callender.FromXml(xml);
+            result.Callender = Callender.FromXml(xml.Elements(nameof(Callender)).Single());
             result.Members = Members.FromXml(xml);
             result.WorkItems = WorkItems.FromXml(xml);
             result.ColorConditions = ColorConditions.FromXml(xml);

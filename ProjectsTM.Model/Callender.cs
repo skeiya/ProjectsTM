@@ -27,19 +27,17 @@ namespace ProjectsTM.Model
             _nearestDayCache.Clear();
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(Callender));
             Days.ForEach(d => xml.Add(d.ToXml()));
             return xml;
         }
 
-        internal static Callender FromXml(XElement xml)
+        public static Callender FromXml(XElement xml)
         {
             var result = new Callender();
-            var ca = xml.Elements(nameof(Callender)).Single();
-
-            foreach(var e in ca.Elements("Date"))
+            foreach(var e in xml.Elements("Date"))
             {
                 result.Add(CallenderDay.FromXml(e));
             }
