@@ -111,9 +111,7 @@ namespace ProjectsTM.Service
                 {
                     if (wi.Equals(curWi))
                     {
-                        var pen = PenCache.GetPen(Color.Red, 3f);
-                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        DrawWorkItemClient(wi, pen, font, g, members);
+                        DrawCursorWorkItem(font, g, members, wi);
                     }
                     else
                     {
@@ -123,14 +121,26 @@ namespace ProjectsTM.Service
             }
             if (curWi == null)
             {
-                var empty = _grid.EmptyWorkItem(curOnRaw);
-                if (empty != null)
-                {
-                    var pen = PenCache.GetPen(Color.LightGray, 3f);
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                    DrawWorkItemClient(empty, pen, font, g, members);
-                }
+                DrawCursorBackgroundRectangle(font, g, members, curOnRaw);
             }
+        }
+
+        private void DrawCursorBackgroundRectangle(Font font, Graphics g, IEnumerable<Member> members, RawPoint curOnRaw)
+        {
+            var empty = _grid.EmptyWorkItem(curOnRaw);
+            if (empty != null)
+            {
+                var pen = PenCache.GetPen(Color.LightGray, 3f);
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                DrawWorkItemClient(empty, pen, font, g, members);
+            }
+        }
+
+        private void DrawCursorWorkItem(Font font, Graphics g, IEnumerable<Member> members, WorkItem wi)
+        {
+            var pen = PenCache.GetPen(Color.Red, 3f);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            DrawWorkItemClient(wi, pen, font, g, members);
         }
 
         private static int GetRowCount(RowColRange range, ColIndex c, bool isAllDraw)
