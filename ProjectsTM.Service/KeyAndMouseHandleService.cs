@@ -85,6 +85,7 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected.Remove(wi);
                     }
+                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
                 }
                 else
                 {
@@ -92,16 +93,6 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected = new WorkItems(wi);
                     }
-                }
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                if (KeyState.IsControlDown)
-                {
-                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
-                }
-                else
-                {
                     _workItemDragService.StartMove(_viewData.Selected, curOnRaw, _grid.Y2Day(curOnRaw.Y));
                 }
             }
@@ -202,6 +193,31 @@ namespace ProjectsTM.Service
 
         public void KeyDown(KeyEventArgs e)
         {
+            var ctrl = (e.Modifiers & Keys.Control) == Keys.Control;
+            var shift = (e.Modifiers & Keys.Shift) == Keys.Shift;
+            
+            if (ctrl && shift && e.KeyCode == Keys.Up)
+            {
+                _editService.ExpandDays(-1);
+                return;
+            }
+            if (ctrl && e.KeyCode == Keys.Up)
+            {
+                _editService.ShiftDays(-1);
+                return;
+            }
+
+            if (ctrl && shift && e.KeyCode == Keys.Down)
+            {
+                _editService.ExpandDays(1);
+                return;
+            }
+            if (ctrl && e.KeyCode == Keys.Down)
+            {
+                _editService.ShiftDays(1);
+                return;
+            }
+            
             if (e.KeyCode == Keys.ControlKey)
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);

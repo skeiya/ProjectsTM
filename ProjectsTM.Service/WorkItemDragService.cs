@@ -334,7 +334,7 @@ namespace ProjectsTM.Service
 
         internal void ToCopyMode(WorkItems workItems, Action<IEnumerable<Member>> invalidateMembers)
         {
-            if (State != DragState.Moving) return;
+            if (State != DragState.BeforeMoving && State != DragState.Moving) return;
             State = DragState.Copying;
             workItems.Add(_backup);
             invalidateMembers(_backup.Select(w => w.AssignedMember));
