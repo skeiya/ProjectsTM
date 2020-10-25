@@ -66,6 +66,21 @@ namespace ProjectsTM.UI.MainForm
             this.HoveringTextChanged?.Invoke(sender, e);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            var shift = (keyData & Keys.Shift) == Keys.Shift;
+            var tab = (keyData & Keys.Tab) == Keys.Tab;
+
+            if (tab)
+            {
+                if (_viewData.SelectNextWorkItem(shift))
+                {
+                    return true;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         public IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
         {
             var neighbers = new HashSet<Member>();
@@ -266,9 +281,7 @@ namespace ProjectsTM.UI.MainForm
 
             copyItem.AssignedMember = cursorMember;
 
-            _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
-            _viewData.UndoService.Push();
         }
 
         public RawPoint Global2Raw(Point global)

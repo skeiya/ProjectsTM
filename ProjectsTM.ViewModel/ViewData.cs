@@ -190,6 +190,31 @@ namespace ProjectsTM.ViewModel
             return result;
         }
 
+        public bool SelectNextWorkItem(bool prev)
+        {
+            if (Selected == null)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                Selected = new WorkItems(all.FirstOrDefault());
+                return true;
+            }
+            if (Selected.Count() == 1)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                var find = all.FindIndex(wi => Selected.Unique.Equals(wi));
+                WorkItem next = all.Skip(find + 1).FirstOrDefault();
+                if (next == null) return false;
+
+                Selected = new WorkItems(next);
+                return true;
+            }
+            return false;
+        }
+
         public void UpdateCallenderAndMembers(WorkItem wi)
         {
             var days = Original.Callender.Days;
