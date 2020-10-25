@@ -281,9 +281,7 @@ namespace ProjectsTM.UI.MainForm
 
             copyItem.AssignedMember = cursorMember;
 
-            _viewData.UpdateCallenderAndMembers(copyItem);
             _editService.Add(copyItem);
-            _viewData.UndoService.Push();
         }
 
         public RawPoint Global2Raw(Point global)
