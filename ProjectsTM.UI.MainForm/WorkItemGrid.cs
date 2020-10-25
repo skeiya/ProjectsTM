@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
@@ -59,6 +60,26 @@ namespace ProjectsTM.UI.MainForm
                 this,
                 () => _workItemDragService.IsActive(),
                 this.Font);
+        }
+
+        internal void GetProjectTrend()
+        {
+            var projects = new HashSet<Project>();
+            foreach (var item in _viewData.Original.WorkItems)
+            {
+                if (!projects.Contains(item.Project))
+                {
+                    projects.Add(item.Project);
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var p in projects)
+            {
+                //プロジェクトごとの統計
+                var trend = _viewData.GetTrend(p);
+                sb.AppendLine(trend.ToString());
+            }
+            MessageBox.Show(sb.ToString());
         }
 
         private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)

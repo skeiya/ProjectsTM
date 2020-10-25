@@ -27,10 +27,16 @@ namespace ProjectsTM.UI.MainForm
             workItemGrid1.ContextMenuStrip.Items.Add(manageItem);
             manageItem.DropDownItems.Add(new ToolStripMenuItem("&2分割", null, DivideInto2PartsMenu_Click, Keys.Control | Keys.D2));
             manageItem.DropDownItems.Add(new ToolStripMenuItem("半分に縮小(&H)", null, MakeHalfMenu_Click, Keys.Control | Keys.H));
+            manageItem.DropDownItems.Add(new ToolStripMenuItem("プロジェクトトレンド", null, ProjectTrend_Click));
             manageItem.DropDownItems.Add("以降を選択").Click += SelectAfterwardMenu_Click;
             manageItem.DropDownItems.Add("以降を前詰めに整列").Click += AlignAfterwardMenu_Click;
             manageItem.DropDownItems.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
             manageItem.DropDownItems.Add("→状態：Background").Click += BackgroundMenu_Click;
+        }
+
+        private void ProjectTrend_Click(object sender, EventArgs e)
+        {
+            workItemGrid1.GetProjectTrend();
         }
 
         private void PasteMenu_Click(object sender, EventArgs e)

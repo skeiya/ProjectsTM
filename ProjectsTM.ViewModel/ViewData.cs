@@ -102,6 +102,13 @@ namespace ProjectsTM.ViewModel
             }
         }
 
+        public ProjectTrend GetTrend(Project p)
+        {
+            var projectWorkItems = new WorkItems(Original.WorkItems.Where(wi => wi.Project.Equals(p)));
+
+            return new ProjectTrend(p, projectWorkItems, Original.Callender);
+        }
+
         private void RemoveAbsentMembersFromFilter()
         {
             var members = GetFilteredMembers();
@@ -218,6 +225,28 @@ namespace ProjectsTM.ViewModel
             if (Original.ColorConditions.Equals(colorConditions)) return;
             Original.ColorConditions = colorConditions;
             ColorConditionChanged?.Invoke(this, null);
+        }
+    }
+
+    public class ProjectTrend
+    {
+        private readonly WorkItems _items;
+        private readonly Callender _callender;
+        public Project Project { get; }
+        public int TotalWorkTime => _items.Sum(wi => _callender.GetPeriodDayCount(wi.Period));
+        public int TotalNinzu => _items.Select(wi => wi.AssignedMember).Distinct().Count();
+
+
+        public ProjectTrend(Project p, WorkItems workItems, Callender callender)
+        {
+            Project = p;
+            _items = workItems;
+            _callender = callender;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}\t{1}人日 / {2}人", Project.ToString(), TotalWorkTime, TotalNinzu);
         }
     }
 }
