@@ -176,21 +176,6 @@ namespace ProjectsTM.ViewModel
             return result;
         }
 
-        private IEnumerable<WorkItem> GetAllFilteredWorkItems()
-        {
-            var filteredMembers = GetFilteredMembers();
-            var result = new WorkItems();
-            foreach (var m in filteredMembers)
-            {
-                var mwi = GetFilteredWorkItemsOfMember(m);
-                foreach (var wi in mwi)
-                {
-                    result.Add(wi);
-                }
-            }
-            return result;
-        }
-
         public List<CallenderDay> GetFilteredDays()
         {
             if (!Filter.Period.IsValid) return Original.Callender.Days;
