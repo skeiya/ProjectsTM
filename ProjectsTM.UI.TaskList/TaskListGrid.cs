@@ -397,7 +397,12 @@ namespace ProjectsTM.UI.TaskList
         {
             var result = new Dictionary<WorkItem, string>();
             OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "衝突"));
-            var soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, 5);
+            CallenderDay soon = null;
+            for (int i = 5; i >= 0; i--)
+            {
+                soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, i);
+                if (soon != null) break;
+            }
             foreach (var wi in _viewData.GetFilteredWorkItems())
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
