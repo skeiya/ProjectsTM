@@ -176,6 +176,21 @@ namespace ProjectsTM.ViewModel
             return result;
         }
 
+        private IEnumerable<WorkItem> GetAllFilteredWorkItems()
+        {
+            var filteredMembers = GetFilteredMembers();
+            var result = new WorkItems();
+            foreach (var m in filteredMembers)
+            {
+                var mwi = GetFilteredWorkItemsOfMember(m);
+                foreach (var wi in mwi)
+                {
+                    result.Add(wi);
+                }
+            }
+            return result;
+        }
+
         public List<CallenderDay> GetFilteredDays()
         {
             if (!Filter.Period.IsValid) return Original.Callender.Days;
@@ -188,6 +203,31 @@ namespace ProjectsTM.ViewModel
                 if (d.Equals(Filter.Period.To)) return result;
             }
             return result;
+        }
+
+        public bool SelectNextWorkItem(bool prev)
+        {
+            if (Selected == null)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                Selected = new WorkItems(all.FirstOrDefault());
+                return true;
+            }
+            if (Selected.Count() == 1)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                var find = all.FindIndex(wi => Selected.Unique.Equals(wi));
+                WorkItem next = all.Skip(find + 1).FirstOrDefault();
+                if (next == null) return false;
+
+                Selected = new WorkItems(next);
+                return true;
+            }
+            return false;
         }
 
         public void UpdateCallenderAndMembers(WorkItem wi)
