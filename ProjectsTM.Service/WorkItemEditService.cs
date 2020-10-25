@@ -253,5 +253,23 @@ namespace ProjectsTM.Service
             Replace(before, after);
             _viewData.Selected = new WorkItems(after);
         }
+
+        internal void ExpandDays(int shift)
+        {
+            if (_viewData.Selected == null) return;
+            if (_viewData.Selected.Count() != 1) return;
+
+            var before = _viewData.Selected.Unique;
+            var after = before.Clone();
+
+            var newTo =_viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
+            if (newTo == null) return;
+            if (newTo < after.Period.From) return;
+
+            after.Period.To = newTo;
+
+            Replace(before, after);
+            _viewData.Selected = new WorkItems(after);
+        }
     }
 }
