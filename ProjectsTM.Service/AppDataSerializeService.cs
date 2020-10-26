@@ -34,19 +34,21 @@ namespace ProjectsTM.Service
 
         public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
-            if (isOld)
+            XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = false;
+            doc.Load(reader);
+            using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.PreserveWhitespace = false;
-                doc.Load(reader);
-                using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+                if (isOld)
                 {
                     var x = new XmlSerializer(typeof(AppData));
                     return (AppData)x.Deserialize(nodeReader);
                 }
+                else
+                {
+                    return AppData.FromXml(XElement.Load(nodeReader));
+                }
             }
-
-            return AppData.FromXml(XElement.Load(reader));
         }
 
         private static bool IsOldFormat(string path)
