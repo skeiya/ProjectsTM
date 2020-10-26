@@ -160,7 +160,7 @@ namespace ProjectsTM.UI.MainForm
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
-            this.MouseUp -= WorkItemGrid_MouseDown;
+            this.MouseUp -= WorkItemGrid_MouseUp;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this.MouseWheel -= WorkItemGrid_MouseWheel;
             this._viewData.UndoService.Changed -= _undoService_Changed;
@@ -188,7 +188,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseUp();
+            _keyAndMouseHandleService.MouseUp(e);
         }
 
         public ClientRectangle? GetRangeSelectBound()
