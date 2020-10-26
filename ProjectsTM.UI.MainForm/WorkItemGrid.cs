@@ -188,7 +188,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void WorkItemGrid_MouseUp(object sender, MouseEventArgs e)
         {
-            _keyAndMouseHandleService.MouseUp(e);
+            _keyAndMouseHandleService.MouseUp();
         }
 
         public ClientRectangle? GetRangeSelectBound()
