@@ -46,9 +46,10 @@ namespace ProjectsTM.Service
         public void MouseDown(MouseEventArgs e)
         {
             var location = ClientPoint.Create(e);
+            Console.WriteLine("location:" + location.X);
             if (_grid.IsFixedArea(location)) return;
             var curOnRaw = _grid.Client2Raw(location);
-
+            Console.WriteLine("curOnRaw:" + curOnRaw.X);
             if (e.Button == MouseButtons.Right)
             {
                 _workItemDragService.StartRangeSelect(curOnRaw);
@@ -64,6 +65,15 @@ namespace ProjectsTM.Service
             }
 
             var wi = _grid.PickWorkItemFromPoint(curOnRaw);
+
+            if (wi == null)
+            {
+                Console.WriteLine("wi.Null");
+            }
+            else
+            {
+                Console.WriteLine("wi:" + wi.Name);
+            }
             if (wi == null)
             {
                 _viewData.Selected = null;
