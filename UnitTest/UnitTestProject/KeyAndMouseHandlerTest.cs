@@ -62,6 +62,8 @@ namespace UnitTestProject
             PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
+            var col = grid.X2Col(grid.Client2Raw(new FreeGridControl.ClientPoint(50, 30)).X);
+            Console.WriteLine(col.Value);
             Console.WriteLine(viewData.Selected.Unique.Name);
             Assert.AreEqual(viewData.Selected.Unique, i);
 
