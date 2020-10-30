@@ -47,7 +47,7 @@ namespace ProjectsTM.Service
         {
             var location = ClientPoint.Create(e);
             Console.WriteLine("location:" + location.X);
-            if (_grid.IsFixedArea(location)) return;
+            //if (_grid.IsFixedArea(location)) return;
             var curOnRaw = _grid.Client2Raw(location);
             Console.WriteLine("curOnRaw:" + curOnRaw.X);
             if (e.Button == MouseButtons.Right)
