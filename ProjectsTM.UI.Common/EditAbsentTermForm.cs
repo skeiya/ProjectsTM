@@ -20,7 +20,7 @@ namespace ProjectsTM.UI.Common
             this._absentTerm = absentTerm;
             this._callender = callender;
             Period p = absentTerm.Period;
-            textBoxFrom.Text = (p?.From == null || p.From == AbsentTerm.UnlimitedFrom ) ? string.Empty :  p.From.ToString();
+            textBoxFrom.Text = (p?.From == null || p.From == AbsentTerm.UnlimitedFrom) ? string.Empty : p.From.ToString();
             textBoxTo.Text = (p?.To == null || p.To == AbsentTerm.UnlimitedTo) ? string.Empty : p.To.ToString();
         }
 

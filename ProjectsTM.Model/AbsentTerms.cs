@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
-    public class AbsentTerms: IEnumerable<AbsentTerm>
+    public class AbsentTerms : IEnumerable<AbsentTerm>
     {
         private List<AbsentTerm> _absentTerms = new List<AbsentTerm>();
 
@@ -34,6 +35,30 @@ namespace ProjectsTM.Model
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _absentTerms.GetEnumerator();
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(AbsentTerms));
+            _absentTerms.ForEach(a => xml.Add(a.ToXml()));
+            return xml;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as AbsentTerms;
+            if (target == null) return false;
+            if (target._absentTerms.Count != _absentTerms.Count) return false;
+            for (var idx = 0; idx < _absentTerms.Count; idx++)
+            {
+                if (!target._absentTerms[idx].Equals(_absentTerms[idx])) return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1155826442 + EqualityComparer<List<AbsentTerm>>.Default.GetHashCode(_absentTerms);
         }
     }
 }

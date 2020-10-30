@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -25,6 +27,18 @@ namespace ProjectsTM.Model
         public override string ToString()
         {
             return _name;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(Project));
+            xml.Value = _name;
+            return xml;
+        }
+
+        internal static Project FromXml(XElement w)
+        {
+            return new Project(w.Elements(nameof(Project)).Single().Value);
         }
     }
 }

@@ -66,6 +66,21 @@ namespace ProjectsTM.UI.MainForm
             this.HoveringTextChanged?.Invoke(sender, e);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            var shift = (keyData & Keys.Shift) == Keys.Shift;
+            var tab = (keyData & Keys.Tab) == Keys.Tab;
+
+            if (tab)
+            {
+                if (_viewData.SelectNextWorkItem(shift))
+                {
+                    return true;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         public IEnumerable<Member> GetNeighbers(IEnumerable<Member> members)
         {
             var neighbers = new HashSet<Member>();
@@ -145,7 +160,7 @@ namespace ProjectsTM.UI.MainForm
             this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
             this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
             this.MouseDown -= WorkItemGrid_MouseDown;
-            this.MouseUp -= WorkItemGrid_MouseDown;
+            this.MouseUp -= WorkItemGrid_MouseUp;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this.MouseWheel -= WorkItemGrid_MouseWheel;
             this._viewData.UndoService.Changed -= _undoService_Changed;
@@ -248,27 +263,52 @@ namespace ProjectsTM.UI.MainForm
 
             _copiedWorkItem = _viewData.Selected.Unique.Clone();
         }
+
         public void PasteWorkItem()
         {
             if (_copiedWorkItem == null) return;
 
-            var selectedDay = _keyAndMouseHandleService.SelectedCallenderDay(PointToClient(Cursor.Position));
-            if (selectedDay == null) return;
+            var cursorDay = CursorCallenderDay();
+            if (cursorDay == null) return;
 
-            var selectedMember = _keyAndMouseHandleService.SelectedMember(PointToClient(Cursor.Position));
-            if (selectedMember == null) return;
+            var cursorMember = CursorMember();
+            if (cursorMember == null) return;
 
             var copyItem = _copiedWorkItem.Clone();
-            var dayCount = _viewData.Original.Callender.GetPeriodDayCount(copyItem.Period) - 1;
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, cursorDay);
+            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
+            if (copyItem.Period == null) return;
 
-            if (dayCount <= 0) return;
-            copyItem.Period = new Period(selectedDay, selectedDay.AddDays(dayCount));
-            copyItem.AssignedMember = selectedMember;
-            
-            _viewData.UpdateCallenderAndMembers(copyItem);
+            copyItem.AssignedMember = cursorMember;
+
             _editService.Add(copyItem);
-            _viewData.UndoService.Push();
         }
+
+        public RawPoint Global2Raw(Point global)
+        {
+            return Client2Raw(new ClientPoint(PointToClient(global)));
+        }
+
+        public CallenderDay CursorCallenderDay()
+        {
+            var point = PointToClient(Cursor.Position);
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return Y2Day(rawPoint.Y);
+        }
+
+        public Member CursorMember()
+        {
+            var point = PointToClient(Cursor.Position);
+            var client = new ClientPoint(point);
+            if (IsFixedArea(client)) return null;
+
+            var rawPoint = Client2Raw(client);
+            return X2Member(rawPoint.X);
+        }
+
 
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {

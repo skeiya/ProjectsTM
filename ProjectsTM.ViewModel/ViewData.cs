@@ -107,7 +107,7 @@ namespace ProjectsTM.ViewModel
             var members = GetFilteredMembers();
             if (members == null || members.Count() == 0) return;
             Members absentMembers = new Members();
-            foreach(var m in members)
+            foreach (var m in members)
             {
                 var absentTerms = _appData.AbsentInfo.OfMember(m);
                 if (!absentTerms.Any(a => (a.Period.Contains(this.Filter.Period)))) continue;
@@ -188,6 +188,31 @@ namespace ProjectsTM.ViewModel
                 if (d.Equals(Filter.Period.To)) return result;
             }
             return result;
+        }
+
+        public bool SelectNextWorkItem(bool prev)
+        {
+            if (Selected == null)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                Selected = new WorkItems(all.FirstOrDefault());
+                return true;
+            }
+            if (Selected.Count() == 1)
+            {
+                var all = GetFilteredWorkItems().ToList();
+                if (prev) all.Reverse();
+
+                var find = all.FindIndex(wi => Selected.Unique.Equals(wi));
+                WorkItem next = all.Skip(find + 1).FirstOrDefault();
+                if (next == null) return false;
+
+                Selected = new WorkItems(next);
+                return true;
+            }
+            return false;
         }
 
         public void UpdateCallenderAndMembers(WorkItem wi)

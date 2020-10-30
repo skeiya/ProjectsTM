@@ -85,6 +85,7 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected.Remove(wi);
                     }
+                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
                 }
                 else
                 {
@@ -92,16 +93,6 @@ namespace ProjectsTM.Service
                     {
                         _viewData.Selected = new WorkItems(wi);
                     }
-                }
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                if (KeyState.IsControlDown)
-                {
-                    _workItemDragService.StartCopy(_viewData, curOnRaw, _grid.Y2Day(curOnRaw.Y), _drawService.InvalidateMembers);
-                }
-                else
-                {
                     _workItemDragService.StartMove(_viewData.Selected, curOnRaw, _grid.Y2Day(curOnRaw.Y));
                 }
             }
@@ -182,24 +173,6 @@ namespace ProjectsTM.Service
             HoveringTextChanged?.Invoke(this, wi);
         }
 
-        public CallenderDay SelectedCallenderDay(System.Drawing.Point point)
-        {
-            var client = new ClientPoint(point);
-            if (_grid.IsFixedArea(client)) return null;
-
-            var rawPoint =_grid.Client2Raw(client);
-            return _grid.Y2Day(rawPoint.Y);
-        }
-
-        public Member SelectedMember(System.Drawing.Point point)
-        {
-            var client = new ClientPoint(point);
-            if (_grid.IsFixedArea(client)) return null;
-
-            var rawPoint = _grid.Client2Raw(client);
-            return _grid.X2Member(rawPoint.X);
-        }
-
         public void DoubleClick(MouseEventArgs e)
         {
             var locaion = ClientPoint.Create(e);
@@ -214,12 +187,37 @@ namespace ProjectsTM.Service
             var day = _grid.Y2Day(curOnRaw.Y);
             var member = _grid.X2Member(curOnRaw.X);
             if (day == null || member == null) return;
-            var proto = new WorkItem(new Project(""), "", new Tags(new List<string>()), new Period(day, day), member, TaskState.Active, string.Empty);
+            var proto = WorkItem.CreateProto(new Period(day, day), member);
             _grid.AddNewWorkItem(proto);
         }
 
         public void KeyDown(KeyEventArgs e)
         {
+            var ctrl = (e.Modifiers & Keys.Control) == Keys.Control;
+            var shift = (e.Modifiers & Keys.Shift) == Keys.Shift;
+            
+            if (ctrl && shift && e.KeyCode == Keys.Up)
+            {
+                _editService.ExpandDays(-1);
+                return;
+            }
+            if (ctrl && e.KeyCode == Keys.Up)
+            {
+                _editService.ShiftDays(-1);
+                return;
+            }
+
+            if (ctrl && shift && e.KeyCode == Keys.Down)
+            {
+                _editService.ExpandDays(1);
+                return;
+            }
+            if (ctrl && e.KeyCode == Keys.Down)
+            {
+                _editService.ShiftDays(1);
+                return;
+            }
+            
             if (e.KeyCode == Keys.ControlKey)
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);

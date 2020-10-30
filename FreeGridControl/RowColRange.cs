@@ -25,6 +25,14 @@ namespace FreeGridControl
             }
         }
 
+        public bool Contains(RowIndex r, ColIndex c)
+        {
+            if (c.Value < _leftCol.Value) return false;
+            if (_leftCol.Value + _colCount < c.Value) return false;
+            if (r.Value < _topRow.Value) return false;
+            if (_topRow.Value + _rowCount < r.Value) return false;
+            return true;
+        }
 
 
         public IEnumerable<RowIndex> Rows

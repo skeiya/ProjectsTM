@@ -10,7 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-namespace UnitTestProject1
+namespace UnitTestProject
 {
     [TestClass]
     public class UnitTest1
@@ -90,7 +90,7 @@ namespace UnitTestProject1
                 AppDataSerializeService.WriteToStream(orgApp, writer);
                 writer.Flush();
                 stream.Position = 0;
-                var loadedApp = AppDataSerializeService.LoadFromStream(reader);
+                var loadedApp = AppDataSerializeService.LoadFromStream(reader, false);
                 Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }
@@ -118,7 +118,7 @@ namespace UnitTestProject1
                 "対カブス",
                 Tags.Parse("c|d"),
                 new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
-                gozzila, TaskState.Active, "解説：シーズン　vsカブス"));
+                gozzila, TaskState.Active, "解説：シーズン　vsカブス" + Environment.NewLine + "改行あり"));
 
             orgApp.ColorConditions.Add(new ColorCondition("イチロー", Color.Blue, Color.Black));
 
@@ -133,24 +133,6 @@ namespace UnitTestProject1
             var result = RSFileExportService.MakeTextAllData(appData);
             var expect = "Com\tMem\tProj\t" + Environment.NewLine;
             Assert.AreEqual(expect, result);
-        }
-
-        [TestMethod]
-        public void XML()
-        {
-            using (var stream = new MemoryStream())
-            using (var writer = StreamFactory.CreateWriter(stream))
-            using (var reader = StreamFactory.CreateReader(writer.BaseStream))
-            {
-                var orgApp = BuildDummyData();
-
-                var xmlSerializer1 = new XmlSerializer(typeof(AppData));
-                xmlSerializer1.Serialize(writer, orgApp);
-                writer.Flush();
-                stream.Position = 0;
-                var loadedApp = (AppData)xmlSerializer1.Deserialize(reader);
-                Assert.AreEqual(orgApp, loadedApp);
-            }
         }
 
         [TestMethod]

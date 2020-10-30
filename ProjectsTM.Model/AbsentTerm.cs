@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
@@ -35,6 +35,13 @@ namespace ProjectsTM.Model
             hashCode = hashCode * -1521134295 + Member.GetHashCode();
             hashCode = hashCode * -1521134295 + Period.GetHashCode();
             return hashCode;
+        }
+
+        internal XElement ToXml()
+        {
+            var xml = new XElement(nameof(AbsentTerm));
+            xml.Add(Period.ToXml());
+            return xml;
         }
     }
 }

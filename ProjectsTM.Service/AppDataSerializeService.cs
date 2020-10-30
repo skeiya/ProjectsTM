@@ -1,7 +1,9 @@
 ﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using System.IO;
+using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
@@ -18,27 +20,44 @@ namespace ProjectsTM.Service
 
         public static void WriteToStream(AppData appData, StreamWriter stream)
         {
-            var serializer = new XmlSerializer(typeof(AppData));
-            serializer.Serialize(stream, appData);
+            var xml = appData.ToXml();
+            xml.Save(stream);
         }
 
         public static AppData Deserialize(string fileName)
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader);
+                return LoadFromStream(reader, IsOldFormat(fileName));
             }
         }
 
-        public static AppData LoadFromStream(StreamReader reader)
+        public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
             XmlDocument doc = new XmlDocument();
             doc.PreserveWhitespace = false;
             doc.Load(reader);
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
-                var x = new XmlSerializer(typeof(AppData));
-                return (AppData)x.Deserialize(nodeReader);
+                if (isOld)
+                {
+                    var x = new XmlSerializer(typeof(AppData));
+                    return (AppData)x.Deserialize(nodeReader);
+                }
+                else
+                {
+                    return AppData.FromXml(XElement.Load(nodeReader));
+                }
+            }
+        }
+
+        private static bool IsOldFormat(string path)
+        {
+            using (var reader = StreamFactory.CreateReader(path))
+            {
+                var xml = XElement.Load(reader);
+                var ver = int.Parse(xml.Elements("Version").Single().Value);
+                return ver < 5;
             }
         }
     }
