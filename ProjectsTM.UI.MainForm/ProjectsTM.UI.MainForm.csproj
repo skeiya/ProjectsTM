@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -120,6 +121,12 @@
     <Compile Include="RsExportSelectForm.Designer.cs">
       <DependentUpon>RsExportSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TrendChart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrendChart.Designer.cs">
+      <DependentUpon>TrendChart.cs</DependentUpon>
+    </Compile>
     <Compile Include="VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RsExportSelectForm.resx">
       <DependentUpon>RsExportSelectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrendChart.resx">
+      <DependentUpon>TrendChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VersionForm.resx">
       <DependentUpon>VersionForm.cs</DependentUpon>

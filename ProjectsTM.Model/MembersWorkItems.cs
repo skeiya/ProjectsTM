@@ -47,6 +47,16 @@ namespace ProjectsTM.Model
             return _items.Remove(selected);
         }
 
+        public List<Project> GetProjects()
+        {
+            var result = new List<Project>();
+            foreach(var w in _items)
+            {
+                if (!result.Contains(w.Project)) result.Add(w.Project);
+            }
+            return result;
+        }
+
         public override bool Equals(object obj)
         {
             var items = obj as MembersWorkItems;
