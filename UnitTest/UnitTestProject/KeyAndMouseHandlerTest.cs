@@ -64,7 +64,7 @@ namespace UnitTestProject
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
             /*Assert.AreEqual(viewData.Selected.Unique, i);
 
-            /*service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 39, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 39, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 48, 0));
@@ -73,8 +73,8 @@ namespace UnitTestProject
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 57, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 66, 0));
-            Assert.AreEqual(viewData.Selected.Unique, g);*/
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 66, 0));*/
+            Assert.AreEqual(viewData.Selected.Unique, g);
         }
 
  
