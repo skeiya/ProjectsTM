@@ -62,7 +62,7 @@ namespace UnitTestProject
             PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
-            /*Assert.AreEqual(viewData.Selected.Unique, i);
+            Assert.AreEqual(viewData.Selected.Unique, i);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 39, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
@@ -73,7 +73,7 @@ namespace UnitTestProject
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 57, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 66, 0));*/
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 85, 66, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
         }
 
@@ -84,12 +84,12 @@ namespace UnitTestProject
             PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
-            /*service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0)); // @@@ ここは不要にしたい
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0)); // @@@ ここは不要にしたい
             service.MouseMove(new FreeGridControl.ClientPoint(grid.Raw2Client(new FreeGridControl.RawPoint(50, 39))), grid);
             service.MouseUp();
 
             i.Period = new Period(new CallenderDay(2018, 5, 2), new CallenderDay(2018, 6, 3));
-            Assert.AreEqual(viewData.Selected.Unique, i);*/
+            Assert.AreEqual(viewData.Selected.Unique, i);
         }
     }
 }
