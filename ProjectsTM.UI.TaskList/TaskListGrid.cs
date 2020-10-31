@@ -27,7 +27,9 @@ namespace ProjectsTM.UI.TaskList
         private bool _isReverse = false;
         private RowIndex _lastSelect;
         private WidthAdjuster _widthAdjuster;
-
+        private Point _mouseDownPoint;
+        private readonly int MAX_SORTABLE_DISTANCE = 20;
+        
         public TaskListGrid()
         {
             InitializeComponent();
@@ -61,16 +63,29 @@ namespace ProjectsTM.UI.TaskList
             }
             var rawLocation = Client2Raw(ClientPoint.Create(e));
             var r = Y2Row(rawLocation.Y);
+            var mouseUpPoint = e.Location;
             if (r.Value < FixedRowCount)
             {
-                HandleSortRequest(rawLocation);
+                if(CalcDistace(_mouseDownPoint, mouseUpPoint) <= MAX_SORTABLE_DISTANCE)
+                {
+                    HandleSortRequest(rawLocation);
+                }
                 return;
             }
             SelectItems(r);
         }
 
+        private double CalcDistace(Point downPoint, Point upPoint)
+        {
+            var deltaX = upPoint.X - downPoint.X;
+            var deltaY = upPoint.Y - downPoint.Y;
+
+            return Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+        }
+
         private void TaskListGrid_MouseDown(object sender, MouseEventArgs e)
         {
+            _mouseDownPoint = e.Location;
             var rawPoint = this.Client2Raw(new ClientPoint(e.Location));
             var col = GetAdjustCol(rawPoint);
             if (col == null) return;
