@@ -46,6 +46,7 @@ namespace ProjectsTM.Service
         public void MouseDown(MouseEventArgs e)
         {
             var location = ClientPoint.Create(e);
+            Console.WriteLine("x:" + _grid.FixedSize.Width + ", y:" + _grid.FixedSize.Height);
             if (_grid.IsFixedArea(location)) return;
             var curOnRaw = _grid.Client2Raw(location);
 
