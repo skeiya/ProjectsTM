@@ -61,19 +61,19 @@ namespace UnitTestProject
         {
             PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 30, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 40, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 39, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 49, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 48, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 58, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 57, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 67, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 66, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 95, 76, 0));
             Assert.AreEqual(viewData.Selected.Unique, g);
         }
 
@@ -83,8 +83,8 @@ namespace UnitTestProject
         {
             PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
 
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 30, 0));
-            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 30, 0)); // @@@ ここは不要にしたい
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 40, 0));
+            service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 60, 40, 0)); // @@@ ここは不要にしたい
             service.MouseMove(new FreeGridControl.ClientPoint(grid.Raw2Client(new FreeGridControl.RawPoint(60, 39))), grid);
             service.MouseUp();
 
