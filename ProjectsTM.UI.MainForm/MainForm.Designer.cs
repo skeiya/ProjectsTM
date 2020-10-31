@@ -303,6 +303,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemMySetting.Name = "ToolStripMenuItemMySetting";
             this.ToolStripMenuItemMySetting.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemMySetting.Text = "個人設定";
+            this.ToolStripMenuItemMySetting.Click += new System.EventHandler(this.ToolStripMenuItemMySetting_Click);
             // 
             // toolStripComboBoxFilter
             // 
@@ -378,7 +379,7 @@ namespace ProjectsTM.UI.MainForm
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
             this.workItemGrid1.TabIndex = 12;
             this.workItemGrid1.VOffset = 0;
-            //
+            // 
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";

@@ -458,5 +458,10 @@ namespace ProjectsTM.UI.MainForm
         {
             Close();
         }
+
+        private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
+        {
+            //個人設定フォームを開く
+        }
     }
 }
