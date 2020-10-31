@@ -57,6 +57,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemMileStone = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemMySetting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxFilter = new System.Windows.Forms.ToolStripComboBox();
             this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemHowToUse = new System.Windows.Forms.ToolStripMenuItem();
@@ -270,7 +271,8 @@ namespace ProjectsTM.UI.MainForm
             this.管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember,
-            this.ToolStripMenuItemMileStone});
+            this.ToolStripMenuItemMileStone,
+            this.ToolStripMenuItemMySetting});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
             this.管理ToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
             this.管理ToolStripMenuItem.Text = "管理(&M)";
@@ -295,6 +297,12 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemMileStone.Text = "マイルストーン(&S)";
             this.ToolStripMenuItemMileStone.Click += new System.EventHandler(this.ToolStripMenuItemMileStone_Click);
+            // 
+            // ToolStripMenuItemMySetting
+            // 
+            this.ToolStripMenuItemMySetting.Name = "ToolStripMenuItemMySetting";
+            this.ToolStripMenuItemMySetting.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMySetting.Text = "個人設定";
             // 
             // toolStripComboBoxFilter
             // 
@@ -370,7 +378,7 @@ namespace ProjectsTM.UI.MainForm
             this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
             this.workItemGrid1.TabIndex = 12;
             this.workItemGrid1.VOffset = 0;
-            // 
+            //
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
@@ -437,6 +445,7 @@ namespace ProjectsTM.UI.MainForm
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemVersion;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTaskList;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
     }
 }
 
