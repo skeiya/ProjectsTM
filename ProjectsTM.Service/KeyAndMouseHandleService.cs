@@ -47,7 +47,6 @@ namespace ProjectsTM.Service
         {
             var location = ClientPoint.Create(e);
             Console.WriteLine("location:" + location.X);
-            Console.WriteLine("FixedWidth:" + _grid.FixedSize.Width);
             if (_grid.IsFixedArea(location)) return;
             var curOnRaw = _grid.Client2Raw(location);
             Console.WriteLine("curOnRaw:" + curOnRaw.X);
