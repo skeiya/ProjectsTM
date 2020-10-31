@@ -18,7 +18,7 @@ namespace ProjectsTM.UI.MainForm
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
         private DrawService _drawService = new DrawService();
-        private KeyAndMouseHandleService _keyAndMouseHandleService;
+        public KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
 
         public WorkItemEditService EditService => _editService;
