@@ -1,14 +1,14 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.UI.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class TrendChart : Form
+    public partial class TrendChart : BaseForm
     {
         private readonly WorkItems _workItems;
         private readonly Callender _callender;
