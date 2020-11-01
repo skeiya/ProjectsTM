@@ -25,6 +25,7 @@ namespace ProjectsTM.UI.MainForm
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private Timer _1minutTimer = new Timer();
+        private string _userName = "未設定";
 
         public MainForm()
         {
@@ -174,6 +175,7 @@ namespace ProjectsTM.UI.MainForm
                 _patternHistory = setting.PatternHistory;
                 OpenAppData(FileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
+                _userName = setting.UserName;
             }
             catch
             {
@@ -198,6 +200,7 @@ namespace ProjectsTM.UI.MainForm
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
+                UserName = _userName
             };
             UserSettingUIService.Save(setting);
             FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");
@@ -461,7 +464,11 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
         {
-            //個人設定フォームを開く
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _userName))
+            {
+                dlg.ShowDialog(this);
+                _userName = dlg.Selected;
+            }
         }
     }
 }
