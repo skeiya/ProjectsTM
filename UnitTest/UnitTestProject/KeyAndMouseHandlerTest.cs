@@ -14,17 +14,6 @@ namespace UnitTestProject
     {
         private static void PrepareCommon(out WorkItem i, out WorkItem g, out ViewData viewData, out KeyAndMouseHandleService service, out WorkItemGrid grid)
         {
-            /* グリッドの列幅・行高
-              24 12 12 35 35
-            9
-            9
-            9
-            9           i
-            9           i
-            9             g
-            9             g
-            9             g
-            */
             var appData = new AppData();
             var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
             var gozzila = new Member("松井", "秀喜", "ヤンキース");
@@ -49,6 +38,32 @@ namespace UnitTestProject
             viewData = new ViewData(appData, new UndoService());
             grid = new WorkItemGrid();
             grid.Initialize(viewData);
+
+            /* グリッドの列幅・行高
+              24 12 12 35 35
+            9
+            9
+            9
+            9           i
+            9           i
+            9             g
+            9             g
+            9             g
+            */
+            grid.ColWidths[0] = 24;
+            grid.ColWidths[1] = 12;
+            grid.ColWidths[2] = 12;
+            grid.ColWidths[3] = 35;
+            grid.ColWidths[4] = 35;
+            grid.RowHeights[0] = 9;
+            grid.RowHeights[1] = 9;
+            grid.RowHeights[2] = 9;
+            grid.RowHeights[3] = 9;
+            grid.RowHeights[4] = 9;
+            grid.RowHeights[5] = 9;
+            grid.RowHeights[6] = 9;
+            grid.RowHeights[7] = 9;
+
             var dragService = new WorkItemDragService();
             var drawService = new DrawService();
             drawService.Initialize(viewData, grid, dragService.IsActive, new Font(FontFamily.GenericSansSerif, 8));
