@@ -58,14 +58,14 @@ namespace ProjectsTM.UI.MainForm
             var accumulation = 0;
             foreach (var pair in _manDays.OrderBy(pair => pair.Key))
             {
-                var dateTime = ParseDateTime(pair.Key);
+                var dateTime = Callender2DataTime(pair.Key);
                 if (dateTime == _invalidDate) continue;
                 accumulation += pair.Value;
                 chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), accumulation);
             }
         }
 
-        private DateTime ParseDateTime(CallenderDay callenderDay)
+        private DateTime Callender2DataTime(CallenderDay callenderDay)
         {
             try
             {
