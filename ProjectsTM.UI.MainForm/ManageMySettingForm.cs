@@ -1,9 +1,10 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.UI.Common;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
-    public partial class ManageMySettingForm : Form
+    public partial class ManageMySettingForm : BaseForm
     {
         private readonly Members _members;
         public string Selected => comboBox1.SelectedItem.ToString();
@@ -23,7 +24,7 @@ namespace ProjectsTM.UI.MainForm
             foreach(var m in _members)
             {
                 comboBox1.Items.Add(m.ToString());
-                if (!userName.Equals(m.ToString())) return;
+                if (!userName.Equals(m.ToString())) continue;
                 comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
                 found = true;
             }
