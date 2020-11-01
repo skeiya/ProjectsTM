@@ -36,7 +36,7 @@ namespace ProjectsTM.UI.MainForm
         public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid() { }
 
-        internal void Initialize(ViewData viewData)
+        public void Initialize(ViewData viewData)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
