@@ -39,7 +39,7 @@ namespace ProjectsTM.UI.MainForm
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (a, b) => workItemGrid1.MoveToToday();
+            this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
             FileIOService.FileWatchChanged += _fileIOService_FileChanged;
             FileIOService.FileSaved += _fileIOService_FileSaved;
             FileIOService.FileOpened += FileIOService_FileOpened;
