@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
@@ -76,6 +77,15 @@ namespace ProjectsTM.Service
         {
             if (wi == null) { this.Hide(); return; }
             string s = CreateStrForTooltip(wi, days);
+            if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
+        }
+
+        public void Update(CallenderDay day, IEnumerable<MileStone> ms)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(day.ToString());
+            foreach (var m in ms) sb.AppendLine(m.Name);
+            string s = sb.ToString();
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 

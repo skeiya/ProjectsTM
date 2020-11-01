@@ -167,10 +167,19 @@ namespace ProjectsTM.Service
         private void UpdateHoveringText(ClientPoint location)
         {
             if (_workItemDragService.IsActive()) return;
-            if (_grid.IsFixedArea(location)) { _toolTipService.Hide(); return; }
+            if (_grid.IsFixedArea(location)) { UpdateHoveringMileStoneText(location); return; }
             RawPoint cur = _grid.Client2Raw(location);
             var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi);
+        }
+
+        private void UpdateHoveringMileStoneText(ClientPoint location)
+        {
+            var day = _grid.Y2Day(_grid.Client2Raw(location).Y);
+            if (day == null) { _toolTipService.Hide(); return; }
+            var ms = _viewData.Original.MileStones.Where(m => day.Equals(m.Day));
+            if (ms.Count() == 0) { _toolTipService.Hide(); return; }
+            _toolTipService.Update(day, ms);
         }
 
         public void DoubleClick(MouseEventArgs e)
