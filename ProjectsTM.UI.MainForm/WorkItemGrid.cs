@@ -68,12 +68,19 @@ namespace ProjectsTM.UI.MainForm
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            var shift = (keyData & Keys.Shift) == Keys.Shift;
-            var tab = (keyData & Keys.Tab) == Keys.Tab;
+            var tab = keyData == Keys.Tab;
+            var shifttab = keyData == (Keys.Shift | Keys.Tab);
 
             if (tab)
             {
-                if (_viewData.SelectNextWorkItem(shift))
+                if (_viewData.SelectNextWorkItem(false))
+                {
+                    return true;
+                }
+            }
+            if (shifttab)
+            {
+                if (_viewData.SelectNextWorkItem(true))
                 {
                     return true;
                 }

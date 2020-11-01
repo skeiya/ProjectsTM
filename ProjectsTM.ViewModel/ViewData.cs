@@ -195,6 +195,7 @@ namespace ProjectsTM.ViewModel
             if (Selected == null)
             {
                 var all = GetFilteredWorkItems().ToList();
+                all.Sort();
                 if (prev) all.Reverse();
 
                 Selected = new WorkItems(all.FirstOrDefault());
@@ -203,6 +204,7 @@ namespace ProjectsTM.ViewModel
             if (Selected.Count() == 1)
             {
                 var all = GetFilteredWorkItems().ToList();
+                all.Sort();
                 if (prev) all.Reverse();
 
                 var find = all.FindIndex(wi => Selected.Unique.Equals(wi));
