@@ -23,13 +23,11 @@ namespace ProjectsTM.UI.MainForm
             foreach(var m in _members)
             {
                 comboBox1.Items.Add(m.ToString());
-                if (userName.Equals(m.ToString()))
-                {
-                    comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
-                    found = true;
-                }
+                if (!userName.Equals(m.ToString())) return;
+                comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
+                found = true;
             }
-            if(!found) comboBox1.SelectedIndex = 0;
+            if (!found) comboBox1.SelectedIndex = 0;
         }
     }
 }
