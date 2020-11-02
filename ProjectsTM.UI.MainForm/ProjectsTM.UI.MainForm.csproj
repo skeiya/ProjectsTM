@@ -101,6 +101,12 @@
     <Compile Include="ManageMileStoneForm.Designer.cs">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManageMySettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManageMySettingForm.Designer.cs">
+      <DependentUpon>ManageMySettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManageMileStoneForm.resx">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageMySettingForm.resx">
+      <DependentUpon>ManageMySettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectSelectForm.resx">
       <DependentUpon>ProjectSelectForm.cs</DependentUpon>
