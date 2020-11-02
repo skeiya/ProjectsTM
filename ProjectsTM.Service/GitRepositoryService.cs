@@ -47,6 +47,7 @@ namespace ProjectsTM.Service
 
         private static string ParseCommitId(string str)
         {
+            if (string.IsNullOrEmpty(str)) return string.Empty;
             var matche = Regex.Match(str, @"^commit ........................................");
             if (!matche.Success) return string.Empty;
             return matche.Value.Replace("commit ", "");
@@ -90,10 +91,12 @@ namespace ProjectsTM.Service
 
         public static string GetOldFileSomeMonthsAgo(string filePath, int months)
         {
+            var oldFilePath = Path.Combine(AppConfigDir, Path.GetFileName(filePath));
+            if (File.Exists(oldFilePath)) File.Delete(oldFilePath);
+
             var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
             var text = GitCmdRepository.ReadOldFile(filePath, commitId);
-            if (text == string.Empty) return string.Empty;
-            var oldFilePath = Path.Combine(AppConfigDir, Path.GetFileName(filePath));
+            if (string.IsNullOrEmpty(text)) return string.Empty;
             return SaveFile(text, oldFilePath);
         }
 
