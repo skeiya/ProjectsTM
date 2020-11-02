@@ -470,5 +470,18 @@ namespace ProjectsTM.UI.MainForm
                 _userName = dlg.Selected;
             }
         }
+
+        private void ToolStripMenuItemTrendChart_Click(object sender, EventArgs e)
+        {
+            ShowTrendChartForm();
+        }
+
+        private void ShowTrendChartForm()
+        {
+            using (var dlg = new TrendChart(_viewData.Original.WorkItems, _viewData.Original.Callender))
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }
