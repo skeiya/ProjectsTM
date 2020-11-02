@@ -1,10 +1,14 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjectsTM.Service
 {
     public static class GitRepositoryService
     {
+        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
+
         public static Task<bool> HasUnmergedRemoteCommit(string filePath)
         {
             Task<bool> task = Task.Run(() =>
@@ -39,6 +43,13 @@ namespace ProjectsTM.Service
         {
             var matches = Regex.Matches(str, @"^commit ........................................");
             return matches.Count;
+        }
+
+        private static string ParseCommitId(string str)
+        {
+            var matche = Regex.Match(str, @"^commit ........................................");
+            if (!matche.Success) return string.Empty;
+            return matche.Value.Replace("commit ", "");
         }
 
         public static bool TryAutoPull(string filePath)
@@ -76,5 +87,26 @@ namespace ProjectsTM.Service
         {
             return string.IsNullOrEmpty(repo.Status());
         }
+
+        public static string GetOldFileSomeMonthsAgo(string filePath, int months)
+        {
+            var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
+            var text = GitCmdRepository.ReadOldFile(filePath, commitId);
+            if (text == string.Empty) return string.Empty;
+            var oldFilePath = Path.Combine(AppConfigDir, Path.GetFileName(filePath));
+            return SaveFile(text, oldFilePath);
+        }
+
+        private static string SaveFile(string text, string filePath)
+        {
+            try
+            {
+                File.WriteAllText(filePath, text);
+            }
+            catch { return string.Empty; }
+            return filePath;
+        }
+
+
     }
 }
