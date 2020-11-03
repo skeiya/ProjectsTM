@@ -11,6 +11,12 @@ namespace ProjectsTM.Model
 
         public AbsentTerms OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new AbsentTerms();
 
+        public AbsentTerms GetAbsentTerms(Member m)
+        {
+            if (!_items.TryGetValue(m, out AbsentTerms value)) return null;
+            return value;
+        }
+
         // XMLシリアライズ用
         public void Add(AbsentTerm a)
         {
