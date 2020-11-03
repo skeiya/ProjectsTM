@@ -71,6 +71,7 @@ namespace ProjectsTM.Service
             DrawCalender(font, g);
             DrawMember(font, g);
             DrawEdgeWorkItems(font, g, isAllDraw);
+            DrawCursorPosition(g, font);
             DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
             DrawSelectedWorkItemBound(g, font);
             DrawRangeSelectBound(g);
@@ -101,27 +102,29 @@ namespace ProjectsTM.Service
             var range = _grid.VisibleRowColRange;
             var members = _viewData.GetFilteredMembers();
 
-            var curOnRaw = _grid.Global2Raw(Cursor.Position);
-            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
-
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, GetRowCount(range, c, isAllDraw)))
                 {
-                    if (wi.Equals(curWi))
-                    {
-                        DrawCursorWorkItem(font, g, members, wi);
-                    }
-                    else
-                    {
-                        DrawWorkItemClient(wi, Pens.Black, font, g, members);
-                    }
+                    DrawWorkItemClient(wi, Pens.Black, font, g, members);
                 }
             }
+        }
+
+        private void DrawCursorPosition(Graphics g, Font font)
+        {
+            var curOnRaw = _grid.Global2Raw(Cursor.Position);
+            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
+
+            var members = _viewData.GetFilteredMembers();
             if (curWi == null)
             {
                 DrawCursorBackgroundRectangle(g, curOnRaw);
+            }
+            else
+            {
+                DrawCursorWorkItem(font, g, members, curWi);
             }
         }
 
