@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,16 @@ namespace ProjectsTM.UI.MainForm
     {
         private readonly WorkItems _workItems;
         private readonly Callender _callender;
+        private readonly string _filePath;
 
-        private Dictionary<CallenderDay, int> _manDays;
+        private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(WorkItems workItems, Callender callender)
+        public TrendChart(WorkItems workItems, Callender callender, string filePath)
         {
             _workItems = workItems;
             _callender = callender;
+            _filePath = filePath;
             InitializeComponent();
             InitCombo();
             InitChart();
@@ -55,13 +58,13 @@ namespace ProjectsTM.UI.MainForm
 
         private void DrawChart(string legend)
         {
-            var accumulation = 0;
+            var manDaysPoint = 0;
             foreach (var pair in _manDays.OrderBy(pair => pair.Key))
             {
-                var dateTime = Callender2DataTime(pair.Key);
-                if (dateTime == _invalidDate) continue;
-                accumulation += pair.Value;
-                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), accumulation);
+                var dateTime = pair.Key;
+                if (checkBox1.Checked) manDaysPoint = pair.Value;
+                else manDaysPoint += pair.Value;
+                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint);
             }
         }
 
@@ -79,7 +82,39 @@ namespace ProjectsTM.UI.MainForm
 
         private void UpdateManDays(Project proj)
         {
-            _manDays = new Dictionary<CallenderDay, int>();
+            _manDays = new Dictionary<DateTime, int>();
+            if (checkBox1.Checked) SetTotalTransition(proj);
+            else SetConsumptionTransition(proj);
+        }
+
+        private void SetTotalTransition(Project proj)
+        {
+            for (int monthsAgo = 0; monthsAgo < 12; monthsAgo++)
+            {
+                var workItems = GetOldWorkItems(monthsAgo, proj);
+                if (!workItems.Any()) return;
+                var total = CalcTotal(workItems);
+                _manDays.Add(DateTime.Today.AddMonths(-monthsAgo), total);
+            }
+        }
+
+        private int CalcTotal(IEnumerable<WorkItem> ws)
+        {
+            var total = 0;
+            foreach (var w in ws) total += _callender.GetPediodDays(w.Period).Count;          
+            return total;
+        }
+
+        private IEnumerable<WorkItem> GetOldWorkItems(int monthsAgo, Project proj)
+        {
+            var oldFile = GitRepositoryService.GetOldFileSomeMonthsAgo(_filePath, monthsAgo);
+            if (string.IsNullOrEmpty(oldFile)) return new List<WorkItem>();
+            var oldAppData = AppDataSerializeService.Deserialize(oldFile);
+            return oldAppData.WorkItems.Where(w => w.Project.Equals(proj));
+        }
+
+        private void SetConsumptionTransition(Project proj)
+        {
             foreach (var w in _workItems)
             {
                 if (!w.Project.Equals(proj)) continue;
@@ -92,8 +127,10 @@ namespace ProjectsTM.UI.MainForm
         {
             foreach(var d in days)
             {
-                if (_manDays.TryGetValue(d, out int value)) _manDays[d]++;
-                else _manDays.Add(d, 1);
+                var dateTime = Callender2DataTime(d);
+                if (dateTime == _invalidDate) continue;
+                if (_manDays.TryGetValue(dateTime, out int value)) _manDays[dateTime]++;
+                else _manDays.Add(dateTime, 1);
             }
         }
 
@@ -109,6 +146,11 @@ namespace ProjectsTM.UI.MainForm
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             InitChart();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked) InitChart();
         }
     }
 }
