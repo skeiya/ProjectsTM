@@ -89,11 +89,9 @@ namespace ProjectsTM.Service
                     foreach (var r in range.Rows)
                     {
                         var d = _grid.Row2Day(r);
-                        if (a.Period.Contains(d))
-                        {
-                            var rect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false)).Value.Value;
-                            g.FillRectangle(Brushes.LightGray, rect);
-                        }
+                        if (!a.Period.Contains(d)) continue;
+                        var rect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false)).Value.Value;
+                        g.FillRectangle(Brushes.LightGray, rect);
                     }
                 }
             }
