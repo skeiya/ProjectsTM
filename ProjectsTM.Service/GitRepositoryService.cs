@@ -91,7 +91,7 @@ namespace ProjectsTM.Service
 
         public static string GetOldFileSomeMonthsAgo(string filePath, int months)
         {
-            var oldFilePath = Path.Combine(AppConfigDir, Path.GetFileName(filePath));
+            var oldFilePath = Path.Combine(AppConfigDir, "oldFile");
             if (File.Exists(oldFilePath)) File.Delete(oldFilePath);
 
             var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));

@@ -4,6 +4,7 @@ using ProjectsTM.UI.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -110,6 +111,7 @@ namespace ProjectsTM.UI.MainForm
             var oldFile = GitRepositoryService.GetOldFileSomeMonthsAgo(_filePath, monthsAgo);
             if (string.IsNullOrEmpty(oldFile)) return new List<WorkItem>();
             var oldAppData = AppDataSerializeService.Deserialize(oldFile);
+            File.Delete(oldFile);
             return oldAppData.WorkItems.Where(w => w.Project.Equals(proj));
         }
 
