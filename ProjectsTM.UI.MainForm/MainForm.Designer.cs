@@ -57,6 +57,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemWorkingDas = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemMileStone = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemMySetting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBoxFilter = new System.Windows.Forms.ToolStripComboBox();
             this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemHowToUse = new System.Windows.Forms.ToolStripMenuItem();
@@ -272,6 +273,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemWorkingDas,
             this.ToolStripMenuItemManageMember,
             this.ToolStripMenuItemMileStone,
+            this.ToolStripMenuItemMySetting,
             this.ToolStripMenuItemTrendChart});
             this.管理ToolStripMenuItem.Name = "管理ToolStripMenuItem";
             this.管理ToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
@@ -297,6 +299,13 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemMileStone.Text = "マイルストーン(&S)";
             this.ToolStripMenuItemMileStone.Click += new System.EventHandler(this.ToolStripMenuItemMileStone_Click);
+            // 
+            // ToolStripMenuItemMySetting
+            // 
+            this.ToolStripMenuItemMySetting.Name = "ToolStripMenuItemMySetting";
+            this.ToolStripMenuItemMySetting.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMySetting.Text = "個人設定";
+            this.ToolStripMenuItemMySetting.Click += new System.EventHandler(this.ToolStripMenuItemMySetting_Click);
             // 
             // toolStripComboBoxFilter
             // 
@@ -446,6 +455,7 @@ namespace ProjectsTM.UI.MainForm
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemVersion;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTaskList;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
     }
 }

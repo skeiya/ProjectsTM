@@ -11,5 +11,6 @@ namespace ProjectsTM.ViewModel
         public string FilePath { get; set; }
         public Detail Detail { set; get; } = new Detail();
         public PatternHistory PatternHistory { set; get; } = new PatternHistory();
+        public string UserName { set; get; } = "未設定";
     }
 }

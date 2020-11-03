@@ -370,9 +370,21 @@ namespace ProjectsTM.UI.MainForm
         {
             var wi = GetUniqueSelect();
             var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
+            MoveToTodayAndMember(m);
+        }
+
+        private void MoveToTodayAndMember(Member m)
+        {
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
+        }
+
+        internal void MoveToTodayMe(string userName)
+        {
+            var user = _viewData.GetFilteredMembers().FirstOrDefault(m => m.NaturalString.Equals(userName));
+            if (user == null) return;
+            MoveToTodayAndMember(user);
         }
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
