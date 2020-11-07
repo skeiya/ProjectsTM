@@ -61,7 +61,7 @@ namespace ProjectsTM.Model
             foreach (var a in xml.Elements("Info"))
             {
                 var member = Member.Parse(a.Attribute("Name").Value);
-                foreach (var t in a.Elements(nameof(AbsentTerms)).Single().Elements(nameof(AbsentTerm)))
+                foreach (var t in a.Element(nameof(AbsentTerms)).Elements(nameof(AbsentTerm)))
                 {
                     var period = Period.FromXml(t);
                     result.Add(new AbsentTerm(member, period));

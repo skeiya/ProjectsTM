@@ -62,10 +62,10 @@ namespace ProjectsTM.Model
             var result = new MileStone();
             result.Name = m.Attribute("Name").Value;
             result.Project = Project.FromXml(m);
-            result.Day = CallenderDay.FromXml(m.Elements("Date").Single());
-            result.ColorText = m.Elements("Color").Single().Value;
-            result.MileStoneFilter = new MileStoneFilter(m.Elements(nameof(MileStoneFilterName)).Single().Value);
-            result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Elements(nameof(State)).Single().Value);
+            result.Day = CallenderDay.FromXml(m.Element("Date"));
+            result.ColorText = m.Element("Color").Value;
+            result.MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value);
+            result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value);
             return result;
         }
 

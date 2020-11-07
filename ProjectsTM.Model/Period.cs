@@ -80,9 +80,9 @@ namespace ProjectsTM.Model
         internal static Period FromXml(XElement w)
         {
             var result = new Period();
-            var periodElement = w.Elements(nameof(Period)).Single();
-            result.From = CallenderDay.Parse(periodElement.Elements(nameof(From)).Single().Value);
-            result.To = CallenderDay.Parse(periodElement.Elements(nameof(To)).Single().Value);
+            var periodElement = w.Element(nameof(Period));
+            result.From = CallenderDay.Parse(periodElement.Element(nameof(From)).Value);
+            result.To = CallenderDay.Parse(periodElement.Element(nameof(To)).Value);
             return result;
         }
     }

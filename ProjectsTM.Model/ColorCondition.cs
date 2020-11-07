@@ -57,8 +57,8 @@ namespace ProjectsTM.Model
         internal static ColorCondition FromXml(XElement c)
         {
             var result = new ColorCondition();
-            result.Pattern = c.Elements(nameof(Pattern)).Single().Value;
-            result.ColorText = c.Elements(nameof(ColorText)).Single().Value;
+            result.Pattern = c.Element(nameof(Pattern)).Value;
+            result.ColorText = c.Element(nameof(ColorText)).Value;
             return result;
         }
 

@@ -64,7 +64,7 @@ namespace ProjectsTM.Model
 
         internal static Tags FromXml(XElement w)
         {
-            return Parse(w.Elements(nameof(Tags)).Single().Value);
+            return Parse(w.Element(nameof(Tags)).Value);
         }
     }
 }

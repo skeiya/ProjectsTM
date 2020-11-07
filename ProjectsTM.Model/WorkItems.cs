@@ -54,15 +54,15 @@ namespace ProjectsTM.Model
             foreach (var m in xml.Elements("WorkItemsOfEachMember"))
             {
                 var assign = Member.Parse(m.Attribute("Name").Value);
-                foreach (var w in m.Elements(nameof(MembersWorkItems)).Single()
+                foreach (var w in m.Element(nameof(MembersWorkItems))
                     .Elements(nameof(WorkItem)))
                 {
                     var taskName = w.Attribute("Name").Value;
                     var project = Project.FromXml(w);
                     var period = Period.FromXml(w);
                     var tags = Tags.FromXml(w);
-                    var state = (TaskState)Enum.Parse(typeof(TaskState), w.Elements("State").Single().Value);
-                    var description = w.Elements("Description").Single().Value;
+                    var state = (TaskState)Enum.Parse(typeof(TaskState), w.Element("State").Value);
+                    var description = w.Element("Description").Value;
                     result.Add(new WorkItem(project, taskName, tags, period, assign, state, description));
                 }
             }
