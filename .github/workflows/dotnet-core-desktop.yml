@@ -29,7 +29,7 @@ jobs:
         nuget-version: latest
 
     - name: Setup VSTest.console.exe
-      uses: darenm/Setup-VSTest@v1
+      uses: darenm/Setup-VSTest@v1.1
     
     - name: Download inno
       shell: powershell
