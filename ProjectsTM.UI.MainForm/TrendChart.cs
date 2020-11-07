@@ -59,13 +59,13 @@ namespace ProjectsTM.UI.MainForm
 
         private void DrawChart(string legend)
         {
-            var manDaysPoint = 0;
+            var manDaysPoint = 0.0;
             foreach (var pair in _manDays.OrderBy(pair => pair.Key))
             {
                 var dateTime = pair.Key;
                 if (checkBox1.Checked) manDaysPoint = pair.Value;
                 else manDaysPoint += pair.Value;
-                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint);
+                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint/20);
             }
         }
 
@@ -143,6 +143,7 @@ namespace ProjectsTM.UI.MainForm
             chart1.Series[legend].MarkerStyle = MarkerStyle.Circle;
             chart1.Series[legend].MarkerSize = 10;
             chart1.Series[legend].XValueType = ChartValueType.Date;
+            chart1.ChartAreas["ChartArea1"].AxisY.Title = checkBox1.Checked ? "過去の最終到達予想工数[人月]" : "工数消費ペース[人月]";
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
