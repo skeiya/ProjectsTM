@@ -7,6 +7,8 @@ namespace ProjectsTM.UI.MainForm
 {
     public partial class TrendChartBackgroundWorkForm : Form
     {
+        private bool BackgroudCancelled { get; set; } = false;
+
         public TrendChartBackgroundWorkForm(Action<Project, BackgroundWorker, DoWorkEventArgs> CollectWorkItems, Project proj)
         {
             InitializeComponent();
@@ -19,6 +21,7 @@ namespace ProjectsTM.UI.MainForm
         private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled) MessageBox.Show("キャンセルされました");
+            BackgroudCancelled = true;
             this.Close();
         }
 
@@ -38,7 +41,11 @@ namespace ProjectsTM.UI.MainForm
 
         private void TrendChartBackgroundWorkForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            backgroundWorker1.CancelAsync();
+            if (!BackgroudCancelled)
+            {
+                backgroundWorker1.CancelAsync();
+                e.Cancel = true; // バックグランドキャンセルしてからフォームキャンセルしないと、途中状態が描画されることがある
+            }
         }
     }
 }
