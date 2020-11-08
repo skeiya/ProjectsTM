@@ -84,23 +84,30 @@ namespace ProjectsTM.UI.MainForm
         private void UpdateManDays(Project proj)
         {
             _manDays = new Dictionary<DateTime, int>();
-            Action<Project, BackgroundWorker> CollectWorkItems;
+            Action<Project, BackgroundWorker, DoWorkEventArgs> CollectWorkItems;
             if (checkBox1.Checked) CollectWorkItems = CollectOldTotalWorkItems;
             else CollectWorkItems = CollectConsumedWorkItems;
             using (var dlg = new TrendChartBackgroundWorkForm(CollectWorkItems, proj)) dlg.ShowDialog();
         }
 
-        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker woker)
+        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker woker, DoWorkEventArgs e)
         {
             var monthsCount = 12.0;
             for (int monthsAgo = 0; monthsAgo < monthsCount; monthsAgo++)
             {
+                if (woker.CancellationPending) { CancellCollectWorkItems(e); return; }
                 woker.ReportProgress((int)(monthsAgo / monthsCount * 100));
                 var workItems = GetOldWorkItems(monthsAgo, proj);
                 if (!workItems.Any()) return;
                 var total = CalcTotal(workItems);
                 _manDays.Add(DateTime.Today.AddMonths(-monthsAgo), total);
             }
+        }
+
+        private void CancellCollectWorkItems(DoWorkEventArgs e)
+        {
+            _manDays = new Dictionary<DateTime, int>();
+            e.Cancel = true; 
         }
 
         private int CalcTotal(IEnumerable<WorkItem> ws)
@@ -119,11 +126,12 @@ namespace ProjectsTM.UI.MainForm
             return oldAppData.WorkItems.Where(w => w.Project.Equals(proj));
         }
 
-        private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker)
+        private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
             var counter = 0.0;
             foreach (var w in _workItems)
             {
+                if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
                 counter++;
                 worker?.ReportProgress((int)(counter / _workItems.Count() * 100));
                 if (!w.Project.Equals(proj)) continue;

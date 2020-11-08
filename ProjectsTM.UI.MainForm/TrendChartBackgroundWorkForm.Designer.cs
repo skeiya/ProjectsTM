@@ -64,6 +64,7 @@
             this.Controls.Add(this.label1);
             this.Name = "TrendChartBackgroundWorkForm";
             this.Text = "総工数を集計中";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TrendChartBackgroundWorkForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
