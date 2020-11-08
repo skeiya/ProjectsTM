@@ -27,7 +27,7 @@ namespace ProjectsTM.UI.MainForm
             _filePath = filePath;
             InitializeComponent();
             InitCombo();
-            InitChart();
+            if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;
         }
 
         private void InitCombo()
@@ -39,7 +39,6 @@ namespace ProjectsTM.UI.MainForm
                     if (!comboBox1.Items.Contains(proj)) comboBox1.Items.Add(proj);
                 }
             }
-            if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;
         }
 
         private void InitChart()
