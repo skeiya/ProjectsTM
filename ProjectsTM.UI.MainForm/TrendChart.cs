@@ -90,13 +90,13 @@ namespace ProjectsTM.UI.MainForm
             using (var dlg = new TrendChartBackgroundWorkForm(CollectWorkItems, proj)) dlg.ShowDialog();
         }
 
-        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker woker, DoWorkEventArgs e)
+        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
             var monthsCount = 12.0;
             for (int monthsAgo = 0; monthsAgo < monthsCount; monthsAgo++)
             {
-                if (woker.CancellationPending) { CancellCollectWorkItems(e); return; }
-                woker.ReportProgress((int)(monthsAgo / monthsCount * 100));
+                if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
+                worker.ReportProgress((int)(monthsAgo / monthsCount * 100));
                 var workItems = GetOldWorkItems(monthsAgo, proj);
                 if (!workItems.Any()) return;
                 var total = CalcTotal(workItems);
