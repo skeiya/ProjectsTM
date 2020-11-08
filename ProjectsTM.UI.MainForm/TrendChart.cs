@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.ComponentModel;
 
 namespace ProjectsTM.UI.MainForm
 {
@@ -84,14 +85,18 @@ namespace ProjectsTM.UI.MainForm
         private void UpdateManDays(Project proj)
         {
             _manDays = new Dictionary<DateTime, int>();
-            if (checkBox1.Checked) SetTotalTransition(proj);
-            else SetConsumptionTransition(proj);
+            Action<Project, BackgroundWorker> CollectWorkItems;
+            if (checkBox1.Checked) CollectWorkItems = CollectOldTotalWorkItems;
+            else CollectWorkItems = CollectConsumedWorkItems;
+            using (var dlg = new TrendChartBackgroundWorkForm(CollectWorkItems, proj)) dlg.ShowDialog();
         }
 
-        private void SetTotalTransition(Project proj)
+        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker woker)
         {
-            for (int monthsAgo = 0; monthsAgo < 12; monthsAgo++)
+            var monthsCount = 12.0;
+            for (int monthsAgo = 0; monthsAgo < monthsCount; monthsAgo++)
             {
+                woker.ReportProgress((int)(monthsAgo / monthsCount * 100));
                 var workItems = GetOldWorkItems(monthsAgo, proj);
                 if (!workItems.Any()) return;
                 var total = CalcTotal(workItems);
@@ -102,7 +107,7 @@ namespace ProjectsTM.UI.MainForm
         private int CalcTotal(IEnumerable<WorkItem> ws)
         {
             var total = 0;
-            foreach (var w in ws) total += _callender.GetPediodDays(w.Period).Count;          
+            foreach (var w in ws) total += _callender.GetPediodDays(w.Period).Count;
             return total;
         }
 
@@ -115,10 +120,13 @@ namespace ProjectsTM.UI.MainForm
             return oldAppData.WorkItems.Where(w => w.Project.Equals(proj));
         }
 
-        private void SetConsumptionTransition(Project proj)
+        private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker)
         {
+            var counter = 0.0;
             foreach (var w in _workItems)
             {
+                counter++;
+                worker?.ReportProgress((int)(counter / _workItems.Count() * 100));
                 if (!w.Project.Equals(proj)) continue;
                 var days = _callender.GetPediodDays(w.Period);
                 AddToManDays(days);
