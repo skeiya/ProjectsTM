@@ -65,7 +65,7 @@ namespace ProjectsTM.UI.MainForm
                 var dateTime = pair.Key;
                 if (checkBox1.Checked) manDaysPoint = pair.Value;
                 else manDaysPoint += pair.Value;
-                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint/20);
+                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint / 20);
             }
         }
 
@@ -134,7 +134,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void AddToManDays(List<CallenderDay> days)
         {
-            foreach(var d in days)
+            foreach (var d in days)
             {
                 var dateTime = Callender2DataTime(d);
                 if (dateTime == _invalidDate) continue;
