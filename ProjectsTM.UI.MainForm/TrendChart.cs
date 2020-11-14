@@ -175,12 +175,8 @@ namespace ProjectsTM.UI.MainForm
             chart1.ChartAreas["ChartArea1"].AxisY.Title = checkBox1.Checked ? "過去の最終到達予想工数[人月]" : "工数消費ペース[人月]";
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            InitChart();
-        }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             InitChart();
         }
