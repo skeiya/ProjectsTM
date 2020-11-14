@@ -219,11 +219,16 @@ namespace ProjectsTM.ViewModel
 
         public void UpdateCallenderAndMembers(WorkItem wi)
         {
+            UpdateCallender(wi);
+            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
+        }
+
+        public void UpdateCallender(WorkItem wi)
+        {
             var days = Original.Callender.Days;
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
-            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
         public void DecRatio()

@@ -247,7 +247,21 @@ namespace ProjectsTM.UI.TaskList
             var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
             if (r.Value < FixedRowCount) return;
             var item = _listItems[r.Value - FixedRowCount];
-            if (item.IsMilestone) return;
+
+            if (item.IsMilestone)
+            {
+                var selectMs = _viewData.Original.MileStones.Where(x => x.Name.Equals(item.WorkItem.Name) && x.Project.Equals(item.WorkItem.Project)).First();
+                using (var dlg = new EditMileStoneForm(_viewData.Original.Callender, selectMs, _viewData.Original.MileStones.GetMileStoneFilters()))
+                {
+                    if (dlg.ShowDialog() != DialogResult.OK) return;
+                    _viewData.Original.MileStones.Replace(selectMs, dlg.MileStone);
+                    var newWi = ConvertWorkItem(dlg.MileStone);
+                    _viewData.UpdateCallender(newWi);
+                    _listItems[r.Value - FixedRowCount].WorkItem = newWi;
+                    UpdateView();
+                    return;
+                }
+            }
             using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
