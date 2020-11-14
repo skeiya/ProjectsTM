@@ -478,7 +478,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ShowTrendChartForm()
         {
-            using (var dlg = new TrendChart(_viewData.Original.WorkItems, _viewData.Original.Callender, FileIOService.FilePath))
+            using (var dlg = new TrendChart(_viewData.Original, FileIOService.FilePath))
             {
                 dlg.ShowDialog(this);
             }

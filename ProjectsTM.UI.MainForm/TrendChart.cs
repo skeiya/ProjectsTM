@@ -8,22 +8,21 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.ComponentModel;
+using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI.MainForm
 {
     public partial class TrendChart : BaseForm
     {
-        private readonly WorkItems _workItems;
-        private readonly Callender _callender;
+        private readonly ViewData _viewData;
         private readonly string _filePath;
 
         private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(WorkItems workItems, Callender callender, string filePath)
+        public TrendChart(AppData appData, string filePath)
         {
-            _workItems = workItems;
-            _callender = callender;
+            _viewData = new ViewData(appData, null);
             _filePath = filePath;
             InitializeComponent();
             InitCombo();
@@ -32,7 +31,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void InitCombo()
         {
-            foreach (var ws in _workItems.EachMembers)
+            foreach (var ws in _viewData.Original.WorkItems.EachMembers)
             {
                 foreach (var proj in ws.GetProjects())
                 {
@@ -113,7 +112,7 @@ namespace ProjectsTM.UI.MainForm
         private int CalcTotal(IEnumerable<WorkItem> ws)
         {
             var total = 0;
-            foreach (var w in ws) total += _callender.GetPediodDays(w.Period).Count;
+            foreach (var w in ws) total += _viewData.Original.Callender.GetPediodDays(w.Period).Count;
             return total;
         }
 
@@ -129,13 +128,14 @@ namespace ProjectsTM.UI.MainForm
         private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
             var counter = 0.0;
-            foreach (var w in _workItems)
+            var workItems = _viewData.Original.WorkItems;
+            foreach (var w in workItems)
             {
                 if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
                 counter++;
-                worker?.ReportProgress((int)(counter / _workItems.Count() * 100));
+                worker?.ReportProgress((int)(counter / workItems.Count() * 100));
                 if (!w.Project.Equals(proj)) continue;
-                var days = _callender.GetPediodDays(w.Period);
+                var days = _viewData.Original.Callender.GetPediodDays(w.Period);
                 AddToManDays(days);
             }
         }
