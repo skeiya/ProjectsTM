@@ -17,7 +17,6 @@ namespace ProjectsTM.UI.MainForm
         private readonly ViewData _viewData;
         private readonly string _filePath;
         private readonly FilterComboBoxService _filterComboBoxService;
-        private readonly Func<Member, string, bool> IsMemberMatchText;
 
         private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
@@ -26,7 +25,6 @@ namespace ProjectsTM.UI.MainForm
         {
             _viewData = new ViewData(appData, null);
             _filePath = filePath;
-            IsMemberMatchText = isMemberMatchText;
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1, isMemberMatchText);
             _filterComboBoxService.UpdateFilePart(filePath);
@@ -96,11 +94,11 @@ namespace ProjectsTM.UI.MainForm
 
         private void CollectOldTotalWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            var monthsCount = 12.0;
+            var monthsCount = 12;
             for (int monthsAgo = 0; monthsAgo < monthsCount; monthsAgo++)
             {
                 if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
-                worker.ReportProgress((int)(monthsAgo / monthsCount * 100));
+                worker.ReportProgress((int)(monthsAgo * 100 / monthsCount));
                 var workItems = GetOldWorkItems(monthsAgo, proj);
                 if (!workItems.Any()) return;
                 var total = CalcTotal(workItems);
@@ -141,13 +139,13 @@ namespace ProjectsTM.UI.MainForm
 
         private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            var counter = 0.0;
+            var counter = 0;
             var workItems = _viewData.GetFilteredWorkItems();
             foreach (var w in workItems)
             {
                 if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
                 counter++;
-                worker?.ReportProgress((int)(counter / workItems.Count() * 100));
+                worker?.ReportProgress((int)(counter * 100 / workItems.Count()));
                 if (!w.Project.Equals(proj)) continue;
                 var days = _viewData.Original.Callender.GetPediodDays(w.Period);
                 AddToManDays(days);
@@ -174,7 +172,6 @@ namespace ProjectsTM.UI.MainForm
             chart1.Series[legend].XValueType = ChartValueType.Date;
             chart1.ChartAreas["ChartArea1"].AxisY.Title = checkBox1.Checked ? "過去の最終到達予想工数[人月]" : "工数消費ペース[人月]";
         }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
