@@ -1,14 +1,14 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.ComponentModel;
-using ProjectsTM.ViewModel;
 
 namespace ProjectsTM.UI.MainForm
 {
@@ -16,15 +16,20 @@ namespace ProjectsTM.UI.MainForm
     {
         private readonly ViewData _viewData;
         private readonly string _filePath;
+        private readonly FilterComboBoxService _filterComboBoxService;
+        private readonly Func<Member, string, bool> IsMemberMatchText;
 
         private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(AppData appData, string filePath)
+        public TrendChart(AppData appData, string filePath,Func<Member, string, bool> isMemberMatchText)
         {
             _viewData = new ViewData(appData, null);
             _filePath = filePath;
+            IsMemberMatchText = isMemberMatchText;
             InitializeComponent();
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1, isMemberMatchText);
+            _filterComboBoxService.UpdateFilePart(filePath);
             InitCombo();
             if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;
         }
@@ -118,17 +123,26 @@ namespace ProjectsTM.UI.MainForm
 
         private IEnumerable<WorkItem> GetOldWorkItems(int monthsAgo, Project proj)
         {
+            var oldAppData = GetOldAppData(monthsAgo);
+            if(oldAppData == null) return new List<WorkItem>();
+            var oldViewData = new ViewData(oldAppData, null);
+            oldViewData.SetFilter(_viewData.Filter);
+            return oldViewData.GetFilteredWorkItems().Where(w => w.Project.Equals(proj));
+        }
+
+        public AppData GetOldAppData(int monthsAgo)
+        {
             var oldFile = GitRepositoryService.GetOldFileSomeMonthsAgo(_filePath, monthsAgo);
-            if (string.IsNullOrEmpty(oldFile)) return new List<WorkItem>();
+            if (string.IsNullOrEmpty(oldFile)) return null;
             var oldAppData = AppDataSerializeService.Deserialize(oldFile);
             File.Delete(oldFile);
-            return oldAppData.WorkItems.Where(w => w.Project.Equals(proj));
+            return oldAppData;
         }
 
         private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
             var counter = 0.0;
-            var workItems = _viewData.Original.WorkItems;
+            var workItems = _viewData.GetFilteredWorkItems();
             foreach (var w in workItems)
             {
                 if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }

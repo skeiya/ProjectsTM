@@ -70,7 +70,7 @@ namespace ProjectsTM.ViewModel
             if (!Changed(filter)) return;
             Filter = filter;
             UpdateShowMembers();
-            FilterChanged(this, null);
+            FilterChanged?.Invoke(this, null);
         }
 
         private bool Changed(Filter filter)
