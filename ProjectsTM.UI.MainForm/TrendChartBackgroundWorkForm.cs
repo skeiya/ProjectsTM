@@ -7,7 +7,7 @@ namespace ProjectsTM.UI.MainForm
 {
     public partial class TrendChartBackgroundWorkForm : Form
     {
-        private bool BackgroudCancelled { get; set; } = false;
+        private bool BackgroudWorkDone { get; set; } = false;
 
         public TrendChartBackgroundWorkForm(Action<Project, BackgroundWorker, DoWorkEventArgs> CollectWorkItems, Project proj)
         {
@@ -21,16 +21,16 @@ namespace ProjectsTM.UI.MainForm
         private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled) MessageBox.Show("キャンセルされました");
-            BackgroudCancelled = true;
+            BackgroudWorkDone = true;
             this.Close();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var arg = (Tuple<Action<Project, BackgroundWorker, DoWorkEventArgs>, Project>)e.Argument;
-            var CollectionWorkItems = arg.Item1;
+            var CollectWorkItems = arg.Item1;
             var proj = arg.Item2;
-            CollectionWorkItems.Invoke(proj, (BackgroundWorker)sender, e);
+            CollectWorkItems?.Invoke(proj, (BackgroundWorker)sender, e);
         }
 
         private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -41,11 +41,9 @@ namespace ProjectsTM.UI.MainForm
 
         private void TrendChartBackgroundWorkForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!BackgroudCancelled)
-            {
-                backgroundWorker1.CancelAsync();
-                e.Cancel = true; // バックグランドキャンセルしてからフォームキャンセルしないと、途中状態が描画されることがある
-            }
+            if (BackgroudWorkDone) return;
+            backgroundWorker1.CancelAsync();
+            e.Cancel = true; // バックグランドキャンセルしてからフォームキャンセルしないと、途中状態が描画されることがある
         }
     }
 }
