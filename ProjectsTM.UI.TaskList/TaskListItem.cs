@@ -17,5 +17,16 @@ namespace ProjectsTM.UI.TaskList
         public Color Color { get; private set; }
         public bool IsMilestone { get; internal set; }
         public string ErrMsg { get; }
+
+        public bool Equals(MileStone ms)
+        {
+            if (!IsMilestone) return false;
+            if (WorkItem.Name != ms.Name) return false;
+            if (WorkItem.Period.From != ms.Day) return false;
+            if (WorkItem.Period.To != ms.Day) return false;
+            if (WorkItem.Project != ms.Project) return false;
+            if (WorkItem.State != ms.State) return false;
+            return true;
+        }
     }
 }

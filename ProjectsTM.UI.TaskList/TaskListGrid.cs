@@ -250,7 +250,7 @@ namespace ProjectsTM.UI.TaskList
 
             if (item.IsMilestone)
             {
-                var selectMs = _viewData.Original.MileStones.Where(x => x.Name.Equals(item.WorkItem.Name) && x.Project.Equals(item.WorkItem.Project)).First();
+                var selectMs = _viewData.Original.MileStones.Where(x => item.Equals(x)).First();
                 using (var dlg = new EditMileStoneForm(_viewData.Original.Callender, selectMs, _viewData.Original.MileStones.GetMileStoneFilters()))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
