@@ -250,13 +250,12 @@ namespace ProjectsTM.UI.TaskList
 
             if (item.IsMilestone)
             {
-                var selectMs = _viewData.Original.MileStones.Where(x => item.Equals(x)).First();
+                var selectMs = item.MileStone;
                 using (var dlg = new EditMileStoneForm(_viewData.Original.Callender, selectMs, _viewData.Original.MileStones.GetMileStoneFilters()))
                 {
                     if (dlg.ShowDialog() != DialogResult.OK) return;
                     _viewData.Original.MileStones.Replace(selectMs, dlg.MileStone);
                     var newWi = ConvertWorkItem(dlg.MileStone);
-                    _viewData.UpdateCallender(newWi);
                     _listItems[r.Value - FixedRowCount].WorkItem = newWi;
                     UpdateView();
                     return;
@@ -482,7 +481,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);
-                list.Add(new TaskListItem(wi, GetColor(wi.State, error), false, error));
+                list.Add(new TaskListItem(wi, GetColor(wi.State, error), error));
             }
             if (Option.IsShowMS)
             {
@@ -490,7 +489,7 @@ namespace ProjectsTM.UI.TaskList
                 {
                     var wi = ConvertWorkItem(ms);
                     if (!IsMatchPattern(wi.ToString())) continue;
-                    list.Add(new TaskListItem(wi, ms.Color, true, string.Empty));
+                    list.Add(new TaskListItem(wi, ms, ms.Color, string.Empty));
                 }
             }
             return list;
