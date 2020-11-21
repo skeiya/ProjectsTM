@@ -130,10 +130,8 @@ namespace ProjectsTM.UI.MainForm
 
         public AppData GetOldAppData(int monthsAgo)
         {
-            var oldFile = GitRepositoryService.GetOldFileSomeMonthsAgo(_filePath, monthsAgo);
-            if (string.IsNullOrEmpty(oldFile)) return null;
-            var oldAppData = AppDataSerializeService.Deserialize(oldFile);
-            File.Delete(oldFile);
+            var oldFileContent = GitRepositoryService.GetOldFileContentSomeMonthsAgo(_filePath, monthsAgo);
+            var oldAppData = AppDataSerializeService.DeserializeFileContent(oldFileContent);
             return oldAppData;
         }
 

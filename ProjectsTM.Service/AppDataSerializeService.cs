@@ -32,11 +32,10 @@ namespace ProjectsTM.Service
             }
         }
 
-        public static AppData LoadFromStream(StreamReader reader, bool isOld)
+        public static AppData LoadFromStream(object reader, bool isOld)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.PreserveWhitespace = false;
-            doc.Load(reader);
+            var doc = GetXmlDoc(reader);
+            if (doc == null) return null;
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
                 if (isOld)
@@ -51,15 +50,34 @@ namespace ProjectsTM.Service
             }
         }
 
+        public static AppData DeserializeFileContent(string xml)
+        {
+            return LoadFromStream(xml, IsOldFomatFileContent(new StringReader(xml)));
+        }
+
+        private static XmlDocument GetXmlDoc(object reader)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = false;
+            if (typeof(StreamReader) == reader.GetType()) { doc.Load((StreamReader)reader); return doc; }
+            if (typeof(string) == reader.GetType()) { doc.LoadXml((string)reader); return doc; }
+            return null;
+        }
+
         private static bool IsOldFormat(string path)
         {
             using (var reader = StreamFactory.CreateReader(path))
             {
-                var xml = XElement.Load(reader);
-                if (!xml.Elements("Version").Any()) return true;
-                var ver = int.Parse(xml.Elements("Version").Single().Value);
-                return ver < 5;
+                return IsOldFomatFileContent(reader);
             }
+        }
+
+        private static bool IsOldFomatFileContent(TextReader reader)
+        {
+            var xml = XElement.Load(reader);
+            if (!xml.Elements("Version").Any()) return true;
+            var ver = int.Parse(xml.Elements("Version").Single().Value);
+            return ver < 5;
         }
     }
 }

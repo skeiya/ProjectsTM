@@ -27,7 +27,7 @@ namespace ProjectsTM.Service
             return reader.ReadLine();
         }
 
-        public static string ReadOldFile(string path, string commitId)
+        public static string GetOldFileContent(string path, string commitId)
         {
             var dir = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(dir) | string.IsNullOrEmpty(commitId)) return string.Empty;

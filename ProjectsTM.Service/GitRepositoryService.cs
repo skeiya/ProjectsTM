@@ -1,14 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjectsTM.Service
 {
     public static class GitRepositoryService
-    {
-        private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
-
+    {        
         public static Task<bool> HasUnmergedRemoteCommit(string filePath)
         {
             Task<bool> task = Task.Run(() =>
@@ -89,27 +85,10 @@ namespace ProjectsTM.Service
             return string.IsNullOrEmpty(repo.Status());
         }
 
-        public static string GetOldFileSomeMonthsAgo(string filePath, int months)
+        public static string GetOldFileContentSomeMonthsAgo(string filePath, int months)
         {
-            var oldFilePath = Path.Combine(AppConfigDir, "oldFile");
-            if (File.Exists(oldFilePath)) File.Delete(oldFilePath);
-
             var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
-            var text = GitCmdRepository.ReadOldFile(filePath, commitId);
-            if (string.IsNullOrEmpty(text)) return string.Empty;
-            return SaveFile(text, oldFilePath);
+            return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
-
-        private static string SaveFile(string text, string filePath)
-        {
-            try
-            {
-                File.WriteAllText(filePath, text);
-            }
-            catch { return string.Empty; }
-            return filePath;
-        }
-
-
     }
 }
