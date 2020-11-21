@@ -28,14 +28,15 @@ namespace ProjectsTM.Service
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader, IsOldFormat(fileName));
+                return LoadFromStream(reader.ReadToEnd(), IsOldFormat(fileName));
             }
         }
 
-        public static AppData LoadFromStream(object reader, bool isOld)
+        public static AppData LoadFromStream(string text, bool isOld)
         {
-            var doc = GetXmlDoc(reader);
-            if (doc == null) return null;
+            XmlDocument doc = new XmlDocument();
+            doc.PreserveWhitespace = false;
+            doc.LoadXml(text);
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
                 if (isOld)
@@ -53,15 +54,6 @@ namespace ProjectsTM.Service
         public static AppData DeserializeFileContent(string xml)
         {
             return LoadFromStream(xml, IsOldFomatFileContent(new StringReader(xml)));
-        }
-
-        private static XmlDocument GetXmlDoc(object reader)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.PreserveWhitespace = false;
-            if (typeof(StreamReader) == reader.GetType()) { doc.Load((StreamReader)reader); return doc; }
-            if (typeof(string) == reader.GetType()) { doc.LoadXml((string)reader); return doc; }
-            return null;
         }
 
         private static bool IsOldFormat(string path)
