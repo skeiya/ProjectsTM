@@ -56,7 +56,7 @@ namespace ProjectsTM.Service
             using (var reader = StreamFactory.CreateReader(path))
             {
                 var xml = XElement.Load(reader);
-                var ver = int.Parse(xml.Elements("Version").Single().Value);
+                var ver = int.Parse(xml.Element("Version").Value);
                 return ver < 5;
             }
         }

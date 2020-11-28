@@ -38,7 +38,7 @@ namespace ProjectsTM.Model
 
         internal static Project FromXml(XElement w)
         {
-            return new Project(w.Elements(nameof(Project)).Single().Value);
+            return new Project(w.Element(nameof(Project)).Value);
         }
     }
 }
