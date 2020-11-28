@@ -20,7 +20,7 @@ namespace ProjectsTM.Service
             try
             {
                 var xml = XElement.Load(SizeInfoPath);
-                var sizeInfo = xml.Elements(form).Single();
+                var sizeInfo = xml.Element(form);
                 var heightStr = sizeInfo.Element("height").Value;
                 var widthStr = sizeInfo.Element("width").Value;
                 if (Int32.TryParse(widthStr, out int width) && Int32.TryParse(heightStr, out int height))
@@ -39,7 +39,7 @@ namespace ProjectsTM.Service
             try
             {
                 var xml = XElement.Load(SizeInfoPath);
-                var sizeInfo = xml.Elements(form).Single();
+                var sizeInfo = xml.Element(form);
                 var lastTimeStateStr = sizeInfo.Element("lastTimeFormState").Value;
                 if (lastTimeStateStr.Equals("Maximized")) return FormWindowState.Maximized;
             }
@@ -55,7 +55,7 @@ namespace ProjectsTM.Service
             {
                 var result = new List<int>();
                 var xml = XElement.Load(SizeInfoPath);
-                var colWidthsElement = xml.Elements(form).Single().Elements("colwidths");
+                var colWidthsElement = xml.Element(form).Elements("colwidths");
                 for (var idx = 0; idx < colWidthsElement.Elements().Count(); idx++)
                 {
                     var col = colWidthsElement.Single().Elements("col" + idx.ToString());

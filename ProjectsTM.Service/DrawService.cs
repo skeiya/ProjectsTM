@@ -68,6 +68,7 @@ namespace ProjectsTM.Service
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
+            DrawAbsentArea(g, _viewData.Original.AbsentInfo);
             DrawCalender(font, g);
             DrawMember(font, g);
             DrawEdgeWorkItems(font, g, isAllDraw);
@@ -75,6 +76,26 @@ namespace ProjectsTM.Service
             DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
             DrawSelectedWorkItemBound(g, font);
             DrawRangeSelectBound(g);
+        }
+
+        private void DrawAbsentArea(Graphics g, AbsentInfo absentInfo)
+        {
+            var range = _grid.VisibleRowColRange;
+            foreach (var c in range.Cols)
+            {
+                var absentTerms = absentInfo.GetAbsentTerms(_grid.Col2Member(c));
+                if (absentTerms == null) continue;
+                foreach(var a in absentTerms)
+                {
+                    foreach (var r in range.Rows)
+                    {
+                        var d = _grid.Row2Day(r);
+                        if (!a.Period.Contains(d)) continue;
+                        var rect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false)).Value.Value;
+                        g.FillRectangle(Brushes.LightGray, rect);
+                    }
+                }
+            }
         }
 
         private void DrawRangeSelectBound(Graphics g)
