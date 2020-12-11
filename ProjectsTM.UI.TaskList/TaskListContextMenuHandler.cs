@@ -15,14 +15,13 @@ namespace ProjectsTM.UI.TaskList
             _viewData = viewData;
             _taskListGrid = taskListGrid;
 
-            taskListGrid.ContextMenuStrip = new ContextMenuStrip();
-            taskListGrid.ContextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
+            _taskListGrid.ContextMenuStrip = new ContextMenuStrip();
+            _taskListGrid.ContextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
         }
 
         private void DoneMenu_Click(object sender, EventArgs e)
         {
             ChangeState(TaskState.Done);
-            _taskListGrid.UpdateView();
         }
 
         private void ChangeState(TaskState state)
