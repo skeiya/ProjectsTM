@@ -29,7 +29,8 @@ namespace ProjectsTM.UI.TaskList
         private WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
         private readonly int MAX_SORTABLE_DISTANCE = 20;
-        
+        public WorkItemEditService EditService => _editService;
+
         public TaskListGrid()
         {
             InitializeComponent();
