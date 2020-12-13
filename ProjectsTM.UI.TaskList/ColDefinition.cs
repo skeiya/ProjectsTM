@@ -66,8 +66,6 @@ namespace ProjectsTM.UI.TaskList
             }
             else if (IsErrorCol(sortCol))
             {
-                var te = GetText(listItems[0], sortCol, viewData);
-                var temp = GetText(listItems[3], sortCol, viewData);
                 listItems = listItems.OrderByDescending(l => GetText(l, sortCol, viewData)).ToList();
             }
             else
