@@ -18,14 +18,14 @@ namespace ProjectsTM.UI.TaskList
             this.Text = $"{userName}に割り当てられたタスク";
             InitializeComponent();
             InitializeMyListViewSetting();
-            MakeDispStr();
+            SetMyTaskList();
         }
         private bool IsMyTask(WorkItem wi, string userName)
         {
             return wi.AssignedMember.NaturalString.Equals(userName);
         }
 
-        private void MakeDispStr()
+        private void SetMyTaskList()
         {
             var myTasks = _myWorkItems.Select(x => x.StringForMyTaskList()).ToList();
 
