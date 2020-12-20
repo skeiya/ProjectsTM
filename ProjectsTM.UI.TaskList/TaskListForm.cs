@@ -3,6 +3,7 @@ using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -13,11 +14,13 @@ namespace ProjectsTM.UI.TaskList
         private readonly ViewData _viewData;
         private PatternHistory _history;
         private TaskListContextMenuHandler _taskListContextMenuHandler;
+        private readonly string _userName;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, string userName)
         {
             InitializeComponent();
 
+            _userName = userName;
             this._viewData = viewData;
            _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
@@ -114,6 +117,14 @@ namespace ProjectsTM.UI.TaskList
             _history.Append(comboBoxPattern.Text);
             gridControl1.Option = GetOption();
             gridControl1.UpdateView();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (var form = new MyTaskListForm(_viewData, _userName))
+            {
+                form.ShowDialog();
+            }
         }
     }
 }
