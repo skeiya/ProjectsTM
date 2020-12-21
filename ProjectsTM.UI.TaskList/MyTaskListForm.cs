@@ -24,12 +24,21 @@ namespace ProjectsTM.UI.TaskList
         {
             return wi.AssignedMember.NaturalString.Equals(userName);
         }
-
         private void SetMyTaskList()
         {
-            var myTasks = _myWorkItems.Select(x => x.StringForMyTaskList()).ToList();
+            var myTasks = _myWorkItems.Select(x => MakeDispString(x)).ToList();
 
-            myTasks.ForEach(s => {_myTasklistView.Items.Add(new ListViewItem(s));});
+            myTasks.ForEach(s => { _myTasklistView.Items.Add(new ListViewItem(s)); });
+        }
+
+        public string[] MakeDispString(WorkItem workItem)
+        {
+            var dispString = new string[4];
+            dispString[0] = workItem.Name;
+            dispString[1] = workItem.Project.ToString();
+            dispString[2] = workItem.Period.To.Date;
+            dispString[3] = workItem.State.ToString();
+            return dispString;
         }
 
         private void InitializeMyListViewSetting()

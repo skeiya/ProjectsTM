@@ -102,16 +102,6 @@ namespace ProjectsTM.Model
             return "[" + Name + "][" + Project.ToString() + "][" + AssignedMember.ToString() + "][" + Tags.ToString() + "][" + State.ToString() + "]";
         }
 
-        public string[] StringForMyTaskList()
-        {
-            var dispString = new string[4];
-            dispString[0] = Name;
-            dispString[1] = Project.ToString();
-            dispString[2] = Period.To.Date;
-            dispString[3] = State.ToString();
-            return dispString;
-        }
-
         public override bool Equals(object obj)
         {
             var target = obj as WorkItem;
