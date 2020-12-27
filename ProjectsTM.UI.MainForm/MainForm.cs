@@ -45,7 +45,7 @@ namespace ProjectsTM.UI.MainForm
             Load += MainForm_Load;
             if (GitRepositoryService.IsActive())
             {
-                _1minutTimer.Interval = 60 * 1000; // 1s間隔
+                _1minutTimer.Interval = 60 * 1000;
                 _1minutTimer.Tick += _timer_Tick;
                 _1minutTimer.Start();
             }
