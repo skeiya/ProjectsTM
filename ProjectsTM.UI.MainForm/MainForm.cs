@@ -24,7 +24,6 @@ namespace ProjectsTM.UI.MainForm
         private ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
-        private Timer _1minutTimer = new Timer();
         private string _userName = "未設定";
 
         public MainForm()

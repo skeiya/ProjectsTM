@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    public class DummyDataService
+    public static class DummyDataService
     {
         public static void Save(string fileName)
         {

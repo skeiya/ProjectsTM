@@ -79,31 +79,36 @@ namespace ProjectsTM.Service
 
         private static int ExecuteCommand(out string output, string command, string arguments)
         {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(command)
-                {
-                    Arguments = arguments,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
             try
             {
-                process.Start();
+                using (var process = new Process())
+                {
+                    process.StartInfo = new ProcessStartInfo(command)
+                    {
+                        Arguments = arguments,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    };
+                    process.Start();
+
+                    var tmp = new StringBuilder();
+                    while (!process.HasExited)
+                    {
+                        tmp.Append(process.StandardOutput.ReadToEnd());
+                        Thread.Sleep(0);
+                    }
+                    process.WaitForExit();
+                    tmp.Append(process.StandardOutput.ReadToEnd());
+                    output = tmp.ToString();
+                    return process.ExitCode;
+                }
             }
-            catch { output = string.Empty; return -1; }
-            var tmp = new StringBuilder();
-            while (!process.HasExited)
+            catch
             {
-                tmp.Append(process.StandardOutput.ReadToEnd());
-                Thread.Sleep(0);
+                output = string.Empty;
+                return -1;
             }
-            process.WaitForExit();
-            tmp.Append(process.StandardOutput.ReadToEnd());
-            output = tmp.ToString();
-            return process.ExitCode;
         }
 
         private string GitCommandRepository(string arguments)

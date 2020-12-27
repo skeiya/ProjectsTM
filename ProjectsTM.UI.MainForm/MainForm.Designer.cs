@@ -30,6 +30,7 @@ namespace ProjectsTM.UI.MainForm
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +67,7 @@ namespace ProjectsTM.UI.MainForm
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
+            this._1minutTimer = new System.Windows.Forms.Timer(this.components);
             this.workItemGrid1 = new ProjectsTM.UI.MainForm.WorkItemGrid();
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemTrendChart = new System.Windows.Forms.ToolStripMenuItem();
@@ -395,7 +397,7 @@ namespace ProjectsTM.UI.MainForm
             this.ToolStripMenuItemTrendChart.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemTrendChart.Text = "総工数トレンド";
             this.ToolStripMenuItemTrendChart.Click += new System.EventHandler(this.ToolStripMenuItemTrendChart_Click);
-            // 
+            //
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -457,6 +459,7 @@ namespace ProjectsTM.UI.MainForm
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
+        private System.Windows.Forms.Timer _1minutTimer;
     }
 }
 
