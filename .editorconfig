@@ -33,10 +33,10 @@ dotnet_style_predefined_type_for_locals_parameters_members = true
 dotnet_style_predefined_type_for_member_access = true
 
 # かっこの設定
-dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary
-dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
 
 # 修飾子設定
 dotnet_style_require_accessibility_modifiers = for_non_interface_members
@@ -51,7 +51,7 @@ dotnet_style_operator_placement_when_wrapping = beginning_of_line
 dotnet_style_prefer_auto_properties = true
 dotnet_style_prefer_compound_assignment = true:warning
 dotnet_style_prefer_conditional_expression_over_assignment = true:warning
-dotnet_style_prefer_conditional_expression_over_return = true:warning
+dotnet_style_prefer_conditional_expression_over_return = true:silent
 dotnet_style_prefer_inferred_anonymous_type_member_names = true
 dotnet_style_prefer_inferred_tuple_names = true
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true
@@ -892,7 +892,7 @@ dotnet_diagnostic.IDE0036.severity = warning
 dotnet_diagnostic.IDE0044.severity = warning
 
 # IDE1006: 命名スタイル
-dotnet_diagnostic.IDE1006.severity = warning
+dotnet_diagnostic.IDE1006.severity = silent
 
 # IDE0052: 読み取られていないプライベート メンバーを削除
 dotnet_diagnostic.IDE0052.severity = warning
@@ -995,3 +995,12 @@ dotnet_diagnostic.SA1204.severity = none
 
 # SA1206: Declaration keywords should follow order
 dotnet_diagnostic.SA1206.severity = none
+
+# IDE0046: 条件式に変換します
+dotnet_diagnostic.IDE0046.severity = silent
+
+# IDE0047: 不要なかっこの削除
+dotnet_diagnostic.IDE0047.severity = silent
+
+# SA0001: XML comment analysis disabled
+dotnet_diagnostic.SA0001.severity = none
