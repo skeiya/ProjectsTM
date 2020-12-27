@@ -1,0 +1,997 @@
+﻿# 上位ディレクトリから .editorconfig 設定を継承する場合は、以下の行を削除します
+root = true
+
+# C# ファイル
+[*.cs]
+
+#### コア EditorConfig オプション ####
+
+# インデントと間隔
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# 改行設定
+end_of_line = crlf
+insert_final_newline = false
+
+#### .NET コーディング規則 ####
+
+# using の整理
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = false
+file_header_template = unset
+
+# this. と Me. の設定
+dotnet_style_qualification_for_event = false
+dotnet_style_qualification_for_field = false
+dotnet_style_qualification_for_method = false
+dotnet_style_qualification_for_property = false
+
+# 言語キーワードと BCL の種類の設定
+dotnet_style_predefined_type_for_locals_parameters_members = true
+dotnet_style_predefined_type_for_member_access = true
+
+# かっこの設定
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+
+# 修飾子設定
+dotnet_style_require_accessibility_modifiers = for_non_interface_members
+
+# 式レベルの設定
+dotnet_style_coalesce_expression = true
+dotnet_style_collection_initializer = true
+dotnet_style_explicit_tuple_names = true:warning
+dotnet_style_null_propagation = true
+dotnet_style_object_initializer = true
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_style_prefer_auto_properties = true
+dotnet_style_prefer_compound_assignment = true:warning
+dotnet_style_prefer_conditional_expression_over_assignment = true:warning
+dotnet_style_prefer_conditional_expression_over_return = true:warning
+dotnet_style_prefer_inferred_anonymous_type_member_names = true
+dotnet_style_prefer_inferred_tuple_names = true
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true
+dotnet_style_prefer_simplified_boolean_expressions = true:warning
+dotnet_style_prefer_simplified_interpolation = true
+
+# フィールド設定
+dotnet_style_readonly_field = true:warning
+
+# パラメーターの設定
+dotnet_code_quality_unused_parameters = all:error
+
+# 抑制の設定
+dotnet_remove_unnecessary_suppression_exclusions = none
+
+#### C# コーディング規則 ####
+
+# var を優先
+csharp_style_var_elsewhere = false
+csharp_style_var_for_built_in_types = false
+csharp_style_var_when_type_is_apparent = false
+
+# 式のようなメンバー
+csharp_style_expression_bodied_accessors = true
+csharp_style_expression_bodied_constructors = false
+csharp_style_expression_bodied_indexers = true
+csharp_style_expression_bodied_lambdas = true
+csharp_style_expression_bodied_local_functions = false
+csharp_style_expression_bodied_methods = false
+csharp_style_expression_bodied_operators = false
+csharp_style_expression_bodied_properties = true
+
+# パターン マッチング設定
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+csharp_style_prefer_not_pattern = true:warning
+csharp_style_prefer_pattern_matching = true
+csharp_style_prefer_switch_expression = true
+
+# Null チェック設定
+csharp_style_conditional_delegate_call = true:warning
+
+# 修飾子設定
+csharp_prefer_static_local_function = true
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
+
+# コード ブロックの設定
+csharp_prefer_braces = true
+csharp_prefer_simple_using_statement = true
+
+# 式レベルの設定
+csharp_prefer_simple_default_expression = true
+csharp_style_deconstructed_variable_declaration = true
+csharp_style_implicit_object_creation_when_type_is_apparent = true
+csharp_style_inlined_variable_declaration = true:warning
+csharp_style_pattern_local_over_anonymous_function = true
+csharp_style_prefer_index_operator = true
+csharp_style_prefer_range_operator = true
+csharp_style_throw_expression = true
+csharp_style_unused_value_assignment_preference = discard_variable:warning
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
+
+# 'using' ディレクティブの基本設定
+csharp_using_directive_placement = outside_namespace
+
+#### C# 書式ルール ####
+
+# 改行設定
+csharp_new_line_before_catch = true
+csharp_new_line_before_else = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_open_brace = all
+csharp_new_line_between_query_expression_clauses = true
+
+# インデント設定
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_labels = one_less_than_current
+csharp_indent_switch_labels = true
+
+# スペース設定
+csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_after_comma = true
+csharp_space_after_dot = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_around_declaration_statements = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_before_comma = false
+csharp_space_before_dot = false
+csharp_space_before_open_square_brackets = false
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_between_square_brackets = false
+
+# 折り返しの設定
+csharp_preserve_single_line_blocks = true
+csharp_preserve_single_line_statements = true
+
+#### 命名スタイル ####
+
+# 名前付けルール
+
+dotnet_naming_rule.interface_should_be_i_で始まる.severity = suggestion
+dotnet_naming_rule.interface_should_be_i_で始まる.symbols = interface
+dotnet_naming_rule.interface_should_be_i_で始まる.style = i_で始まる
+
+dotnet_naming_rule.型_should_be_パスカル_ケース.severity = suggestion
+dotnet_naming_rule.型_should_be_パスカル_ケース.symbols = 型
+dotnet_naming_rule.型_should_be_パスカル_ケース.style = パスカル_ケース
+
+dotnet_naming_rule.フィールド以外のメンバー_should_be_パスカル_ケース.severity = suggestion
+dotnet_naming_rule.フィールド以外のメンバー_should_be_パスカル_ケース.symbols = フィールド以外のメンバー
+dotnet_naming_rule.フィールド以外のメンバー_should_be_パスカル_ケース.style = パスカル_ケース
+
+# 記号の仕様
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.型.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.型.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.型.required_modifiers = 
+
+dotnet_naming_symbols.フィールド以外のメンバー.applicable_kinds = property, event, method
+dotnet_naming_symbols.フィールド以外のメンバー.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.フィールド以外のメンバー.required_modifiers = 
+
+# 命名スタイル
+
+dotnet_naming_style.パスカル_ケース.required_prefix = 
+dotnet_naming_style.パスカル_ケース.required_suffix = 
+dotnet_naming_style.パスカル_ケース.word_separator = 
+dotnet_naming_style.パスカル_ケース.capitalization = pascal_case
+
+dotnet_naming_style.i_で始まる.required_prefix = I
+dotnet_naming_style.i_で始まる.required_suffix = 
+dotnet_naming_style.i_で始まる.word_separator = 
+dotnet_naming_style.i_で始まる.capitalization = pascal_case
+
+
+# CA1002: ジェネリック リストを公開しません
+dotnet_diagnostic.CA1002.severity = warning
+
+# CA1003: 汎用イベント ハンドラーのインスタンスを使用します
+dotnet_diagnostic.CA1003.severity = warning
+
+# CA1005: ジェネリック型でパラメーターを使用しすぎないでください
+dotnet_diagnostic.CA1005.severity = warning
+
+# CA1008: 列挙型は 0 値を含んでいなければなりません
+dotnet_diagnostic.CA1008.severity = warning
+
+# CA1012: 抽象型はパブリック コンストラクターを含むことはできません
+dotnet_diagnostic.CA1012.severity = warning
+
+# CA1014: アセンブリに CLSCompliant を設定します
+dotnet_diagnostic.CA1014.severity = warning
+
+# CA1016: アセンブリにアセンブリ バージョンを設定します
+dotnet_diagnostic.CA1016.severity = suggestion
+
+# CA1017: アセンブリに ComVisible を設定します
+dotnet_diagnostic.CA1017.severity = warning
+
+# CA1018: 属性を AttributeUsageAttribute に設定します
+dotnet_diagnostic.CA1018.severity = suggestion
+
+# CA1021: out パラメーターを使用しません
+dotnet_diagnostic.CA1021.severity = warning
+
+# CA1024: 適切な場所にプロパティを使用します
+dotnet_diagnostic.CA1024.severity = warning
+
+# CA1027: 列挙型を FlagsAttribute に設定します
+dotnet_diagnostic.CA1027.severity = warning
+
+# CA1028: 列挙ストレージは Int32 でなければなりません
+dotnet_diagnostic.CA1028.severity = warning
+
+# CA1030: 適切な場所にイベントを使用します
+dotnet_diagnostic.CA1030.severity = warning
+
+# CA1031: 一般的な例外の種類はキャッチしません
+dotnet_diagnostic.CA1031.severity = warning
+
+# CA1033: インターフェイス メソッドは、子型によって呼び出し可能でなければなりません
+dotnet_diagnostic.CA1033.severity = warning
+
+# CA1034: 入れ子にされた型を参照可能にすることはできません
+dotnet_diagnostic.CA1034.severity = warning
+
+# CA1040: 空のインターフェイスは使用しません
+dotnet_diagnostic.CA1040.severity = warning
+
+# CA1041: ObsoleteAttribute メッセージを指定します
+dotnet_diagnostic.CA1041.severity = suggestion
+
+# CA1043: インデクサーには整数または文字列引数を使用します
+dotnet_diagnostic.CA1043.severity = warning
+
+# CA1044: プロパティを書き込み専用にすることはできません
+dotnet_diagnostic.CA1044.severity = warning
+
+# CA1045: 型を参照渡しによって渡しません
+dotnet_diagnostic.CA1045.severity = warning
+
+# CA1046: 参照型で、等値演算子をオーバーロードしないでください
+dotnet_diagnostic.CA1046.severity = warning
+
+# CA1050: 名前空間で型を宣言します
+dotnet_diagnostic.CA1050.severity = suggestion
+
+# CA1051: 参照可能なインスタンス フィールドを宣言しません
+dotnet_diagnostic.CA1051.severity = silent
+
+# CA1052: スタティック ホルダー型は Static または NotInheritable でなければなりません
+dotnet_diagnostic.CA1052.severity = error
+
+# CA1054: URI 類似のパラメーターを文字列にすることはできません
+dotnet_diagnostic.CA1054.severity = warning
+
+# CA1055: URI 類似の戻り値を文字列にすることはできません
+dotnet_diagnostic.CA1055.severity = warning
+
+# CA1056: URI 類似のプロパティを文字列にすることはできません
+dotnet_diagnostic.CA1056.severity = warning
+
+# CA1058: 型は、一定の基本型を拡張することはできません
+dotnet_diagnostic.CA1058.severity = warning
+
+# CA1060: pinvoke をネイティブ メソッド クラスに移動します
+dotnet_diagnostic.CA1060.severity = warning
+
+# CA1061: 基底クラス メソッドを非表示にしません
+dotnet_diagnostic.CA1061.severity = suggestion
+
+# CA1062: パブリック メソッドの引数の検証
+dotnet_diagnostic.CA1062.severity = none
+
+# CA1063: IDisposable を正しく実装します
+dotnet_diagnostic.CA1063.severity = warning
+
+# CA1064: 例外は public として設定する必要があります
+dotnet_diagnostic.CA1064.severity = warning
+
+# CA1066: Object.Equals をオーバーライドする際に IEquatable を実装します
+dotnet_diagnostic.CA1066.severity = warning
+
+# CA1067: IEquatable<T> を実装するときに Object.Equals(object) をオーバーライドします
+dotnet_diagnostic.CA1067.severity = suggestion
+
+# CA1068: CancellationToken パラメーターは最後に指定する必要があります
+dotnet_diagnostic.CA1068.severity = suggestion
+
+# CA1069: 列挙値を重複させることはできない
+dotnet_diagnostic.CA1069.severity = suggestion
+
+# CA1070: イベント フィールドを virtual として宣言しない
+dotnet_diagnostic.CA1070.severity = suggestion
+
+# CA1303: ローカライズされるパラメーターとしてリテラルを渡さない
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1304: CultureInfo を指定します
+dotnet_diagnostic.CA1304.severity = silent
+
+# CA1305: IFormatProvider を指定します
+dotnet_diagnostic.CA1305.severity = silent
+
+# CA1307: 明確さのために StringComparison を指定する
+dotnet_diagnostic.CA1307.severity = none
+
+# CA1308: 文字列を大文字に標準化します
+dotnet_diagnostic.CA1308.severity = warning
+
+# CA1310: 正確さのために StringComparison を指定する
+dotnet_diagnostic.CA1310.severity = silent
+
+# CA1401: P/Invokes は参照可能にすることはできません
+dotnet_diagnostic.CA1401.severity = suggestion
+
+# CA1416: Validate platform compatibility
+dotnet_diagnostic.CA1416.severity = warning
+
+# CA1417: P/Invoke の文字列パラメーターに 'OutAttribute' を使用しない
+dotnet_diagnostic.CA1417.severity = warning
+
+# CA1501: 継承を使用しすぎない
+dotnet_diagnostic.CA1501.severity = warning
+
+# CA1502: 複雑にしすぎない
+dotnet_diagnostic.CA1502.severity = warning
+
+# CA1505: メンテナンスできないコードを使用しない
+dotnet_diagnostic.CA1505.severity = warning
+
+# CA1506: 過剰なクラス結合を避ける
+dotnet_diagnostic.CA1506.severity = warning
+
+# CA1508: 使用されない条件付きコードを回避する
+dotnet_diagnostic.CA1508.severity = warning
+
+# CA1509: コード メトリック ルール仕様ファイル内のエントリが無効です
+dotnet_diagnostic.CA1509.severity = warning
+
+# CA1700: 列挙型値に 'Reserved' という名前を指定しません
+dotnet_diagnostic.CA1700.severity = warning
+
+# CA1707: 識別子はアンダースコアを含むことはできません
+dotnet_diagnostic.CA1707.severity = silent
+
+# CA1708: 識別子は、大文字と小文字の区別以外にも相違していなければなりません
+dotnet_diagnostic.CA1708.severity = silent
+
+# CA1710: 識別子は、正しいサフィックスを含んでいなければなりません
+dotnet_diagnostic.CA1710.severity = silent
+
+# CA1711: 識別子は、不適切なサフィックスを含むことはできません
+dotnet_diagnostic.CA1711.severity = silent
+
+# CA1712: 列挙値の前に型名を付けないでください
+dotnet_diagnostic.CA1712.severity = silent
+
+# CA1713: イベントに 'Before' または 'After' プレフィックスを付けることはできない
+dotnet_diagnostic.CA1713.severity = warning
+
+# CA1715: 識別子は正しいプレフィックスを含んでいなければなりません
+dotnet_diagnostic.CA1715.severity = silent
+
+# CA1716: 識別子はキーワードと同一にすることはできません
+dotnet_diagnostic.CA1716.severity = silent
+
+# CA1720: 識別子に型名が含まれます
+dotnet_diagnostic.CA1720.severity = silent
+
+# CA1721: プロパティ名は get メソッドと同一にすることはできません
+dotnet_diagnostic.CA1721.severity = warning
+
+# CA1724: 型名は名前空間と同一にすることはできません
+dotnet_diagnostic.CA1724.severity = warning
+
+# CA1725: パラメーター名は基本宣言と同一でなければなりません
+dotnet_diagnostic.CA1725.severity = silent
+
+# CA1801: 使用されていないパラメーターの確認
+dotnet_diagnostic.CA1801.severity = warning
+
+# CA1802: 適切な場所にリテラルを使用します
+dotnet_diagnostic.CA1802.severity = warning
+
+# CA1805: 不必要に初期化しません
+dotnet_diagnostic.CA1805.severity = silent
+
+# CA1806: メソッドの結果を無視しない
+dotnet_diagnostic.CA1806.severity = suggestion
+
+# CA1810: 参照型の静的フィールドをインラインで初期化します
+dotnet_diagnostic.CA1810.severity = warning
+
+# CA1813: アンシールド属性を使用しません
+dotnet_diagnostic.CA1813.severity = warning
+
+# CA1814: 複数次元の配列ではなくジャグ配列を使用します
+dotnet_diagnostic.CA1814.severity = warning
+
+# CA1815: equals および operator equals を値型でオーバーライドします
+dotnet_diagnostic.CA1815.severity = warning
+
+# CA1816: Dispose メソッドは、SuppressFinalize を呼び出す必要があります
+dotnet_diagnostic.CA1816.severity = suggestion
+
+# CA1819: プロパティは配列を返すことはできません
+dotnet_diagnostic.CA1819.severity = warning
+
+# CA1820: 文字列の長さを使用して空の文字列をテストします
+dotnet_diagnostic.CA1820.severity = warning
+
+# CA1821: 空のファイナライザーを削除します
+dotnet_diagnostic.CA1821.severity = suggestion
+
+# CA1822: メンバーを static に設定します
+dotnet_diagnostic.CA1822.severity = warning
+
+# CA1823: 使用されていないプライベート フィールドを使用しません
+dotnet_diagnostic.CA1823.severity = warning
+
+# CA1826: インデックス可能なコレクションで Enumerable メソッドは使用不可
+dotnet_diagnostic.CA1826.severity = suggestion
+
+# CA1827: Any() を使用できる場合は、Count() または LongCount() を使用しない
+dotnet_diagnostic.CA1827.severity = warning
+
+# CA1828: AnyAsync() を使用できる場合は、CountAsync() または LongCountAsync() を使用しない
+dotnet_diagnostic.CA1828.severity = suggestion
+
+# CA1829: 使用可能な場合は Count() の代わりに Length または Count プロパティを使用
+dotnet_diagnostic.CA1829.severity = suggestion
+
+# CA1830: StringBuilder での厳密に型指定された Append および Insert メソッドのオーバーロードを推奨
+dotnet_diagnostic.CA1830.severity = suggestion
+
+# CA1831: 該当する場合、範囲ベースのインデクサーの代わりに AsSpan か AsMemory を使用する
+dotnet_diagnostic.CA1831.severity = warning
+
+# CA1832: 該当する場合、範囲ベースのインデクサーの代わりに AsSpan か AsMemory を使用する
+dotnet_diagnostic.CA1832.severity = suggestion
+
+# CA1833: 該当する場合、範囲ベースのインデクサーの代わりに AsSpan か AsMemory を使用する
+dotnet_diagnostic.CA1833.severity = suggestion
+
+# CA1834: 該当する場合は 'StringBuilder.Append(char)' の使用を検討
+dotnet_diagnostic.CA1834.severity = suggestion
+
+# CA1835: 'ReadAsync' および 'WriteAsync' で 'Memory' ベースのオーバーロードを優先的に使用する
+dotnet_diagnostic.CA1835.severity = suggestion
+
+# CA1836: Count より IsEmpty を優先する
+dotnet_diagnostic.CA1836.severity = suggestion
+
+# CA1837: 'Environment.ProcessId' を使用する
+dotnet_diagnostic.CA1837.severity = suggestion
+
+# CA1838: P/Invoke の 'StringBuilder' パラメーターを使用しない
+dotnet_diagnostic.CA1838.severity = silent
+
+# CA2000: スコープを失う前にオブジェクトを破棄
+dotnet_diagnostic.CA2000.severity = error
+
+# CA2002: 弱い ID を伴うオブジェクト上でロックしません
+dotnet_diagnostic.CA2002.severity = warning
+
+# CA2007: 待機中のタスクでの ConfigureAwait の呼び出しを検討してください
+dotnet_diagnostic.CA2007.severity = warning
+
+# CA2008: TaskScheduler を渡さずにタスクを作成しない
+dotnet_diagnostic.CA2008.severity = warning
+
+# CA2009: ImmutableCollection 値で ToImmutableCollection を呼び出さないでください
+dotnet_diagnostic.CA2009.severity = suggestion
+
+# CA2011: 無限再帰の回避
+dotnet_diagnostic.CA2011.severity = suggestion
+
+# CA2012: ValueTask を正しく使用する必要があります
+dotnet_diagnostic.CA2012.severity = suggestion
+
+# CA2013: 値の型で ReferenceEquals を使用しない
+dotnet_diagnostic.CA2013.severity = warning
+
+# CA2014: stackalloc はループ内で使用不可
+dotnet_diagnostic.CA2014.severity = warning
+
+# CA2015: MemoryManager<T> から派生した型にはファイナライザーを定義しないでください
+dotnet_diagnostic.CA2015.severity = warning
+
+# CA2100: SQL クエリのセキュリティ脆弱性を確認
+dotnet_diagnostic.CA2100.severity = warning
+
+# CA2101: P/Invoke 文字列引数に対してマーシャリングを指定します
+dotnet_diagnostic.CA2101.severity = suggestion
+
+# CA2109: 表示するイベント ハンドラーを確認します
+dotnet_diagnostic.CA2109.severity = warning
+
+# CA2119: プライベート インターフェイスを満たすメソッドをシールします
+dotnet_diagnostic.CA2119.severity = none
+
+# CA2153: 破損状態例外をキャッチしません
+dotnet_diagnostic.CA2153.severity = warning
+
+# CA2200: スタック詳細を保持するために再度スローします
+dotnet_diagnostic.CA2200.severity = warning
+
+# CA2201: 予約された例外の種類を発生させません
+dotnet_diagnostic.CA2201.severity = silent
+
+# CA2207: 値型の静的フィールドをインラインで初期化します
+dotnet_diagnostic.CA2207.severity = warning
+
+# CA2208: 引数の例外を正しくインスタンス化します
+dotnet_diagnostic.CA2208.severity = suggestion
+
+# CA2211: 非定数フィールドは表示されません
+dotnet_diagnostic.CA2211.severity = suggestion
+
+# CA2213: 破棄可能なフィールドは破棄しなければなりません
+dotnet_diagnostic.CA2213.severity = error
+
+# CA2214: コンストラクターのオーバーライド可能なメソッドを呼び出しません
+dotnet_diagnostic.CA2214.severity = warning
+
+# CA2215: Dispose メソッドが基底クラスの Dispose を呼び出す必要があります
+dotnet_diagnostic.CA2215.severity = silent
+
+# CA2216: 破棄可能な型はファイナライザーを宣言しなければなりません
+dotnet_diagnostic.CA2216.severity = warning
+
+# CA2217: 列挙型を FlagsAttribute に設定しません
+dotnet_diagnostic.CA2217.severity = warning
+
+# CA2219: finally 句で例外を発生させません
+dotnet_diagnostic.CA2219.severity = suggestion
+
+# CA2225: 演算子オーバーロードには名前付けされた代替が存在します
+dotnet_diagnostic.CA2225.severity = warning
+
+# CA2226: 演算子は対称型オーバーロードを含まなければなりません
+dotnet_diagnostic.CA2226.severity = warning
+
+# CA2227: コレクション プロパティは読み取り専用でなければなりません
+dotnet_diagnostic.CA2227.severity = warning
+
+# CA2229: シリアル化コンストラクターを実装します
+dotnet_diagnostic.CA2229.severity = silent
+
+# CA2231: 値型 Equals のオーバーライドで、演算子 equals をオーバーロードします
+dotnet_diagnostic.CA2231.severity = suggestion
+
+# CA2235: すべてのシリアル化不可能なフィールドを設定します
+dotnet_diagnostic.CA2235.severity = warning
+
+# CA2237: ISerializable 型を serializable に設定します
+dotnet_diagnostic.CA2237.severity = warning
+
+# CA2241: 書式設定メソッドに正しい引数を指定します
+dotnet_diagnostic.CA2241.severity = suggestion
+
+# CA2242: NaN に対して正しくテストします
+dotnet_diagnostic.CA2242.severity = suggestion
+
+# CA2243: 属性文字列リテラルは、正しく解析する必要があります
+dotnet_diagnostic.CA2243.severity = warning
+
+# CA2244: インデックス付き要素の初期化を重複させないでください
+dotnet_diagnostic.CA2244.severity = suggestion
+
+# CA2245: プロパティはそれ自体に割り当て不可
+dotnet_diagnostic.CA2245.severity = suggestion
+
+# CA2246: 同じステートメントにシンボルとそのメンバーを割り当てる
+dotnet_diagnostic.CA2246.severity = suggestion
+
+# CA2247: TaskCompletionSource コンストラクターに渡される引数は、TaskContinuationOptions 列挙型ではなく TaskCreationOptions 列挙型であることが必要
+dotnet_diagnostic.CA2247.severity = warning
+
+# CA2248: 'Enum.HasFlag' に正しい 'enum' 引数を指定する
+dotnet_diagnostic.CA2248.severity = suggestion
+
+# CA2249: 'string.IndexOf' の代わりに 'string.Contains' を使用することを検討する
+dotnet_diagnostic.CA2249.severity = suggestion
+
+# CA2300: 安全でないデシリアライザー BinaryFormatter を使用しない
+dotnet_diagnostic.CA2300.severity = warning
+
+# CA2301: BinaryFormatter.Binder を設定せずに BinaryFormatter.Deserialize を呼び出さない
+dotnet_diagnostic.CA2301.severity = warning
+
+# CA2302: BinaryFormatter.Deserialize を呼び出す前に BinaryFormatter.Binder が設定されていることを確認する
+dotnet_diagnostic.CA2302.severity = warning
+
+# CA2305: 安全でないデシリアライザー LosFormatter を使用しない
+dotnet_diagnostic.CA2305.severity = warning
+
+# CA2310: 安全でないデシリアライザー NetDataContractSerializer を使用しない
+dotnet_diagnostic.CA2310.severity = warning
+
+# CA2311: NetDataContractSerializer.Binder を設定せずに逆シリアル化しない
+dotnet_diagnostic.CA2311.severity = warning
+
+# CA2312: 逆シリアル化の前に NetDataContractSerializer.Binder が設定されていることを確認する
+dotnet_diagnostic.CA2312.severity = warning
+
+# CA2315: 安全でないデシリアライザー ObjectStateFormatter を使用しない
+dotnet_diagnostic.CA2315.severity = warning
+
+# CA2321: SimpleTypeResolver を使用して JavaScriptSerializer で逆シリアル化できません
+dotnet_diagnostic.CA2321.severity = warning
+
+# CA2322: 逆シリアル化する前に JavaScriptSerializer が SimpleTypeResolver で初期化されていないことを確認します
+dotnet_diagnostic.CA2322.severity = warning
+
+# CA2326: None 以外の TypeNameHandling 値を使用しないでください
+dotnet_diagnostic.CA2326.severity = warning
+
+# CA2327: 安全でない JsonSerializerSettings を使用しない
+dotnet_diagnostic.CA2327.severity = warning
+
+# CA2328: JsonSerializerSettings がセキュリティで保護されていることの確認
+dotnet_diagnostic.CA2328.severity = warning
+
+# CA2329: 安全でない構成を使用している JsonSerializer で逆シリアル化をしない
+dotnet_diagnostic.CA2329.severity = warning
+
+# CA2330: 逆シリアル化するときに JsonSerializer に安全な構成があることを確認する
+dotnet_diagnostic.CA2330.severity = warning
+
+# CA2350: 信頼されていないデータで DataTable.ReadXml() を使用しない
+dotnet_diagnostic.CA2350.severity = warning
+
+# CA2351: 信頼されていないデータで DataSet.ReadXml() を使用しない
+dotnet_diagnostic.CA2351.severity = warning
+
+# CA2352: シリアル化可能な型に含まれる安全でない DataSet または DataTable は、リモート コード実行攻撃に対して脆弱になる可能性があります
+dotnet_diagnostic.CA2352.severity = warning
+
+# CA2353: シリアル化可能な型に含まれる安全でない DataSet または DataTable
+dotnet_diagnostic.CA2353.severity = warning
+
+# CA2354: 逆シリアル化されたオブジェクト グラフに含まれる安全でない DataSet または DataTable は、リモート コード実行攻撃に対して脆弱になる可能性があります
+dotnet_diagnostic.CA2354.severity = warning
+
+# CA2355: 逆シリアル化可能なオブジェクト グラフに、安全でない DataSet または DataTable 型が見つかりました
+dotnet_diagnostic.CA2355.severity = warning
+
+# CA2356: Web の逆シリアル化可能なオブジェクト グラフに含まれる安全でない DataSet または DataTable 型
+dotnet_diagnostic.CA2356.severity = warning
+
+# CA2361: DataSet.ReadXml() を含む自動生成クラスが信頼されていないデータで使用されていないことを確認する
+dotnet_diagnostic.CA2361.severity = warning
+
+# CA2362: シリアル化可能な自動生成型に含まれる安全でない DataSet または DataTable は、リモート コード実行攻撃に対して脆弱になる可能性があります
+dotnet_diagnostic.CA2362.severity = warning
+
+# CA3001: コードをレビューし、SQL インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3001.severity = warning
+
+# CA3002: コードをレビューし、XSS の脆弱性を確認する
+dotnet_diagnostic.CA3002.severity = warning
+
+# CA3003: コードをレビューし、ファイル パス インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3003.severity = warning
+
+# CA3004: コードをレビューし、情報漏えいの脆弱性を確認する
+dotnet_diagnostic.CA3004.severity = warning
+
+# CA3005: コードをレビューし、LDAP インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3005.severity = warning
+
+# CA3006: コードをレビューし、プロセス コマンド インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3006.severity = warning
+
+# CA3007: コードをレビューし、オープン リダイレクトの脆弱性を確認する
+dotnet_diagnostic.CA3007.severity = warning
+
+# CA3008: コードをレビューし、XPath インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3008.severity = warning
+
+# CA3009: コードをレビューし、XML インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3009.severity = warning
+
+# CA3010: コードをレビューし、XAML インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3010.severity = warning
+
+# CA3011: コードをレビューし、DLL インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3011.severity = warning
+
+# CA3012: コードをレビューし、正規表現インジェクションの脆弱性を確認する
+dotnet_diagnostic.CA3012.severity = warning
+
+# CA3061: URL でスキーマを追加しない
+dotnet_diagnostic.CA3061.severity = silent
+
+# CA3075: XML での DTD 処理が安全ではありません
+dotnet_diagnostic.CA3075.severity = silent
+
+# CA3147: 偽造防止トークンの検証での動詞ハンドラーのマーク
+dotnet_diagnostic.CA3147.severity = silent
+
+# CA5350: 脆弱な暗号アルゴリズムを使用しない
+dotnet_diagnostic.CA5350.severity = silent
+
+# CA5351: 破られた暗号アルゴリズムを使用しない
+dotnet_diagnostic.CA5351.severity = silent
+
+# CA5358: 暗号の専門家と暗号モードの使用を再検討する
+dotnet_diagnostic.CA5358.severity = warning
+
+# CA5359: 証明書の検証を無効にしません
+dotnet_diagnostic.CA5359.severity = silent
+
+# CA5360: 逆シリアル化で危険なメソッドを呼び出さないでください
+dotnet_diagnostic.CA5360.severity = silent
+
+# CA5361: SChannel による強力な暗号の使用を無効にしません
+dotnet_diagnostic.CA5361.severity = warning
+
+# CA5362: 逆シリアル化されたオブジェクト グラフ内の参照サイクルの可能性
+dotnet_diagnostic.CA5362.severity = warning
+
+# CA5363: 要求の検証を無効にしない
+dotnet_diagnostic.CA5363.severity = silent
+
+# CA5364: 非推奨のセキュリティ プロトコルを使用しない
+dotnet_diagnostic.CA5364.severity = silent
+
+# CA5365: HTTP ヘッダーのチェックを無効にしない
+dotnet_diagnostic.CA5365.severity = silent
+
+# CA5366: DataSet Read Xml に XmlReader を使用する
+dotnet_diagnostic.CA5366.severity = silent
+
+# CA5367: ポインター フィールドを持つ型をシリアル化しない
+dotnet_diagnostic.CA5367.severity = warning
+
+# CA5368: ページから派生したクラスに ViewStateUserKey を設定する
+dotnet_diagnostic.CA5368.severity = silent
+
+# CA5369: 逆シリアル化に XmlReader を使用する
+dotnet_diagnostic.CA5369.severity = silent
+
+# CA5370: リーダーの検証に XmlReader を使用する
+dotnet_diagnostic.CA5370.severity = silent
+
+# CA5371: スキーマの読み取りに XmlReader を使用する
+dotnet_diagnostic.CA5371.severity = silent
+
+# CA5372: XPathDocument に XmlReader を使用する
+dotnet_diagnostic.CA5372.severity = silent
+
+# CA5373: 非推奨のキー派生関数を使用しないでください
+dotnet_diagnostic.CA5373.severity = silent
+
+# CA5374: XslTransform を使用しないでください
+dotnet_diagnostic.CA5374.severity = silent
+
+# CA5375: アカウントの Shared Access Signature を使用しない
+dotnet_diagnostic.CA5375.severity = warning
+
+# CA5376: SharedAccessProtocol HttpsOnly を使用する
+dotnet_diagnostic.CA5376.severity = warning
+
+# CA5377: コンテナー レベルのアクセス ポリシーを使用する
+dotnet_diagnostic.CA5377.severity = warning
+
+# CA5378: ServicePointManagerSecurityProtocols を無効にしないでください
+dotnet_diagnostic.CA5378.severity = warning
+
+# CA5379: 弱いキー派生関数アルゴリズムを使用しないでください
+dotnet_diagnostic.CA5379.severity = silent
+
+# CA5380: ルート ストアに証明書を追加しない
+dotnet_diagnostic.CA5380.severity = warning
+
+# CA5381: 証明書がルート ストアに追加されていないことを確認する
+dotnet_diagnostic.CA5381.severity = warning
+
+# CA5382: ASP.Net Core で安全な Cookie を使用します
+dotnet_diagnostic.CA5382.severity = warning
+
+# CA5383: ASP.Net Core で安全な Cookie を使用することを確認します
+dotnet_diagnostic.CA5383.severity = warning
+
+# CA5384: デジタル署名アルゴリズム (DSA) を使用しない
+dotnet_diagnostic.CA5384.severity = silent
+
+# CA5385: 十分なキー サイズの Rivest–Shamir–Adleman (RSA) アルゴリズムを使用します
+dotnet_diagnostic.CA5385.severity = silent
+
+# CA5386: SecurityProtocolType の値をハードコードしない
+dotnet_diagnostic.CA5386.severity = warning
+
+# CA5387: 反復回数が十分でない弱いキー派生関数は使用しないでください
+dotnet_diagnostic.CA5387.severity = warning
+
+# CA5388: 弱いキー派生関数を使用する場合は十分な反復回数を確保してください
+dotnet_diagnostic.CA5388.severity = warning
+
+# CA5389: アーカイブ項目のパスをターゲット ファイル システム パスに追加しない
+dotnet_diagnostic.CA5389.severity = warning
+
+# CA5390: 暗号化キーをハードコーディングしない
+dotnet_diagnostic.CA5390.severity = warning
+
+# CA5391: ASP.NET Core MVC コントローラーで偽造防止トークンを使用する
+dotnet_diagnostic.CA5391.severity = warning
+
+# CA5392: P/Invoke に対して DefaultDllImportSearchPaths 属性を使用する
+dotnet_diagnostic.CA5392.severity = warning
+
+# CA5393: 安全でない DllImportSearchPath 値を使用しない
+dotnet_diagnostic.CA5393.severity = warning
+
+# CA5394: 安全でないランダム度を使用しない
+dotnet_diagnostic.CA5394.severity = warning
+
+# CA5395: アクション メソッドの HttpVerb 属性がない
+dotnet_diagnostic.CA5395.severity = warning
+
+# CA5396: HttpCookie で HttpOnly を true に設定する
+dotnet_diagnostic.CA5396.severity = warning
+
+# CA5397: SslProtocols の非推奨の値を使用しない
+dotnet_diagnostic.CA5397.severity = silent
+
+# CA5398: ハードコードされた SslProtocols の値を使用しない
+dotnet_diagnostic.CA5398.severity = warning
+
+# CA5399: HttpClients では証明書失効リストの確認を有効にする必要があります
+dotnet_diagnostic.CA5399.severity = warning
+
+# CA5400: HttpClient 証明書失効リストの確認が無効になっていないことをご確認ください
+dotnet_diagnostic.CA5400.severity = warning
+
+# CA5401: 既定以外の IV で CreateEncryptor を使用しない
+dotnet_diagnostic.CA5401.severity = warning
+
+# CA5402: 既定の IV で CreateEncryptor を使用する 
+dotnet_diagnostic.CA5402.severity = warning
+
+# CA5403: 証明書をハードコーディングしない
+dotnet_diagnostic.CA5403.severity = warning
+
+# IL3000: 単一ファイルとして発行するときにアセンブリ ファイル パスへのアクセスを使用しない
+dotnet_diagnostic.IL3000.severity = warning
+
+# IL3001: 単一ファイルとして発行するときにアセンブリ ファイル パスへのアクセスを使用しない
+dotnet_diagnostic.IL3001.severity = warning
+
+# IDE0036: 修飾子を順序付けます
+dotnet_diagnostic.IDE0036.severity = warning
+
+# IDE0044: 読み取り専用修飾子を追加します
+dotnet_diagnostic.IDE0044.severity = warning
+
+# IDE1006: 命名スタイル
+dotnet_diagnostic.IDE1006.severity = warning
+
+# IDE0052: 読み取られていないプライベート メンバーを削除
+dotnet_diagnostic.IDE0052.severity = warning
+
+# IDE0051: 使用されていないプライベート メンバーを削除する
+dotnet_diagnostic.IDE0051.severity = warning
+
+# IDE0019: パターン マッチングを使用します
+dotnet_diagnostic.IDE0019.severity = warning
+
+# IDE0018: インライン変数宣言
+dotnet_diagnostic.IDE0018.severity = warning
+
+# SA1503: Braces should not be omitted
+dotnet_diagnostic.SA1503.severity = none
+
+# SA1513: Closing brace should be followed by blank line
+dotnet_diagnostic.SA1513.severity = none
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1208: System using directives should be placed before other using directives
+dotnet_diagnostic.SA1208.severity = none
+
+# SA1201: Elements should appear in the correct order
+dotnet_diagnostic.SA1201.severity = none
+
+# SA1202: Elements should be ordered by access
+dotnet_diagnostic.SA1202.severity = none
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1516: Elements should be separated by blank line
+dotnet_diagnostic.SA1516.severity = none
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1300: Element should begin with upper-case letter
+dotnet_diagnostic.SA1300.severity = none
+
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none
+
+# SA1005: Single line comments should begin with single space
+dotnet_diagnostic.SA1005.severity = none
+
+# SA1000: Keywords should be spaced correctly
+dotnet_diagnostic.SA1000.severity = none
+
+# SA1512: Single-line comments should not be followed by blank line
+dotnet_diagnostic.SA1512.severity = none
+
+# SA1515: Single-line comment should be preceded by blank line
+dotnet_diagnostic.SA1515.severity = none
+
+# SA1629: Documentation text should end with a period
+dotnet_diagnostic.SA1629.severity = none
+
+# SA1642: Constructor summary documentation should begin with standard text
+dotnet_diagnostic.SA1642.severity = none
+
+# SA1504: All accessors should be single-line or multi-line
+dotnet_diagnostic.SA1504.severity = none
+
+# SA1502: Element should not be on a single line
+dotnet_diagnostic.SA1502.severity = none
+
+# SA1407: Arithmetic expressions should declare precedence
+dotnet_diagnostic.SA1407.severity = none
+
+# SA1405: Debug.Assert should provide message text
+dotnet_diagnostic.SA1405.severity = none
+
+# SA1401: Fields should be private
+dotnet_diagnostic.SA1401.severity = none
+
+# SA1131: Use readable conditions
+dotnet_diagnostic.SA1131.severity = none
+
+# SA1124: Do not use regions
+dotnet_diagnostic.SA1124.severity = none
+
+# SA1121: Use built-in type alias
+dotnet_diagnostic.SA1121.severity = none
+
+# IDE0049: 名前を単純化します
+dotnet_diagnostic.IDE0049.severity = warning
+
+# SA1204: Static elements should appear before instance elements
+dotnet_diagnostic.SA1204.severity = none
+
+# SA1206: Declaration keywords should follow order
+dotnet_diagnostic.SA1206.severity = none
