@@ -90,7 +90,7 @@ namespace UnitTestProject
                 AppDataSerializeService.WriteToStream(orgApp, writer);
                 writer.Flush();
                 stream.Position = 0;
-                var loadedApp = AppDataSerializeService.LoadFromStream(reader.ReadToEnd(), false);
+                var loadedApp = AppDataSerializeService.LoadFromStream(reader, false);
                 Assert.AreEqual<AppData>(orgApp, loadedApp);
             }
         }

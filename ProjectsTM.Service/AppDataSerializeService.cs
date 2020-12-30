@@ -2,6 +2,7 @@
 using ProjectsTM.Model;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -28,15 +29,15 @@ namespace ProjectsTM.Service
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader.ReadToEnd(), IsOldFormat(fileName));
+                return LoadFromStream(reader, IsOldFormat(fileName));
             }
         }
 
-        public static AppData LoadFromStream(string text, bool isOld)
+        public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
             XmlDocument doc = new XmlDocument();
             doc.PreserveWhitespace = false;
-            doc.LoadXml(text);
+            doc.Load(reader);
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
                 if (isOld)
@@ -53,7 +54,9 @@ namespace ProjectsTM.Service
 
         public static AppData DeserializeFileContent(string xml)
         {
-            return LoadFromStream(xml, IsOldFomatFileContent(new StringReader(xml)));
+            byte[] byteArray = Encoding.UTF8.GetBytes(xml);
+            MemoryStream stream = new MemoryStream(byteArray);
+            return LoadFromStream(new StreamReader(stream), IsOldFomatFileContent(new StringReader(xml)));
         }
 
         private static bool IsOldFormat(string path)
