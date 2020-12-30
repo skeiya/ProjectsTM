@@ -3,27 +3,38 @@ using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.MainForm
 {
     public partial class ManagementWokingDaysForm : BaseForm
     {
-        private Callender _callender;
+        private List<CallenderDay> _days;
         private readonly WorkItems _workItems;
-
-        public ManagementWokingDaysForm(Callender callender, WorkItems workItems)
+        private event EventHandler<IEnumerable<CallenderDay>> UpdateWokingDays;
+        public ManagementWokingDaysForm(Callender callender, WorkItems workItems, EventHandler<IEnumerable<CallenderDay>> updateWokinggDays)
         {
             InitializeComponent();
-            this._callender = callender;
+            this._days = new List<CallenderDay>();
+            foreach (var d in callender.Days) _days.Add(d);
             this._workItems = workItems;
+            this.UpdateWokingDays += updateWokinggDays;
+            ApplyEdit();
+        }
+
+        private void ApplyEdit()
+        {
+            _days = _days.Distinct().ToList();
+            _days.Sort();
+            UpdateWokingDays?.Invoke(this, _days);
             UpdateListView();
         }
 
         private void UpdateListView()
         {
             listView1.Items.Clear();
-            foreach (var d in _callender.Days)
+            foreach (var d in _days)
             {
                 listView1.Items.Add(d.ToString());
             }
@@ -37,10 +48,9 @@ namespace ProjectsTM.UI.MainForm
             foreach (var d in selectedDays)
             {
                 if (!Deletable(d)) return;
-                _callender.Delete(d);
+                _days.Remove(d);
             }
-
-            UpdateListView();
+            ApplyEdit();
         }
 
         private bool Deletable(CallenderDay selectedDay)
@@ -84,10 +94,9 @@ namespace ProjectsTM.UI.MainForm
             {
                 var d = CallenderDay.Parse(day.ToShortDateString());
                 if (d == null) continue;
-                _callender.Days.Add(d);
+                _days.Add(d);
             }
-            _callender.Days.Sort();
-            UpdateListView();
+            ApplyEdit();
         }
 
         private void ButtonImport_Click(object sender, EventArgs e)
@@ -98,11 +107,10 @@ namespace ProjectsTM.UI.MainForm
                 var cal = CsvReadService.ReadWorkingDays(dlg.FileName);
                 foreach (var d in cal.Days)
                 {
-                    _callender.Days.Add(d);
+                    _days.Add(d);
                 }
-                _callender.Days.Sort();
             }
-            UpdateListView();
+            ApplyEdit();
         }
     }
 }

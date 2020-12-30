@@ -21,6 +21,13 @@ namespace ProjectsTM.Model
             }
         }
 
+        public void UpdateDays(object sender, IEnumerable<CallenderDay> days)
+        {
+            Days = new List<CallenderDay>();
+            foreach (var d in days) Days.Add(d);
+            _nearestDayCache.Clear();
+        }
+
         public void Delete(CallenderDay d)
         {
             Days.Remove(d);
