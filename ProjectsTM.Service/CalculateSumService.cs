@@ -50,7 +50,7 @@ namespace ProjectsTM.Service
         private static int CalculateMember(ViewData _viewData, Member m)
         {
             var sumOfMember = 0;
-            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(m))
             {
                 sumOfMember += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
             }

@@ -73,5 +73,35 @@ namespace ProjectsTM.ViewModel
         {
             return members.Where(m => _filter.ShowMembers.Contains(m)).ToList();
         }
+
+        public WorkItem PickWorkItem(Member m, CallenderDay d)
+        {
+            if (m == null) return null;
+            foreach (var wi in GetWorkItemsOfMember(m))
+            {
+                if (wi.Period.Contains(d)) return wi;
+            }
+            return null;
+        }
+
+        public MembersWorkItems GetWorkItemsOfMember(Member m)
+        {
+            var result = new MembersWorkItems();
+            foreach (var w in _appData.WorkItems.OfMember(m))
+            {
+                if (!string.IsNullOrEmpty(_filter.WorkItem))
+                {
+                    if (IsFilteredWorkItem(w)) continue;
+                }
+                result.Add(w);
+            }
+            return result;
+        }
+
+        private bool IsFilteredWorkItem(WorkItem w)
+        {
+            if (string.IsNullOrEmpty(_filter.WorkItem)) return false;
+            return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
+        }
     }
 }

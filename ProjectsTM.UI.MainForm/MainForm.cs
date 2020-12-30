@@ -336,7 +336,7 @@ namespace ProjectsTM.UI.MainForm
 
         private bool IsMemberMatchText(Member m, string text)
         {
-            return _viewData.GetFilteredWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
+            return _viewData.FilteredItems.GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)

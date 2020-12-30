@@ -113,7 +113,7 @@ namespace ProjectsTM.Service
         private WorkItems GetSameMemberAfterItems(WorkItem s)
         {
             var result = new WorkItems();
-            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
+            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(s.AssignedMember))
             {
                 if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
                 {

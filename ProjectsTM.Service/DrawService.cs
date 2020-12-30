@@ -217,7 +217,7 @@ namespace ProjectsTM.Service
             var topDay = _grid.Row2Day(top);
             if (topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
-            foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
+            foreach (var wi in _viewData.FilteredItems.GetWorkItemsOfMember(m))
             {
                 if (!wi.Period.HasInterSection(new Period(topDay, buttomDay))) continue;
                 yield return wi;

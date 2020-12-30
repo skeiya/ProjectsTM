@@ -105,7 +105,7 @@ namespace ProjectsTM.ViewModel
             if (Filter.IsFreeTimeMemberShow) return;
             var members = FilteredItems.Members;
             if (members == null || members.Count() == 0) return;
-            var freeTimeMember = members.Where(m => !GetFilteredWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
+            var freeTimeMember = members.Where(m => !FilteredItems.GetWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
             foreach (var m in freeTimeMember)
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
@@ -127,36 +127,6 @@ namespace ProjectsTM.ViewModel
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
             }
-        }
-
-        public WorkItem PickFilterdWorkItem(Member m, CallenderDay d)
-        {
-            if (m == null) return null;
-            foreach (var wi in GetFilteredWorkItemsOfMember(m))
-            {
-                if (wi.Period.Contains(d)) return wi;
-            }
-            return null;
-        }
-
-        public MembersWorkItems GetFilteredWorkItemsOfMember(Member m)
-        {
-            var result = new MembersWorkItems();
-            foreach (var w in Original.WorkItems.OfMember(m))
-            {
-                if (!string.IsNullOrEmpty(Filter.WorkItem))
-                {
-                    if (IsFilteredWorkItem(w)) continue;
-                }
-                result.Add(w);
-            }
-            return result;
-        }
-
-        public bool IsFilteredWorkItem(WorkItem w)
-        {
-            if (string.IsNullOrEmpty(Filter.WorkItem)) return false;
-            return !Regex.IsMatch(w.ToString(), Filter.WorkItem);
         }
 
         public bool SelectNextWorkItem(bool prev)

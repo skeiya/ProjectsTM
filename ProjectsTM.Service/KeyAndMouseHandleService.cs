@@ -169,7 +169,7 @@ namespace ProjectsTM.Service
             if (_workItemDragService.IsActive()) return;
             if (_grid.IsFixedArea(location)) { UpdateHoveringMileStoneText(location); return; }
             RawPoint cur = _grid.Client2Raw(location);
-            var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
+            var wi = _viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi);
         }
 
@@ -283,7 +283,7 @@ namespace ProjectsTM.Service
             foreach (var c in _grid.VisibleRowColRange.Cols)
             {
                 var m = _grid.Col2Member(c);
-                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+                foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(m))
                 {
                     var rect = _grid.GetWorkItemDrawRectClient(w, members);
                     if (!rect.HasValue) continue;
