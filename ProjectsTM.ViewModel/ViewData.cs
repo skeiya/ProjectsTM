@@ -14,7 +14,7 @@ namespace ProjectsTM.ViewModel
             private set 
             {
                 filter = value;
-                FilteredItems = new FilteredItems(Original, value); 
+                UpdateFilteredItems();
             } 
         }
         public FilteredItems FilteredItems { get; private set; }
@@ -28,8 +28,14 @@ namespace ProjectsTM.ViewModel
             _appData = appData;
             UndoService = undoService;
             UpdateFilter();
+            UpdateFilteredItems();
             UpdateShowMembers();
             AppDataChanged?.Invoke(this, null);
+        }
+
+        private void UpdateFilteredItems()
+        {
+            FilteredItems = new FilteredItems(Original, filter);
         }
 
         private void UpdateFilter()
