@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
         public int Calculate(ViewData viewData, List<Member> updatedMembers)
         {
             UpdateCache(viewData, updatedMembers);
-            var filteredMembers = viewData.GetFilteredMembers();
+            var filteredMembers = viewData.FilteredItems.Members;
             return _sumCache.Where((i) => filteredMembers.Contains(i.Key)).Sum((i) => i.Value);
         }
 

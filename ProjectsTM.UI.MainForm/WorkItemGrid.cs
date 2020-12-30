@@ -44,8 +44,8 @@ namespace ProjectsTM.UI.MainForm
             AttachEvents();
             this.FixedRowCount = WorkItemGridConstants.FixedRows;
             this.FixedColCount = WorkItemGridConstants.FixedCols;
-            this.RowCount = _viewData.GetFilteredDays().Count + this.FixedRowCount;
-            this.ColCount = _viewData.GetFilteredMembers().Count() + this.FixedColCount;
+            this.RowCount = _viewData.FilteredItems.Days.Count + this.FixedRowCount;
+            this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
@@ -137,12 +137,12 @@ namespace ProjectsTM.UI.MainForm
 
         public ColIndex Member2Col(Member m)
         {
-            return Member2Col(m, _viewData.GetFilteredMembers());
+            return Member2Col(m, _viewData.FilteredItems.Members);
         }
 
         public Rectangle? GetMemberDrawRect(Member m)
         {
-            var col = Member2Col(m, _viewData.GetFilteredMembers());
+            var col = Member2Col(m, _viewData.FilteredItems.Members);
             var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
             if (!rect.HasValue) return null;
             return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
@@ -238,7 +238,7 @@ namespace ProjectsTM.UI.MainForm
 
         public void AddNewWorkItem(WorkItem proto)
         {
-            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(proto, _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
@@ -252,7 +252,7 @@ namespace ProjectsTM.UI.MainForm
         {
             var wi = GetUniqueSelect();
             if (wi == null) return;
-            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
@@ -324,7 +324,7 @@ namespace ProjectsTM.UI.MainForm
             if (wi != null)
             {
                 var rowRange = GetRowRange(wi);
-                MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.GetFilteredMembers()));
+                MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.FilteredItems.Members));
             }
             this.Invalidate();
         }
@@ -334,7 +334,7 @@ namespace ProjectsTM.UI.MainForm
             if (day == null || m == null) return;
             var row = Day2Row(day);
             if (row == null) return;
-            MoveVisibleRowCol(row, Member2Col(m, _viewData.GetFilteredMembers()));
+            MoveVisibleRowCol(row, Member2Col(m, _viewData.FilteredItems.Members));
         }
 
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
@@ -382,7 +382,7 @@ namespace ProjectsTM.UI.MainForm
 
         internal void MoveToTodayMe(string userName)
         {
-            var user = _viewData.GetFilteredMembers().FirstOrDefault(m => m.NaturalString.Equals(userName));
+            var user = _viewData.FilteredItems.Members.FirstOrDefault(m => m.NaturalString.Equals(userName));
             if (user == null) return;
             MoveToTodayAndMember(user);
         }
@@ -429,7 +429,7 @@ namespace ProjectsTM.UI.MainForm
             int count = 0;
             foreach (var d in _viewData.Original.Callender.GetPediodDays(wi.Period))
             {
-                if (!_viewData.GetFilteredDays().Contains(d)) continue;
+                if (!_viewData.FilteredItems.Days.Contains(d)) continue;
                 if (row == null)
                 {
                     row = Day2Row(d);

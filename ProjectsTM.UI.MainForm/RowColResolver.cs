@@ -33,7 +33,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (_row2DayChache.TryGetValue(r, out var day)) return day;
             if (r == null) return null;
-            var days = _viewData.GetFilteredDays();
+            var days = _viewData.FilteredItems.Days;
             if (r.Value - _grid.FixedRowCount < 0 || days.Count <= r.Value - _grid.FixedRowCount) return null;
             day = days.ElementAt(r.Value - _grid.FixedRowCount);
             _row2DayChache.Add(r, day);
@@ -61,7 +61,7 @@ namespace ProjectsTM.UI.MainForm
             if (_day2RowCache.TryGetValue(day, out var row)) return row;
             foreach (var r in RowIndex.Range(_grid.FixedRowCount, _grid.RowCount - _grid.FixedRowCount))
             {
-                if (_viewData.GetFilteredDays().ElementAt(r.Value - _grid.FixedRowCount).Equals(day))
+                if (_viewData.FilteredItems.Days.ElementAt(r.Value - _grid.FixedRowCount).Equals(day))
                 {
                     _day2RowCache.Add(day, r);
                     return r;
@@ -74,9 +74,9 @@ namespace ProjectsTM.UI.MainForm
         {
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
             if (c == null) return null;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return null;
-            var result = _viewData.GetFilteredMembers().ElementAt(c.Value - _grid.FixedColCount);
+            var result = _viewData.FilteredItems.Members.ElementAt(c.Value - _grid.FixedColCount);
             _col2MemberChache.Add(c, result);
             return result;
         }

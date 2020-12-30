@@ -103,7 +103,7 @@ namespace ProjectsTM.Service
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.GetFilteredMembers());
+                var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.FilteredItems.Members);
                 if (!bounds.HasValue) return 0;
                 if (IsTopBar(bounds.Value, location)) return +1;
                 if (IsBottomBar(bounds.Value, location)) return -1;
@@ -144,7 +144,7 @@ namespace ProjectsTM.Service
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.GetFilteredMembers());
+                var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.FilteredItems.Members);
                 if (!bounds.HasValue) continue;
                 if (IsTopBar(bounds.Value, location)) return w;
                 if (IsBottomBar(bounds.Value, location)) return w;
@@ -278,7 +278,7 @@ namespace ProjectsTM.Service
         {
             var range = _grid.GetRangeSelectBound();
             if (!range.HasValue) return;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             var selected = new WorkItems();
             foreach (var c in _grid.VisibleRowColRange.Cols)
             {

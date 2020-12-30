@@ -327,7 +327,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.GetFilteredWorkItems(), IsMemberMatchText, _patternHistory, _viewData.Original.MileStones))
+            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.FilteredItems.WorkItems, IsMemberMatchText, _patternHistory, _viewData.Original.MileStones))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
