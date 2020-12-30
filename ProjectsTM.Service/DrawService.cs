@@ -121,7 +121,7 @@ namespace ProjectsTM.Service
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isAllDraw)
         {
             var range = _grid.VisibleRowColRange;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
 
             foreach (var c in range.Cols)
             {
@@ -138,7 +138,7 @@ namespace ProjectsTM.Service
             var curOnRaw = _grid.Global2Raw(Cursor.Position);
             var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
 
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             if (curWi == null)
             {
                 DrawCursorBackgroundRectangle(g, curOnRaw);
@@ -197,7 +197,7 @@ namespace ProjectsTM.Service
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             var font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, false);
             var range = _grid.VisibleRowColRange;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
@@ -217,7 +217,7 @@ namespace ProjectsTM.Service
             var topDay = _grid.Row2Day(top);
             if (topDay == null) yield break;
             var buttomDay = _grid.Row2Day(top.Offset(count - 1));
-            foreach (var wi in _viewData.GetFilteredWorkItemsOfMember(m))
+            foreach (var wi in _viewData.FilteredItems.GetWorkItemsOfMember(m))
             {
                 if (!wi.Period.HasInterSection(new Period(topDay, buttomDay))) continue;
                 yield return wi;
@@ -322,7 +322,7 @@ namespace ProjectsTM.Service
         private void DrawSameNameWorkItem(Graphics g, Font font)
         {
             var range = _grid.VisibleRowColRange;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             foreach (var c in range.Cols)
             {
                 var m = _grid.Col2Member(c);
@@ -337,7 +337,7 @@ namespace ProjectsTM.Service
             if (_viewData.Selected == null) return;
             foreach (var w in _viewData.Selected)
             {
-                DrawWorkItemClient(w, Pens.LightGreen, font, g, _viewData.GetFilteredMembers());
+                DrawWorkItemClient(w, Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
             }
 
             DrawSameNameWorkItem(g, font);
@@ -346,7 +346,7 @@ namespace ProjectsTM.Service
             {
                 foreach (var w in _viewData.Selected)
                 {
-                    var rect = _grid.GetWorkItemDrawRectClient(w, _viewData.GetFilteredMembers());
+                    var rect = _grid.GetWorkItemDrawRectClient(w, _viewData.FilteredItems.Members);
                     if (rect.HasValue)
                     {
                         DrawTopDragBar(g, rect.Value);

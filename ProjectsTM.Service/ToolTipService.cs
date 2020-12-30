@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
         {
-            foreach (var w in _viewData.GetFilteredWorkItems())
+            foreach (var w in _viewData.FilteredItems.WorkItems)
             {
                 if (w.Name != hoveringWorkItem.Name) continue;
                 if (w.Equals(hoveringWorkItem)) continue;

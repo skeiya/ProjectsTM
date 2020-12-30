@@ -103,7 +103,7 @@ namespace ProjectsTM.Service
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.GetFilteredMembers());
+                var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.FilteredItems.Members);
                 if (!bounds.HasValue) return 0;
                 if (IsTopBar(bounds.Value, location)) return +1;
                 if (IsBottomBar(bounds.Value, location)) return -1;
@@ -144,7 +144,7 @@ namespace ProjectsTM.Service
             if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
-                var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.GetFilteredMembers());
+                var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.FilteredItems.Members);
                 if (!bounds.HasValue) continue;
                 if (IsTopBar(bounds.Value, location)) return w;
                 if (IsBottomBar(bounds.Value, location)) return w;
@@ -169,7 +169,7 @@ namespace ProjectsTM.Service
             if (_workItemDragService.IsActive()) return;
             if (_grid.IsFixedArea(location)) { UpdateHoveringMileStoneText(location); return; }
             RawPoint cur = _grid.Client2Raw(location);
-            var wi = _viewData.PickFilterdWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
+            var wi = _viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
             HoveringTextChanged?.Invoke(this, wi);
         }
 
@@ -278,12 +278,12 @@ namespace ProjectsTM.Service
         {
             var range = _grid.GetRangeSelectBound();
             if (!range.HasValue) return;
-            var members = _viewData.GetFilteredMembers();
+            var members = _viewData.FilteredItems.Members;
             var selected = new WorkItems();
             foreach (var c in _grid.VisibleRowColRange.Cols)
             {
                 var m = _grid.Col2Member(c);
-                foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+                foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(m))
                 {
                     var rect = _grid.GetWorkItemDrawRectClient(w, members);
                     if (!rect.HasValue) continue;
