@@ -29,7 +29,8 @@ namespace ProjectsTM.UI.TaskList
         private WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
         private readonly int MAX_SORTABLE_DISTANCE = 20;
-        
+        public WorkItemEditService EditService => _editService;
+
         public TaskListGrid()
         {
             InitializeComponent();
@@ -261,7 +262,7 @@ namespace ProjectsTM.UI.TaskList
                     return;
                 }
             }
-            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
@@ -431,7 +432,7 @@ namespace ProjectsTM.UI.TaskList
                 soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, i);
                 if (soon != null) break;
             }
-            foreach (var wi in _viewData.GetFilteredWorkItems())
+            foreach (var wi in _viewData.FilteredItems.WorkItems)
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
                 if (IsNotEndError(wi))
@@ -477,7 +478,7 @@ namespace ProjectsTM.UI.TaskList
         {
             var list = new List<TaskListItem>();
             var audit = GetAuditList();
-            foreach (var wi in _viewData.GetFilteredWorkItems())
+            foreach (var wi in _viewData.FilteredItems.WorkItems)
             {
                 if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);

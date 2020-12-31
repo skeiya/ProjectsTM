@@ -53,16 +53,16 @@ namespace ProjectsTM.Service
             d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
             d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, divided);
 
-            _viewData.UndoService.Delete(selected);
-            _viewData.UndoService.Add(d1);
-            _viewData.UndoService.Add(d2);
-            _viewData.UndoService.Push();
-
             var workItems = _viewData.Original.WorkItems;
             _viewData.Selected = null;
             workItems.Remove(selected);
             workItems.Add(d1);
             workItems.Add(d2);
+
+            _viewData.UndoService.Delete(selected);
+            _viewData.UndoService.Add(d1);
+            _viewData.UndoService.Add(d2);
+            _viewData.UndoService.Push();
         }
 
         public void Replace(WorkItems before, WorkItems after)
@@ -90,14 +90,14 @@ namespace ProjectsTM.Service
 
             foreach (var w in newWis) w.State = state;
 
-            _viewData.UndoService.Delete(selected);
-            _viewData.UndoService.Add(newWis);
-            _viewData.UndoService.Push();
-
             var workItems = _viewData.Original.WorkItems;
             _viewData.Selected = null;
             workItems.Remove(selected);
             workItems.Add(newWis);
+
+            _viewData.UndoService.Delete(selected);
+            _viewData.UndoService.Add(newWis);
+            _viewData.UndoService.Push();
         }
 
         public void SelectAfterward(WorkItems starts)
@@ -113,7 +113,7 @@ namespace ProjectsTM.Service
         private WorkItems GetSameMemberAfterItems(WorkItem s)
         {
             var result = new WorkItems();
-            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
+            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(s.AssignedMember))
             {
                 if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
                 {
@@ -229,14 +229,14 @@ namespace ProjectsTM.Service
             }
             if (!divided.Any()) return;
 
-            _viewData.UndoService.Delete(divided);
-            _viewData.UndoService.Add(add);
-            _viewData.UndoService.Push();
-
             var workItems = _viewData.Original.WorkItems;
             workItems.Remove(divided);
             workItems.Add(add);
             _viewData.Selected = add;
+
+            _viewData.UndoService.Delete(divided);
+            _viewData.UndoService.Add(add);
+            _viewData.UndoService.Push();
         }
 
         internal void ShiftDays(int shift)

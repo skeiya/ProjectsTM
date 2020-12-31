@@ -53,11 +53,20 @@ namespace ProjectsTM.UI.TaskList
             return ToIndex(ColIds.DayCount).Equals(c);
         }
 
+        private static bool IsErrorCol(ColIndex c)
+        {
+            return ToIndex(ColIds.Error).Equals(c);
+        }
+
         internal static void Sort(ColIndex sortCol, ref List<TaskListItem> listItems, ViewData viewData)
         {
             if (IsDayCountCol(sortCol))
             {
                 listItems = listItems.OrderBy(l => viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period)).ToList();
+            }
+            else if (IsErrorCol(sortCol))
+            {
+                listItems = listItems.OrderByDescending(l => GetText(l, sortCol, viewData)).ToList();
             }
             else
             {
