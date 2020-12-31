@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -131,7 +130,7 @@ namespace ProjectsTM.UI.MainForm
         public AppData GetOldAppData(int monthsAgo)
         {
             var oldFileContent = GitRepositoryService.GetOldFileContentSomeMonthsAgo(_filePath, monthsAgo);
-            var oldAppData = AppDataSerializeService.DeserializeFileContent(oldFileContent);
+            var oldAppData = AppDataSerializeService.LoadFromString(oldFileContent);
             return oldAppData;
         }
 

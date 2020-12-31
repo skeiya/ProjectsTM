@@ -2,7 +2,6 @@
 using ProjectsTM.Model;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -52,22 +51,20 @@ namespace ProjectsTM.Service
             }
         }
 
-        public static AppData DeserializeFileContent(string xml)
+        public static AppData LoadFromString(string str)
         {
-            byte[] byteArray = Encoding.UTF8.GetBytes(xml);
-            MemoryStream stream = new MemoryStream(byteArray);
-            return LoadFromStream(new StreamReader(stream), IsOldFomatFileContent(new StringReader(xml)));
+            return LoadFromStream(StreamFactory.CreateReaderFromString(str), IsOldFormat(new StringReader(str)));
         }
 
         private static bool IsOldFormat(string path)
         {
             using (var reader = StreamFactory.CreateReader(path))
             {
-                return IsOldFomatFileContent(reader);
+                return IsOldFormat(reader);
             }
         }
 
-        private static bool IsOldFomatFileContent(TextReader reader)
+        private static bool IsOldFormat(TextReader reader)
         {
             var xml = XElement.Load(reader);
             if (!xml.Elements("Version").Any()) return true;
