@@ -17,6 +17,7 @@ namespace ProjectsTM.UI.MainForm
         private ViewData _viewData;
         private WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
+        private WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
         private DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
@@ -261,34 +262,19 @@ namespace ProjectsTM.UI.MainForm
                 _viewData.Selected = new WorkItems(newWi);
             }
         }
-        private WorkItem _copiedWorkItem;
-
         public void CopyWorkItem()
         {
-            if (_viewData.Selected == null) return;
-            if (_viewData.Selected.Count() != 1) return;
-
-            _copiedWorkItem = _viewData.Selected.Unique.Clone();
+            _workItemCopyPasteService.CopyWorkItem(_viewData.Selected);
         }
 
         public void PasteWorkItem()
         {
-            if (_copiedWorkItem == null) return;
+            _workItemCopyPasteService.PasteWorkItem(
+                CursorCallenderDay(),
+                CursorMember(),
+                _viewData.Original.Callender,
+                _editService.Add);
 
-            var cursorDay = CursorCallenderDay();
-            if (cursorDay == null) return;
-
-            var cursorMember = CursorMember();
-            if (cursorMember == null) return;
-
-            var copyItem = _copiedWorkItem.Clone();
-            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, cursorDay);
-            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
-            if (copyItem.Period == null) return;
-
-            copyItem.AssignedMember = cursorMember;
-
-            _editService.Add(copyItem);
         }
 
         public RawPoint Global2Raw(Point global)
