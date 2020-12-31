@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
         public int Calculate(ViewData viewData, List<Member> updatedMembers)
         {
             UpdateCache(viewData, updatedMembers);
-            var filteredMembers = viewData.GetFilteredMembers();
+            var filteredMembers = viewData.FilteredItems.Members;
             return _sumCache.Where((i) => filteredMembers.Contains(i.Key)).Sum((i) => i.Value);
         }
 
@@ -50,7 +50,7 @@ namespace ProjectsTM.Service
         private static int CalculateMember(ViewData _viewData, Member m)
         {
             var sumOfMember = 0;
-            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(m))
+            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(m))
             {
                 sumOfMember += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
             }
