@@ -19,6 +19,22 @@ namespace ProjectsTM.Service
             return new GitCmdRepository(repositoryDir);
         }
 
+        public static string GitOldCommitMonthsAgo(string path, int months)
+        {
+            var dir = Path.GetDirectoryName(path);
+            if (string.IsNullOrEmpty(dir)) return string.Empty;
+            var reader = new StringReader(GitCommandRaw("-C " + dir + " log -1 --before=" + months.ToString() +".month "+path));
+            return reader.ReadLine();
+        }
+
+        public static string GetOldFileContent(string path, string commitId)
+        {
+            var dir = Path.GetDirectoryName(path);
+            if (string.IsNullOrEmpty(dir) | string.IsNullOrEmpty(commitId)) return string.Empty;
+            var reader = new StringReader(GitCommandRaw("-C " + dir + " show " + commitId + ":./" + Path.GetFileName(path)));
+            return reader.ReadToEnd();
+        }
+
         private static string SearchGitRepoDir(string path)
         {
             var dir = Path.GetDirectoryName(path);

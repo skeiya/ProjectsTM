@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TrendChartBackgroundWorkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrendChartBackgroundWorkForm.Designer.cs">
+      <DependentUpon>TrendChartBackgroundWorkForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorConditionEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +150,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TrendChartBackgroundWorkForm.resx">
+      <DependentUpon>TrendChartBackgroundWorkForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ColorConditionEditorForm.resx">
       <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
     </EmbeddedResource>

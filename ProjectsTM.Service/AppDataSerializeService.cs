@@ -51,14 +51,25 @@ namespace ProjectsTM.Service
             }
         }
 
+        public static AppData LoadFromString(string str)
+        {
+            return LoadFromStream(StreamFactory.CreateReaderFromString(str), IsOldFormat(new StringReader(str)));
+        }
+
         private static bool IsOldFormat(string path)
         {
             using (var reader = StreamFactory.CreateReader(path))
             {
-                var xml = XElement.Load(reader);
-                var ver = int.Parse(xml.Element("Version").Value);
-                return ver < 5;
+                return IsOldFormat(reader);
             }
+        }
+
+        private static bool IsOldFormat(TextReader reader)
+        {
+            var xml = XElement.Load(reader);
+            if (!xml.Elements("Version").Any()) return true;
+            var ver = int.Parse(xml.Elements("Version").Single().Value);
+            return ver < 5;
         }
     }
 }

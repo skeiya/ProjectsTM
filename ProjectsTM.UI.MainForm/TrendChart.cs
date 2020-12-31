@@ -1,7 +1,10 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
+using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -10,31 +13,33 @@ namespace ProjectsTM.UI.MainForm
 {
     public partial class TrendChart : BaseForm
     {
-        private readonly WorkItems _workItems;
-        private readonly Callender _callender;
+        private readonly ViewData _viewData;
+        private readonly string _filePath;
+        private readonly FilterComboBoxService _filterComboBoxService;
 
-        private Dictionary<CallenderDay, int> _manDays;
+        private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(WorkItems workItems, Callender callender)
+        public TrendChart(AppData appData, string filePath,Func<Member, string, bool> isMemberMatchText)
         {
-            _workItems = workItems;
-            _callender = callender;
+            _viewData = new ViewData(appData, null);
+            _filePath = filePath;
             InitializeComponent();
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1, isMemberMatchText);
+            _filterComboBoxService.UpdateFilePart(filePath);
             InitCombo();
-            InitChart();
+            if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;
         }
 
         private void InitCombo()
         {
-            foreach (var ws in _workItems.EachMembers)
+            foreach (var ws in _viewData.Original.WorkItems.EachMembers)
             {
                 foreach (var proj in ws.GetProjects())
                 {
                     if (!comboBox1.Items.Contains(proj)) comboBox1.Items.Add(proj);
                 }
             }
-            if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;
         }
 
         private void InitChart()
@@ -55,13 +60,13 @@ namespace ProjectsTM.UI.MainForm
 
         private void DrawChart(string legend)
         {
-            var accumulation = 0;
+            var manDaysPoint = 0.0;
             foreach (var pair in _manDays.OrderBy(pair => pair.Key))
             {
-                var dateTime = Callender2DataTime(pair.Key);
-                if (dateTime == _invalidDate) continue;
-                accumulation += pair.Value;
-                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), accumulation);
+                var dateTime = pair.Key;
+                if (checkBox1.Checked) manDaysPoint = pair.Value;
+                else manDaysPoint += pair.Value;
+                chart1.Series[legend].Points.AddXY(dateTime.ToOADate(), manDaysPoint / 20);
             }
         }
 
@@ -79,21 +84,79 @@ namespace ProjectsTM.UI.MainForm
 
         private void UpdateManDays(Project proj)
         {
-            _manDays = new Dictionary<CallenderDay, int>();
-            foreach (var w in _workItems)
+            _manDays = new Dictionary<DateTime, int>();
+            Action<Project, BackgroundWorker, DoWorkEventArgs> CollectWorkItems;
+            if (checkBox1.Checked) CollectWorkItems = CollectOldTotalWorkItems;
+            else CollectWorkItems = CollectConsumedWorkItems;
+            using (var dlg = new TrendChartBackgroundWorkForm(CollectWorkItems, proj)) dlg.ShowDialog();
+        }
+
+        private void CollectOldTotalWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            var monthsCount = 12;
+            for (int monthsAgo = 0; monthsAgo < monthsCount; monthsAgo++)
             {
+                if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
+                worker.ReportProgress((int)(monthsAgo * 100 / monthsCount));
+                var workItems = GetOldWorkItems(monthsAgo, proj);
+                if (!workItems.Any()) return;
+                var total = CalcTotal(workItems);
+                _manDays.Add(DateTime.Today.AddMonths(-monthsAgo), total);
+            }
+        }
+
+        private void CancellCollectWorkItems(DoWorkEventArgs e)
+        {
+            _manDays = new Dictionary<DateTime, int>();
+            e.Cancel = true; 
+        }
+
+        private int CalcTotal(IEnumerable<WorkItem> ws)
+        {
+            var total = 0;
+            foreach (var w in ws) total += _viewData.Original.Callender.GetPediodDays(w.Period).Count;
+            return total;
+        }
+
+        private IEnumerable<WorkItem> GetOldWorkItems(int monthsAgo, Project proj)
+        {
+            var oldAppData = GetOldAppData(monthsAgo);
+            if(oldAppData == null) return new List<WorkItem>();
+            var oldViewData = new ViewData(oldAppData, null);
+            oldViewData.SetFilter(_viewData.Filter);
+            return oldViewData.FilteredItems.WorkItems.Where(w => w.Project.Equals(proj));
+        }
+
+        public AppData GetOldAppData(int monthsAgo)
+        {
+            var oldFileContent = GitRepositoryService.GetOldFileContentSomeMonthsAgo(_filePath, monthsAgo);
+            var oldAppData = AppDataSerializeService.LoadFromString(oldFileContent);
+            return oldAppData;
+        }
+
+        private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            var counter = 0;
+            var workItems = _viewData.FilteredItems.WorkItems;
+            foreach (var w in workItems)
+            {
+                if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
+                counter++;
+                worker?.ReportProgress((int)(counter * 100 / workItems.Count()));
                 if (!w.Project.Equals(proj)) continue;
-                var days = _callender.GetPediodDays(w.Period);
+                var days = _viewData.Original.Callender.GetPediodDays(w.Period);
                 AddToManDays(days);
             }
         }
 
         private void AddToManDays(List<CallenderDay> days)
         {
-            foreach(var d in days)
+            foreach (var d in days)
             {
-                if (_manDays.TryGetValue(d, out int value)) _manDays[d]++;
-                else _manDays.Add(d, 1);
+                var dateTime = Callender2DataTime(d);
+                if (dateTime == _invalidDate) continue;
+                if (_manDays.TryGetValue(dateTime, out int value)) _manDays[dateTime]++;
+                else _manDays.Add(dateTime, 1);
             }
         }
 
@@ -104,9 +167,10 @@ namespace ProjectsTM.UI.MainForm
             chart1.Series[legend].MarkerStyle = MarkerStyle.Circle;
             chart1.Series[legend].MarkerSize = 10;
             chart1.Series[legend].XValueType = ChartValueType.Date;
+            chart1.ChartAreas["ChartArea1"].AxisY.Title = checkBox1.Checked ? "過去の最終到達予想工数[人月]" : "工数消費ペース[人月]";
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             InitChart();
         }
