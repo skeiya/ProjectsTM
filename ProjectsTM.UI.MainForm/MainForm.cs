@@ -350,7 +350,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems, _viewData.Original.Callender.UpdateDays))
+            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.Callender.UpdateDays, _viewData.IsDeletable))
             {
                 dlg.ShowDialog();
                 workItemGrid1.Initialize(_viewData);

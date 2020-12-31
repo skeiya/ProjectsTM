@@ -13,13 +13,18 @@ namespace ProjectsTM.UI.MainForm
         private List<CallenderDay> _days;
         private readonly WorkItems _workItems;
         private event EventHandler<IEnumerable<CallenderDay>> UpdateWokingDays;
-        public ManagementWokingDaysForm(Callender callender, WorkItems workItems, EventHandler<IEnumerable<CallenderDay>> updateWokinggDays)
+        private Func<CallenderDay, bool> IsDeletableWokingDay;
+
+        public ManagementWokingDaysForm(
+            Callender callender, 
+            EventHandler<IEnumerable<CallenderDay>> updateWokinggDays, 
+            Func<CallenderDay, bool> isDeletableWokingDay)
         {
             InitializeComponent();
             this._days = new List<CallenderDay>();
             foreach (var d in callender.Days) _days.Add(d);
-            this._workItems = workItems;
             this.UpdateWokingDays += updateWokinggDays;
+            this.IsDeletableWokingDay += isDeletableWokingDay;
             ApplyEdit();
         }
 
@@ -47,20 +52,10 @@ namespace ProjectsTM.UI.MainForm
 
             foreach (var d in selectedDays)
             {
-                if (!Deletable(d)) return;
+                if (!IsDeletableWokingDay(d)) return;
                 _days.Remove(d);
             }
             ApplyEdit();
-        }
-
-        private bool Deletable(CallenderDay selectedDay)
-        {
-            foreach (var w in _workItems)
-            {
-                if (w.Period.From.Equals(selectedDay)) return false;
-                if (w.Period.To.Equals(selectedDay)) return false;
-            }
-            return true;
         }
 
         private List<CallenderDay> GetSelectedDays()

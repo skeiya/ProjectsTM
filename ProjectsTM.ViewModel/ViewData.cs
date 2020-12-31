@@ -246,5 +246,15 @@ namespace ProjectsTM.ViewModel
             Original.ColorConditions = colorConditions;
             ColorConditionChanged?.Invoke(this, null);
         }
+
+        public bool IsDeletable(CallenderDay d)
+        {
+            foreach (var w in Original.WorkItems)
+            {
+                if (w.Period.From.Equals(d)) return false;
+                if (w.Period.To.Equals(d)) return false;
+            }
+            return true;
+        }
     }
 }
