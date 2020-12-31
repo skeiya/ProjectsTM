@@ -124,7 +124,7 @@ namespace ProjectsTM.UI.MainForm
             if(oldAppData == null) return new List<WorkItem>();
             var oldViewData = new ViewData(oldAppData, null);
             oldViewData.SetFilter(_viewData.Filter);
-            return oldViewData.GetFilteredWorkItems().Where(w => w.Project.Equals(proj));
+            return oldViewData.FilteredItems.WorkItems.Where(w => w.Project.Equals(proj));
         }
 
         public AppData GetOldAppData(int monthsAgo)
@@ -137,7 +137,7 @@ namespace ProjectsTM.UI.MainForm
         private void CollectConsumedWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)
         {
             var counter = 0;
-            var workItems = _viewData.GetFilteredWorkItems();
+            var workItems = _viewData.FilteredItems.WorkItems;
             foreach (var w in workItems)
             {
                 if (worker.CancellationPending) { CancellCollectWorkItems(e); return; }
