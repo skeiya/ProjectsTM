@@ -11,7 +11,6 @@ namespace ProjectsTM.UI.MainForm
     public partial class ManagementWokingDaysForm : BaseForm
     {
         private List<CallenderDay> _days;
-        private readonly WorkItems _workItems;
         private event EventHandler<IEnumerable<CallenderDay>> UpdateWokingDays;
         private Func<CallenderDay, bool> IsDeletableWokingDay;
 
