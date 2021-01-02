@@ -8,8 +8,8 @@ namespace ProjectsTM.Model
         static public int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
         public int Version
         {
-            set {; }
             get { return DataVersion; }
+            set { }
         }
         public Callender Callender = new Callender();
         public Members Members = new Members();

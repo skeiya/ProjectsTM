@@ -14,7 +14,7 @@ namespace FreeGridControl
         public int VScrollBarWidth => this.vScrollBar.Width;
         public int HScrollBarHeight => this.hScrollBar.Height;
 
-        public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
+        public bool LockUpdate { get { return _cache.LockUpdate; } set { _cache.LockUpdate = value; } }
         public GridControl()
         {
             InitializeComponent();
@@ -326,7 +326,6 @@ namespace FreeGridControl
             get => _cache.RowHeights;
             set
             {
-                ;
             }
         }
 
@@ -337,7 +336,6 @@ namespace FreeGridControl
             get => _cache.ColWidths;
             set
             {
-                ;
             }
         }
 

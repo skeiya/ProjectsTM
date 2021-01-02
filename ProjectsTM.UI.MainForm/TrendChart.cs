@@ -85,10 +85,10 @@ namespace ProjectsTM.UI.MainForm
         private void UpdateManDays(Project proj)
         {
             _manDays = new Dictionary<DateTime, int>();
-            Action<Project, BackgroundWorker, DoWorkEventArgs> CollectWorkItems;
-            if (checkBox1.Checked) CollectWorkItems = CollectOldTotalWorkItems;
-            else CollectWorkItems = CollectConsumedWorkItems;
-            using (var dlg = new TrendChartBackgroundWorkForm(CollectWorkItems, proj)) dlg.ShowDialog();
+            Action<Project, BackgroundWorker, DoWorkEventArgs> collectWorkItems;
+            if (checkBox1.Checked) collectWorkItems = CollectOldTotalWorkItems;
+            else collectWorkItems = CollectConsumedWorkItems;
+            using (var dlg = new TrendChartBackgroundWorkForm(collectWorkItems, proj)) dlg.ShowDialog();
         }
 
         private void CollectOldTotalWorkItems(Project proj, BackgroundWorker worker, DoWorkEventArgs e)

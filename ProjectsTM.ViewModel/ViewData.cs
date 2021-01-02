@@ -59,7 +59,7 @@ namespace ProjectsTM.ViewModel
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
-        public int FontSize { set; get; } = 6;
+        public int FontSize { get; set; } = 6;
 
         public WorkItems Selected
         {

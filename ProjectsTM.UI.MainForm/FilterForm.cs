@@ -38,9 +38,9 @@ namespace ProjectsTM.UI.MainForm
             buttonFromTodayToSpecialDay.Text += SpecialDay;
         }
 
-        private void InitComboBox_MSFiltersSearchPattern(string MSFilterSearchPattern)
+        private void InitComboBox_MSFiltersSearchPattern(string mSFilterSearchPattern)
         {
-            comboBox_MSFiltersSearchPattern.Text = _filter == null ? "ALL" : MSFilterSearchPattern;
+            comboBox_MSFiltersSearchPattern.Text = _filter == null ? "ALL" : mSFilterSearchPattern;
         }
 
         private void UpdateAllField()

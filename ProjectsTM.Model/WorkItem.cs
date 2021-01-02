@@ -18,7 +18,7 @@ namespace ProjectsTM.Model
         public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
-        public string Description { set; get; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         [XmlElement]
         public string ProjectElement

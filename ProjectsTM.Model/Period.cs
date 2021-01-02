@@ -16,8 +16,8 @@ namespace ProjectsTM.Model
 
         public bool IsValid => From != null && To != null;
 
-        public CallenderDay From { set; get; }
-        public CallenderDay To { set; get; }
+        public CallenderDay From { get; set; }
+        public CallenderDay To { get; set; }
 
         public bool Contains(CallenderDay day)
         {

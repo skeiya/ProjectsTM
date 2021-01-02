@@ -16,15 +16,15 @@ namespace ProjectsTM.Service
             return _sumCache.Where((i) => filteredMembers.Contains(i.Key)).Sum((i) => i.Value);
         }
 
-        private void UpdateCache(ViewData _viewData, List<Member> updatedMembers)
+        private void UpdateCache(ViewData viewData, List<Member> updatedMembers)
         {
             ClearDirtyCache(updatedMembers);
-            UpdateBlankCache(_viewData);
+            UpdateBlankCache(viewData);
         }
 
-        private void UpdateBlankCache(ViewData _viewData)
+        private void UpdateBlankCache(ViewData viewData)
         {
-            foreach (var m in _viewData.Original.Members) UpdateMemberCache(_viewData, m);
+            foreach (var m in viewData.Original.Members) UpdateMemberCache(viewData, m);
         }
 
         private void ClearDirtyCache(List<Member> updatedMembers)

@@ -18,10 +18,10 @@ namespace ProjectsTM.Service
         private readonly List<string> _allPaths = new List<string>();
         private readonly Func<Member, string, bool> IsMemberMatchText;
 
-        private readonly string FilePrefix = "file:";
-        private readonly string CompanyPrefix = "company:";
-        private readonly string ProjectPrefix = "project:";
-        private readonly string AllKeyword = "ALL";
+        private const string FilePrefix = "file:";
+        private const string CompanyPrefix = "company:";
+        private const string ProjectPrefix = "project:";
+        private const string AllKeyword = "ALL";
 
         public string Text
         {
