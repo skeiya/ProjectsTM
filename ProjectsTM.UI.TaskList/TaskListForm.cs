@@ -10,16 +10,12 @@ namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListForm : Form
     {
-        private readonly ViewData _viewData;
         private readonly PatternHistory _history;
-        private readonly TaskListContextMenuHandler _taskListContextMenuHandler;
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory)
         {
             InitializeComponent();
 
-            this._viewData = viewData;
-            _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Option = GetOption();

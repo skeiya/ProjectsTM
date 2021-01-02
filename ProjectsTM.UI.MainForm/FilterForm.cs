@@ -61,7 +61,7 @@ namespace ProjectsTM.UI.MainForm
                 checkedListBox1.Items.Add(m, check);
             }
 
-            checkBox_IsFreeTimeMemberShow.Checked = _filter == null ? false : _filter.IsFreeTimeMemberShow;
+            checkBox_IsFreeTimeMemberShow.Checked = (_filter != null) && _filter.IsFreeTimeMemberShow;
         }
 
         private void UpdateComboBox_MSFiltersSearchPattern()

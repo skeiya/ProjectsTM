@@ -21,7 +21,6 @@ namespace ProjectsTM.UI.MainForm
         private AppDataFileIOService FileIOService { get; set; }
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
-        private readonly ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
@@ -32,7 +31,6 @@ namespace ProjectsTM.UI.MainForm
             menuStrip1.ImageScalingSize = new Size(16, 16);
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
-            _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
             statusStrip1.Items.Add(string.Empty);
             InitializeTaskDrawArea();
             InitializeViewData();
