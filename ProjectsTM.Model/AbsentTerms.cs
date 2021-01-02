@@ -6,7 +6,7 @@ namespace ProjectsTM.Model
 {
     public class AbsentTerms : IEnumerable<AbsentTerm>
     {
-        private List<AbsentTerm> _absentTerms = new List<AbsentTerm>();
+        private readonly List<AbsentTerm> _absentTerms = new List<AbsentTerm>();
 
         public void Add(AbsentTerm absentTerm)
         {

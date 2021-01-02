@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
 {
     public class AbsentInfo : IEnumerable<AbsentTerm>
     {
-        private SortedDictionary<Member, AbsentTerms> _items = new SortedDictionary<Member, AbsentTerms>();
+        private readonly SortedDictionary<Member, AbsentTerms> _items = new SortedDictionary<Member, AbsentTerms>();
 
         public AbsentTerms OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new AbsentTerms();
 

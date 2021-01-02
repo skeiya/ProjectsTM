@@ -13,13 +13,13 @@ namespace ProjectsTM.UI.MainForm
     public partial class FilterForm : BaseForm
     {
         private Members _members;
-        private Members _originalMembers;
+        private readonly Members _originalMembers;
         private Filter _filter;
-        private Callender _callender;
-        private IEnumerable<WorkItem> _workItems;
-        private Func<Member, string, bool> IsMemberMatchText;
-        private PatternHistory _history;
-        private MileStones _mileStones;
+        private readonly Callender _callender;
+        private readonly IEnumerable<WorkItem> _workItems;
+        private readonly Func<Member, string, bool> IsMemberMatchText;
+        private readonly PatternHistory _history;
+        private readonly MileStones _mileStones;
 
         public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText, PatternHistory patternHistory, MileStones mileStones)
         {

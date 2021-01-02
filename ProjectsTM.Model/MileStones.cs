@@ -6,7 +6,7 @@ namespace ProjectsTM.Model
 {
     public class MileStones : IEnumerable<MileStone>
     {
-        private List<MileStone> _list = new List<MileStone>();
+        private readonly List<MileStone> _list = new List<MileStone>();
 
         public MileStones Clone()
         {

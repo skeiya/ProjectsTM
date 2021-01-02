@@ -35,7 +35,7 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        private FileSystemWatcher _watcher;
+        private readonly FileSystemWatcher _watcher;
         private string _previousFileName;
         public string FilePath => _previousFileName;
 

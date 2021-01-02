@@ -7,8 +7,8 @@ namespace ProjectsTM.UI.MainForm
 {
     class ContextMenuHandler
     {
-        private ViewData _viewData;
-        private WorkItemGrid workItemGrid1;
+        private readonly ViewData _viewData;
+        private readonly WorkItemGrid workItemGrid1;
 
         public ContextMenuHandler(ViewData viewData, WorkItemGrid workItemGrid1)
         {

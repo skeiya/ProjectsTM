@@ -26,7 +26,7 @@ namespace ProjectsTM.UI.TaskList
         private ColIndex _sortCol = ColDefinition.InitialSortCol;
         private bool _isReverse = false;
         private RowIndex _lastSelect;
-        private WidthAdjuster _widthAdjuster;
+        private readonly WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
         private readonly int MAX_SORTABLE_DISTANCE = 20;
         public WorkItemEditService EditService => _editService;

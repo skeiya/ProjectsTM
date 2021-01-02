@@ -16,12 +16,12 @@ namespace ProjectsTM.UI.MainForm
 {
     public partial class MainForm : Form
     {
-        private ViewData _viewData = new ViewData(new AppData(), new UndoService());
+        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private TaskListForm TaskListForm { get; set; }
         private AppDataFileIOService FileIOService { get; set; }
-        private CalculateSumService _calculateSumService = new CalculateSumService();
-        private FilterComboBoxService _filterComboBoxService;
-        private ContextMenuHandler _contextMenuService;
+        private readonly CalculateSumService _calculateSumService = new CalculateSumService();
+        private readonly FilterComboBoxService _filterComboBoxService;
+        private readonly ContextMenuHandler _contextMenuService;
         private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";

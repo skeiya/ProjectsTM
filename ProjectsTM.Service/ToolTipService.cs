@@ -9,7 +9,7 @@ namespace ProjectsTM.Service
 {
     public class ToolTipService : IDisposable
     {
-        private ToolTip _toolTip = new ToolTip();
+        private readonly ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
         private readonly ViewData _viewData;
         private readonly Control _parentControl;

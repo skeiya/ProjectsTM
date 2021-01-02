@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
 {
     public class ColorConditions : IEnumerable<ColorCondition>
     {
-        private List<ColorCondition> _list = new List<ColorCondition>();
+        private readonly List<ColorCondition> _list = new List<ColorCondition>();
 
         public IEnumerator<ColorCondition> GetEnumerator()
         {

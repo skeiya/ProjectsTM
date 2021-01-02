@@ -7,7 +7,7 @@ namespace ProjectsTM.Service
 {
     class GitCmdRepository
     {
-        private string _repositoryDir;
+        private readonly string _repositoryDir;
         private GitCmdRepository(string repositoryDir)
         {
             _repositoryDir = repositoryDir;

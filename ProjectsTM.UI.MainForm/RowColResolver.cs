@@ -9,10 +9,10 @@ namespace ProjectsTM.UI.MainForm
 {
     class RowColResolver
     {
-        private Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
-        private Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
-        private Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
-        private Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
+        private readonly Dictionary<CallenderDay, RowIndex> _day2RowCache = new Dictionary<CallenderDay, RowIndex>();
+        private readonly Dictionary<RowIndex, CallenderDay> _row2DayChache = new Dictionary<RowIndex, CallenderDay>();
+        private readonly Dictionary<Member, ColIndex> _member2ColChache = new Dictionary<Member, ColIndex>();
+        private readonly Dictionary<ColIndex, Member> _col2MemberChache = new Dictionary<ColIndex, Member>();
         private readonly GridControl _grid;
         private readonly ViewData _viewData;
 

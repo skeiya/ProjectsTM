@@ -20,7 +20,7 @@ namespace ProjectsTM.Model
             foreach (var w in wis) Add(w);
         }
 
-        private SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
+        private readonly SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
         public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
 

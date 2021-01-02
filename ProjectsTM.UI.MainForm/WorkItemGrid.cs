@@ -15,9 +15,9 @@ namespace ProjectsTM.UI.MainForm
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private ViewData _viewData;
-        private WorkItemDragService _workItemDragService = new WorkItemDragService();
+        private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
-        private DrawService _drawService = new DrawService();
+        private readonly DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
 

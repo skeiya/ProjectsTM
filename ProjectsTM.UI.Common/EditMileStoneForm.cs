@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.Common
     {
         private readonly Callender _callender;
         private MileStone _mileStone;
-        private MileStoneFilters _mileStoneFilters;
+        private readonly MileStoneFilters _mileStoneFilters;
 
         public MileStone MileStone => _mileStone;
 

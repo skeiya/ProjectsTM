@@ -5,7 +5,7 @@ namespace ProjectsTM.Model
 {
     public class MileStoneFilters : IEnumerable<MileStoneFilter>
     {
-        private List<MileStoneFilter> _mileStoneFilters = new List<MileStoneFilter>();
+        private readonly List<MileStoneFilter> _mileStoneFilters = new List<MileStoneFilter>();
 
         public int Count => _mileStoneFilters.Count;
 

@@ -8,7 +8,7 @@ namespace ProjectsTM.Model
     {
         public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
 
-        private Dictionary<CallenderDay, CallenderDay> _nearestDayCache = new Dictionary<CallenderDay, CallenderDay>();
+        private readonly Dictionary<CallenderDay, CallenderDay> _nearestDayCache = new Dictionary<CallenderDay, CallenderDay>();
         public CallenderDay NearestFromToday
         {
             get

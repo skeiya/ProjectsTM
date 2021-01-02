@@ -7,7 +7,7 @@ namespace ProjectsTM.Service
 {
     public class CalculateSumService
     {
-        private Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
+        private readonly Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
 
         public int Calculate(ViewData viewData, List<Member> updatedMembers)
         {

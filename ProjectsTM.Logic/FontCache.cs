@@ -6,7 +6,7 @@ namespace ProjectsTM.Logic
 {
     public static class FontCache
     {
-        private static Dictionary<Tuple<FontFamily, int, bool>, Font> _cache = new Dictionary<Tuple<FontFamily, int, bool>, Font>();
+        private static readonly Dictionary<Tuple<FontFamily, int, bool>, Font> _cache = new Dictionary<Tuple<FontFamily, int, bool>, Font>();
         public static Font GetFont(FontFamily family, int size, bool strikeout)
         {
             var key = new Tuple<FontFamily, int, bool>(family, size, strikeout);

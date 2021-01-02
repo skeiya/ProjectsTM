@@ -8,7 +8,7 @@ namespace ProjectsTM.Model
 {
     public class Tags
     {
-        private List<string> _tags = new List<string>();
+        private readonly List<string> _tags = new List<string>();
 
         public Tags(List<string> result)
         {

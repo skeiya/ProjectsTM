@@ -9,7 +9,7 @@ namespace ProjectsTM.UI.MainForm
 {
     public partial class ManagementWokingDaysForm : BaseForm
     {
-        private Callender _callender;
+        private readonly Callender _callender;
         private readonly WorkItems _workItems;
 
         public ManagementWokingDaysForm(Callender callender, WorkItems workItems)

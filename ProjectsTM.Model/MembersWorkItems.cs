@@ -7,8 +7,8 @@ namespace ProjectsTM.Model
 {
     public class MembersWorkItems : IEnumerable<WorkItem>
     {
-        private List<WorkItem> _items = new List<WorkItem>();
-        private int _sumCache = 0;
+        private readonly List<WorkItem> _items = new List<WorkItem>();
+        private readonly int _sumCache = 0;
         public int Sum => _sumCache;
         public int Count => _items.Count;
 

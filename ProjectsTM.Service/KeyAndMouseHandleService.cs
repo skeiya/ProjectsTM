@@ -14,12 +14,12 @@ namespace ProjectsTM.Service
         private readonly ViewData _viewData;
         private readonly IWorkItemGrid _grid;
         private readonly WorkItemDragService _workItemDragService;
-        private DrawService _drawService;
-        private WorkItemEditService _editService;
+        private readonly DrawService _drawService;
+        private readonly WorkItemEditService _editService;
         private Cursor _originalCursor;
 
         public event EventHandler<WorkItem> HoveringTextChanged;
-        private ToolTipService _toolTipService;
+        private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
         public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl)

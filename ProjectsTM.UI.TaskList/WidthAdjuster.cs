@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.TaskList
     {
         private RawPoint _orgLocation;
         private int _orgWidth = -1;
-        private Func<RawPoint, ColIndex> _getAdjustCol;
+        private readonly Func<RawPoint, ColIndex> _getAdjustCol;
         private Action<int> _adjustWidth;
 
         public WidthAdjuster(Func<RawPoint, ColIndex> getAdjustCol)

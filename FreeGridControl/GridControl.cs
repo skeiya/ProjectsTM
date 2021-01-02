@@ -7,7 +7,7 @@ namespace FreeGridControl
 {
     public partial class GridControl : UserControl
     {
-        private Cache _cache = new Cache();
+        private readonly Cache _cache = new Cache();
 
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 

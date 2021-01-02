@@ -12,11 +12,11 @@ namespace ProjectsTM.Service
 {
     public class FilterComboBoxService
     {
-        private ViewData _viewData;
-        private ToolStripComboBox _toolStripComboBoxFilter;
+        private readonly ViewData _viewData;
+        private readonly ToolStripComboBox _toolStripComboBoxFilter;
         private string DirPath => Path.Combine(Path.GetDirectoryName(_filepPath), "filters");
-        private List<string> _allPaths = new List<string>();
-        private Func<Member, string, bool> IsMemberMatchText;
+        private readonly List<string> _allPaths = new List<string>();
+        private readonly Func<Member, string, bool> IsMemberMatchText;
 
         private readonly string FilePrefix = "file:";
         private readonly string CompanyPrefix = "company:";

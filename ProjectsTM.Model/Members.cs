@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
 {
     public class Members : IEnumerable<Member>, IEquatable<Members>
     {
-        private List<Member> _members = new List<Member>();
+        private readonly List<Member> _members = new List<Member>();
 
         public int Count => _members.Count;
 
