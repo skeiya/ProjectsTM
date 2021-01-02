@@ -32,7 +32,7 @@ namespace ProjectsTM.Service
 
         public static string MakeTextAllData(AppData appData)
         {
-            return MakeTextCore(appData, "");
+            return MakeTextCore(appData, string.Empty);
         }
 
         private static string MakeTextCore(AppData appData, string selectGetsudo)

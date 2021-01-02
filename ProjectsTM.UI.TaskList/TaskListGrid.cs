@@ -504,7 +504,7 @@ namespace ProjectsTM.UI.TaskList
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(ms.Project, ms.Name, new Tags(new List<string>() { "MS" }), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
+            return new WorkItem(ms.Project, ms.Name, new Tags(new List<string>() { "MS" }), new Period(ms.Day, ms.Day), new Member(), ms.State, string.Empty);
         }
 
         private static Color GetColor(TaskState state, string error)

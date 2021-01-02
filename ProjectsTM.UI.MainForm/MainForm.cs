@@ -33,7 +33,7 @@ namespace ProjectsTM.UI.MainForm
             FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             _contextMenuService = new ContextMenuHandler(_viewData, workItemGrid1);
-            statusStrip1.Items.Add("");
+            statusStrip1.Items.Add(string.Empty);
             InitializeTaskDrawArea();
             InitializeViewData();
             this.FormClosed += MainForm_FormClosed;

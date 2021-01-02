@@ -46,7 +46,7 @@ namespace ProjectsTM.Service
             if (string.IsNullOrEmpty(str)) return string.Empty;
             var matche = Regex.Match(str, @"^commit ........................................");
             if (!matche.Success) return string.Empty;
-            return matche.Value.Replace("commit ", "");
+            return matche.Value.Replace("commit ", string.Empty);
         }
 
         public static bool TryAutoPull(string filePath)

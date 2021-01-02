@@ -45,7 +45,7 @@ namespace ProjectsTM.UI.MainForm
         {
             try
             {
-                Regex.IsMatch("", textBox1.Text);
+                Regex.IsMatch(string.Empty, textBox1.Text);
             }
             catch (Exception)
             {
