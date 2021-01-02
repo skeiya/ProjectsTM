@@ -139,12 +139,12 @@ namespace FreeGridControl
             vScrollBar.Value = offsetV;
         }
 
-        private bool IsShiftKeyPressed()
+        private static bool IsShiftKeyPressed()
         {
             return (ModifierKeys == Keys.Shift);
         }
 
-        public bool IsControlDown()
+        public static bool IsControlDown()
         {
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }

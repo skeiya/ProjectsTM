@@ -70,7 +70,7 @@ namespace ProjectsTM.UI.MainForm
             }
         }
 
-        private DateTime Callender2DataTime(CallenderDay callenderDay)
+        private static DateTime Callender2DataTime(CallenderDay callenderDay)
         {
             try
             {

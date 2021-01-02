@@ -91,7 +91,7 @@ namespace ProjectsTM.UI.MainForm
             return new AbsentTerm(_member, ParsePeriod(m.Groups[1].Value, m.Groups[2].Value));
         }
 
-        public Period ParsePeriod(string from, string to)
+        public static Period ParsePeriod(string from, string to)
         {
             var f = from == AbsentTerm.UnlimitedStr ? AbsentTerm.UnlimitedFrom : CallenderDay.Parse(from);
             var t = to == AbsentTerm.UnlimitedStr ? AbsentTerm.UnlimitedTo : CallenderDay.Parse(to);

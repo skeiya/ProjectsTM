@@ -28,7 +28,7 @@ namespace ProjectsTM.UI.TaskList
         private RowIndex _lastSelect;
         private readonly WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
-        private readonly int MAX_SORTABLE_DISTANCE = 20;
+        private const int MaxSortableDistance = 20;
         public WorkItemEditService EditService => _editService;
 
         public TaskListGrid()
@@ -67,7 +67,7 @@ namespace ProjectsTM.UI.TaskList
             var mouseUpPoint = e.Location;
             if (r.Value < FixedRowCount)
             {
-                if (CalcDistace(_mouseDownPoint, mouseUpPoint) <= MAX_SORTABLE_DISTANCE)
+                if (CalcDistace(_mouseDownPoint, mouseUpPoint) <= MaxSortableDistance)
                 {
                     HandleSortRequest(rawLocation);
                 }
@@ -76,7 +76,7 @@ namespace ProjectsTM.UI.TaskList
             SelectItems(r);
         }
 
-        private double CalcDistace(Point downPoint, Point upPoint)
+        private static double CalcDistace(Point downPoint, Point upPoint)
         {
             var deltaX = upPoint.X - downPoint.X;
             var deltaY = upPoint.Y - downPoint.Y;
@@ -206,7 +206,7 @@ namespace ProjectsTM.UI.TaskList
             SelectRange(0, _listItems.Count - 1);
         }
 
-        private void SwapIfUpsideDown(ref int from, ref int to)
+        private static void SwapIfUpsideDown(ref int from, ref int to)
         {
             if (from <= to) return;
             int buf = from;
@@ -384,7 +384,7 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        int GetStringLineCount(string s)
+        static int GetStringLineCount(string s)
         {
             int n = 1;
             foreach (var c in s)
@@ -448,7 +448,7 @@ namespace ProjectsTM.UI.TaskList
             return result;
         }
 
-        private bool IsNotEndError(WorkItem wi)
+        private static bool IsNotEndError(WorkItem wi)
         {
             if (wi.State == TaskState.Done) return false;
             if (wi.State == TaskState.Background) return false;
@@ -468,7 +468,7 @@ namespace ProjectsTM.UI.TaskList
             return ColDefinition.Count < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
-        private bool IsStartSoon(WorkItem wi, CallenderDay soon)
+        private static bool IsStartSoon(WorkItem wi, CallenderDay soon)
         {
             return wi.Period.From <= soon;
         }

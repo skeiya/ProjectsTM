@@ -61,7 +61,7 @@ namespace ProjectsTM.UI.Common
             return true;
         }
 
-        private CallenderDay GetDayByDate(string text)
+        private static CallenderDay GetDayByDate(string text)
         {
             return CallenderDay.Parse(text);
         }

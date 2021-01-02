@@ -5,8 +5,8 @@ namespace ProjectsTM.Model
 {
     public class AppData
     {
-        static public int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
-        public int Version
+        public static int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
+        public static int Version
         {
             get { return DataVersion; }
             set { }

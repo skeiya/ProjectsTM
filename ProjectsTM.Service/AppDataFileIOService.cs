@@ -128,7 +128,7 @@ namespace ProjectsTM.Service
             return AppDataSerializeService.Deserialize(fileName);
         }
 
-        private bool IsFutureVersion(string fileName)
+        private static bool IsFutureVersion(string fileName)
         {
             XmlDocument oDom = new XmlDocument();
             oDom.Load(fileName);

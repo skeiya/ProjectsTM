@@ -148,7 +148,7 @@ namespace ProjectsTM.Model
             return Deserialize(Serialize());
         }
 
-        static public WorkItem Deserialize(string text)
+        public static WorkItem Deserialize(string text)
         {
             using (var s = new MemoryStream())
             using (var w = StreamFactory.CreateWriter(s))
