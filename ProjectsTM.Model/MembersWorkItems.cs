@@ -67,8 +67,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var items = obj as MembersWorkItems;
-            if (items == null) return false;
+            if (!(obj is MembersWorkItems items)) return false;
             if (_items.Count != items._items.Count) return false;
             for (var index = 0; index < _items.Count; index++)
             {

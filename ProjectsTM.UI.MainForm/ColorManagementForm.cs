@@ -85,7 +85,6 @@ namespace ProjectsTM.UI.MainForm
             if (listView1.SelectedItems.Count != 1) return;
             var index = listView1.SelectedIndices[0];
             if (index == 0) return;
-            var cond = listView1.SelectedItems[0].Tag as ColorCondition;
             _colorConditions.Up(index);
             UpdateList();
             listView1.Items[index - 1].Selected = true;
@@ -96,7 +95,6 @@ namespace ProjectsTM.UI.MainForm
             if (listView1.SelectedItems.Count != 1) return;
             var index = listView1.SelectedIndices[0];
             if (listView1.Items.Count == index + 1) return;
-            var cond = listView1.SelectedItems[0].Tag as ColorCondition;
             _colorConditions.Down(index);
             UpdateList();
             listView1.Items[index + 1].Selected = true;

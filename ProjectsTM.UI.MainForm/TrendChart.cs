@@ -155,7 +155,7 @@ namespace ProjectsTM.UI.MainForm
             {
                 var dateTime = Callender2DataTime(d);
                 if (dateTime == _invalidDate) continue;
-                if (_manDays.TryGetValue(dateTime, out int value)) _manDays[dateTime]++;
+                if (_manDays.TryGetValue(dateTime, out _)) _manDays[dateTime]++;
                 else _manDays.Add(dateTime, 1);
             }
         }

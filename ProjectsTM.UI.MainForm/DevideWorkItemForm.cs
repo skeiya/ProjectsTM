@@ -47,8 +47,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void TextBoxDivided_TextChanged(object sender, EventArgs e)
         {
-            int dividedCount = 0;
-            if (!int.TryParse(textBoxDivided.Text, out dividedCount)) return;
+            if (!int.TryParse(textBoxDivided.Text, out int dividedCount)) return;
             labelRemain.Text = (_originalCount - dividedCount).ToString();
         }
 

@@ -118,8 +118,7 @@ namespace ProjectsTM.Service
 
         private static string GitCommandRaw(string arguments)
         {
-            string output;
-            if (ExecuteCommand(out output, "git", " --no-pager " + arguments) != 0)
+            if (ExecuteCommand(out string output, "git", " --no-pager " + arguments) != 0)
             {
                 return string.Empty;
             }

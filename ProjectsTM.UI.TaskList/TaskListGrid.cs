@@ -361,7 +361,6 @@ namespace ProjectsTM.UI.TaskList
         {
             if (ColWidths.Count <= AutoExtendCol.Value) return;
             LockUpdate = true;
-            var g = this.CreateGraphics();
             ColWidths[AutoExtendCol.Value] = GetWidth(AutoExtendCol);
             LockUpdate = false;
         }

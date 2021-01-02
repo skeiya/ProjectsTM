@@ -140,8 +140,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as Callender;
-            if (target == null) return false;
+            if (!(obj is Callender target)) return false;
             if (Days.Count != target.Days.Count) return false;
             return Days.SequenceEqual(target.Days);
         }

@@ -95,11 +95,6 @@ namespace FreeGridControl
             return true;
         }
 
-        private bool IsVisible(RowIndex row, ColIndex col)
-        {
-            return IsVisibleRange(row, 1, col);
-        }
-
         private bool IsVisible(RowIndex row)
         {
             return IsVisibleRange(row, 1, VisibleNormalLeftCol);

@@ -185,7 +185,7 @@ namespace ProjectsTM.Service
                 _viewData.SetFilter(Filter.All(_viewData));
                 return;
             }
-            idx = idx - 1;
+            idx--;
             var filter = GetFilterByFiles(ref idx);
             if (filter == null)
             {

@@ -74,7 +74,7 @@ namespace UnitTestProject
         [TestMethod]
         public void MouseLeftDown_and_WorkItemSelect()
         {
-            PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
+            PrepareCommon(out var i, out var g, out var viewData, out var service, out _);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
@@ -96,7 +96,7 @@ namespace UnitTestProject
         [TestMethod]
         public void MouseLeftDown_and_WorkItemDrag()
         {
-            PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
+            PrepareCommon(out var i, out _, out var viewData, out var service, out var grid);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0)); // @@@ ここは不要にしたい

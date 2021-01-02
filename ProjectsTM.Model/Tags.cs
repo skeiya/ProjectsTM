@@ -33,8 +33,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as Tags;
-            if (target == null) return false;
+            if (!(obj is Tags target)) return false;
             return _tags.SequenceEqual(target._tags);
         }
 

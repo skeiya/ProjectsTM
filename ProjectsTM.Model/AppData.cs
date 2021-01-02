@@ -37,8 +37,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as AppData;
-            if (target == null) return false;
+            if (!(obj is AppData target)) return false;
             if (!Callender.Equals(target.Callender)) return false;
             if (!Members.Equals(target.Members)) return false;
             if (!ColorConditions.Equals(target.ColorConditions)) return false;

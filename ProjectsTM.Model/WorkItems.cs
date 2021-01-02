@@ -109,8 +109,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as WorkItems;
-            if (target == null) return false;
+            if (!(obj is WorkItems target)) return false;
             if (_items.Count != target._items.Count) return false;
             return _items.SequenceEqual(target._items);
         }

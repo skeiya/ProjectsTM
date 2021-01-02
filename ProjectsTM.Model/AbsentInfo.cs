@@ -82,8 +82,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as AbsentInfo;
-            if (target == null) return false;
+            if (!(obj is AbsentInfo target)) return false;
             if (target._items.Count != this._items.Count) return false;
             for (var idx = 0; idx < _items.Count; idx++)
             {
