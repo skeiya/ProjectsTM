@@ -114,7 +114,7 @@ namespace ProjectsTM.UI.MainForm
         private int CalcTotal(IEnumerable<WorkItem> ws)
         {
             var total = 0;
-            foreach (var w in ws) total += _viewData.Original.Callender.GetPediodDays(w.Period).Count;
+            foreach (var w in ws) total += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
             return total;
         }
 
@@ -144,12 +144,12 @@ namespace ProjectsTM.UI.MainForm
                 counter++;
                 worker?.ReportProgress((int)(counter * 100 / workItems.Count()));
                 if (!w.Project.Equals(proj)) continue;
-                var days = _viewData.Original.Callender.GetPediodDays(w.Period);
+                var days = _viewData.Original.Callender.GetPeriodDays(w.Period);
                 AddToManDays(days);
             }
         }
 
-        private void AddToManDays(List<CallenderDay> days)
+        private void AddToManDays(IEnumerable<CallenderDay> days)
         {
             foreach (var d in days)
             {

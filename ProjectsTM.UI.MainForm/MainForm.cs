@@ -230,7 +230,7 @@ namespace ProjectsTM.UI.MainForm
             UpdateDisplayOfSum(null);
         }
 
-        private void UpdateDisplayOfSum(List<Member> updatedMembers)
+        private void UpdateDisplayOfSum(IEnumerable<Member> updatedMembers)
         {
             var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);

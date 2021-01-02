@@ -9,7 +9,7 @@ namespace ProjectsTM.Service
     {
         private readonly List<EditAction> _list = new List<EditAction>();
 
-        public List<Member> Members => _list.Select((l) => l.Member).ToList();
+        public IEnumerable<Member> Members => _list.Select((l) => l.Member);
 
         public IEnumerator<EditAction> GetEnumerator()
         {

@@ -88,7 +88,7 @@ namespace ProjectsTM.Model
             int result = 0;
             foreach (var wi in this.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
             {
-                foreach (var d in callender.GetPediodDays(wi.Period))
+                foreach (var d in callender.GetPeriodDays(wi.Period))
                 {
                     if (!Callender.IsSameGetsudo(d, year, month)) continue;
                     result++;

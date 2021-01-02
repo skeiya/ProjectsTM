@@ -115,7 +115,7 @@ namespace ProjectsTM.Model
             return false;
         }
 
-        public List<CallenderDay> GetPediodDays(Period period)
+        public IEnumerable<CallenderDay> GetPeriodDays(Period period)
         {
             var result = new List<CallenderDay>();
             var found = false;
@@ -130,7 +130,7 @@ namespace ProjectsTM.Model
 
         public int GetPeriodDayCount(Period period)
         {
-            return GetPediodDays(period).Count;
+            return GetPeriodDays(period).Count();
         }
 
         public bool IsEmpty()

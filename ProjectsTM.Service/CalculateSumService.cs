@@ -9,14 +9,14 @@ namespace ProjectsTM.Service
     {
         private readonly Dictionary<Member, int> _sumCache = new Dictionary<Member, int>();
 
-        public int Calculate(ViewData viewData, List<Member> updatedMembers)
+        public int Calculate(ViewData viewData, IEnumerable<Member> updatedMembers)
         {
             UpdateCache(viewData, updatedMembers);
             var filteredMembers = viewData.FilteredItems.Members;
             return _sumCache.Where((i) => filteredMembers.Contains(i.Key)).Sum((i) => i.Value);
         }
 
-        private void UpdateCache(ViewData viewData, List<Member> updatedMembers)
+        private void UpdateCache(ViewData viewData, IEnumerable<Member> updatedMembers)
         {
             ClearDirtyCache(updatedMembers);
             UpdateBlankCache(viewData);
@@ -27,7 +27,7 @@ namespace ProjectsTM.Service
             foreach (var m in viewData.Original.Members) UpdateMemberCache(viewData, m);
         }
 
-        private void ClearDirtyCache(List<Member> updatedMembers)
+        private void ClearDirtyCache(IEnumerable<Member> updatedMembers)
         {
             if (updatedMembers == null)
             {

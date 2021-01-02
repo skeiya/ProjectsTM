@@ -55,7 +55,7 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public List<Project> GetProjects()
+        public IEnumerable<Project> GetProjects()
         {
             var result = new List<Project>();
             foreach (var w in _items)

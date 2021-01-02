@@ -427,7 +427,7 @@ namespace ProjectsTM.UI.MainForm
         {
             RowIndex row = null;
             int count = 0;
-            foreach (var d in _viewData.Original.Callender.GetPediodDays(wi.Period))
+            foreach (var d in _viewData.Original.Callender.GetPeriodDays(wi.Period))
             {
                 if (!_viewData.FilteredItems.Days.Contains(d)) continue;
                 if (row == null)
