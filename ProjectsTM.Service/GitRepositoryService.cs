@@ -60,8 +60,6 @@ namespace ProjectsTM.Service
         /// <summary>
         /// ローカルの変更が無いことを確認できた場合のみtrueを変えす。異常時含め、それ以外のはすべてfalseを返す。
         /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
         private static bool IsLocalChangeEmpty(GitCmdRepository repo)
         {
             if (!IsUncommitChangeEmpty(repo)) return false;

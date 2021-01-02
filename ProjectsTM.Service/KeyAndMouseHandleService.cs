@@ -178,7 +178,7 @@ namespace ProjectsTM.Service
             var day = _grid.Y2Day(_grid.Client2Raw(location).Y);
             if (day == null) { _toolTipService.Hide(); return; }
             var ms = _viewData.Original.MileStones.Where(m => day.Equals(m.Day));
-            if (ms.Count() == 0) { _toolTipService.Hide(); return; }
+            if (!ms.Any()) { _toolTipService.Hide(); return; }
             _toolTipService.Update(day, ms);
         }
 

@@ -104,7 +104,7 @@ namespace ProjectsTM.ViewModel
         {
             if (Filter.IsFreeTimeMemberShow) return;
             var members = FilteredItems.Members;
-            if (members == null || members.Count() == 0) return;
+            if (members == null || !members.Any()) return;
             var freeTimeMember = members.Where(m => !FilteredItems.GetWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
             foreach (var m in freeTimeMember)
             {
@@ -115,7 +115,7 @@ namespace ProjectsTM.ViewModel
         private void RemoveAbsentMembersFromFilter()
         {
             var members = FilteredItems.Members;
-            if (members == null || members.Count() == 0) return;
+            if (members == null || !members.Any()) return;
             Members absentMembers = new Members();
             foreach (var m in members)
             {

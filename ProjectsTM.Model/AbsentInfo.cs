@@ -30,7 +30,7 @@ namespace ProjectsTM.Model
         public void Replace(Member member, AbsentTerms absentTerms)
         {
             if (member == null || absentTerms == null) return;
-            if (absentTerms.Count() == 0) return;
+            if (!absentTerms.Any()) return;
             RemoveInfoOfMember(member);
             _items.Add(member, absentTerms);
         }

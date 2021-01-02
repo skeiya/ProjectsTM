@@ -324,7 +324,7 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateLastSelect()
         {
             if (_viewData.Selected == null ||
-                _viewData.Selected.Count() == 0) { _lastSelect = null; return; }
+                !_viewData.Selected.Any()) { _lastSelect = null; return; }
 
             if (_viewData.Selected.Count() == 1)
             {

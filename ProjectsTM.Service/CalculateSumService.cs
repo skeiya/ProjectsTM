@@ -39,20 +39,20 @@ namespace ProjectsTM.Service
             }
         }
 
-        private void UpdateMemberCache(ViewData _viewData, Member m)
+        private void UpdateMemberCache(ViewData viewData, Member m)
         {
             if (!_sumCache.ContainsKey(m))
             {
-                _sumCache.Add(m, CalculateMember(_viewData, m));
+                _sumCache.Add(m, CalculateMember(viewData, m));
             }
         }
 
-        private static int CalculateMember(ViewData _viewData, Member m)
+        private static int CalculateMember(ViewData viewData, Member m)
         {
             var sumOfMember = 0;
-            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(m))
+            foreach (var w in viewData.FilteredItems.GetWorkItemsOfMember(m))
             {
-                sumOfMember += _viewData.Original.Callender.GetPeriodDayCount(w.Period);
+                sumOfMember += viewData.Original.Callender.GetPeriodDayCount(w.Period);
             }
 
             return sumOfMember;

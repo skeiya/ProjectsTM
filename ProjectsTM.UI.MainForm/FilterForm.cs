@@ -17,7 +17,7 @@ namespace ProjectsTM.UI.MainForm
         private Filter _filter;
         private readonly Callender _callender;
         private readonly IEnumerable<WorkItem> _workItems;
-        private readonly Func<Member, string, bool> IsMemberMatchText;
+        private readonly Func<Member, string, bool> _isMemberMatchText;
         private readonly PatternHistory _history;
         private readonly MileStones _mileStones;
 
@@ -33,7 +33,7 @@ namespace ProjectsTM.UI.MainForm
             _mileStones = mileStones;
             InitComboBox_MSFiltersSearchPattern(filter.MSFilterSearchPattern);
             UpdateAllField();
-            this.IsMemberMatchText = isMemberMatchText;
+            _isMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
             buttonFromTodayToSpecialDay.Text += SpecialDay;
         }
@@ -284,7 +284,7 @@ namespace ProjectsTM.UI.MainForm
             for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
             {
                 var m = GetMember(checkedListBox1.Items[idx].ToString());
-                var state = IsMemberMatchText(m, editText) ? CheckState.Checked : CheckState.Unchecked;
+                var state = _isMemberMatchText(m, editText) ? CheckState.Checked : CheckState.Unchecked;
                 checkedListBox1.SetItemCheckState(idx, state);
             }
         }

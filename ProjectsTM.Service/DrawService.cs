@@ -31,11 +31,11 @@ namespace ProjectsTM.Service
         public void Initialize(
             ViewData viewData,
             IWorkItemGrid grid,
-            Func<bool> IsDragActive,
+            Func<bool> isDragActive,
             Font font)
         {
             this._viewData = viewData;
-            _isDragActive = IsDragActive;
+            _isDragActive = isDragActive;
             _imageBuffer?.Dispose();
             _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
