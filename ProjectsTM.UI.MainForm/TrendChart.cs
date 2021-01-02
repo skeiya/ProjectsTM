@@ -20,7 +20,7 @@ namespace ProjectsTM.UI.MainForm
         private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(AppData appData, string filePath,Func<Member, string, bool> isMemberMatchText)
+        public TrendChart(AppData appData, string filePath, Func<Member, string, bool> isMemberMatchText)
         {
             _viewData = new ViewData(appData, null);
             _filePath = filePath;
@@ -108,7 +108,7 @@ namespace ProjectsTM.UI.MainForm
         private void CancellCollectWorkItems(DoWorkEventArgs e)
         {
             _manDays = new Dictionary<DateTime, int>();
-            e.Cancel = true; 
+            e.Cancel = true;
         }
 
         private int CalcTotal(IEnumerable<WorkItem> ws)
@@ -121,7 +121,7 @@ namespace ProjectsTM.UI.MainForm
         private IEnumerable<WorkItem> GetOldWorkItems(int monthsAgo, Project proj)
         {
             var oldAppData = GetOldAppData(monthsAgo);
-            if(oldAppData == null) return new List<WorkItem>();
+            if (oldAppData == null) return new List<WorkItem>();
             var oldViewData = new ViewData(oldAppData, null);
             oldViewData.SetFilter(_viewData.Filter);
             return oldViewData.FilteredItems.WorkItems.Where(w => w.Project.Equals(proj));

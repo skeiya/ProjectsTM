@@ -50,8 +50,7 @@ namespace ProjectsTM.UI.Common
         private bool ComboBox1_Contain(MileStoneFilter msFilter)
         {
             if (msFilter == null ||
-                msFilter.Name == null ||
-                msFilter.Name == String.Empty ||
+                string.IsNullOrEmpty(msFilter.Name) ||
                 !comboBox1.Items.Contains(msFilter.Name)) return false;
             return true;
         }

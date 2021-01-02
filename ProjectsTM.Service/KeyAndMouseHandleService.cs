@@ -204,7 +204,7 @@ namespace ProjectsTM.Service
         {
             var ctrl = (e.Modifiers & Keys.Control) == Keys.Control;
             var shift = (e.Modifiers & Keys.Shift) == Keys.Shift;
-            
+
             if (ctrl && shift && e.KeyCode == Keys.Up)
             {
                 _editService.ExpandDays(-1);
@@ -226,7 +226,7 @@ namespace ProjectsTM.Service
                 _editService.ShiftDays(1);
                 return;
             }
-            
+
             if (e.KeyCode == Keys.ControlKey)
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);

@@ -62,7 +62,7 @@ namespace ProjectsTM.UI.MainForm
             FormWindowState state;
             state = FormSizeRestoreService.LoadLastTimeFormState("MainFormState");
 
-            switch (state) 
+            switch (state)
             {
                 case FormWindowState.Maximized:
                     this.WindowState = state;
@@ -199,7 +199,7 @@ namespace ProjectsTM.UI.MainForm
                 FilePath = FileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                UserName = _userName
+                UserName = _userName,
             };
             UserSettingUIService.Save(setting);
             FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");

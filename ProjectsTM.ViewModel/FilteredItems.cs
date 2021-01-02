@@ -13,7 +13,7 @@ namespace ProjectsTM.ViewModel
 
         public IEnumerable<Member> Members
         {
-            get 
+            get
             {
                 var result = CreateAllMembersList();
                 return GetFilterShowMembers(result);

@@ -67,7 +67,7 @@ namespace ProjectsTM.UI.TaskList
             var mouseUpPoint = e.Location;
             if (r.Value < FixedRowCount)
             {
-                if(CalcDistace(_mouseDownPoint, mouseUpPoint) <= MAX_SORTABLE_DISTANCE)
+                if (CalcDistace(_mouseDownPoint, mouseUpPoint) <= MAX_SORTABLE_DISTANCE)
                 {
                     HandleSortRequest(rawLocation);
                 }

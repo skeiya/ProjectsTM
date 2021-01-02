@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
         {
             var dir = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(dir)) return string.Empty;
-            var reader = new StringReader(GitCommandRaw("-C " + dir + " log -1 --before=" + months.ToString() +".month "+path));
+            var reader = new StringReader(GitCommandRaw("-C " + dir + " log -1 --before=" + months.ToString() + ".month " + path));
             return reader.ReadLine();
         }
 

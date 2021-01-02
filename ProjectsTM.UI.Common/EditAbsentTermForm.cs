@@ -45,8 +45,8 @@ namespace ProjectsTM.UI.Common
 
         private Period GetPeriod(string fromText, string toText)
         {
-            var from = fromText == string.Empty ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
-            var to = toText == string.Empty ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
+            var from = string.IsNullOrEmpty(fromText) ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
+            var to = string.IsNullOrEmpty(toText) ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
             if (!CheckAbsentPeriod(from, to)) return null;
             return new Period(from, to);
         }

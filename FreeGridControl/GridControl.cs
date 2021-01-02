@@ -115,7 +115,7 @@ namespace FreeGridControl
             if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
-            if(IsShiftKeyPressed())
+            if (IsShiftKeyPressed())
             {
                 _horizontalScroll(e.Delta);
                 return;

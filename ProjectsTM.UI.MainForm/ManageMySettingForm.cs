@@ -21,7 +21,7 @@ namespace ProjectsTM.UI.MainForm
             comboBox1.Items.Clear();
             comboBox1.Items.Add("未設定");
             bool found = false;
-            foreach(var m in _members)
+            foreach (var m in _members)
             {
                 comboBox1.Items.Add(m.ToString());
                 if (!userName.Equals(m.ToString())) continue;

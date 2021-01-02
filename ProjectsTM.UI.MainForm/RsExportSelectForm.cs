@@ -25,18 +25,12 @@ namespace ProjectsTM.UI.MainForm
         {
             if (radioAll.Checked == true)
             {
-
-
                 return true;
             }
             else if (radioSelect.Checked == true)
             {
                 var from = textSelectGetsudo.Text;
                 if (string.IsNullOrEmpty(from)) return false;
-
-
-
-
                 return true;
             }
             else

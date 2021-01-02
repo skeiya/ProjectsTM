@@ -33,7 +33,7 @@ namespace ProjectsTM.Service
             }
             return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         }
-        
+
         public static FormWindowState LoadLastTimeFormState(string form)
         {
             try

@@ -19,7 +19,7 @@ namespace ProjectsTM.UI.TaskList
             InitializeComponent();
 
             this._viewData = viewData;
-           _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
+            _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Option = GetOption();

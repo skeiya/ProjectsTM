@@ -14,7 +14,8 @@ namespace ProjectsTM.UI.TaskList
 
         public static ColIndex AutoExtendCol => ToIndex(ColIds.Description);
 
-        private static Dictionary<ColIds, ColSpecification> _colTable = new Dictionary<ColIds, ColSpecification>() {
+        private static readonly Dictionary<ColIds, ColSpecification> _colTable = new Dictionary<ColIds, ColSpecification>()
+        {
             {ColIds.Name, new ColSpecification("名前", (i,cal)=>i.WorkItem.Name) },
             {ColIds.Error, new ColSpecification("エラー", (i, cal) => i.ErrMsg) },
             {ColIds.Project, new ColSpecification( "プロジェクト", (i, cal) => i.WorkItem.Project.ToString()) },

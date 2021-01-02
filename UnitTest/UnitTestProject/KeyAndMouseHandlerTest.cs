@@ -92,7 +92,7 @@ namespace UnitTestProject
             Assert.AreEqual(viewData.Selected.Unique, g);
         }
 
- 
+
         [TestMethod]
         public void MouseLeftDown_and_WorkItemDrag()
         {

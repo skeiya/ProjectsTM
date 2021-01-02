@@ -8,14 +8,14 @@ namespace ProjectsTM.ViewModel
 {
     public class ViewData
     {
-        public Filter Filter 
-        { 
-            get { return filter; } 
-            private set 
+        public Filter Filter
+        {
+            get { return filter; }
+            private set
             {
                 filter = value;
                 UpdateFilteredItems();
-            } 
+            }
         }
         public FilteredItems FilteredItems { get; private set; }
         public Detail Detail { get; set; } = new Detail();
