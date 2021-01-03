@@ -120,9 +120,7 @@ namespace ProjectsTM.UI.Main
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
             var fileName = FileDragService.Drop(e);
-            if (string.IsNullOrEmpty(fileName)) return;
-            var appData = _fileIOService.OpenFile(fileName);
-            OpenAppData(appData);
+            OpenAppData(_fileIOService.OpenFile(fileName));
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
@@ -244,7 +242,6 @@ namespace ProjectsTM.UI.Main
 
         private void OpenAppData(AppData appData)
         {
-            if (appData == null) return;
             _viewData.SetAppData(appData);
         }
 

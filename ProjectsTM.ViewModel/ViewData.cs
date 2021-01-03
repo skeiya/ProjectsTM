@@ -23,6 +23,7 @@ namespace ProjectsTM.ViewModel
 
         public void SetAppData(AppData appData)
         {
+            if (appData == null) return;
             _appData = appData;
             if (UndoService == null)
             {

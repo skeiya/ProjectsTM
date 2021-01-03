@@ -118,6 +118,7 @@ namespace ProjectsTM.Service
 
         public AppData OpenFile(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName)) return null;
             if (VersionUpdateService.UpdateByFileServer(Path.GetDirectoryName(fileName))) return null;
             if (IsFutureVersion(fileName))
             {
