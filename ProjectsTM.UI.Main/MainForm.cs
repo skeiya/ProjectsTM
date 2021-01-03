@@ -23,7 +23,6 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            statusStrip1.Items.Add(string.Empty);
             workItemGrid1.AllowDrop = true;
             workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
