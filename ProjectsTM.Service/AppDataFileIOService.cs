@@ -38,6 +38,8 @@ namespace ProjectsTM.Service
 
         private readonly FileSystemWatcher _watcher;
         private string _previousFileName;
+        private bool disposedValue;
+
         public string FilePath => _previousFileName;
 
         public bool Save(AppData appData, Action showOverwrapCheck)
@@ -140,9 +142,33 @@ namespace ProjectsTM.Service
             return AppData.DataVersion < version;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _watcher.Dispose();
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~AppDataFileIOService()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
         public void Dispose()
         {
-            _watcher.Dispose();
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
