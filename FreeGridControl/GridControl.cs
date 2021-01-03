@@ -324,9 +324,6 @@ namespace FreeGridControl
         public IntArrayForDesign RowHeights
         {
             get => _cache.RowHeights;
-            set
-            {
-            }
         }
 
         [Category("Grid")]
@@ -334,9 +331,6 @@ namespace FreeGridControl
         public IntArrayForDesign ColWidths
         {
             get => _cache.ColWidths;
-            set
-            {
-            }
         }
 
         public int GridWidth => _cache.GridWidth;
