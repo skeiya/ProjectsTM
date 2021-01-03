@@ -17,7 +17,7 @@ namespace ProjectsTM.UI.Main
         private ViewData _viewData;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
-        private WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
+        private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
         private readonly DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
@@ -269,12 +269,7 @@ namespace ProjectsTM.UI.Main
 
         public void PasteWorkItem()
         {
-            _workItemCopyPasteService.PasteWorkItem(
-                CursorCallenderDay(),
-                CursorMember(),
-                _viewData.Original.Callender,
-                _editService.Add);
-
+            _workItemCopyPasteService.PasteWorkItem(GetCursorDay(), GetCursorMember(), _editService);
         }
 
         public RawPoint Global2Raw(Point global)
@@ -282,7 +277,7 @@ namespace ProjectsTM.UI.Main
             return Client2Raw(new ClientPoint(PointToClient(global)));
         }
 
-        public CallenderDay CursorCallenderDay()
+        public CallenderDay GetCursorDay()
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
@@ -292,7 +287,7 @@ namespace ProjectsTM.UI.Main
             return Y2Day(rawPoint.Y);
         }
 
-        public Member CursorMember()
+        public Member GetCursorMember()
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
