@@ -23,8 +23,8 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.AppDataChanged += _viewData_AppDataChanged;
+            _viewData.FilterChanged += (a, b) => Update();
+            _viewData.AppDataChanged += (a, b) => Update();
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
@@ -34,7 +34,7 @@ namespace ProjectsTM.UI.Main
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
-            workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+            workItemGrid1.RatioChanged += (a, b) => Update();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
@@ -168,21 +168,6 @@ namespace ProjectsTM.UI.Main
         private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
         {
             FileDragService.DragEnter(e);
-        }
-
-        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
-        {
-            UpdateView();
-        }
-
-        private void _viewData_FilterChanged(object sender, EventArgs e)
-        {
-            UpdateView();
-        }
-
-        private void _viewData_AppDataChanged(object sender, EventArgs e)
-        {
-            UpdateView();
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
