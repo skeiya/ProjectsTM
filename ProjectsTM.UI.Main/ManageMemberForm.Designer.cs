@@ -47,7 +47,7 @@
             this.listBox1.Location = new System.Drawing.Point(6, 6);
             this.listBox1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(291, 232);
+            this.listBox1.Size = new System.Drawing.Size(262, 232);
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
@@ -55,7 +55,7 @@
             // buttonUp
             // 
             this.buttonUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUp.Location = new System.Drawing.Point(304, 34);
+            this.buttonUp.Location = new System.Drawing.Point(275, 34);
             this.buttonUp.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonUp.Name = "buttonUp";
             this.buttonUp.Size = new System.Drawing.Size(65, 26);
@@ -67,7 +67,7 @@
             // buttonDown
             // 
             this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDown.Location = new System.Drawing.Point(304, 76);
+            this.buttonDown.Location = new System.Drawing.Point(275, 76);
             this.buttonDown.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonDown.Name = "buttonDown";
             this.buttonDown.Size = new System.Drawing.Size(65, 26);
@@ -79,7 +79,7 @@
             // buttonEdit
             // 
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEdit.Location = new System.Drawing.Point(304, 116);
+            this.buttonEdit.Location = new System.Drawing.Point(275, 116);
             this.buttonEdit.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(65, 26);
@@ -91,7 +91,7 @@
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(304, 159);
+            this.buttonAdd.Location = new System.Drawing.Point(275, 159);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(65, 26);
             this.buttonAdd.TabIndex = 4;
@@ -106,13 +106,14 @@
             this._labelMenmberNum.Location = new System.Drawing.Point(7, 244);
             this._labelMenmberNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this._labelMenmberNum.Name = "_labelMenmberNum";
-            this._labelMenmberNum.Size = new System.Drawing.Size(288, 18);
+            this._labelMenmberNum.Size = new System.Drawing.Size(259, 18);
             this._labelMenmberNum.TabIndex = 6;
             // 
             // buttonAbsentManagement
             // 
+            this.buttonAbsentManagement.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAbsentManagement.Font = new System.Drawing.Font("MS UI Gothic", 6.75F);
-            this.buttonAbsentManagement.Location = new System.Drawing.Point(304, 202);
+            this.buttonAbsentManagement.Location = new System.Drawing.Point(275, 202);
             this.buttonAbsentManagement.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAbsentManagement.Name = "buttonAbsentManagement";
             this.buttonAbsentManagement.Size = new System.Drawing.Size(65, 26);
@@ -125,7 +126,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 269);
+            this.ClientSize = new System.Drawing.Size(345, 269);
             this.Controls.Add(this._labelMenmberNum);
             this.Controls.Add(this.buttonAbsentManagement);
             this.Controls.Add(this.buttonAdd);
