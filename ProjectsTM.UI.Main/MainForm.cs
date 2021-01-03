@@ -39,7 +39,6 @@ namespace ProjectsTM.UI.Main
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
             this.Load += MainForm_Load;
-            LoadUserSetting();
         }
 
         private void UpdateView()
@@ -76,6 +75,7 @@ namespace ProjectsTM.UI.Main
                     Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
                     break;
             }
+            LoadUserSetting();
         }
 
         private void FileIOService_FileOpened(object sender, string filePath)
