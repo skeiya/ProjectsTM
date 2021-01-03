@@ -10,14 +10,12 @@ namespace ProjectsTM.UI.MainForm
     {
         private readonly MileStones _mileStones;
         private readonly Callender _callender;
-        private readonly ViewData _viewData;
 
-        public ManageMileStoneForm(MileStones mileStones, Callender callender, ViewData viewData)
+        public ManageMileStoneForm(MileStones mileStones, Callender callender)
         {
             InitializeComponent();
             this._mileStones = mileStones;
             this._callender = callender;
-            this._viewData = viewData;
             UpdateList();
         }
 

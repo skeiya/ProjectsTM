@@ -44,7 +44,7 @@ namespace ProjectsTM.UI.MainForm
             AttachEvents();
             this.FixedRowCount = WorkItemGridConstants.FixedRows;
             this.FixedColCount = WorkItemGridConstants.FixedCols;
-            this.RowCount = _viewData.FilteredItems.Days.Count + this.FixedRowCount;
+            this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();

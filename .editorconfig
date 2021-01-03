@@ -211,7 +211,7 @@ dotnet_naming_style.i_で始まる.capitalization = pascal_case
 dotnet_diagnostic.CA1002.severity = warning
 
 # CA1003: 汎用イベント ハンドラーのインスタンスを使用します
-dotnet_diagnostic.CA1003.severity = warning
+dotnet_diagnostic.CA1003.severity = none
 
 # CA1005: ジェネリック型でパラメーターを使用しすぎないでください
 dotnet_diagnostic.CA1005.severity = warning
@@ -250,7 +250,7 @@ dotnet_diagnostic.CA1028.severity = warning
 dotnet_diagnostic.CA1030.severity = warning
 
 # CA1031: 一般的な例外の種類はキャッチしません
-dotnet_diagnostic.CA1031.severity = warning
+dotnet_diagnostic.CA1031.severity = none
 
 # CA1033: インターフェイス メソッドは、子型によって呼び出し可能でなければなりません
 dotnet_diagnostic.CA1033.severity = warning
@@ -430,7 +430,7 @@ dotnet_diagnostic.CA1810.severity = warning
 dotnet_diagnostic.CA1813.severity = warning
 
 # CA1814: 複数次元の配列ではなくジャグ配列を使用します
-dotnet_diagnostic.CA1814.severity = warning
+dotnet_diagnostic.CA1814.severity = none
 
 # CA1815: equals および operator equals を値型でオーバーライドします
 dotnet_diagnostic.CA1815.severity = warning

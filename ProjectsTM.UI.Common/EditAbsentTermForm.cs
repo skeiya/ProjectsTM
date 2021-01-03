@@ -7,7 +7,6 @@ namespace ProjectsTM.UI.Common
     public partial class EditAbsentTermForm : BaseForm
     {
         private readonly Member _member;
-        private readonly AbsentTerm _absentTerm;
         private readonly Callender _callender;
 
         public AbsentTerm EditAbsentTerm => CreateAbsentTerm();
@@ -17,7 +16,6 @@ namespace ProjectsTM.UI.Common
             InitializeComponent();
             this._member = member;
             if (absentTerm == null) absentTerm = new AbsentTerm(member, new Period());
-            this._absentTerm = absentTerm;
             this._callender = callender;
             Period p = absentTerm.Period;
             textBoxFrom.Text = (p?.From == null || p.From == AbsentTerm.UnlimitedFrom) ? string.Empty : p.From.ToString();

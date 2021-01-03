@@ -355,7 +355,7 @@ namespace ProjectsTM.UI.TaskList
             this.Invalidate();
         }
 
-        private readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
+        private static readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
 
         private void UpdateExtendColWidth()
         {
@@ -423,8 +423,7 @@ namespace ProjectsTM.UI.TaskList
 
         private Dictionary<WorkItem, string> GetAuditList()
         {
-            var result = new Dictionary<WorkItem, string>();
-            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "衝突"));
+            var result = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ToDictionary(w => w, _ => "衝突");
             CallenderDay soon = null;
             for (int i = 5; i >= 0; i--)
             {

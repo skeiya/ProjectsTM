@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -86,7 +87,7 @@ namespace ProjectsTM.Service
 
         private static bool CheckOverwrap(AppData appData, Action showOverwrapCheck)
         {
-            if (OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Count == 0) return true;
+            if (!OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
             showOverwrapCheck();
             return false;

@@ -10,9 +10,9 @@ namespace ProjectsTM.Model
     {
         private readonly List<string> _tags = new List<string>();
 
-        public Tags(List<string> result)
+        public Tags(IEnumerable<string> result)
         {
-            _tags = result;
+            _tags = result.ToList();
         }
 
         public override string ToString()

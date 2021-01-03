@@ -34,7 +34,7 @@ namespace ProjectsTM.UI.MainForm
             if (_row2DayChache.TryGetValue(r, out var day)) return day;
             if (r == null) return null;
             var days = _viewData.FilteredItems.Days;
-            if (r.Value - _grid.FixedRowCount < 0 || days.Count <= r.Value - _grid.FixedRowCount) return null;
+            if (r.Value - _grid.FixedRowCount < 0 || days.Count() <= r.Value - _grid.FixedRowCount) return null;
             day = days.ElementAt(r.Value - _grid.FixedRowCount);
             _row2DayChache.Add(r, day);
             return day;

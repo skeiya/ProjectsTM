@@ -20,7 +20,7 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        public List<CallenderDay> Days
+        public IEnumerable<CallenderDay> Days
         {
             get
             {

@@ -391,7 +391,7 @@ namespace ProjectsTM.UI.MainForm
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender, _viewData))
+            using (var dlg = new ManageMileStoneForm(_viewData.Original.MileStones.Clone(), _viewData.Original.Callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
