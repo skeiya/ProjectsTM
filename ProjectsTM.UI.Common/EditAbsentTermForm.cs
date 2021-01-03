@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Model;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
@@ -53,8 +54,8 @@ namespace ProjectsTM.UI.Common
         {
             if (from == null || to == null) return false;
             if (from == AbsentTerm.UnlimitedFrom && to == AbsentTerm.UnlimitedTo) return false;
-            if (from != AbsentTerm.UnlimitedFrom && !_callender.Days.Contains(from)) return false;
-            if (to != AbsentTerm.UnlimitedTo && !_callender.Days.Contains(to)) return false;
+            if (from != AbsentTerm.UnlimitedFrom && !_callender.Contains(from)) return false;
+            if (to != AbsentTerm.UnlimitedTo && !_callender.Contains(to)) return false;
             if (from >= to) return false;
             return true;
         }

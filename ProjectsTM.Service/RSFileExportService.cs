@@ -154,7 +154,7 @@ namespace ProjectsTM.Service
             var result = new List<Tuple<int, int>>();
 
             var month = 0;
-            foreach (var d in callender.Days)
+            foreach (var d in callender)
             {
                 if (month != d.Month)
                 {

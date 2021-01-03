@@ -24,10 +24,10 @@ namespace ProjectsTM.ViewModel
         {
             get
             {
-                if (!_filter.Period.IsValid) return _appData.Callender.Days;
+                if (!_filter.Period.IsValid) return _appData.Callender;
                 var result = new List<CallenderDay>();
                 bool isFound = false;
-                foreach (var d in _appData.Callender.Days)
+                foreach (var d in _appData.Callender)
                 {
                     if (d.Equals(_filter.Period.From)) isFound = true;
                     if (isFound) result.Add(d);

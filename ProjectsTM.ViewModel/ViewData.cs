@@ -158,7 +158,7 @@ namespace ProjectsTM.ViewModel
 
         public void UpdateCallenderAndMembers(WorkItem wi)
         {
-            var days = Original.Callender.Days;
+            var days = Original.Callender;
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();

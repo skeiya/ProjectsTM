@@ -280,7 +280,7 @@ namespace ProjectsTM.Service
         {
             var result = new MileStones();
             var today = CallenderDay.Today;
-            if (viewData.Original.Callender.Days.Contains(today))
+            if (viewData.Original.Callender.Contains(today))
             {
                 result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));
             }

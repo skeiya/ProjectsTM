@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Model;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
@@ -92,7 +93,7 @@ namespace ProjectsTM.UI.Common
         private MileStone CreateMileStone()
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
-            if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
+            if (!_callender.Contains(day)) return ErrorMsg_NonWokingDay();
             return new MileStone(textBoxName.Text, new Project(textBoxProject.Text), day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
         }
 

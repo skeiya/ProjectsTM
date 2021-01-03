@@ -23,7 +23,7 @@ namespace ProjectsTM.UI.MainForm
         private void UpdateListView()
         {
             listView1.Items.Clear();
-            foreach (var d in _callender.Days)
+            foreach (var d in _callender)
             {
                 listView1.Items.Add(d.ToString());
             }
@@ -84,9 +84,9 @@ namespace ProjectsTM.UI.MainForm
             {
                 var d = CallenderDay.Parse(day.ToShortDateString());
                 if (d == null) continue;
-                _callender.Days.Add(d);
+                _callender.Add(d);
             }
-            _callender.Days.Sort();
+            _callender.Sort();
             UpdateListView();
         }
 
@@ -96,11 +96,11 @@ namespace ProjectsTM.UI.MainForm
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var cal = CsvReadService.ReadWorkingDays(dlg.FileName);
-                foreach (var d in cal.Days)
+                foreach (var d in cal)
                 {
-                    _callender.Days.Add(d);
+                    _callender.Add(d);
                 }
-                _callender.Days.Sort();
+                _callender.Sort();
             }
             UpdateListView();
         }

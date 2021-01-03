@@ -110,10 +110,10 @@ namespace ProjectsTM.UI.MainForm
 
             var dayErrorMsg = "稼働日が存在しません。：";
             var fromDay = CallenderDay.Parse(textBoxFrom.Text);
-            if (fromDay == null || !_callender.Days.Contains(fromDay)) throw new Exception(dayErrorMsg + textBoxFrom.Text);
+            if (fromDay == null || !_callender.Contains(fromDay)) throw new Exception(dayErrorMsg + textBoxFrom.Text);
 
             var toDay = CallenderDay.Parse(textBoxTo.Text);
-            if (toDay == null || !_callender.Days.Contains(toDay)) throw new Exception(dayErrorMsg + textBoxTo.Text);
+            if (toDay == null || !_callender.Contains(toDay)) throw new Exception(dayErrorMsg + textBoxTo.Text);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -160,8 +160,8 @@ namespace ProjectsTM.UI.MainForm
 
         private void ClearPeriodFilter()
         {
-            var days = _callender.Days;
-            if (days.Count == 0) return;
+            var days = _callender;
+            if (!days.Any()) return;
             textBoxFrom.Text = days.First().ToString();
             textBoxTo.Text = days.Last().ToString();
         }
