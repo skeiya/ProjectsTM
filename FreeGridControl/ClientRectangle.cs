@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace FreeGridControl
 {
-    public struct ClientRectangle
+    public struct ClientRectangle : IEquatable<ClientRectangle>
     {
         private Rectangle _rectangle;
 
@@ -58,6 +60,31 @@ namespace FreeGridControl
         public void Inflate(int x, int y)
         {
             _rectangle.Inflate(x, y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ClientRectangle rectangle && Equals(rectangle);
+        }
+
+        public bool Equals(ClientRectangle other)
+        {
+            return EqualityComparer<Rectangle>.Default.Equals(_rectangle, other._rectangle);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1131176703 + _rectangle.GetHashCode();
+        }
+
+        public static bool operator ==(ClientRectangle left, ClientRectangle right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ClientRectangle left, ClientRectangle right)
+        {
+            return !(left == right);
         }
     }
 }
