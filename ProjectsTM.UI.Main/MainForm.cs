@@ -3,7 +3,6 @@ using ProjectsTM.Service;
 using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -148,12 +147,12 @@ namespace ProjectsTM.UI.Main
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _fileIOService.SetDirty();
-            UpdateDisplayOfSum(e.UpdatedMembers);
+            UpdateDisplayOfSum(e);
         }
 
-        private void UpdateDisplayOfSum(IEnumerable<Member> updatedMembers)
+        private void UpdateDisplayOfSum(IEditedEventArgs e)
         {
-            var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
+            var sum = _calculateSumService.Calculate(_viewData, e.UpdatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
