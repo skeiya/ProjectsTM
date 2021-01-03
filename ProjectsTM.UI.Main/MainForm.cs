@@ -70,18 +70,8 @@ namespace ProjectsTM.UI.Main
 
         private void FileIOService_FileOpened(object sender, string filePath)
         {
-            LoadFilterComboboxFile(filePath);
-            LoadPatternHistoryFile(filePath);
-        }
-
-        private void LoadPatternHistoryFile(string filePath)
-        {
-            _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-        }
-
-        private void LoadFilterComboboxFile(string filePath)
-        {
             _filterComboBoxService.UpdateFilePart(filePath);
+            _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
