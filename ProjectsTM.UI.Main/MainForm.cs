@@ -22,7 +22,7 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
-            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
             statusStrip1.Items.Add(string.Empty);
             InitializeTaskDrawArea();
             InitializeViewData();
@@ -254,16 +254,11 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.FilteredItems.WorkItems, IsMemberMatchText, _patternHistory, _viewData.Original.MileStones))
+            using (var dlg = new FilterForm(_viewData, _patternHistory))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
             }
-        }
-
-        private bool IsMemberMatchText(Member m, string pattern)
-        {
-            return _viewData.FilteredItems.IsMatchMember(m, pattern);
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
@@ -394,7 +389,7 @@ namespace ProjectsTM.UI.Main
 
         private void ShowTrendChartForm()
         {
-            using (var dlg = new TrendChart(_viewData.Original, _fileIOService.FilePath, IsMemberMatchText))
+            using (var dlg = new TrendChart(_viewData.Original, _fileIOService.FilePath))
             {
                 dlg.ShowDialog(this);
             }

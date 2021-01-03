@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -104,9 +105,15 @@ namespace ProjectsTM.ViewModel
             return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
         }
 
-        public bool IsMatchMember(Member m, string pattern)
+        public IEnumerable<Member> MatchMembers(string pattern)
         {
-            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), pattern));
+            foreach(var m in Members)
+            {
+                if (GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), pattern)))
+                {
+                    yield return m;
+                }
+            }
         }
     }
 }
