@@ -145,6 +145,7 @@
     <Compile Include="VersionForm.Designer.cs">
       <DependentUpon>VersionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainFormStateManager.cs" />
     <Compile Include="WorkItemGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>

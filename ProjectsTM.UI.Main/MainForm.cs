@@ -61,19 +61,35 @@ namespace ProjectsTM.UI.Main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            FormWindowState state;
-            state = FormSizeRestoreService.LoadLastTimeFormState("MainFormState");
-
-            switch (state)
+            MainFormStateManager.Load(this);
+            try
             {
-                case FormWindowState.Maximized:
-                    this.WindowState = state;
-                    break;
-                case FormWindowState.Normal:
-                    Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
-                    break;
+                var setting = UserSettingUIService.Load();
+                _viewData.FontSize = setting.FontSize;
+                _viewData.Detail = setting.Detail;
+                _patternHistory = setting.PatternHistory;
+                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
+                _filterComboBoxService.Text = setting.FilterName;
+                _userName = setting.UserName;
             }
-            LoadUserSetting();
+            catch
+            {
+            }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var setting = new UserSetting
+            {
+                FilterName = _filterComboBoxService.Text,
+                FontSize = _viewData.FontSize,
+                FilePath = _fileIOService.FilePath,
+                Detail = _viewData.Detail,
+                PatternHistory = _patternHistory,
+                UserName = _userName,
+            };
+            UserSettingUIService.Save(setting);
+            MainFormStateManager.Save(this);
         }
 
         private void FileIOService_FileOpened(object sender, string filePath)
@@ -96,45 +112,11 @@ namespace ProjectsTM.UI.Main
             }));
         }
 
-        private void LoadUserSetting()
-        {
-            try
-            {
-                var setting = UserSettingUIService.Load();
-                _viewData.FontSize = setting.FontSize;
-                _viewData.Detail = setting.Detail;
-                _patternHistory = setting.PatternHistory;
-                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
-                _filterComboBoxService.Text = setting.FilterName;
-                _userName = setting.UserName;
-            }
-            catch
-            {
-            }
-        }
-
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_fileIOService.IsDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             if (!_fileIOService.Save(_viewData.Original, _taskListManager.Show)) e.Cancel = true;
-        }
-
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            var setting = new UserSetting
-            {
-                FilterName = _filterComboBoxService.Text,
-                FontSize = _viewData.FontSize,
-                FilePath = _fileIOService.FilePath,
-                Detail = _viewData.Detail,
-                PatternHistory = _patternHistory,
-                UserName = _userName,
-            };
-            UserSettingUIService.Save(setting);
-            FormSizeRestoreService.SaveFormSize(Height, Width, "MainFormSize");
-            FormSizeRestoreService.SaveFormState(this.WindowState, "MainFormState");
         }
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
