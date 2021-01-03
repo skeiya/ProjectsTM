@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
-using ProjectsTM.UI.MainForm;
+using ProjectsTM.UI.Main;
 using ProjectsTM.ViewModel;
 
 namespace UnitTestProject
