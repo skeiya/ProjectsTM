@@ -145,18 +145,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
         {
-            using (var dlg = new RsExportSelectForm())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                if (dlg.allPeriod)
-                {
-                    RSFileExportService.Export(_viewData.Original);
-                }
-                else
-                {
-                    RSFileExportService.ExportSelectGetsudo(_viewData.Original, dlg.selectGetsudo);
-                }
-            }
+            RsExportManager.Export(_viewData.Original);
         }
 
         private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
