@@ -22,21 +22,21 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            _viewData.FilterChanged += (a, b) => Update();
-            _viewData.AppDataChanged += (a, b) => Update();
+            _viewData.FilterChanged += (s, e) => Update();
+            _viewData.AppDataChanged += (s, e) => Update();
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             workItemGrid1.AllowDrop = true;
-            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
+            workItemGrid1.DragEnter += (s, e) => FileDragService.DragEnter(e);
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.UndoChanged += _undoService_Changed;
-            workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
-            workItemGrid1.RatioChanged += (a, b) => Update();
+            workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();
+            workItemGrid1.RatioChanged += (s, e) => Update();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
+            this.Shown += (s, e) => workItemGrid1.MoveToTodayMe(_userName);
             this.Load += MainForm_Load;
         }
 
@@ -81,11 +81,6 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-        }
-
-        private void WorkItemGrid1_HoveringTextChanged(object sender, WorkItem e)
-        {
-            toolStripStatusLabelSelect.Text = e == null ? string.Empty : e.ToString();
         }
 
         static bool _alreadyShow = false;
@@ -162,11 +157,6 @@ namespace ProjectsTM.UI.Main
             if (string.IsNullOrEmpty(fileName)) return;
             var appData = _fileIOService.OpenFile(fileName);
             OpenAppData(appData);
-        }
-
-        private void TaskDrawArea_DragEnter(object sender, DragEventArgs e)
-        {
-            FileDragService.DragEnter(e);
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
