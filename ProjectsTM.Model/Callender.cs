@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
-    public class Callender
+    public class Callender : IEnumerable<CallenderDay>
     {
-        public List<CallenderDay> Days { get; private set; } = new List<CallenderDay>();
+        private readonly List<CallenderDay> _days = new List<CallenderDay>();
 
-        private Dictionary<CallenderDay, CallenderDay> _nearestDayCache = new Dictionary<CallenderDay, CallenderDay>();
+        private readonly Dictionary<CallenderDay, CallenderDay> _nearestDayCache = new Dictionary<CallenderDay, CallenderDay>();
         public CallenderDay NearestFromToday
         {
             get
             {
                 var today = CallenderDay.Today;
                 if (_nearestDayCache.TryGetValue(today, out CallenderDay result)) return result;
-                result = Days.FirstOrDefault(d => today <= d);
+                result = _days.FirstOrDefault(d => today <= d);
                 _nearestDayCache.Add(today, result);
                 return result;
             }
@@ -23,14 +24,14 @@ namespace ProjectsTM.Model
 
         public void Delete(CallenderDay d)
         {
-            Days.Remove(d);
+            _days.Remove(d);
             _nearestDayCache.Clear();
         }
 
         public XElement ToXml()
         {
             var xml = new XElement(nameof(Callender));
-            Days.ForEach(d => xml.Add(d.ToXml()));
+            _days.ForEach(d => xml.Add(d.ToXml()));
             return xml;
         }
 
@@ -46,7 +47,7 @@ namespace ProjectsTM.Model
 
         public void Add(CallenderDay callenderDay)
         {
-            Days.Add(callenderDay);
+            _days.Add(callenderDay);
             _nearestDayCache.Clear();
         }
 
@@ -55,7 +56,7 @@ namespace ProjectsTM.Model
             int fromIndex = 0;
             int toIndex = 0;
             int index = 0;
-            foreach (var c in Days)
+            foreach (var c in _days)
             {
                 if (c.Equals(from)) fromIndex = index;
                 if (c.Equals(to)) toIndex = index;
@@ -70,7 +71,7 @@ namespace ProjectsTM.Model
             if (offset > 0)
             {
                 bool found = false;
-                foreach (var c in Days)
+                foreach (var c in _days)
                 {
                     if (c.Equals(from)) found = true;
                     if (offset == 0) return c;
@@ -80,7 +81,7 @@ namespace ProjectsTM.Model
             if (offset < 0)
             {
                 bool found = false;
-                foreach (var c in Days.AsEnumerable().Reverse())
+                foreach (var c in _days.AsEnumerable().Reverse())
                 {
                     if (c.Equals(from)) found = true;
                     if (offset == 0) return c;
@@ -93,7 +94,7 @@ namespace ProjectsTM.Model
         public int GetDaysOfGetsudo(int year, int month)
         {
             var count = 0;
-            foreach (var d in Days)
+            foreach (var d in _days)
             {
                 if (!IsSameGetsudo(d, year, month)) continue;
                 count++;
@@ -115,11 +116,11 @@ namespace ProjectsTM.Model
             return false;
         }
 
-        public List<CallenderDay> GetPediodDays(Period period)
+        public IEnumerable<CallenderDay> GetPeriodDays(Period period)
         {
             var result = new List<CallenderDay>();
             var found = false;
-            foreach (var d in Days)
+            foreach (var d in _days)
             {
                 if (d.Equals(period.From)) found = true;
                 if (found) result.Add(d);
@@ -130,25 +131,39 @@ namespace ProjectsTM.Model
 
         public int GetPeriodDayCount(Period period)
         {
-            return GetPediodDays(period).Count;
+            return GetPeriodDays(period).Count();
         }
 
         public bool IsEmpty()
         {
-            return Days == null || Days.Count == 0;
+            return _days == null || _days.Count == 0;
         }
 
         public override bool Equals(object obj)
         {
-            var target = obj as Callender;
-            if (target == null) return false;
-            if (Days.Count != target.Days.Count) return false;
-            return Days.SequenceEqual(target.Days);
+            if (!(obj is Callender target)) return false;
+            if (_days.Count != target._days.Count) return false;
+            return _days.SequenceEqual(target._days);
         }
 
         public override int GetHashCode()
         {
-            return -1681856198 + EqualityComparer<List<CallenderDay>>.Default.GetHashCode(Days);
+            return -1681856198 + EqualityComparer<List<CallenderDay>>.Default.GetHashCode(_days);
+        }
+
+        public IEnumerator<CallenderDay> GetEnumerator()
+        {
+            return _days.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _days.GetEnumerator();
+        }
+
+        public void Sort()
+        {
+            _days.Sort();
         }
     }
 }

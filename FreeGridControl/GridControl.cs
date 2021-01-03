@@ -7,14 +7,14 @@ namespace FreeGridControl
 {
     public partial class GridControl : UserControl
     {
-        private Cache _cache = new Cache();
+        private readonly Cache _cache = new Cache();
 
         public event EventHandler<DrawNormalAreaEventArgs> OnDrawNormalArea;
 
         public int VScrollBarWidth => this.vScrollBar.Width;
         public int HScrollBarHeight => this.hScrollBar.Height;
 
-        public bool LockUpdate { set { _cache.LockUpdate = value; } get { return _cache.LockUpdate; } }
+        public bool LockUpdate { get { return _cache.LockUpdate; } set { _cache.LockUpdate = value; } }
         public GridControl()
         {
             InitializeComponent();
@@ -95,11 +95,6 @@ namespace FreeGridControl
             return true;
         }
 
-        private bool IsVisible(RowIndex row, ColIndex col)
-        {
-            return IsVisibleRange(row, 1, col);
-        }
-
         private bool IsVisible(RowIndex row)
         {
             return IsVisibleRange(row, 1, VisibleNormalLeftCol);
@@ -120,7 +115,7 @@ namespace FreeGridControl
             if (IsControlDown()) return;
             if (Math.Abs(e.Delta) < 120) return;
 
-            if(IsShiftKeyPressed())
+            if (IsShiftKeyPressed())
             {
                 _horizontalScroll(e.Delta);
                 return;
@@ -144,12 +139,12 @@ namespace FreeGridControl
             vScrollBar.Value = offsetV;
         }
 
-        private bool IsShiftKeyPressed()
+        private static bool IsShiftKeyPressed()
         {
             return (ModifierKeys == Keys.Shift);
         }
 
-        public bool IsControlDown()
+        public static bool IsControlDown()
         {
             return (Control.ModifierKeys & Keys.Control) == Keys.Control;
         }
@@ -329,10 +324,6 @@ namespace FreeGridControl
         public IntArrayForDesign RowHeights
         {
             get => _cache.RowHeights;
-            set
-            {
-                ;
-            }
         }
 
         [Category("Grid")]
@@ -340,10 +331,6 @@ namespace FreeGridControl
         public IntArrayForDesign ColWidths
         {
             get => _cache.ColWidths;
-            set
-            {
-                ;
-            }
         }
 
         public int GridWidth => _cache.GridWidth;

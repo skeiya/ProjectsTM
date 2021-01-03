@@ -7,8 +7,8 @@ namespace ProjectsTM.Service
 {
     public class UndoService : IUndoService
     {
-        private Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
-        private Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
+        private readonly Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
+        private readonly Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
 
         public event EventHandler<IEditedEventArgs> Changed;
 
@@ -16,7 +16,7 @@ namespace ProjectsTM.Service
         {
         }
 
-        private AtomicAction _atomicAction = new AtomicAction();
+        private readonly AtomicAction _atomicAction = new AtomicAction();
 
         public void Delete(WorkItems wis)
         {

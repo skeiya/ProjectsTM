@@ -20,7 +20,7 @@ namespace ProjectsTM.UI.TaskList
             InitializeMyListViewSetting();
             SetMyTaskList();
         }
-        private bool IsMyTask(WorkItem wi, string userName)
+        private static bool IsMyTask(WorkItem wi, string userName)
         {
             return wi.AssignedMember.NaturalString.Equals(userName);
         }
@@ -31,7 +31,7 @@ namespace ProjectsTM.UI.TaskList
             myTasks.ForEach(s => { _myTasklistView.Items.Add(new ListViewItem(s)); });
         }
 
-        public string[] MakeDispString(WorkItem workItem)
+        public static string[] MakeDispString(WorkItem workItem)
         {
             var dispString = new string[4];
             dispString[0] = workItem.Name;

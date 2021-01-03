@@ -27,6 +27,22 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
+        internal void CopyAndAdd(WorkItem orgItem, CallenderDay newFrom, Member newMember)
+        {
+            if (orgItem == null) return;
+            if (newFrom == null) return;
+            if (newMember == null) return;
+
+            var copyItem = orgItem.Clone();
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, newFrom);
+            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
+            if (copyItem.Period == null) return;
+
+            copyItem.AssignedMember = newMember;
+
+            Add(copyItem);
+        }
+
         public void Add(WorkItem wi)
         {
             if (wi == null) return;
@@ -113,7 +129,7 @@ namespace ProjectsTM.Service
         private WorkItems GetSameMemberAfterItems(WorkItem s)
         {
             var result = new WorkItems();
-            foreach (var w in _viewData.GetFilteredWorkItemsOfMember(s.AssignedMember))
+            foreach (var w in _viewData.FilteredItems.GetWorkItemsOfMember(s.AssignedMember))
             {
                 if (_viewData.Original.Callender.GetOffset(s.Period.From, w.Period.From) >= 0)
                 {
@@ -262,7 +278,7 @@ namespace ProjectsTM.Service
             var before = _viewData.Selected.Unique;
             var after = before.Clone();
 
-            var newTo =_viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
+            var newTo = _viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
             if (newTo == null) return;
             if (newTo < after.Period.From) return;
 

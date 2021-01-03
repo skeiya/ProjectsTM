@@ -12,8 +12,8 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListForm : Form
     {
         private readonly ViewData _viewData;
-        private PatternHistory _history;
-        private TaskListContextMenuHandler _taskListContextMenuHandler;
+        private readonly PatternHistory _history;
+        private readonly TaskListContextMenuHandler _taskListContextMenuHandler;
         private readonly string _userName;
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, string userName)

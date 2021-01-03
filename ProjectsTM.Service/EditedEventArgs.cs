@@ -6,10 +6,10 @@ namespace ProjectsTM.Service
 {
     public class EditedEventArgs : IEditedEventArgs
     {
-        public EditedEventArgs(List<Member> members)
+        public EditedEventArgs(IEnumerable<Member> members)
         {
             UpdatedMembers = members;
         }
-        public List<Member> UpdatedMembers { get; internal set; }
+        public IEnumerable<Member> UpdatedMembers { get; internal set; }
     }
 }

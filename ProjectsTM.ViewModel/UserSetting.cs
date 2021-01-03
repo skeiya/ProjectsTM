@@ -5,12 +5,12 @@ namespace ProjectsTM.ViewModel
     public class UserSetting
     {
         public UserSetting() { }
-        public string FilterName { set; get; }
-        public float Ratio { set; get; }
-        public int FontSize { set; get; }
+        public string FilterName { get; set; }
+        public float Ratio { get; set; }
+        public int FontSize { get; set; }
         public string FilePath { get; set; }
-        public Detail Detail { set; get; } = new Detail();
-        public PatternHistory PatternHistory { set; get; } = new PatternHistory();
-        public string UserName { set; get; } = "未設定";
+        public Detail Detail { get; set; } = new Detail();
+        public PatternHistory PatternHistory { get; set; } = new PatternHistory();
+        public string UserName { get; set; } = "未設定";
     }
 }

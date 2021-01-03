@@ -9,7 +9,6 @@ namespace ProjectsTM.UI.Common
 {
     public partial class EditWorkItemForm : BaseForm
     {
-        private readonly WorkItem _wi;
         private readonly Callender _callender;
         private readonly IEnumerable<Member> _members;
 
@@ -17,7 +16,6 @@ namespace ProjectsTM.UI.Common
         {
             InitializeComponent();
             if (wi == null) wi = new WorkItem();
-            this._wi = wi;
             this._callender = callender;
             this._members = members;
             comboBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
@@ -146,8 +144,7 @@ namespace ProjectsTM.UI.Common
 
         private static CallenderDay GetDayByCount(string countText, CallenderDay from, Callender callender)
         {
-            var dayCount = 0;
-            if (!int.TryParse(countText, out dayCount)) return null;
+            if (!int.TryParse(countText, out int dayCount)) return null;
             return callender.ApplyOffset(from, dayCount - 1);
         }
 
@@ -164,7 +161,6 @@ namespace ProjectsTM.UI.Common
 
         private Project GetProject()
         {
-            //return comboBoxProject.SelectedItem as Project;
             return new Project(comboBoxProject.Text);
         }
 

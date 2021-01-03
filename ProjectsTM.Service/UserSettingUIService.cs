@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    public class UserSettingUIService
+    public static class UserSettingUIService
     {
         private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
         private static string UserSettingPath => Path.Combine(AppConfigDir, "UserSetting.xml");

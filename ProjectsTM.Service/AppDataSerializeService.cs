@@ -42,7 +42,16 @@ namespace ProjectsTM.Service
                 if (isOld)
                 {
                     var x = new XmlSerializer(typeof(AppData));
-                    return (AppData)x.Deserialize(nodeReader);
+                    var tmp = (AppData)x.Deserialize(nodeReader);
+                    using (var tmpReader = new XmlNodeReader(doc.DocumentElement))
+                    {
+                        foreach(var callenderDay in XElement.Load(tmpReader).Element("Callender").Element("Days").Elements("CallenderDay"))
+                        {
+                            var ca = CallenderDay.Parse(callenderDay.Element("Date").Value);
+                            tmp.Callender.Add(ca);
+                        }
+                    }
+                    return tmp;
                 }
                 else
                 {
@@ -51,14 +60,28 @@ namespace ProjectsTM.Service
             }
         }
 
+        public static AppData LoadFromString(string str)
+        {
+            using (var reader = StreamFactory.CreateReaderFromString(str))
+            {
+                return LoadFromStream(reader, IsOldFormat(new StringReader(str)));
+            }
+        }
+
         private static bool IsOldFormat(string path)
         {
             using (var reader = StreamFactory.CreateReader(path))
             {
-                var xml = XElement.Load(reader);
-                var ver = int.Parse(xml.Element("Version").Value);
-                return ver < 5;
+                return IsOldFormat(reader);
             }
+        }
+
+        private static bool IsOldFormat(TextReader reader)
+        {
+            var xml = XElement.Load(reader);
+            if (!xml.Elements("Version").Any()) return true;
+            var ver = int.Parse(xml.Elements("Version").Single().Value);
+            return ver < 5;
         }
     }
 }

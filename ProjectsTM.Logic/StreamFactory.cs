@@ -24,5 +24,12 @@ namespace ProjectsTM.Logic
         {
             return new StreamReader(s, Encoding.UTF8);
         }
+
+        public static StreamReader CreateReaderFromString(string str)
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes(str);
+            MemoryStream stream = new MemoryStream(byteArray);
+            return new StreamReader(stream);
+        }
     }
 }

@@ -1,11 +1,9 @@
-﻿using ProjectsTM.Logic;
-using ProjectsTM.Model;
+﻿using ProjectsTM.Model;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Service
 {
-    public class DummyDataService
+    public static class DummyDataService
     {
         public static void Save(string fileName)
         {
@@ -53,11 +51,7 @@ namespace ProjectsTM.Service
                 }
             }
 
-            var xml = new XmlSerializer(typeof(AppData));
-            using (var w = StreamFactory.CreateWriter(fileName))
-            {
-                xml.Serialize(w, appData);
-            }
+            AppDataSerializeService.Serialize(fileName, appData);
         }
     }
 }

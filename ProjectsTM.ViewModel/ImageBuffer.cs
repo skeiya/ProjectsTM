@@ -9,9 +9,9 @@ namespace ProjectsTM.ViewModel
 {
     public class ImageBuffer : IDisposable
     {
-        private Bitmap _bitmap;
-        private Graphics _bitmapGraphics;
-        private Dictionary<Member, HashSet<WorkItem>> _validList = new Dictionary<Member, HashSet<WorkItem>>();
+        private readonly Bitmap _bitmap;
+        private readonly Graphics _bitmapGraphics;
+        private readonly Dictionary<Member, HashSet<WorkItem>> _validList = new Dictionary<Member, HashSet<WorkItem>>();
 
         public Graphics Graphics => _bitmapGraphics;
 

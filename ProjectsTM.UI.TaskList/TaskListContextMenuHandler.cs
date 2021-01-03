@@ -7,8 +7,8 @@ namespace ProjectsTM.UI.TaskList
 {
     class TaskListContextMenuHandler
     {
-        private ViewData _viewData;
-        private TaskListGrid _taskListGrid;
+        private readonly ViewData _viewData;
+        private readonly TaskListGrid _taskListGrid;
 
         public TaskListContextMenuHandler(ViewData viewData, TaskListGrid taskListGrid)
         {

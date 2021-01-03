@@ -5,6 +5,6 @@ namespace ProjectsTM.ViewModel
 {
     public interface IEditedEventArgs
     {
-        List<Member> UpdatedMembers { get; }
+        IEnumerable<Member> UpdatedMembers { get; }
     }
 }

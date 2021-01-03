@@ -18,7 +18,7 @@ namespace ProjectsTM.Model
         public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
-        public string Description { set; get; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         [XmlElement]
         public string ProjectElement
@@ -78,7 +78,7 @@ namespace ProjectsTM.Model
 
         public static WorkItem CreateProto(Period period, Member member)
         {
-            return new WorkItem(new Project(""), "", new Tags(new List<string>()), period, member, TaskState.Active, string.Empty);
+            return new WorkItem(new Project(string.Empty), string.Empty, new Tags(new List<string>()), period, member, TaskState.Active, string.Empty);
         }
 
         public string ToDrawString(Callender callender, bool isAppendDays)
@@ -148,7 +148,7 @@ namespace ProjectsTM.Model
             return Deserialize(Serialize());
         }
 
-        static public WorkItem Deserialize(string text)
+        public static WorkItem Deserialize(string text)
         {
             using (var s = new MemoryStream())
             using (var w = StreamFactory.CreateWriter(s))

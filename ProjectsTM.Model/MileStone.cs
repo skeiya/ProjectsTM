@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -23,10 +22,10 @@ namespace ProjectsTM.Model
             if (mileStoneFilter != null) MileStoneFilter = mileStoneFilter;
         }
 
-        public string Name { set; get; }
+        public string Name { get; set; }
 
         [XmlIgnore]
-        public Project Project { set; get; } = new Project(string.Empty);
+        public Project Project { get; set; } = new Project(string.Empty);
         [XmlElement]
         public string ProjectElement
         {
@@ -34,9 +33,9 @@ namespace ProjectsTM.Model
             set { Project = new Project(value); }
         }
 
-        public CallenderDay Day { set; get; }
+        public CallenderDay Day { get; set; }
         [XmlIgnore]
-        public Color Color { set; get; }
+        public Color Color { get; set; }
 
         [XmlElement]
         public string ColorText
@@ -70,7 +69,7 @@ namespace ProjectsTM.Model
         }
 
         [XmlIgnore]
-        public MileStoneFilter MileStoneFilter { set; get; } = new MileStoneFilter("ALL");
+        public MileStoneFilter MileStoneFilter { get; set; } = new MileStoneFilter("ALL");
 
         [XmlElement]
         public string MileStoneFilterName

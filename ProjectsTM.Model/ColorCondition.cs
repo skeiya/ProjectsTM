@@ -1,7 +1,6 @@
 ﻿using ProjectsTM.Logic;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -40,8 +39,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as ColorCondition;
-            if (target == null) return false;
+            if (!(obj is ColorCondition target)) return false;
             if (!Pattern.Equals(target.Pattern)) return false;
             return BackColor.ToArgb() == target.BackColor.ToArgb();
         }

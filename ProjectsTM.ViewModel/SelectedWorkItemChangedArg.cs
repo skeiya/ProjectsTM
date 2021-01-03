@@ -6,8 +6,8 @@ namespace ProjectsTM.ViewModel
 {
     public class SelectedWorkItemChangedArg
     {
-        private WorkItems org;
-        private WorkItems selected;
+        private readonly WorkItems org;
+        private readonly WorkItems selected;
 
         public SelectedWorkItemChangedArg(WorkItems org, WorkItems selected)
         {

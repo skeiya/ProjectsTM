@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
 {
     public class ColorConditions : IEnumerable<ColorCondition>
     {
-        private List<ColorCondition> _list = new List<ColorCondition>();
+        private readonly List<ColorCondition> _list = new List<ColorCondition>();
 
         public IEnumerator<ColorCondition> GetEnumerator()
         {
@@ -68,8 +68,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as ColorConditions;
-            if (target == null) return false;
+            if (!(obj is ColorConditions target)) return false;
             if (_list.Count != target._list.Count) return false;
             for (var index = 0; index < _list.Count; index++)
             {
