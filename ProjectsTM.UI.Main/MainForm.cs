@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.Main
 {
     public partial class MainForm : Form
     {
-        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoServiceFactory());
+        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;

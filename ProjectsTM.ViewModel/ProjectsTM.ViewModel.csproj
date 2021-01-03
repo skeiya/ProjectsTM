@@ -55,7 +55,6 @@
     <Compile Include="IEditedEventArgs.cs" />
     <Compile Include="ImageBuffer.cs" />
     <Compile Include="IUndoService.cs" />
-    <Compile Include="IUndoServiceFactory.cs" />
     <Compile Include="IWorkItemGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectedWorkItemChangedArg.cs" />
