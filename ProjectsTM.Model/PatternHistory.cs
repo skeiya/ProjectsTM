@@ -11,7 +11,7 @@ namespace ProjectsTM.Model
         public ReadOnlyCollection<string> Items => ListCore.Reverse<string>().ToList().AsReadOnly();
 
         [XmlElement]
-        public List<string> ListCore { get; } = new List<string>();
+        private List<string> ListCore { get; } = new List<string>();
 
         private static int Depth => 20;
 
