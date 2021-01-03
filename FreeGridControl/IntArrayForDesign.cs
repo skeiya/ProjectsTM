@@ -14,7 +14,7 @@ namespace FreeGridControl
 
         public event EventHandler ItemChanged;
 
-        new public int this[int index]
+        public new int this[int index]
         {
             get
             {
