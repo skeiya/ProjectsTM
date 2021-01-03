@@ -27,6 +27,22 @@ namespace ProjectsTM.Service
             _viewData.UndoService.Push();
         }
 
+        internal void CopyAndAdd(WorkItem orgItem, CallenderDay newFrom, Member newMember)
+        {
+            if (orgItem == null) return;
+            if (newFrom == null) return;
+            if (newMember == null) return;
+
+            var copyItem = orgItem.Clone();
+            var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, newFrom);
+            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
+            if (copyItem.Period == null) return;
+
+            copyItem.AssignedMember = newMember;
+
+            Add(copyItem);
+        }
+
         public void Add(WorkItem wi)
         {
             if (wi == null) return;
