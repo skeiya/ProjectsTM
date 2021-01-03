@@ -24,22 +24,33 @@ namespace ProjectsTM.UI.Main
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
             statusStrip1.Items.Add(string.Empty);
-            InitializeTaskDrawArea();
-            InitializeViewData();
+            workItemGrid1.AllowDrop = true;
+            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
+            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
+            _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.AppDataChanged += _viewData_AppDataChanged;
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
+            this.Load += MainForm_Load;
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
-            Load += MainForm_Load;
-            LoadUserSetting();
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+            LoadUserSetting();
+        }
+
+        private void UpdateView()
+        {
+            _viewData.Selected = new WorkItems();
+            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
+            workItemGrid1.Initialize(_viewData);
+            _filterComboBoxService.UpdateAppDataPart();
+            UpdateDisplayOfSum(null);
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
         }
 
         private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
@@ -72,12 +83,6 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-        }
-
-        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
-        {
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + ratio.ToString();
-            workItemGrid1.Initialize(_viewData);
         }
 
         private void WorkItemGrid1_HoveringTextChanged(object sender, WorkItem e)
@@ -141,36 +146,16 @@ namespace ProjectsTM.UI.Main
             FormSizeRestoreService.SaveFormState(this.WindowState, "MainFormState");
         }
 
-        private void InitializeViewData()
-        {
-            _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.AppDataChanged += _viewData_AppDataChanged;
-        }
-
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _fileIOService.SetDirty();
             UpdateDisplayOfSum(e.UpdatedMembers);
         }
 
-        private void _viewData_AppDataChanged(object sender, EventArgs e)
-        {
-            workItemGrid1.Initialize(_viewData);
-            _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(null);
-        }
-
         private void UpdateDisplayOfSum(IEnumerable<Member> updatedMembers)
         {
             var sum = _calculateSumService.Calculate(_viewData, updatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
-        }
-
-        void InitializeTaskDrawArea()
-        {
-            workItemGrid1.AllowDrop = true;
-            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
-            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
         }
 
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
@@ -186,18 +171,25 @@ namespace ProjectsTM.UI.Main
             FileDragService.DragEnter(e);
         }
 
+        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
+        {
+            UpdateView();
+        }
+
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            _viewData.Selected = new WorkItems();
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
-            workItemGrid1.Initialize(_viewData);
-            UpdateDisplayOfSum(null);
+            UpdateView();
+        }
+
+        private void _viewData_AppDataChanged(object sender, EventArgs e)
+        {
+            UpdateView();
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             OldFileService.ImportMemberAndWorkItems(_viewData);
-            workItemGrid1.Initialize(_viewData);
+            UpdateView();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -255,7 +247,7 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        private void ToolStripMenuItemWorkingDas_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemWorkingDays_Click(object sender, EventArgs e)
         {
             using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems))
             {

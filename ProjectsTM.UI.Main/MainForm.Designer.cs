@@ -279,7 +279,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemWorkingDas.Name = "ToolStripMenuItemWorkingDas";
             this.ToolStripMenuItemWorkingDas.Size = new System.Drawing.Size(150, 22);
             this.ToolStripMenuItemWorkingDas.Text = "稼働日(&W)";
-            this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDas_Click);
+            this.ToolStripMenuItemWorkingDas.Click += new System.EventHandler(this.ToolStripMenuItemWorkingDays_Click);
             // 
             // ToolStripMenuItemManageMember
             // 
