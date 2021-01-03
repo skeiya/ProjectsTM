@@ -23,7 +23,6 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
-            menuStrip1.ImageScalingSize = new Size(16, 16);
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             statusStrip1.Items.Add(string.Empty);
             InitializeTaskDrawArea();
