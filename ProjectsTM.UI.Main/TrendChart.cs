@@ -20,12 +20,12 @@ namespace ProjectsTM.UI.Main
         private Dictionary<DateTime, int> _manDays;
         private static readonly DateTime _invalidDate = new DateTime(1000, 1, 1);
 
-        public TrendChart(AppData appData, string filePath, Func<Member, string, bool> isMemberMatchText)
+        public TrendChart(AppData appData, string filePath)
         {
             _viewData = new ViewData(appData, null);
             _filePath = filePath;
             InitializeComponent();
-            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1, isMemberMatchText);
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1);
             _filterComboBoxService.UpdateFilePart(filePath);
             InitCombo();
             if (comboBox1.Items.Count != 0) comboBox1.SelectedIndex = 0;

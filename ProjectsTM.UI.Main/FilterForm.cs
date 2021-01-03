@@ -12,28 +12,23 @@ namespace ProjectsTM.UI.Main
 {
     public partial class FilterForm : BaseForm
     {
+        private readonly ViewData _viewData;
         private Members _members;
         private readonly Members _originalMembers;
         private Filter _filter;
-        private readonly Callender _callender;
-        private readonly IEnumerable<WorkItem> _workItems;
-        private readonly Func<Member, string, bool> _isMemberMatchText;
+        private Callender Callender => _viewData.Original.Callender;
         private readonly PatternHistory _history;
-        private readonly MileStones _mileStones;
 
-        public FilterForm(Members members, Filter filter, Callender callender, IEnumerable<WorkItem> workItems, Func<Member, string, bool> isMemberMatchText, PatternHistory patternHistory, MileStones mileStones)
+        public FilterForm(ViewData viewData, PatternHistory patternHistory)
         {
             InitializeComponent();
-            _originalMembers = members.Clone();
-            _members = members.Clone();
-            _filter = filter;
-            _callender = callender;
-            _workItems = workItems;
+            _viewData = viewData;
+            _originalMembers = viewData.Original.Members.Clone();
+            _members = viewData.Original.Members.Clone();
+            _filter = viewData.Filter.Clone();
             _history = patternHistory;
-            _mileStones = mileStones;
-            InitComboBox_MSFiltersSearchPattern(filter.MSFilterSearchPattern);
+            InitComboBox_MSFiltersSearchPattern(_filter.MSFilterSearchPattern);
             UpdateAllField();
-            _isMemberMatchText = isMemberMatchText;
             checkedListBox1.CheckOnClick = true;
             buttonFromTodayToSpecialDay.Text += SpecialDay;
         }
@@ -67,8 +62,8 @@ namespace ProjectsTM.UI.Main
         private void UpdateComboBox_MSFiltersSearchPattern()
         {
             comboBox_MSFiltersSearchPattern.Items.Clear();
-            if (_mileStones == null) return;
-            foreach (var ms in _mileStones)
+            if (_viewData.Original.MileStones == null) return;
+            foreach (var ms in _viewData.Original.MileStones)
             {
                 if (string.IsNullOrEmpty(ms.MileStoneFilter.Name)) continue;
                 if (comboBox_MSFiltersSearchPattern.Items.Contains(ms.MileStoneFilter.Name)) continue;
@@ -110,10 +105,10 @@ namespace ProjectsTM.UI.Main
 
             var dayErrorMsg = "稼働日が存在しません。：";
             var fromDay = CallenderDay.Parse(textBoxFrom.Text);
-            if (fromDay == null || !_callender.Contains(fromDay)) throw new Exception(dayErrorMsg + textBoxFrom.Text);
+            if (fromDay == null || !Callender.Contains(fromDay)) throw new Exception(dayErrorMsg + textBoxFrom.Text);
 
             var toDay = CallenderDay.Parse(textBoxTo.Text);
-            if (toDay == null || !_callender.Contains(toDay)) throw new Exception(dayErrorMsg + textBoxTo.Text);
+            if (toDay == null || !Callender.Contains(toDay)) throw new Exception(dayErrorMsg + textBoxTo.Text);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -160,7 +155,7 @@ namespace ProjectsTM.UI.Main
 
         private void ClearPeriodFilter()
         {
-            var days = _callender;
+            var days = Callender;
             if (!days.Any()) return;
             textBoxFrom.Text = days.First().ToString();
             textBoxTo.Text = days.Last().ToString();
@@ -251,11 +246,16 @@ namespace ProjectsTM.UI.Main
         {
             using (var dlg = new ProjectSelectForm())
             {
-                dlg.Projects = _workItems.Select(w => w.Project.ToString()).Distinct();
+                dlg.Projects = GetDistinctProjects();
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 AllOff();
                 CheckOnProject(dlg.Selected);
             }
+        }
+
+        private IEnumerable<string> GetDistinctProjects()
+        {
+            return _viewData.FilteredItems.WorkItems.Select(w => w.Project.ToString()).Distinct();
         }
 
         private void CheckOnProject(string selected)
@@ -281,10 +281,11 @@ namespace ProjectsTM.UI.Main
 
         private void CheckByTextMatch(string editText)
         {
+            var members = _viewData.FilteredItems.MatchMembers(editText);
             for (var idx = 0; idx < checkedListBox1.Items.Count; idx++)
             {
                 var m = GetMember(checkedListBox1.Items[idx].ToString());
-                var state = _isMemberMatchText(m, editText) ? CheckState.Checked : CheckState.Unchecked;
+                var state = members.Contains(m) ? CheckState.Checked : CheckState.Unchecked;
                 checkedListBox1.SetItemCheckState(idx, state);
             }
         }
