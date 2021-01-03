@@ -73,6 +73,7 @@
     <Compile Include="OverwrapedWorkItemsCollectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedrawLock.cs" />
+    <Compile Include="RemoteChangePollingService.cs" />
     <Compile Include="RSFileExportService.cs" />
     <Compile Include="ToolTipService.cs" />
     <Compile Include="UndoService.cs" />

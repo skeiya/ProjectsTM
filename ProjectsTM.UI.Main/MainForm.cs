@@ -18,6 +18,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
+        private readonly RemoteChangePollingService _remoteChangePollingService;
 
         public MainForm()
         {
@@ -33,18 +34,24 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileWatchChanged += _fileIOService_FileChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             Load += MainForm_Load;
-            if (GitRepositoryService.IsActive())
-            {
-                _1minutTimer.Interval = 60 * 1000;
-                _1minutTimer.Tick += _timer_Tick;
-                _1minutTimer.Start();
-            }
             LoadUserSetting();
+            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
+            _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             workItemGrid1.Initialize(_viewData);
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
+        {
+            if (isRemoteBranchAppDataNew)
+            {
+                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
+                return;
+            }
+            this.Text = "ProjectsTM";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -63,29 +70,7 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        private async void _timer_Tick(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_fileIOService.FilePath)) return;
-            await TriggerRemoteChangeCheck(_fileIOService.FilePath).ConfigureAwait(true);
-        }
-
-        private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
-        {
-            if (isRemoteBranchAppDataNew)
-            {
-                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
-                return;
-            }
-            this.Text = "ProjectsTM";
-        }
-
-        private async void FileIOService_FileOpened(object sender, string filePath)
-        {
-            LoadAssociatedFiles(filePath);
-            await TriggerRemoteChangeCheck(filePath).ConfigureAwait(true);
-        }
-
-        private void LoadAssociatedFiles(string filePath)
+        private void FileIOService_FileOpened(object sender, string filePath)
         {
             LoadFilterComboboxFile(filePath);
             LoadPatternHistoryFile(filePath);
@@ -99,17 +84,6 @@ namespace ProjectsTM.UI.Main
         private void LoadFilterComboboxFile(string filePath)
         {
             _filterComboBoxService.UpdateFilePart(filePath);
-        }
-
-        private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
-        {
-            if (_fileIOService.IsDirty) return;
-            var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath).ConfigureAwait(true);
-            if (hasUnmergedRemoteCommit)
-            {
-                if (GitRepositoryService.TryAutoPull(filePath)) hasUnmergedRemoteCommit = false;
-            }
-            UpdateTitlebarText(hasUnmergedRemoteCommit);
         }
 
         private void WorkItemGrid1_RatioChanged(object sender, float ratio)
