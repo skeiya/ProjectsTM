@@ -1,6 +1,5 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.Service;
-using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
@@ -10,10 +9,10 @@ namespace ProjectsTM.UI.Main
     public partial class MainForm : Form
     {
         private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
-        private TaskListForm TaskListForm { get; set; }
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
+        private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -22,8 +21,9 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            _viewData.FilterChanged += (s, e) => Update();
-            _viewData.AppDataChanged += (s, e) => Update();
+            _taskListManager = new TaskListManager(_viewData, _patternHistory, this);
+            _viewData.FilterChanged += (s, e) => UpdateView();
+            _viewData.AppDataChanged += (s, e) => UpdateView();
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
@@ -33,7 +33,7 @@ namespace ProjectsTM.UI.Main
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();
-            workItemGrid1.RatioChanged += (s, e) => Update();
+            workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => workItemGrid1.MoveToTodayMe(_userName);
@@ -43,7 +43,7 @@ namespace ProjectsTM.UI.Main
         private void UpdateView()
         {
             _viewData.Selected = new WorkItems();
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
+            _taskListManager.UpdateView();
             workItemGrid1.Initialize(_viewData);
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(null);
@@ -120,7 +120,7 @@ namespace ProjectsTM.UI.Main
         {
             if (!_fileIOService.IsDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!_fileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
+            if (!_fileIOService.Save(_viewData.Original, _taskListManager.Show)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -147,7 +147,7 @@ namespace ProjectsTM.UI.Main
 
         private void UpdateDisplayOfSum(IEditedEventArgs e)
         {
-            var sum = _calculateSumService.Calculate(_viewData, e.UpdatedMembers);
+            var sum = _calculateSumService.Calculate(_viewData, e?.UpdatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
@@ -193,7 +193,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            _fileIOService.Save(_viewData.Original, ShowTaskListForm);
+            _fileIOService.Save(_viewData.Original, _taskListManager.Show);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -240,7 +240,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            _fileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
+            _fileIOService.SaveOtherName(_viewData.Original, _taskListManager.Show);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -303,16 +303,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
-            ShowTaskListForm();
-        }
-
-        private void ShowTaskListForm()
-        {
-            if (TaskListForm == null || TaskListForm.IsDisposed)
-            {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory);
-            }
-            if (!TaskListForm.Visible) TaskListForm.Show(this);
+            _taskListManager.Show();
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)

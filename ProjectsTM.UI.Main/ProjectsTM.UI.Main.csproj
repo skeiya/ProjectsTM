@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageOutputer.cs" />
+    <Compile Include="TaskListManager.cs" />
     <Compile Include="TrendChartBackgroundWorkForm.cs">
       <SubType>Form</SubType>
     </Compile>
