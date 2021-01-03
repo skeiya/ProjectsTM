@@ -74,7 +74,7 @@ namespace ProjectsTM.UI.MainForm
         private async void _timer_Tick(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(FileIOService.FilePath)) return;
-            await TriggerRemoteChangeCheck(FileIOService.FilePath);
+            await TriggerRemoteChangeCheck(FileIOService.FilePath).ConfigureAwait(true);
         }
 
         private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
@@ -90,7 +90,7 @@ namespace ProjectsTM.UI.MainForm
         private async void FileIOService_FileOpened(object sender, string filePath)
         {
             LoadAssociatedFiles(filePath);
-            await TriggerRemoteChangeCheck(filePath);
+            await TriggerRemoteChangeCheck(filePath).ConfigureAwait(true);
         }
 
         private void LoadAssociatedFiles(string filePath)
@@ -124,7 +124,7 @@ namespace ProjectsTM.UI.MainForm
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
             if (_isDirty) return;
-            var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath);
+            var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath).ConfigureAwait(true);
             if (hasUnmergedRemoteCommit)
             {
                 if (GitRepositoryService.TryAutoPull(filePath)) hasUnmergedRemoteCommit = false;
