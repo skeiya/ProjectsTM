@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -39,6 +41,22 @@ namespace ProjectsTM.Model
         {
             if (ListCore.Count == 0) return false;
             return ListCore[ListCore.Count - 1].Equals(text);
+        }
+
+        public void Load(string path)
+        {
+            if (File.Exists(path))
+            {
+                var s = new XmlSerializer(typeof(PatternHistory));
+                using (var r = new FileStream(path, FileMode.Open))
+                {
+                    var h = (PatternHistory)s.Deserialize(r);
+                    foreach (var p in h.Items)
+                    {
+                        Append(p);
+                    }
+                }
+            }
         }
     }
 }

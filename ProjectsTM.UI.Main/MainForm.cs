@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.UI.Main
 {
@@ -102,18 +101,7 @@ namespace ProjectsTM.UI.Main
         private void LoadPatternHistoryFile(string filePath)
         {
             var path = Path.Combine(Path.GetDirectoryName(filePath), "PatternHistory.xml");
-            if (File.Exists(path))
-            {
-                var s = new XmlSerializer(typeof(PatternHistory));
-                using (var r = new FileStream(path, FileMode.Open))
-                {
-                    var h = (PatternHistory)s.Deserialize(r);
-                    foreach (var p in h.Items)
-                    {
-                        _patternHistory.Append(p);
-                    }
-                }
-            }
+            _patternHistory.Load(path);
         }
 
         private void LoadFilterComboboxFile(string filePath)
