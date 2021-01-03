@@ -246,7 +246,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new ManageMemberForm(_viewData.Original))
             {
                 dlg.ShowDialog(this);
-                workItemGrid1.Initialize(_viewData);
+                UpdateView();
             }
         }
 
