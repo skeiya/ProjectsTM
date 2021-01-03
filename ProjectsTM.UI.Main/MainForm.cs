@@ -52,12 +52,11 @@ namespace ProjectsTM.UI.Main
 
         private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
         {
+            this.Text = "ProjectsTM";
             if (isRemoteBranchAppDataNew)
             {
-                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
-                return;
+                this.Text += "     ***リモートブランチのデータに更新があります***";
             }
-            this.Text = "ProjectsTM";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -111,7 +110,6 @@ namespace ProjectsTM.UI.Main
             }
             catch
             {
-
             }
         }
 
