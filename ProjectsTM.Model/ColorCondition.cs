@@ -40,8 +40,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as ColorCondition;
-            if (target == null) return false;
+            if (!(obj is ColorCondition target)) return false;
             if (!Pattern.Equals(target.Pattern)) return false;
             return BackColor.ToArgb() == target.BackColor.ToArgb();
         }

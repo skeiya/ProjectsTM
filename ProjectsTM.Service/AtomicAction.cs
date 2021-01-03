@@ -7,9 +7,9 @@ namespace ProjectsTM.Service
 {
     public class AtomicAction : IEnumerable<EditAction>
     {
-        private List<EditAction> _list = new List<EditAction>();
+        private readonly List<EditAction> _list = new List<EditAction>();
 
-        public List<Member> Members => _list.Select((l) => l.Member).ToList();
+        public IEnumerable<Member> Members => _list.Select((l) => l.Member);
 
         public IEnumerator<EditAction> GetEnumerator()
         {

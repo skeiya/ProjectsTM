@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -35,8 +36,10 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        private FileSystemWatcher _watcher;
+        private readonly FileSystemWatcher _watcher;
         private string _previousFileName;
+        private bool disposedValue;
+
         public string FilePath => _previousFileName;
 
         public bool Save(AppData appData, Action showOverwrapCheck)
@@ -86,7 +89,7 @@ namespace ProjectsTM.Service
 
         private static bool CheckOverwrap(AppData appData, Action showOverwrapCheck)
         {
-            if (OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Count == 0) return true;
+            if (!OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
             showOverwrapCheck();
             return false;
@@ -128,7 +131,7 @@ namespace ProjectsTM.Service
             return AppDataSerializeService.Deserialize(fileName);
         }
 
-        private bool IsFutureVersion(string fileName)
+        private static bool IsFutureVersion(string fileName)
         {
             XmlDocument oDom = new XmlDocument();
             oDom.Load(fileName);
@@ -139,9 +142,33 @@ namespace ProjectsTM.Service
             return AppData.DataVersion < version;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _watcher.Dispose();
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~AppDataFileIOService()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
         public void Dispose()
         {
-            _watcher.Dispose();
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

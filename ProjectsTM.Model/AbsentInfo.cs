@@ -7,7 +7,7 @@ namespace ProjectsTM.Model
 {
     public class AbsentInfo : IEnumerable<AbsentTerm>
     {
-        private SortedDictionary<Member, AbsentTerms> _items = new SortedDictionary<Member, AbsentTerms>();
+        private readonly SortedDictionary<Member, AbsentTerms> _items = new SortedDictionary<Member, AbsentTerms>();
 
         public AbsentTerms OfMember(Member m) => _items.ContainsKey(m) ? _items[m] : new AbsentTerms();
 
@@ -30,7 +30,7 @@ namespace ProjectsTM.Model
         public void Replace(Member member, AbsentTerms absentTerms)
         {
             if (member == null || absentTerms == null) return;
-            if (absentTerms.Count() == 0) return;
+            if (!absentTerms.Any()) return;
             RemoveInfoOfMember(member);
             _items.Add(member, absentTerms);
         }
@@ -82,8 +82,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as AbsentInfo;
-            if (target == null) return false;
+            if (!(obj is AbsentInfo target)) return false;
             if (target._items.Count != this._items.Count) return false;
             for (var idx = 0; idx < _items.Count; idx++)
             {

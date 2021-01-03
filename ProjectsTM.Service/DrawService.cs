@@ -31,11 +31,11 @@ namespace ProjectsTM.Service
         public void Initialize(
             ViewData viewData,
             IWorkItemGrid grid,
-            Func<bool> IsDragActive,
+            Func<bool> isDragActive,
             Font font)
         {
             this._viewData = viewData;
-            _isDragActive = IsDragActive;
+            _isDragActive = isDragActive;
             _imageBuffer?.Dispose();
             _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
@@ -85,7 +85,7 @@ namespace ProjectsTM.Service
             {
                 var absentTerms = absentInfo.GetAbsentTerms(_grid.Col2Member(c));
                 if (absentTerms == null) continue;
-                foreach(var a in absentTerms)
+                foreach (var a in absentTerms)
                 {
                     foreach (var r in range.Rows)
                     {
@@ -280,7 +280,7 @@ namespace ProjectsTM.Service
         {
             var result = new MileStones();
             var today = CallenderDay.Today;
-            if (viewData.Original.Callender.Days.Contains(today))
+            if (viewData.Original.Callender.Contains(today))
             {
                 result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));
             }

@@ -7,8 +7,8 @@ namespace ProjectsTM.Model
 {
     public class MembersWorkItems : IEnumerable<WorkItem>
     {
-        private List<WorkItem> _items = new List<WorkItem>();
-        private int _sumCache = 0;
+        private readonly List<WorkItem> _items = new List<WorkItem>();
+        private readonly int _sumCache = 0;
         public int Sum => _sumCache;
         public int Count => _items.Count;
 
@@ -55,10 +55,10 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public List<Project> GetProjects()
+        public IEnumerable<Project> GetProjects()
         {
             var result = new List<Project>();
-            foreach(var w in _items)
+            foreach (var w in _items)
             {
                 if (!result.Contains(w.Project)) result.Add(w.Project);
             }
@@ -67,8 +67,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var items = obj as MembersWorkItems;
-            if (items == null) return false;
+            if (!(obj is MembersWorkItems items)) return false;
             if (_items.Count != items._items.Count) return false;
             for (var index = 0; index < _items.Count; index++)
             {

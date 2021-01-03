@@ -6,7 +6,7 @@ namespace ProjectsTM.Model
 {
     public class AbsentTerms : IEnumerable<AbsentTerm>
     {
-        private List<AbsentTerm> _absentTerms = new List<AbsentTerm>();
+        private readonly List<AbsentTerm> _absentTerms = new List<AbsentTerm>();
 
         public void Add(AbsentTerm absentTerm)
         {
@@ -46,8 +46,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as AbsentTerms;
-            if (target == null) return false;
+            if (!(obj is AbsentTerms target)) return false;
             if (target._absentTerms.Count != _absentTerms.Count) return false;
             for (var idx = 0; idx < _absentTerms.Count; idx++)
             {

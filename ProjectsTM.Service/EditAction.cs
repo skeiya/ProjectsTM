@@ -4,9 +4,9 @@ namespace ProjectsTM.Service
 {
     public class EditAction
     {
-        private EditActionType _action;
-        private string _workItem;
-        private Member _member;
+        private readonly EditActionType _action;
+        private readonly string _workItem;
+        private readonly Member _member;
 
         public EditActionType Action => _action;
         public string WorkItemText => _workItem;

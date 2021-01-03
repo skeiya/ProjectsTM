@@ -6,7 +6,7 @@ namespace ProjectsTM.Model
 {
     public class MileStones : IEnumerable<MileStone>
     {
-        private List<MileStone> _list = new List<MileStone>();
+        private readonly List<MileStone> _list = new List<MileStone>();
 
         public MileStones Clone()
         {
@@ -101,8 +101,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as MileStones;
-            if (target == null) return false;
+            if (!(obj is MileStones target)) return false;
             if (target._list.Count != _list.Count) return false;
             for (var idx = 0; idx < _list.Count; idx++)
             {

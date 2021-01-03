@@ -4,8 +4,8 @@ namespace ProjectsTM.Service
 {
     internal class RedrawLock : IDisposable
     {
-        private DrawService _drawService;
-        private Action _redraw;
+        private readonly DrawService _drawService;
+        private readonly Action _redraw;
 
         public RedrawLock(DrawService drawService, Action redraw)
         {

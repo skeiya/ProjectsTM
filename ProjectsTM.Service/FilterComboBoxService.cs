@@ -12,16 +12,16 @@ namespace ProjectsTM.Service
 {
     public class FilterComboBoxService
     {
-        private ViewData _viewData;
-        private ToolStripComboBox _toolStripComboBoxFilter;
+        private readonly ViewData _viewData;
+        private readonly ToolStripComboBox _toolStripComboBoxFilter;
         private string DirPath => Path.Combine(Path.GetDirectoryName(_filepPath), "filters");
-        private List<string> _allPaths = new List<string>();
-        private Func<Member, string, bool> IsMemberMatchText;
+        private readonly List<string> _allPaths = new List<string>();
+        private readonly Func<Member, string, bool> _isMemberMatchText;
 
-        private readonly string FilePrefix = "file:";
-        private readonly string CompanyPrefix = "company:";
-        private readonly string ProjectPrefix = "project:";
-        private readonly string AllKeyword = "ALL";
+        private const string FilePrefix = "file:";
+        private const string CompanyPrefix = "company:";
+        private const string ProjectPrefix = "project:";
+        private const string AllKeyword = "ALL";
 
         public string Text
         {
@@ -41,7 +41,7 @@ namespace ProjectsTM.Service
             _viewData = viewData;
             this._toolStripComboBoxFilter = toolStripComboBoxFilter;
             this._toolStripComboBoxFilter.Items.Add(AllKeyword);
-            this.IsMemberMatchText = isMemberMatchText;
+            this._isMemberMatchText = isMemberMatchText;
             this._toolStripComboBoxFilter.DropDown += ToolStripComboBoxFilter_DropDown;
         }
 
@@ -176,7 +176,7 @@ namespace ProjectsTM.Service
             _toolStripComboBoxFilter.SelectedIndexChanged -= ToolStripComboBoxFilter_SelectedIndexChanged;
         }
 
-        public void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
+        private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             _viewData.Selected = null;
             var idx = _toolStripComboBoxFilter.SelectedIndex;
@@ -185,7 +185,7 @@ namespace ProjectsTM.Service
                 _viewData.SetFilter(Filter.All(_viewData));
                 return;
             }
-            idx = idx - 1;
+            idx--;
             var filter = GetFilterByFiles(ref idx);
             if (filter == null)
             {
@@ -216,7 +216,7 @@ namespace ProjectsTM.Service
             var members = new Members();
             foreach (var m in _viewData.Original.Members)
             {
-                if (IsMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
+                if (_isMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
             }
 
             return members;
@@ -234,7 +234,7 @@ namespace ProjectsTM.Service
             var members = new Members();
             foreach (var m in _viewData.Original.Members)
             {
-                if (IsMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
+                if (_isMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
             }
             return new Filter(null, null, members, false, pro.ToString(), false);
         }
