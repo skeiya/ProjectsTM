@@ -29,7 +29,7 @@ namespace ProjectsTM.UI.Main
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
-            _fileIOService.FileWatchChanged += _fileIOService_FileChanged;
+            _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             Load += MainForm_Load;
             LoadUserSetting();
@@ -96,7 +96,7 @@ namespace ProjectsTM.UI.Main
         }
 
         static bool _alreadyShow = false;
-        private void _fileIOService_FileChanged(object sender, EventArgs e)
+        private void _fileIOService_FileWatchChanged(object sender, EventArgs e)
         {
             this.BeginInvoke((Action)(() =>
             {
