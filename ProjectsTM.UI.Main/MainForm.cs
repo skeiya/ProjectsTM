@@ -16,16 +16,18 @@ namespace ProjectsTM.UI.Main
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
         private readonly RemoteChangePollingService _remoteChangePollingService;
+        private readonly FileWatchManager _fileWatchManager;
 
         public MainForm()
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
             _taskListManager = new TaskListManager(_viewData, _patternHistory, this);
+            _fileWatchManager = new FileWatchManager(this, Reload);
             _viewData.FilterChanged += (s, e) => UpdateView();
             _viewData.AppDataChanged += (s, e) => UpdateView();
             _viewData.UndoService.Changed += _undoService_Changed;
-            _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
+            _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
@@ -94,20 +96,6 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-        }
-
-        static bool _alreadyShow = false;
-        private void _fileIOService_FileWatchChanged(object sender, EventArgs e)
-        {
-            this.BeginInvoke((Action)(() =>
-            {
-                if (_alreadyShow) return;
-                _alreadyShow = true;
-                var msg = "開いているファイルが外部で変更されました。リロードしますか？";
-                if (MessageBox.Show(this, msg, "message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-                ToolStripMenuItemReload_Click(null, null);
-                _alreadyShow = false;
-            }));
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -245,6 +233,11 @@ namespace ProjectsTM.UI.Main
         }
 
         private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
+        {
+            Reload();
+        }
+
+        private void Reload()
         {
             OpenAppData(_fileIOService.ReOpen());
         }

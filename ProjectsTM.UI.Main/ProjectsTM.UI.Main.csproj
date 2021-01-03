@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileWatchManager.cs" />
     <Compile Include="ImageOutputer.cs" />
     <Compile Include="RsExportManager.cs" />
     <Compile Include="TaskListManager.cs" />
