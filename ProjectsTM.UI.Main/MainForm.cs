@@ -13,10 +13,9 @@ namespace ProjectsTM.UI.Main
     {
         private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private TaskListForm TaskListForm { get; set; }
-        private AppDataFileIOService FileIOService { get; set; }
+        private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
-        private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
 
@@ -24,7 +23,6 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             menuStrip1.ImageScalingSize = new Size(16, 16);
-            FileIOService = new AppDataFileIOService();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
             statusStrip1.Items.Add(string.Empty);
             InitializeTaskDrawArea();
@@ -32,9 +30,8 @@ namespace ProjectsTM.UI.Main
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
-            FileIOService.FileWatchChanged += _fileIOService_FileChanged;
-            FileIOService.FileSaved += _fileIOService_FileSaved;
-            FileIOService.FileOpened += FileIOService_FileOpened;
+            _fileIOService.FileWatchChanged += _fileIOService_FileChanged;
+            _fileIOService.FileOpened += FileIOService_FileOpened;
             Load += MainForm_Load;
             if (GitRepositoryService.IsActive())
             {
@@ -68,8 +65,8 @@ namespace ProjectsTM.UI.Main
 
         private async void _timer_Tick(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(FileIOService.FilePath)) return;
-            await TriggerRemoteChangeCheck(FileIOService.FilePath).ConfigureAwait(true);
+            if (string.IsNullOrEmpty(_fileIOService.FilePath)) return;
+            await TriggerRemoteChangeCheck(_fileIOService.FilePath).ConfigureAwait(true);
         }
 
         private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
@@ -106,7 +103,7 @@ namespace ProjectsTM.UI.Main
 
         private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
         {
-            if (_isDirty) return;
+            if (_fileIOService.IsDirty) return;
             var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath).ConfigureAwait(true);
             if (hasUnmergedRemoteCommit)
             {
@@ -124,11 +121,6 @@ namespace ProjectsTM.UI.Main
         private void WorkItemGrid1_HoveringTextChanged(object sender, WorkItem e)
         {
             toolStripStatusLabelSelect.Text = e == null ? string.Empty : e.ToString();
-        }
-
-        private void _fileIOService_FileSaved(object sender, EventArgs e)
-        {
-            _isDirty = false;
         }
 
         static bool _alreadyShow = false;
@@ -153,7 +145,7 @@ namespace ProjectsTM.UI.Main
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
-                OpenAppData(FileIOService.OpenFile(setting.FilePath));
+                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _userName = setting.UserName;
             }
@@ -166,9 +158,9 @@ namespace ProjectsTM.UI.Main
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_isDirty) return;
+            if (!_fileIOService.IsDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
+            if (!_fileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -177,7 +169,7 @@ namespace ProjectsTM.UI.Main
             {
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
-                FilePath = FileIOService.FilePath,
+                FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
                 UserName = _userName,
@@ -201,7 +193,7 @@ namespace ProjectsTM.UI.Main
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
-            _isDirty = true;
+            _fileIOService.SetDirty();
             UpdateDisplayOfSum(e.UpdatedMembers);
         }
 
@@ -228,7 +220,7 @@ namespace ProjectsTM.UI.Main
         {
             var fileName = FileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
-            var appData = FileIOService.OpenFile(fileName);
+            var appData = _fileIOService.OpenFile(fileName);
             OpenAppData(appData);
         }
 
@@ -297,12 +289,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original, ShowTaskListForm);
+            _fileIOService.Save(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            OpenAppData(FileIOService.Open());
+            OpenAppData(_fileIOService.Open());
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
@@ -359,7 +351,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
+            _fileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -398,7 +390,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
         {
-            OpenAppData(FileIOService.ReOpen());
+            OpenAppData(_fileIOService.ReOpen());
         }
 
         private void OpenAppData(AppData appData)
@@ -407,7 +399,6 @@ namespace ProjectsTM.UI.Main
             _viewData.SetAppData(appData, new UndoService());
             _viewData.Selected = null;
             workItemGrid1.Initialize(_viewData);
-            _isDirty = false;
         }
 
         private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
@@ -458,10 +449,26 @@ namespace ProjectsTM.UI.Main
 
         private void ShowTrendChartForm()
         {
-            using (var dlg = new TrendChart(_viewData.Original, FileIOService.FilePath, IsMemberMatchText))
+            using (var dlg = new TrendChart(_viewData.Original, _fileIOService.FilePath, IsMemberMatchText))
             {
                 dlg.ShowDialog(this);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                // Dispose stuff here
+                _fileIOService.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
