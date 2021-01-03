@@ -13,6 +13,7 @@ namespace ProjectsTM.Service
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
         private DateTime _last;
+        private bool _isDirty = false;
 
         public AppDataFileIOService()
         {
@@ -42,6 +43,8 @@ namespace ProjectsTM.Service
 
         public string FilePath => _previousFileName;
 
+        public bool IsDirty => _isDirty;
+
         public bool Save(AppData appData, Action showOverwrapCheck)
         {
             if (string.IsNullOrEmpty(_previousFileName))
@@ -55,6 +58,7 @@ namespace ProjectsTM.Service
                 appData.WorkItems.SortByPeriodStartDate();
                 AppDataSerializeService.Serialize(_previousFileName, appData);
                 FileSaved?.Invoke(this, null);
+                _isDirty = false;
             }
             finally
             {
@@ -128,6 +132,7 @@ namespace ProjectsTM.Service
             _watcher.IncludeSubdirectories = false;
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
+            _isDirty = false;
             return AppDataSerializeService.Deserialize(fileName);
         }
 
@@ -169,6 +174,11 @@ namespace ProjectsTM.Service
             // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public void SetDirty()
+        {
+            _isDirty = true;
         }
     }
 }
