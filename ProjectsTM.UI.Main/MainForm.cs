@@ -23,22 +23,22 @@ namespace ProjectsTM.UI.Main
         {
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            workItemGrid1.AllowDrop = true;
-            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
-            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             _viewData.FilterChanged += _viewData_FilterChanged;
             _viewData.AppDataChanged += _viewData_AppDataChanged;
-            this.FormClosed += MainForm_FormClosed;
-            this.FormClosing += MainForm_FormClosing;
-            this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
-            this.Load += MainForm_Load;
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
+            workItemGrid1.AllowDrop = true;
+            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
+            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
             workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+            this.FormClosed += MainForm_FormClosed;
+            this.FormClosing += MainForm_FormClosing;
+            this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
+            this.Load += MainForm_Load;
             LoadUserSetting();
         }
 
