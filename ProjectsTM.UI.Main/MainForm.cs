@@ -144,13 +144,7 @@ namespace ProjectsTM.UI.Main
         private void InitializeViewData()
         {
             _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.ColorConditionChanged += _viewData_ColorConditionChanged;
             _viewData.AppDataChanged += _viewData_AppDataChanged;
-        }
-
-        private void _viewData_ColorConditionChanged(object sender, EventArgs e)
-        {
-            workItemGrid1.Initialize(_viewData);
         }
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)

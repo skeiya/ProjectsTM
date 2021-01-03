@@ -54,7 +54,6 @@ namespace ProjectsTM.ViewModel
         }
 
         public event EventHandler FilterChanged;
-        public event EventHandler ColorConditionChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
@@ -182,7 +181,6 @@ namespace ProjectsTM.ViewModel
         {
             if (Original.ColorConditions.Equals(colorConditions)) return;
             Original.ColorConditions = colorConditions;
-            ColorConditionChanged?.Invoke(this, null);
         }
     }
 }
