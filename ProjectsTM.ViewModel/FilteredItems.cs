@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,21 +14,21 @@ namespace ProjectsTM.ViewModel
 
         public IEnumerable<Member> Members
         {
-            get 
+            get
             {
                 var result = CreateAllMembersList();
                 return GetFilterShowMembers(result);
             }
         }
 
-        public List<CallenderDay> Days
+        public IEnumerable<CallenderDay> Days
         {
             get
             {
-                if (!_filter.Period.IsValid) return _appData.Callender.Days;
+                if (!_filter.Period.IsValid) return _appData.Callender;
                 var result = new List<CallenderDay>();
                 bool isFound = false;
-                foreach (var d in _appData.Callender.Days)
+                foreach (var d in _appData.Callender)
                 {
                     if (d.Equals(_filter.Period.From)) isFound = true;
                     if (isFound) result.Add(d);
@@ -102,6 +103,11 @@ namespace ProjectsTM.ViewModel
         {
             if (string.IsNullOrEmpty(_filter.WorkItem)) return false;
             return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
+        }
+
+        public bool IsMatchMember(Member m, string text)
+        {
+            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
         }
     }
 }

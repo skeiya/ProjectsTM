@@ -7,7 +7,7 @@ namespace ProjectsTM.Service
 {
     class GitCmdRepository
     {
-        private string _repositoryDir;
+        private readonly string _repositoryDir;
         private GitCmdRepository(string repositoryDir)
         {
             _repositoryDir = repositoryDir;
@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
         {
             var dir = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(dir)) return string.Empty;
-            var reader = new StringReader(GitCommandRaw("-C " + dir + " log -1 --before=" + months.ToString() +".month "+path));
+            var reader = new StringReader(GitCommandRaw("-C " + dir + " log -1 --before=" + months.ToString() + ".month " + path));
             return reader.ReadLine();
         }
 
@@ -79,31 +79,36 @@ namespace ProjectsTM.Service
 
         private static int ExecuteCommand(out string output, string command, string arguments)
         {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(command)
-                {
-                    Arguments = arguments,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
             try
             {
-                process.Start();
+                using (var process = new Process())
+                {
+                    process.StartInfo = new ProcessStartInfo(command)
+                    {
+                        Arguments = arguments,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    };
+                    process.Start();
+
+                    var tmp = new StringBuilder();
+                    while (!process.HasExited)
+                    {
+                        tmp.Append(process.StandardOutput.ReadToEnd());
+                        Thread.Sleep(0);
+                    }
+                    process.WaitForExit();
+                    tmp.Append(process.StandardOutput.ReadToEnd());
+                    output = tmp.ToString();
+                    return process.ExitCode;
+                }
             }
-            catch { output = string.Empty; return -1; }
-            var tmp = new StringBuilder();
-            while (!process.HasExited)
+            catch
             {
-                tmp.Append(process.StandardOutput.ReadToEnd());
-                Thread.Sleep(0);
+                output = string.Empty;
+                return -1;
             }
-            process.WaitForExit();
-            tmp.Append(process.StandardOutput.ReadToEnd());
-            output = tmp.ToString();
-            return process.ExitCode;
         }
 
         private string GitCommandRepository(string arguments)
@@ -113,8 +118,7 @@ namespace ProjectsTM.Service
 
         private static string GitCommandRaw(string arguments)
         {
-            string output;
-            if (ExecuteCommand(out output, "git", " --no-pager " + arguments) != 0)
+            if (ExecuteCommand(out string output, "git", " --no-pager " + arguments) != 0)
             {
                 return string.Empty;
             }

@@ -262,7 +262,7 @@ namespace ProjectsTM.Service
             var before = _viewData.Selected.Unique;
             var after = before.Clone();
 
-            var newTo =_viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
+            var newTo = _viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
             if (newTo == null) return;
             if (newTo < after.Period.From) return;
 

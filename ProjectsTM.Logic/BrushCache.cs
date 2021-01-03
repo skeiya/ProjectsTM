@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace ProjectsTM.Logic
 {
-    public class BrushCache
+    public static class BrushCache
     {
-        private static Dictionary<Color, Brush> _cache = new Dictionary<Color, Brush>();
+        private static readonly Dictionary<Color, Brush> _cache = new Dictionary<Color, Brush>();
         public static Brush GetBrush(Color c)
         {
             if (_cache.TryGetValue(c, out Brush b)) return b;

@@ -4,10 +4,10 @@ namespace FreeGridControl
 {
     public class RowColRange
     {
-        private ColIndex _leftCol;
-        private RowIndex _topRow;
-        private int _colCount;
-        private int _rowCount;
+        private readonly ColIndex _leftCol;
+        private readonly RowIndex _topRow;
+        private readonly int _colCount;
+        private readonly int _rowCount;
 
         public RowColRange(ColIndex visibleNormalLeftCol, RowIndex visibleNormalTopRow, int visibleNormalColCount, int visibleNormalRowCount)
         {

@@ -10,8 +10,8 @@ namespace ProjectsTM.Service
 {
     public static class FormSizeRestoreService
     {
-        private static readonly int DEFAULT_HEIGHT = 250;
-        private static readonly int DEFAULT_WIDTH = 500;
+        private const int DefaultHeight = 250;
+        private const int DefaultWidth = 500;
         private static string AppConfigDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ProjectsTM");
         private static string SizeInfoPath => Path.Combine(AppConfigDir, "FormSizeInfo.xml");
 
@@ -31,9 +31,9 @@ namespace ProjectsTM.Service
             catch
             {
             }
-            return new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            return new Size(DefaultWidth, DefaultHeight);
         }
-        
+
         public static FormWindowState LoadLastTimeFormState(string form)
         {
             try

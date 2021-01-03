@@ -14,12 +14,12 @@ namespace ProjectsTM.Service
         private readonly ViewData _viewData;
         private readonly IWorkItemGrid _grid;
         private readonly WorkItemDragService _workItemDragService;
-        private DrawService _drawService;
-        private WorkItemEditService _editService;
+        private readonly DrawService _drawService;
+        private readonly WorkItemEditService _editService;
         private Cursor _originalCursor;
 
         public event EventHandler<WorkItem> HoveringTextChanged;
-        private ToolTipService _toolTipService;
+        private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
         public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl)
@@ -178,7 +178,7 @@ namespace ProjectsTM.Service
             var day = _grid.Y2Day(_grid.Client2Raw(location).Y);
             if (day == null) { _toolTipService.Hide(); return; }
             var ms = _viewData.Original.MileStones.Where(m => day.Equals(m.Day));
-            if (ms.Count() == 0) { _toolTipService.Hide(); return; }
+            if (!ms.Any()) { _toolTipService.Hide(); return; }
             _toolTipService.Update(day, ms);
         }
 
@@ -204,7 +204,7 @@ namespace ProjectsTM.Service
         {
             var ctrl = (e.Modifiers & Keys.Control) == Keys.Control;
             var shift = (e.Modifiers & Keys.Shift) == Keys.Shift;
-            
+
             if (ctrl && shift && e.KeyCode == Keys.Up)
             {
                 _editService.ExpandDays(-1);
@@ -226,7 +226,7 @@ namespace ProjectsTM.Service
                 _editService.ShiftDays(1);
                 return;
             }
-            
+
             if (e.KeyCode == Keys.ControlKey)
             {
                 _workItemDragService.ToCopyMode(_viewData.Original.WorkItems, _drawService.InvalidateMembers);

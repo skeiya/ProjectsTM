@@ -15,13 +15,13 @@ namespace ProjectsTM.UI.Common
 
         public bool ReadOnly
         {
-            set
-            {
-                textBox1.ReadOnly = value;
-            }
             get
             {
                 return textBox1.ReadOnly;
+            }
+            set
+            {
+                textBox1.ReadOnly = value;
             }
         }
 

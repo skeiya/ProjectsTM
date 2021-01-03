@@ -53,7 +53,10 @@ namespace ProjectsTM.Service
 
         public static AppData LoadFromString(string str)
         {
-            return LoadFromStream(StreamFactory.CreateReaderFromString(str), IsOldFormat(new StringReader(str)));
+            using (var reader = StreamFactory.CreateReaderFromString(str))
+            {
+                return LoadFromStream(reader, IsOldFormat(new StringReader(str)));
+            }
         }
 
         private static bool IsOldFormat(string path)

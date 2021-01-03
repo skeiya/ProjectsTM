@@ -8,14 +8,14 @@ namespace ProjectsTM.ViewModel
 {
     public class ViewData
     {
-        public Filter Filter 
-        { 
-            get { return filter; } 
-            private set 
+        public Filter Filter
+        {
+            get { return filter; }
+            private set
             {
                 filter = value;
                 UpdateFilteredItems();
-            } 
+            }
         }
         public FilteredItems FilteredItems { get; private set; }
         public Detail Detail { get; set; } = new Detail();
@@ -59,7 +59,7 @@ namespace ProjectsTM.ViewModel
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
-        public int FontSize { set; get; } = 6;
+        public int FontSize { get; set; } = 6;
 
         public WorkItems Selected
         {
@@ -104,7 +104,7 @@ namespace ProjectsTM.ViewModel
         {
             if (Filter.IsFreeTimeMemberShow) return;
             var members = FilteredItems.Members;
-            if (members == null || members.Count() == 0) return;
+            if (members == null || !members.Any()) return;
             var freeTimeMember = members.Where(m => !FilteredItems.GetWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
             foreach (var m in freeTimeMember)
             {
@@ -115,7 +115,7 @@ namespace ProjectsTM.ViewModel
         private void RemoveAbsentMembersFromFilter()
         {
             var members = FilteredItems.Members;
-            if (members == null || members.Count() == 0) return;
+            if (members == null || !members.Any()) return;
             Members absentMembers = new Members();
             foreach (var m in members)
             {
@@ -158,7 +158,7 @@ namespace ProjectsTM.ViewModel
 
         public void UpdateCallenderAndMembers(WorkItem wi)
         {
-            var days = Original.Callender.Days;
+            var days = Original.Callender;
             if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
             if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
             days.Sort();
