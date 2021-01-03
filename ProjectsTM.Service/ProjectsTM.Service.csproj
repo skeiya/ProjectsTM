@@ -62,11 +62,13 @@
     <Compile Include="EditActionType.cs" />
     <Compile Include="EditedEventArgs.cs" />
     <Compile Include="FileDragService.cs" />
+    <Compile Include="FilePathService.cs" />
     <Compile Include="FilterComboBoxService.cs" />
     <Compile Include="FormSizeRestoreService.cs" />
     <Compile Include="GitCmdRepository.cs" />
     <Compile Include="GitRepositoryService.cs" />
     <Compile Include="KeyAndMouseHandleService.cs" />
+    <Compile Include="LaunchHelpService.cs" />
     <Compile Include="OldFileService.cs" />
     <Compile Include="OverwrapedWorkItemsCollectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

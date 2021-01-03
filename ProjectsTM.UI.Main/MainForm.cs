@@ -4,11 +4,7 @@ using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -100,8 +96,7 @@ namespace ProjectsTM.UI.Main
 
         private void LoadPatternHistoryFile(string filePath)
         {
-            var path = Path.Combine(Path.GetDirectoryName(filePath), "PatternHistory.xml");
-            _patternHistory.Load(path);
+            _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
         }
 
         private void LoadFilterComboboxFile(string filePath)
@@ -321,7 +316,7 @@ namespace ProjectsTM.UI.Main
 
         private bool IsMemberMatchText(Member m, string text)
         {
-            return _viewData.FilteredItems.GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
+            return _viewData.FilteredItems.IsMatchMember(m, text);
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
@@ -417,7 +412,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
         {
-            Process.Start(@".\Help\help.html");
+            LaunchHelpService.Show();
         }
 
         private void ToolStripMenuItemVersion_Click(object sender, EventArgs e)

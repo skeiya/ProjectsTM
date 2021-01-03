@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -102,6 +103,11 @@ namespace ProjectsTM.ViewModel
         {
             if (string.IsNullOrEmpty(_filter.WorkItem)) return false;
             return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
+        }
+
+        public bool IsMatchMember(Member m, string text)
+        {
+            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
         }
     }
 }
