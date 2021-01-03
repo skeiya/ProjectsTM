@@ -99,12 +99,6 @@
     <Compile Include="ManageMemberForm.Designer.cs">
       <DependentUpon>ManageMemberForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ManagementWokingDaysForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManagementWokingDaysForm.Designer.cs">
-      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ManageMileStoneForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,9 +172,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ManageMemberForm.resx">
       <DependentUpon>ManageMemberForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManagementWokingDaysForm.resx">
-      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ManageMileStoneForm.resx">
       <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
