@@ -28,8 +28,6 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            workItemGrid1.AllowDrop = true;
-            workItemGrid1.DragEnter += (s, e) => FileDragService.DragEnter(e);
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();

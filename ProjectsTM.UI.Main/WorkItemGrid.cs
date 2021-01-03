@@ -35,7 +35,11 @@ namespace ProjectsTM.UI.Main
         public event EventHandler<IEditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;
-        public WorkItemGrid() { }
+        public WorkItemGrid()
+        {
+            AllowDrop = true;
+            DragEnter += (s, e) => FileDragService.DragEnter(e);
+        }
 
         public void Initialize(ViewData viewData)
         {
