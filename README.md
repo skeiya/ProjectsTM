@@ -14,4 +14,4 @@ Windows用のデスクトップアプリケーション。
 必要な環境はVisual Studio 2019のみ。
 
 # Contribute
-masterへの直接pushは禁止していますので、プルリク作ってください。
+mainブランチへの直接pushは禁止していますので、プルリク作ってください。
