@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.Main
 {
     public partial class MainForm : Form
     {
-        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
+        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoServiceFactory());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
@@ -24,12 +24,12 @@ namespace ProjectsTM.UI.Main
             _taskListManager = new TaskListManager(_viewData, _patternHistory, this);
             _viewData.FilterChanged += (s, e) => UpdateView();
             _viewData.AppDataChanged += (s, e) => UpdateView();
+            _viewData.UndoService.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            workItemGrid1.UndoChanged += _undoService_Changed;
             workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
@@ -252,7 +252,7 @@ namespace ProjectsTM.UI.Main
         private void OpenAppData(AppData appData)
         {
             if (appData == null) return;
-            _viewData.SetAppData(appData, new UndoService());
+            _viewData.SetAppData(appData);
         }
 
         private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)

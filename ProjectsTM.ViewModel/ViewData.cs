@@ -21,10 +21,17 @@ namespace ProjectsTM.ViewModel
         public AppData Original => _appData;
         private Filter filter = Filter.All(null);
 
-        public void SetAppData(AppData appData, IUndoService undoService)
+        public void SetAppData(AppData appData)
         {
             _appData = appData;
-            UndoService = undoService;
+            if (UndoService == null)
+            {
+                UndoService = _undoServiceFactory.Create();
+            }
+            else
+            {
+                UndoService.Clear();
+            }
             UpdateFilter();
             UpdateFilteredItems();
             UpdateShowMembers();
@@ -46,6 +53,7 @@ namespace ProjectsTM.ViewModel
         private AppData _appData;
         public IUndoService UndoService { get; private set; }
         private WorkItems _selected;
+        private readonly IUndoServiceFactory _undoServiceFactory;
 
         public void ClearCallenderAndMembers()
         {
@@ -74,9 +82,10 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        public ViewData(AppData appData, IUndoService undoService)
+        public ViewData(AppData appData, IUndoServiceFactory undoServiceFactory)
         {
-            SetAppData(appData, undoService);
+            _undoServiceFactory = undoServiceFactory;
+            SetAppData(appData);
         }
 
         public void SetFilter(Filter filter)

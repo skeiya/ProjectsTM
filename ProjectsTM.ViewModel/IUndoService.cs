@@ -15,5 +15,6 @@ namespace ProjectsTM.ViewModel
 
         void Redo(ViewData viewData);
         void Undo(ViewData viewData);
+        void Clear();
     }
 }

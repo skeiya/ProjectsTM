@@ -34,7 +34,7 @@ namespace UnitTestProject
             appData.WorkItems.Add(i);
             appData.WorkItems.Add(g);
 
-            viewData = new ViewData(appData, new UndoService());
+            viewData = new ViewData(appData, new UndoServiceFactory());
             grid = new WorkItemGrid();
             grid.Initialize(viewData);
 

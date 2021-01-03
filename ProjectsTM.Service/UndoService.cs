@@ -89,5 +89,12 @@ namespace ProjectsTM.Service
             }
             Changed(this, new EditedEventArgs(r.Members));
         }
+
+        public void Clear()
+        {
+            _redoStack.Clear();
+            _undoStack.Clear();
+            _atomicAction.Clear();
+        }
     }
 }

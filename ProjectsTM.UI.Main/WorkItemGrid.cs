@@ -32,7 +32,6 @@ namespace ProjectsTM.UI.Main
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public event EventHandler<IEditedEventArgs> UndoChanged;
         public event EventHandler<float> RatioChanged;
         public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid()
@@ -53,10 +52,10 @@ namespace ProjectsTM.UI.Main
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
+            _editService = new WorkItemEditService(_viewData);
             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
             _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
-            _editService = new WorkItemEditService(_viewData);
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
             _drawService.Initialize(
@@ -135,7 +134,6 @@ namespace ProjectsTM.UI.Main
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
-            UndoChanged?.Invoke(this, e);
             _drawService.InvalidateMembers(e.UpdatedMembers);
             this.Invalidate();
         }

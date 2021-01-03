@@ -140,6 +140,7 @@
     <Compile Include="TrendChart.Designer.cs">
       <DependentUpon>TrendChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="UndoServiceFactory.cs" />
     <Compile Include="VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
