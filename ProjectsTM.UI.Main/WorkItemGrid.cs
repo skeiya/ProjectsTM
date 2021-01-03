@@ -70,6 +70,33 @@ namespace ProjectsTM.UI.Main
             this.HoveringTextChanged?.Invoke(sender, e);
         }
 
+        private bool SelectNextWorkItem(bool prev)
+        {
+            if (_viewData.Selected == null)
+            {
+                var all = _viewData.FilteredItems.WorkItems.ToList();
+                all.Sort();
+                if (prev) all.Reverse();
+
+                _viewData.Selected = new WorkItems(all.FirstOrDefault());
+                return true;
+            }
+            if (_viewData.Selected.Count() == 1)
+            {
+                var all = _viewData.FilteredItems.WorkItems.ToList();
+                all.Sort();
+                if (prev) all.Reverse();
+
+                var find = all.FindIndex(wi => _viewData.Selected.Unique.Equals(wi));
+                WorkItem next = all.Skip(find + 1).FirstOrDefault();
+                if (next == null) return false;
+
+                _viewData.Selected = new WorkItems(next);
+                return true;
+            }
+            return false;
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             var tab = keyData == Keys.Tab;
@@ -77,14 +104,14 @@ namespace ProjectsTM.UI.Main
 
             if (tab)
             {
-                if (_viewData.SelectNextWorkItem(false))
+                if (SelectNextWorkItem(false))
                 {
                     return true;
                 }
             }
             if (shifttab)
             {
-                if (_viewData.SelectNextWorkItem(true))
+                if (SelectNextWorkItem(true))
                 {
                     return true;
                 }
