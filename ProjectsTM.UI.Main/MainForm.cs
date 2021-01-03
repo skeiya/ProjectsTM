@@ -4,7 +4,6 @@ using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -235,24 +234,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
-            _viewData.Selected = null;
-            using (var grid = new WorkItemGrid())
-            {
-                var size = new Size(workItemGrid1.GridWidth, workItemGrid1.GridHeight);
-                grid.Size = size;
-                grid.Initialize(_viewData);
-                using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
-                {
-                    var g = Graphics.FromImage(bmp);
-                    grid.OutputImage(g);
-                    using (var dlg = new SaveFileDialog())
-                    {
-                        dlg.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
-                        if (dlg.ShowDialog() != DialogResult.OK) return;
-                        bmp.Save(dlg.FileName);
-                    }
-                }
-            }
+            ImageOutputer.Save(_viewData, workItemGrid1);
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
