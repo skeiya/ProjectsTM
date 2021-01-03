@@ -61,7 +61,6 @@ namespace ProjectsTM.UI.Main
             // 
             // menuStrip1
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemFile,
             this.編集ToolStripMenuItem,
@@ -230,15 +229,17 @@ namespace ProjectsTM.UI.Main
             // 
             // ToolStripMenuItemFilter
             // 
+            this.ToolStripMenuItemFilter.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemFilter.Text = "フィルター(&F)";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
             // ToolStripMenuItemColor
             // 
+            this.ToolStripMenuItemColor.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemColor.Text = "色(&C)";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -247,7 +248,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemLargeRatio.Name = "ToolStripMenuItemLargeRatio";
             this.ToolStripMenuItemLargeRatio.ShortcutKeyDisplayString = "Ctrl++";
             this.ToolStripMenuItemLargeRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemLargeRatio.Text = "倍率(→大)";
             this.ToolStripMenuItemLargeRatio.Click += new System.EventHandler(this.ToolStripMenuItemLargeRatio_Click);
             // 
@@ -256,7 +257,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemSmallRatio.Name = "ToolStripMenuItemSmallRatio";
             this.ToolStripMenuItemSmallRatio.ShortcutKeyDisplayString = "Ctrl+ー";
             this.ToolStripMenuItemSmallRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(180, 22);
             this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
             this.ToolStripMenuItemSmallRatio.Click += new System.EventHandler(this.ToolStripMenuItemSmallRatio_Click);
             // 
