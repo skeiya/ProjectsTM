@@ -246,16 +246,6 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        private void ToolStripMenuItemWorkingDays_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new ManagementWokingDaysForm(_viewData.Original.Callender, _viewData.Original.WorkItems))
-            {
-                dlg.ShowDialog();
-                workItemGrid1.Initialize(_viewData);
-            }
-            UpdateDisplayOfSum(null);
-        }
-
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
             workItemGrid1.DecRatio();
