@@ -17,7 +17,6 @@ namespace ProjectsTM.UI.Main
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +54,6 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
-            this._1minutTimer = new System.Windows.Forms.Timer(this.components);
             this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -276,21 +274,21 @@ namespace ProjectsTM.UI.Main
             // ToolStripMenuItemManageMember
             // 
             this.ToolStripMenuItemManageMember.Name = "ToolStripMenuItemManageMember";
-            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemManageMember.Size = new System.Drawing.Size(150, 22);
             this.ToolStripMenuItemManageMember.Text = "メンバー(&M)";
             this.ToolStripMenuItemManageMember.Click += new System.EventHandler(this.ToolStripMenuItemManageMember_Click);
             // 
             // ToolStripMenuItemMileStone
             // 
             this.ToolStripMenuItemMileStone.Name = "ToolStripMenuItemMileStone";
-            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMileStone.Size = new System.Drawing.Size(150, 22);
             this.ToolStripMenuItemMileStone.Text = "マイルストーン(&S)";
             this.ToolStripMenuItemMileStone.Click += new System.EventHandler(this.ToolStripMenuItemMileStone_Click);
             // 
             // ToolStripMenuItemMySetting
             // 
             this.ToolStripMenuItemMySetting.Name = "ToolStripMenuItemMySetting";
-            this.ToolStripMenuItemMySetting.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemMySetting.Size = new System.Drawing.Size(150, 22);
             this.ToolStripMenuItemMySetting.Text = "個人設定";
             this.ToolStripMenuItemMySetting.Click += new System.EventHandler(this.ToolStripMenuItemMySetting_Click);
             // 
@@ -436,7 +434,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
-        private System.Windows.Forms.Timer _1minutTimer;
     }
 }
 
