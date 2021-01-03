@@ -16,7 +16,6 @@ namespace ProjectsTM.Service
         private readonly ToolStripComboBox _toolStripComboBoxFilter;
         private string DirPath => Path.Combine(Path.GetDirectoryName(_filepPath), "filters");
         private readonly List<string> _allPaths = new List<string>();
-        private readonly Func<Member, string, bool> _isMemberMatchText;
 
         private const string FilePrefix = "file:";
         private const string CompanyPrefix = "company:";
@@ -36,12 +35,11 @@ namespace ProjectsTM.Service
         }
 
 
-        public FilterComboBoxService(ViewData viewData, ToolStripComboBox toolStripComboBoxFilter, Func<Member, string, bool> isMemberMatchText)
+        public FilterComboBoxService(ViewData viewData, ToolStripComboBox toolStripComboBoxFilter)
         {
             _viewData = viewData;
             this._toolStripComboBoxFilter = toolStripComboBoxFilter;
             this._toolStripComboBoxFilter.Items.Add(AllKeyword);
-            this._isMemberMatchText = isMemberMatchText;
             this._toolStripComboBoxFilter.DropDown += ToolStripComboBoxFilter_DropDown;
         }
 
@@ -214,9 +212,9 @@ namespace ProjectsTM.Service
         private Members GetMembersConcerningWithCompany(string com)
         {
             var members = new Members();
-            foreach (var m in _viewData.Original.Members)
+            foreach (var m in _viewData.FilteredItems.MatchMembers(@"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]"))
             {
-                if (_isMemberMatchText(m, @"^\[.*?]\[.*?]\[.*?\(" + com + @"\)]\[.*?]\[.*?]")) members.Add(m);
+                members.Add(m);
             }
 
             return members;
@@ -232,9 +230,9 @@ namespace ProjectsTM.Service
             }
             var pro = projects.ElementAt(idx);
             var members = new Members();
-            foreach (var m in _viewData.Original.Members)
+            foreach (var m in _viewData.FilteredItems.MatchMembers(@"^\[.*?\]\[" + pro.ToString() + @"\]"))
             {
-                if (_isMemberMatchText(m, @"^\[.*?\]\[" + pro.ToString() + @"\]")) members.Add(m);
+                members.Add(m);
             }
             return new Filter(null, null, members, false, pro.ToString(), false);
         }

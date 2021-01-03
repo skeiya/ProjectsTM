@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageOutputer.cs" />
     <Compile Include="TrendChartBackgroundWorkForm.cs">
       <SubType>Form</SubType>
     </Compile>

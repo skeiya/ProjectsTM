@@ -4,7 +4,6 @@ using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -13,41 +12,53 @@ namespace ProjectsTM.UI.Main
     {
         private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
         private TaskListForm TaskListForm { get; set; }
-        private AppDataFileIOService FileIOService { get; set; }
+        private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
-        private bool _isDirty = false;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
+        private readonly RemoteChangePollingService _remoteChangePollingService;
 
         public MainForm()
         {
             InitializeComponent();
-            menuStrip1.ImageScalingSize = new Size(16, 16);
-            FileIOService = new AppDataFileIOService();
-            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter, IsMemberMatchText);
-            statusStrip1.Items.Add(string.Empty);
-            InitializeTaskDrawArea();
-            InitializeViewData();
+            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
+            _viewData.FilterChanged += _viewData_FilterChanged;
+            _viewData.AppDataChanged += _viewData_AppDataChanged;
+            _fileIOService.FileWatchChanged += _fileIOService_FileWatchChanged;
+            _fileIOService.FileOpened += FileIOService_FileOpened;
+            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
+            _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
+            workItemGrid1.AllowDrop = true;
+            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
+            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
+            workItemGrid1.UndoChanged += _undoService_Changed;
+            workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
+            workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (a, b) => workItemGrid1.MoveToTodayMe(_userName);
-            FileIOService.FileWatchChanged += _fileIOService_FileChanged;
-            FileIOService.FileSaved += _fileIOService_FileSaved;
-            FileIOService.FileOpened += FileIOService_FileOpened;
-            Load += MainForm_Load;
-            if (GitRepositoryService.IsActive())
-            {
-                _1minutTimer.Interval = 60 * 1000;
-                _1minutTimer.Tick += _timer_Tick;
-                _1minutTimer.Start();
-            }
-            LoadUserSetting();
+            this.Load += MainForm_Load;
+        }
+
+        private void UpdateView()
+        {
+            _viewData.Selected = new WorkItems();
+            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
             workItemGrid1.Initialize(_viewData);
-            workItemGrid1.UndoChanged += _undoService_Changed;
-            workItemGrid1.HoveringTextChanged += WorkItemGrid1_HoveringTextChanged;
+            _filterComboBoxService.UpdateAppDataPart();
+            UpdateDisplayOfSum(null);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            workItemGrid1.RatioChanged += WorkItemGrid1_RatioChanged;
+        }
+
+        private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
+        {
+            if (isRemoteBranchAppDataNew)
+            {
+                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
+                return;
+            }
+            this.Text = "ProjectsTM";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -64,61 +75,13 @@ namespace ProjectsTM.UI.Main
                     Size = FormSizeRestoreService.LoadFormSize("MainFormSize");
                     break;
             }
+            LoadUserSetting();
         }
 
-        private async void _timer_Tick(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(FileIOService.FilePath)) return;
-            await TriggerRemoteChangeCheck(FileIOService.FilePath).ConfigureAwait(true);
-        }
-
-        private void UpdateTitlebarText(bool isRemoteBranchAppDataNew)
-        {
-            if (isRemoteBranchAppDataNew)
-            {
-                this.Text = "ProjectsTM     ***リモートブランチのデータに更新があります***";
-                return;
-            }
-            this.Text = "ProjectsTM";
-        }
-
-        private async void FileIOService_FileOpened(object sender, string filePath)
-        {
-            LoadAssociatedFiles(filePath);
-            await TriggerRemoteChangeCheck(filePath).ConfigureAwait(true);
-        }
-
-        private void LoadAssociatedFiles(string filePath)
-        {
-            LoadFilterComboboxFile(filePath);
-            LoadPatternHistoryFile(filePath);
-        }
-
-        private void LoadPatternHistoryFile(string filePath)
-        {
-            _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-        }
-
-        private void LoadFilterComboboxFile(string filePath)
+        private void FileIOService_FileOpened(object sender, string filePath)
         {
             _filterComboBoxService.UpdateFilePart(filePath);
-        }
-
-        private async System.Threading.Tasks.Task TriggerRemoteChangeCheck(string filePath)
-        {
-            if (_isDirty) return;
-            var hasUnmergedRemoteCommit = await GitRepositoryService.HasUnmergedRemoteCommit(filePath).ConfigureAwait(true);
-            if (hasUnmergedRemoteCommit)
-            {
-                if (GitRepositoryService.TryAutoPull(filePath)) hasUnmergedRemoteCommit = false;
-            }
-            UpdateTitlebarText(hasUnmergedRemoteCommit);
-        }
-
-        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
-        {
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + ratio.ToString();
-            workItemGrid1.Initialize(_viewData);
+            _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
         }
 
         private void WorkItemGrid1_HoveringTextChanged(object sender, WorkItem e)
@@ -126,13 +89,8 @@ namespace ProjectsTM.UI.Main
             toolStripStatusLabelSelect.Text = e == null ? string.Empty : e.ToString();
         }
 
-        private void _fileIOService_FileSaved(object sender, EventArgs e)
-        {
-            _isDirty = false;
-        }
-
         static bool _alreadyShow = false;
-        private void _fileIOService_FileChanged(object sender, EventArgs e)
+        private void _fileIOService_FileWatchChanged(object sender, EventArgs e)
         {
             this.BeginInvoke((Action)(() =>
             {
@@ -153,7 +111,7 @@ namespace ProjectsTM.UI.Main
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory = setting.PatternHistory;
-                OpenAppData(FileIOService.OpenFile(setting.FilePath));
+                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _userName = setting.UserName;
             }
@@ -166,9 +124,9 @@ namespace ProjectsTM.UI.Main
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_isDirty) return;
+            if (!_fileIOService.IsDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!FileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
+            if (!_fileIOService.Save(_viewData.Original, ShowTaskListForm)) e.Cancel = true;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -177,7 +135,7 @@ namespace ProjectsTM.UI.Main
             {
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
-                FilePath = FileIOService.FilePath,
+                FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
                 UserName = _userName,
@@ -187,28 +145,10 @@ namespace ProjectsTM.UI.Main
             FormSizeRestoreService.SaveFormState(this.WindowState, "MainFormState");
         }
 
-        private void InitializeViewData()
-        {
-            _viewData.FilterChanged += _viewData_FilterChanged;
-            _viewData.ColorConditionChanged += _viewData_ColorConditionChanged;
-            _viewData.AppDataChanged += _viewData_AppDataChanged;
-        }
-
-        private void _viewData_ColorConditionChanged(object sender, EventArgs e)
-        {
-            workItemGrid1.Initialize(_viewData);
-        }
-
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
-            _isDirty = true;
+            _fileIOService.SetDirty();
             UpdateDisplayOfSum(e.UpdatedMembers);
-        }
-
-        private void _viewData_AppDataChanged(object sender, EventArgs e)
-        {
-            _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(null);
         }
 
         private void UpdateDisplayOfSum(IEnumerable<Member> updatedMembers)
@@ -217,18 +157,11 @@ namespace ProjectsTM.UI.Main
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
-        void InitializeTaskDrawArea()
-        {
-            workItemGrid1.AllowDrop = true;
-            workItemGrid1.DragEnter += TaskDrawArea_DragEnter;
-            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-        }
-
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
             var fileName = FileDragService.Drop(e);
             if (string.IsNullOrEmpty(fileName)) return;
-            var appData = FileIOService.OpenFile(fileName);
+            var appData = _fileIOService.OpenFile(fileName);
             OpenAppData(appData);
         }
 
@@ -237,18 +170,25 @@ namespace ProjectsTM.UI.Main
             FileDragService.DragEnter(e);
         }
 
+        private void WorkItemGrid1_RatioChanged(object sender, float ratio)
+        {
+            UpdateView();
+        }
+
         private void _viewData_FilterChanged(object sender, EventArgs e)
         {
-            _viewData.Selected = new WorkItems();
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
-            workItemGrid1.Initialize(_viewData);
-            UpdateDisplayOfSum(null);
+            UpdateView();
+        }
+
+        private void _viewData_AppDataChanged(object sender, EventArgs e)
+        {
+            UpdateView();
         }
 
         private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
         {
             OldFileService.ImportMemberAndWorkItems(_viewData);
-            workItemGrid1.Initialize(_viewData);
+            UpdateView();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -270,24 +210,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
-            _viewData.Selected = null;
-            using (var grid = new WorkItemGrid())
-            {
-                var size = new Size(workItemGrid1.GridWidth, workItemGrid1.GridHeight);
-                grid.Size = size;
-                grid.Initialize(_viewData);
-                using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
-                {
-                    var g = Graphics.FromImage(bmp);
-                    grid.OutputImage(g);
-                    using (var dlg = new SaveFileDialog())
-                    {
-                        dlg.Filter = "Image files (*.png)|*.png|All files (*.*)|*.*";
-                        if (dlg.ShowDialog() != DialogResult.OK) return;
-                        bmp.Save(dlg.FileName);
-                    }
-                }
-            }
+            ImageOutputer.Save(_viewData, workItemGrid1);
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
@@ -297,26 +220,21 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            FileIOService.Save(_viewData.Original, ShowTaskListForm);
+            _fileIOService.Save(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            OpenAppData(FileIOService.Open());
+            OpenAppData(_fileIOService.Open());
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData.Original.Members, _viewData.Filter.Clone(), _viewData.Original.Callender, _viewData.FilteredItems.WorkItems, IsMemberMatchText, _patternHistory, _viewData.Original.MileStones))
+            using (var dlg = new FilterForm(_viewData, _patternHistory))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());
             }
-        }
-
-        private bool IsMemberMatchText(Member m, string text)
-        {
-            return _viewData.FilteredItems.IsMatchMember(m, text);
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
@@ -349,7 +267,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            FileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
+            _fileIOService.SaveOtherName(_viewData.Original, ShowTaskListForm);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
@@ -388,16 +306,13 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemReload_Click(object sender, EventArgs e)
         {
-            OpenAppData(FileIOService.ReOpen());
+            OpenAppData(_fileIOService.ReOpen());
         }
 
         private void OpenAppData(AppData appData)
         {
             if (appData == null) return;
             _viewData.SetAppData(appData, new UndoService());
-            _viewData.Selected = null;
-            workItemGrid1.Initialize(_viewData);
-            _isDirty = false;
         }
 
         private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
@@ -448,10 +363,26 @@ namespace ProjectsTM.UI.Main
 
         private void ShowTrendChartForm()
         {
-            using (var dlg = new TrendChart(_viewData.Original, FileIOService.FilePath, IsMemberMatchText))
+            using (var dlg = new TrendChart(_viewData.Original, _fileIOService.FilePath))
             {
                 dlg.ShowDialog(this);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                // Dispose stuff here
+                _fileIOService.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

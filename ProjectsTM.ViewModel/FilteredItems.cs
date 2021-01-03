@@ -104,9 +104,15 @@ namespace ProjectsTM.ViewModel
             return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
         }
 
-        public bool IsMatchMember(Member m, string text)
+        public IEnumerable<Member> MatchMembers(string pattern)
         {
-            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
+            foreach(var m in Members)
+            {
+                if (GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), pattern)))
+                {
+                    yield return m;
+                }
+            }
         }
     }
 }
