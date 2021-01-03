@@ -1,11 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
 using ProjectsTM.UI.Main;
 using ProjectsTM.ViewModel;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace UnitTestProject
 {

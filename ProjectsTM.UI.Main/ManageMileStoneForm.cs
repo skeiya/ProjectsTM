@@ -1,6 +1,5 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.Common;
-using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
 
