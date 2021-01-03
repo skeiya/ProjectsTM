@@ -28,6 +28,7 @@ namespace ProjectsTM.ViewModel
             UpdateFilter();
             UpdateFilteredItems();
             UpdateShowMembers();
+            Selected = null;
             AppDataChanged?.Invoke(this, null);
         }
 

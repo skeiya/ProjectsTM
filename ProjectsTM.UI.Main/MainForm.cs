@@ -161,6 +161,7 @@ namespace ProjectsTM.UI.Main
 
         private void _viewData_AppDataChanged(object sender, EventArgs e)
         {
+            workItemGrid1.Initialize(_viewData);
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(null);
         }
@@ -327,8 +328,6 @@ namespace ProjectsTM.UI.Main
         {
             if (appData == null) return;
             _viewData.SetAppData(appData, new UndoService());
-            _viewData.Selected = null;
-            workItemGrid1.Initialize(_viewData);
         }
 
         private void ToolStripMenuItemHowToUse_Click(object sender, EventArgs e)
