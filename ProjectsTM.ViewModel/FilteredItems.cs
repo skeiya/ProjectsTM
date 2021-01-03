@@ -104,9 +104,9 @@ namespace ProjectsTM.ViewModel
             return !Regex.IsMatch(w.ToString(), _filter.WorkItem);
         }
 
-        public bool IsMatchMember(Member m, string text)
+        public bool IsMatchMember(Member m, string pattern)
         {
-            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), text));
+            return GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), pattern));
         }
     }
 }

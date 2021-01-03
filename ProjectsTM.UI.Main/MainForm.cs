@@ -261,9 +261,9 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        private bool IsMemberMatchText(Member m, string text)
+        private bool IsMemberMatchText(Member m, string pattern)
         {
-            return _viewData.FilteredItems.IsMatchMember(m, text);
+            return _viewData.FilteredItems.IsMatchMember(m, pattern);
         }
 
         private void ToolStripMenuItemColor_Click(object sender, EventArgs e)
