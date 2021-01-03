@@ -167,7 +167,6 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
         {
-
             using (var dlg = new RsExportSelectForm())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
