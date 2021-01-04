@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.TaskList
 {
     class ColDefinition
     {
-        public static int Count => Enum.GetNames(typeof(ColIds)).Count();
+        public static int Count => Enum.GetNames(typeof(ColIds)).Length;
 
         public static ColIndex InitialSortCol => ToIndex(ColIds.End);
 

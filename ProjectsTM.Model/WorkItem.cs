@@ -157,8 +157,10 @@ namespace ProjectsTM.Model
                 w.Flush();
                 s.Position = 0;
 
-                XmlDocument doc = new XmlDocument();
-                doc.PreserveWhitespace = false;
+                XmlDocument doc = new XmlDocument
+                {
+                    PreserveWhitespace = false,
+                };
                 doc.Load(s);
                 using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
                 {

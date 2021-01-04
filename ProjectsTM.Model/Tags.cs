@@ -56,8 +56,10 @@ namespace ProjectsTM.Model
 
         internal XElement ToXml()
         {
-            var xml = new XElement(nameof(Tags));
-            xml.Value = ToString();
+            var xml = new XElement(nameof(Tags))
+            {
+                Value = ToString(),
+            };
             return xml;
         }
 
