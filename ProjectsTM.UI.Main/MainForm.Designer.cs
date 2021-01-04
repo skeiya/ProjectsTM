@@ -51,7 +51,6 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
             this.menuStrip1.SuspendLayout();
@@ -326,7 +325,6 @@ namespace ProjectsTM.UI.Main
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSum,
-            this.toolStripStatusLabelSelect,
             this.toolStripStatusLabelViewRatio});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
@@ -340,12 +338,6 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusLabelSum.Name = "toolStripStatusLabelSum";
             this.toolStripStatusLabelSum.Size = new System.Drawing.Size(103, 17);
             this.toolStripStatusLabelSum.Text = "SUM:0人日(0人月)";
-            // 
-            // toolStripStatusLabelSelect
-            // 
-            this.toolStripStatusLabelSelect.Name = "toolStripStatusLabelSelect";
-            this.toolStripStatusLabelSelect.Size = new System.Drawing.Size(38, 17);
-            this.toolStripStatusLabelSelect.Text = "Select";
             // 
             // toolStripStatusLabelViewRatio
             // 
@@ -412,7 +404,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxFilter;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSum;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDivide;

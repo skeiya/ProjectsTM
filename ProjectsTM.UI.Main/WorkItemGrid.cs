@@ -33,7 +33,6 @@ namespace ProjectsTM.UI.Main
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
         public event EventHandler<float> RatioChanged;
-        public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid()
         {
             AllowDrop = true;
@@ -54,7 +53,6 @@ namespace ProjectsTM.UI.Main
             if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
             _editService = new WorkItemEditService(_viewData.Core);
             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
-            _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
             ApplyDetailSetting();
             LockUpdate = false;
             if (_drawService != null) _drawService.Dispose();
@@ -63,11 +61,6 @@ namespace ProjectsTM.UI.Main
                 this,
                 () => _workItemDragService.IsActive(),
                 this.Font);
-        }
-
-        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
-        {
-            this.HoveringTextChanged?.Invoke(sender, e);
         }
 
         private bool SelectNextWorkItem(bool prev)
