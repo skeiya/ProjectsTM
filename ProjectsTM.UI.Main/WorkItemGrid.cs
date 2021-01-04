@@ -12,17 +12,18 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
 {
-    public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
+    public partial class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
+        private partial class ContextMenuHandler { }
+
         private ViewData _viewData;
+        private readonly ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
         private readonly DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
-
-        public WorkItemEditService EditService => _editService;
 
         public Size FullSize => new Size(GridWidth, GridHeight);
 
@@ -38,6 +39,7 @@ namespace ProjectsTM.UI.Main
         {
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
+            _contextMenuHandler = new ContextMenuHandler(this);
         }
 
         public void Initialize(ViewData viewData)
@@ -51,18 +53,27 @@ namespace ProjectsTM.UI.Main
             this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData);
-            if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
             _editService = new WorkItemEditService(_viewData);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
-            _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
+            {
+                if (ContextMenuStrip != null) ContextMenuStrip.Dispose();
+                ContextMenuStrip = new ContextMenuStrip();
+                _contextMenuHandler.InitializeContextMenu(ContextMenuStrip);
+
+                if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
+                _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
+            }
+
             ApplyDetailSetting();
             LockUpdate = false;
-            if (_drawService != null) _drawService.Dispose();
-            _drawService.Initialize(
-                _viewData,
-                this,
-                () => _workItemDragService.IsActive(),
-                this.Font);
+            {
+                if (_drawService != null) _drawService.Dispose();
+                _drawService.Initialize(
+                    _viewData,
+                    this,
+                    () => _workItemDragService.IsActive(),
+                    this.Font);
+            }
         }
 
         private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
@@ -251,7 +262,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new DivideWorkItemForm(count))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                EditService.Divide(selected, dlg.Divided, dlg.Remain);
+                _editService.Divide(selected, dlg.Divided, dlg.Remain);
             }
         }
 

@@ -1,34 +1,42 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 using System;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.TaskList
 {
-    class TaskListContextMenuHandler
+    public partial class TaskListGrid
     {
-        private readonly ViewData _viewData;
-        private readonly TaskListGrid _taskListGrid;
-
-        public TaskListContextMenuHandler(ViewData viewData, TaskListGrid taskListGrid)
+        private partial class ContextMenuHandler
         {
-            _viewData = viewData;
-            _taskListGrid = taskListGrid;
+            private readonly TaskListGrid _grid;
 
-            _taskListGrid.ContextMenuStrip = new ContextMenuStrip();
-            _taskListGrid.ContextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
-        }
+            internal ContextMenuHandler(TaskListGrid grid)
+            {
+                _grid = grid;
+            }
 
-        private void DoneMenu_Click(object sender, EventArgs e)
-        {
-            ChangeState(TaskState.Done);
-        }
+            internal void initializeContextMenu(ContextMenuStrip contextMenuStrip)
+            {
+                if (contextMenuStrip is null) throw new ArgumentNullException();
+                if (_grid._viewData is null || _grid._editService is null)
+                {
+                    throw new InvalidOperationException("TaskListGridの中身が不完全な状態で呼び出された");
+                }
 
-        private void ChangeState(TaskState state)
-        {
-            var selected = _viewData.Selected;
-            if (selected == null) return;
-            _taskListGrid.EditService.ChangeState(selected, state);
+                contextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
+            }
+
+            private void DoneMenu_Click(object sender, EventArgs e)
+            {
+                ChangeState(TaskState.Done);
+            }
+
+            private void ChangeState(TaskState state)
+            {
+                var selected = _grid._viewData.Selected;
+                if (selected == null) return;
+                _grid._editService.ChangeState(selected, state);
+            }
         }
     }
 }
