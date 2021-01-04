@@ -341,8 +341,8 @@ namespace ProjectsTM.Service
 
             g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect);
 
-            rect.X = (int)(_grid.Global2Raw(Cursor.Position).X - res.Value.Value.Width * 0.5);
-            rect.Y = (int)(_grid.Global2Raw(Cursor.Position).Y - res.Value.Value.Height * 0.5);
+            rect.X = (int)(_grid.Global2Raw(Cursor.Position).X - res.Value.Value.Width * 0.5 - _grid.ScrollOffset.X);
+            rect.Y = (int)(_grid.Global2Raw(Cursor.Position).Y - res.Value.Value.Height * 0.5 - _grid.ScrollOffset.Y);
             DrawWorkItemCore(wi, edge, font, g, rect);
         }
 
