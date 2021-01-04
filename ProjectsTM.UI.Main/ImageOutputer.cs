@@ -6,7 +6,7 @@ namespace ProjectsTM.UI.Main
 {
     public static class ImageOutputer
     {
-        public static void Save(ViewData viewData, WorkItemGrid orgGrid)
+        public static void Save(MainViewData viewData, WorkItemGrid orgGrid)
         {
             var selected = viewData.Selected;
             viewData.Selected = null;
