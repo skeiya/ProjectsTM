@@ -106,7 +106,7 @@ namespace ProjectsTM.ViewModel
 
         public IEnumerable<Member> MatchMembers(string pattern)
         {
-            foreach(var m in Members)
+            foreach (var m in Members)
             {
                 if (GetWorkItemsOfMember(m).Any(w => Regex.IsMatch(w.ToString(), pattern)))
                 {

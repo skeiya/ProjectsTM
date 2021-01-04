@@ -135,18 +135,16 @@ namespace ProjectsTM.UI.TaskList
         private void SetStrOneLine(StringBuilder copyData, WorkItem w)
         {
             const string DOUBLE_Q = "\"";
-            const string TAB = "\t";
-            copyData.Append(w.Name.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Project.ToString()); copyData.Append(TAB);
-            copyData.Append(w.AssignedMember.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Tags.ToString()); copyData.Append(TAB);
-            copyData.Append(w.State); copyData.Append(TAB);
-            copyData.Append(w.Period.From.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Period.To.ToString()); copyData.Append(TAB);
-            copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-            copyData.Append(TAB);
-            copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-            copyData.AppendLine(TAB);
+            copyData.Append($"{w.Name}\t");
+            copyData.Append($"{w.Project}\t");
+            copyData.Append($"{w.AssignedMember}\t");
+            copyData.Append($"{w.Tags}\t");
+            copyData.Append($"{w.State}\t");
+            copyData.Append($"{w.Period.From}\t");
+            copyData.Append($"{w.Period.To}\t");
+            copyData.Append($"{_viewData.Original.Callender.GetPeriodDayCount(w.Period)}\t");
+            copyData.Append($"{DOUBLE_Q}{w.Description}{DOUBLE_Q}");
+            copyData.AppendLine("\t");
         }
 
         private void CopyToClipboard()
@@ -303,7 +301,7 @@ namespace ProjectsTM.UI.TaskList
             ContextMenuStrip = new ContextMenuStrip();
             _contextMenuHandler = new ContextMenuHandler(_viewData, this);
             _contextMenuHandler.Initialize(ContextMenuStrip);
-            
+
             UpdateListItem();
             ColCount = ColDefinition.Count;
             FixedRowCount = 1;

@@ -45,7 +45,7 @@ namespace ProjectsTM.Service
                     var tmp = (AppData)x.Deserialize(nodeReader);
                     using (var tmpReader = new XmlNodeReader(doc.DocumentElement))
                     {
-                        foreach(var callenderDay in XElement.Load(tmpReader).Element("Callender").Element("Days").Elements("CallenderDay"))
+                        foreach (var callenderDay in XElement.Load(tmpReader).Element("Callender").Element("Days").Elements("CallenderDay"))
                         {
                             var ca = CallenderDay.Parse(callenderDay.Element("Date").Value);
                             tmp.Callender.Add(ca);

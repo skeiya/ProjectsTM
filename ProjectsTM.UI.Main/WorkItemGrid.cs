@@ -38,7 +38,7 @@ namespace ProjectsTM.UI.Main
         {
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
-            
+
         }
 
         public void Initialize(ViewData viewData)
