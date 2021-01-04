@@ -47,12 +47,6 @@ namespace ProjectsTM.ViewModel
         public IUndoService UndoService { get; private set; }
         private WorkItems _selected;
 
-        public void ClearCallenderAndMembers()
-        {
-            this.Original.Callender = new Callender();
-            this.Original.Members = new Members();
-        }
-
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;

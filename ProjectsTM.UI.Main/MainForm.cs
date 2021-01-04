@@ -123,12 +123,6 @@ namespace ProjectsTM.UI.Main
             OpenAppData(_fileIOService.OpenFile(fileName));
         }
 
-        private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
-        {
-            OldFileService.ImportMemberAndWorkItems(_viewData);
-            UpdateView();
-        }
-
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
         {
             RsExportManager.Export(_viewData.Original);
