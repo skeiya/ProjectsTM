@@ -77,7 +77,7 @@ namespace ProjectsTM.Service
         }
 
         private void UpdateMoving(IWorkItemGrid grid, RawPoint curLocation, Callender callender, ViewData viewData)
-        {
+        {            
             var mOffset = GetMemberOffset(grid, curLocation);
             var pOffset = GetPeriodOffset(grid, curLocation);
             var result = _backup.Clone();
@@ -123,6 +123,18 @@ namespace ProjectsTM.Service
             var dragged = grid.X2Col(_draggedLocation.X);
             var cur = grid.X2Col(curLocation.X);
             return cur.Value - dragged.Value;
+        }
+
+        public static bool IsCurLocationOnHitArea(IWorkItemGrid grid, RawPoint curLocation)
+        {
+            var draggedCol = grid.X2Col(curLocation.X);
+            var draggedRow = grid.Y2Row(curLocation.Y);
+            if (draggedCol.Value < 0 || draggedRow.Value < 0) return false;
+
+            var rect = grid.GetRectRaw(draggedCol, draggedRow, 1);
+            if (curLocation.X < rect.Value.X + rect.Value.Width * 0.25) return false;
+            if (curLocation.X > rect.Value.X + rect.Value.Width * 0.75) return false;
+            return true;
         }
 
         private static Member GetNewMember(IWorkItemGrid grid, Member before, int offset)

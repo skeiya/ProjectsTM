@@ -332,12 +332,33 @@ namespace ProjectsTM.Service
                 }
             }
         }
+
+        private void DrawTemporaryWorkItem(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
+        {
+            var res = _grid.GetWorkItemDrawRectClient(wi, members);
+            if (!res.HasValue) return;
+            var rect = res.Value.Value;
+
+            g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect);
+
+            rect.X = (int)(_grid.Global2Raw(Cursor.Position).X - res.Value.Value.Width * 0.5);
+            rect.Y = (int)(_grid.Global2Raw(Cursor.Position).Y - res.Value.Value.Height * 0.5);
+            DrawWorkItemCore(wi, edge, font, g, rect);
+        }
+
         private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
             if (_viewData.Selected == null) return;
             foreach (var w in _viewData.Selected)
             {
-                DrawWorkItemClient(w, Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
+                if (_isDragActive() && !WorkItemDragService.IsCurLocationOnHitArea(_grid, _grid.Global2Raw(Cursor.Position)))
+                {
+                    DrawTemporaryWorkItem(w, Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
+                }
+                else
+                {
+                    DrawWorkItemClient(w, Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
+                }
             }
 
             DrawSameNameWorkItem(g, font);
