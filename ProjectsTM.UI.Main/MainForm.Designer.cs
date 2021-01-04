@@ -26,7 +26,6 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemSaveAsOtherName = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemPrint = new System.Windows.Forms.ToolStripMenuItem();
             this.詳細ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemImportOldFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExportRS = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemGenerateDummyData = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +51,6 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSelect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
             this.menuStrip1.SuspendLayout();
@@ -130,19 +128,11 @@ namespace ProjectsTM.UI.Main
             // 詳細ToolStripMenuItem
             // 
             this.詳細ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemImportOldFile,
             this.ToolStripMenuItemExportRS,
             this.ToolStripMenuItemGenerateDummyData});
             this.詳細ToolStripMenuItem.Name = "詳細ToolStripMenuItem";
             this.詳細ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.詳細ToolStripMenuItem.Text = "詳細(&D)";
-            // 
-            // ToolStripMenuItemImportOldFile
-            // 
-            this.ToolStripMenuItemImportOldFile.Name = "ToolStripMenuItemImportOldFile";
-            this.ToolStripMenuItemImportOldFile.Size = new System.Drawing.Size(183, 22);
-            this.ToolStripMenuItemImportOldFile.Text = "旧ファイルをインポート";
-            this.ToolStripMenuItemImportOldFile.Click += new System.EventHandler(this.ToolStripMenuItemImportOldFile_Click);
             // 
             // ToolStripMenuItemExportRS
             // 
@@ -231,7 +221,7 @@ namespace ProjectsTM.UI.Main
             // 
             this.ToolStripMenuItemFilter.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(171, 22);
             this.ToolStripMenuItemFilter.Text = "フィルター(&F)";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
@@ -239,7 +229,7 @@ namespace ProjectsTM.UI.Main
             // 
             this.ToolStripMenuItemColor.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(171, 22);
             this.ToolStripMenuItemColor.Text = "色(&C)";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -248,7 +238,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemLargeRatio.Name = "ToolStripMenuItemLargeRatio";
             this.ToolStripMenuItemLargeRatio.ShortcutKeyDisplayString = "Ctrl++";
             this.ToolStripMenuItemLargeRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(171, 22);
             this.ToolStripMenuItemLargeRatio.Text = "倍率(→大)";
             this.ToolStripMenuItemLargeRatio.Click += new System.EventHandler(this.ToolStripMenuItemLargeRatio_Click);
             // 
@@ -257,7 +247,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemSmallRatio.Name = "ToolStripMenuItemSmallRatio";
             this.ToolStripMenuItemSmallRatio.ShortcutKeyDisplayString = "Ctrl+ー";
             this.ToolStripMenuItemSmallRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(171, 22);
             this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
             this.ToolStripMenuItemSmallRatio.Click += new System.EventHandler(this.ToolStripMenuItemSmallRatio_Click);
             // 
@@ -296,7 +286,7 @@ namespace ProjectsTM.UI.Main
             // ToolStripMenuItemTrendChart
             // 
             this.ToolStripMenuItemTrendChart.Name = "ToolStripMenuItemTrendChart";
-            this.ToolStripMenuItemTrendChart.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemTrendChart.Size = new System.Drawing.Size(150, 22);
             this.ToolStripMenuItemTrendChart.Text = "総工数トレンド";
             this.ToolStripMenuItemTrendChart.Click += new System.EventHandler(this.ToolStripMenuItemTrendChart_Click);
             // 
@@ -335,7 +325,6 @@ namespace ProjectsTM.UI.Main
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSum,
-            this.toolStripStatusLabelSelect,
             this.toolStripStatusLabelViewRatio});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
@@ -350,12 +339,6 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusLabelSum.Size = new System.Drawing.Size(103, 17);
             this.toolStripStatusLabelSum.Text = "SUM:0人日(0人月)";
             // 
-            // toolStripStatusLabelSelect
-            // 
-            this.toolStripStatusLabelSelect.Name = "toolStripStatusLabelSelect";
-            this.toolStripStatusLabelSelect.Size = new System.Drawing.Size(38, 17);
-            this.toolStripStatusLabelSelect.Text = "Select";
-            // 
             // toolStripStatusLabelViewRatio
             // 
             this.toolStripStatusLabelViewRatio.Name = "toolStripStatusLabelViewRatio";
@@ -364,6 +347,7 @@ namespace ProjectsTM.UI.Main
             // 
             // workItemGrid1
             // 
+            this.workItemGrid1.AllowDrop = true;
             this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.workItemGrid1.FixedColCount = 0;
             this.workItemGrid1.FixedRowCount = 0;
@@ -411,7 +395,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFilter;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemColor;
         private System.Windows.Forms.ToolStripMenuItem 詳細ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemImportOldFile;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExportRS;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLargeRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSmallRatio;
@@ -421,7 +404,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxFilter;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSum;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSelect;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDivide;

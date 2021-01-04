@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
 {
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
-        private ViewData _viewData;
+        private MainViewData _viewData;
         private ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
@@ -33,7 +33,6 @@ namespace ProjectsTM.UI.Main
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
         public event EventHandler<float> RatioChanged;
-        public event EventHandler<WorkItem> HoveringTextChanged;
         public WorkItemGrid()
         {
             AllowDrop = true;
@@ -41,7 +40,7 @@ namespace ProjectsTM.UI.Main
 
         }
 
-        public void Initialize(ViewData viewData)
+        public void Initialize(MainViewData viewData)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
@@ -51,17 +50,16 @@ namespace ProjectsTM.UI.Main
             this.FixedColCount = WorkItemGridConstants.FixedCols;
             this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
-            _rowColResolver = new RowColResolver(this, _viewData);
-            _editService = new WorkItemEditService(_viewData);
+            _rowColResolver = new RowColResolver(this, _viewData.Core);
+            _editService = new WorkItemEditService(_viewData.Core);
             {
                 if (ContextMenuStrip != null) ContextMenuStrip.Dispose();
                 ContextMenuStrip = new ContextMenuStrip();
-                _contextMenuHandler = new ContextMenuHandler(_viewData, this);
+                _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this);
                 _contextMenuHandler.Initialize(ContextMenuStrip);
 
                 if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
-                _keyAndMouseHandleService.HoveringTextChanged += _keyAndMouseHandleService_HoveringTextChanged;
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
             }
 
             ApplyDetailSetting();
@@ -74,11 +72,6 @@ namespace ProjectsTM.UI.Main
                     () => _workItemDragService.IsActive(),
                     this.Font);
             }
-        }
-
-        private void _keyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
-        {
-            this.HoveringTextChanged?.Invoke(sender, e);
         }
 
         private bool SelectNextWorkItem(bool prev)
@@ -283,7 +276,6 @@ namespace ProjectsTM.UI.Main
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(wi);
                 _editService.Add(wi);
                 _viewData.UndoService.Push();
             }
@@ -297,7 +289,6 @@ namespace ProjectsTM.UI.Main
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
@@ -462,12 +453,12 @@ namespace ProjectsTM.UI.Main
 
         internal void Redo()
         {
-            _viewData.UndoService.Redo(_viewData);
+            _viewData.UndoService.Redo(_viewData.Core);
         }
 
         internal void Undo()
         {
-            _viewData.UndoService.Undo(_viewData);
+            _viewData.UndoService.Undo(_viewData.Core);
         }
 
         private RowIndex Day2Row(CallenderDay day)

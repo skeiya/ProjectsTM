@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.Main
 {
     public partial class MainForm : Form
     {
-        private readonly ViewData _viewData = new ViewData(new AppData(), new UndoService());
+        private readonly MainViewData _viewData = new MainViewData(new AppData(), new UndoService());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
@@ -21,8 +21,8 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
-            _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBoxFilter);
-            _taskListManager = new TaskListManager(_viewData, _patternHistory, this);
+            _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
+            _taskListManager = new TaskListManager(_viewData.Core, _patternHistory, this);
             _fileWatchManager = new FileWatchManager(this, Reload);
             _viewData.FilterChanged += (s, e) => UpdateView();
             _viewData.AppDataChanged += (s, e) => UpdateView();
@@ -32,7 +32,6 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
@@ -113,7 +112,7 @@ namespace ProjectsTM.UI.Main
 
         private void UpdateDisplayOfSum(IEditedEventArgs e)
         {
-            var sum = _calculateSumService.Calculate(_viewData, e?.UpdatedMembers);
+            var sum = _calculateSumService.Calculate(_viewData.Core, e?.UpdatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
@@ -121,12 +120,6 @@ namespace ProjectsTM.UI.Main
         {
             var fileName = FileDragService.Drop(e);
             OpenAppData(_fileIOService.OpenFile(fileName));
-        }
-
-        private void ToolStripMenuItemImportOldFile_Click(object sender, EventArgs e)
-        {
-            OldFileService.ImportMemberAndWorkItems(_viewData);
-            UpdateView();
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -156,7 +149,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FilterForm(_viewData, _patternHistory))
+            using (var dlg = new FilterForm(_viewData.Core, _patternHistory))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.SetFilter(dlg.GetFilter());

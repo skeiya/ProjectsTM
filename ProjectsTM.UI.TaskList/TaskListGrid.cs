@@ -265,7 +265,6 @@ namespace ProjectsTM.UI.TaskList
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
