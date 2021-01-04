@@ -16,7 +16,6 @@ namespace ProjectsTM.ViewModel
             }
         }
         public FilteredItems FilteredItems { get; private set; }
-        public Detail Detail { get; set; } = new Detail();
 
         public AppData Original => _appData;
         private Filter filter = Filter.All(null);
@@ -151,6 +150,7 @@ namespace ProjectsTM.ViewModel
             FontSize++;
             Detail.ViewRatio += 0.1f;
         }
+        public Detail Detail { get; set; } = new Detail();
 
         public void SetColorConditions(ColorConditions colorConditions)
         {
