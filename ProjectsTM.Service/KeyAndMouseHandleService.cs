@@ -71,6 +71,7 @@ namespace ProjectsTM.Service
             if (_viewData.Selected == null)
             {
                 _viewData.Selected = new WorkItems(wi);
+                _workItemDragService.StartMove(_viewData.Selected, curOnRaw, _grid.Y2Day(curOnRaw.Y));
             }
             else
             {
