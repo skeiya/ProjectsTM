@@ -77,7 +77,7 @@ namespace ProjectsTM.Service
         }
 
         private void UpdateMoving(IWorkItemGrid grid, RawPoint curLocation, Callender callender, ViewData viewData)
-        {            
+        {
             var mOffset = GetMemberOffset(grid, curLocation);
             var pOffset = GetPeriodOffset(grid, curLocation);
             var result = _backup.Clone();
