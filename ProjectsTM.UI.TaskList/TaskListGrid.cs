@@ -17,11 +17,9 @@ namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
-        private partial class ContextMenuHandler { }
-
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
-        private readonly ContextMenuHandler _contextMenuHandler;
+        private ContextMenuHandler _contextMenuHandler;
         public TaskListOption Option = new TaskListOption();
         private WorkItemEditService _editService;
 
@@ -32,6 +30,7 @@ namespace ProjectsTM.UI.TaskList
         private readonly WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
         private const int MaxSortableDistance = 20;
+        public WorkItemEditService EditService => _editService;
 
         public TaskListGrid()
         {
@@ -45,7 +44,6 @@ namespace ProjectsTM.UI.TaskList
             this.KeyDown += TaskListGrid_KeyDown;
             this.Resize += TaskListGrid_Resize;
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
-            _contextMenuHandler = new ContextMenuHandler(this);
         }
 
         internal int GetErrorCount()
@@ -303,7 +301,8 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler.initializeContextMenu(ContextMenuStrip);
+            _contextMenuHandler = new ContextMenuHandler(_viewData, this);
+            _contextMenuHandler.Initialize(ContextMenuStrip);
             
             UpdateListItem();
             ColCount = ColDefinition.Count;

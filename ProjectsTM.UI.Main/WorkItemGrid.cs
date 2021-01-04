@@ -12,18 +12,17 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
 {
-    public partial class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
+    public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
-        private partial class ContextMenuHandler { }
-
         private ViewData _viewData;
-        private readonly ContextMenuHandler _contextMenuHandler;
+        private ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
         private readonly DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
+        public WorkItemEditService EditService => _editService;
 
         public Size FullSize => new Size(GridWidth, GridHeight);
 
@@ -39,7 +38,7 @@ namespace ProjectsTM.UI.Main
         {
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
-            _contextMenuHandler = new ContextMenuHandler(this);
+            
         }
 
         public void Initialize(ViewData viewData)
@@ -57,7 +56,8 @@ namespace ProjectsTM.UI.Main
             {
                 if (ContextMenuStrip != null) ContextMenuStrip.Dispose();
                 ContextMenuStrip = new ContextMenuStrip();
-                _contextMenuHandler.InitializeContextMenu(ContextMenuStrip);
+                _contextMenuHandler = new ContextMenuHandler(_viewData, this);
+                _contextMenuHandler.Initialize(ContextMenuStrip);
 
                 if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
                 _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this);
