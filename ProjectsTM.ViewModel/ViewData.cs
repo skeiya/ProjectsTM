@@ -126,23 +126,5 @@ namespace ProjectsTM.ViewModel
             if (Original.ColorConditions.Equals(colorConditions)) return;
             Original.ColorConditions = colorConditions;
         }
-
-        public int FontSize { get; set; } = 6;
-
-        public void DecRatio()
-        {
-            if (Detail.ViewRatio <= 0.2) return;
-            if (FontSize <= 1) return;
-            FontSize--;
-            Detail.ViewRatio -= 0.1f;
-        }
-
-        public void IncRatio()
-        {
-            FontSize++;
-            Detail.ViewRatio += 0.1f;
-        }
-
-        public Detail Detail { get; set; } = new Detail();
     }
 }

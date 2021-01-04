@@ -21,6 +21,7 @@ namespace ProjectsTM.UI.Main
             this._grid = grid;
             this._viewData = viewData;
         }
+
         public void ClearCache()
         {
             _day2RowCache.Clear();
