@@ -272,7 +272,6 @@ namespace ProjectsTM.UI.Main
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(wi);
                 _editService.Add(wi);
                 _viewData.UndoService.Push();
             }
@@ -286,7 +285,6 @@ namespace ProjectsTM.UI.Main
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(wi, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }

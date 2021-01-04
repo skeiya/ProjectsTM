@@ -121,15 +121,6 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        public void UpdateCallenderAndMembers(WorkItem wi)
-        {
-            var days = Original.Callender;
-            if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
-            if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
-            days.Sort();
-            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
-        }
-
         public void SetColorConditions(ColorConditions colorConditions)
         {
             if (Original.ColorConditions.Equals(colorConditions)) return;
