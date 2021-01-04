@@ -56,6 +56,7 @@
     <Compile Include="ImageBuffer.cs" />
     <Compile Include="IUndoService.cs" />
     <Compile Include="IWorkItemGrid.cs" />
+    <Compile Include="MainViewData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectedWorkItemChangedArg.cs" />
     <Compile Include="UserSetting.cs" />

@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
 {
     public class DrawService : IDisposable
     {
-        private ViewData _viewData;
+        private MainViewData _viewData;
 
         private bool _redrawLock = false;
         internal void Lock(bool redrawLock)
@@ -29,7 +29,7 @@ namespace ProjectsTM.Service
         }
 
         public void Initialize(
-            ViewData viewData,
+            MainViewData viewData,
             IWorkItemGrid grid,
             Func<bool> isDragActive,
             Font font)
@@ -73,7 +73,7 @@ namespace ProjectsTM.Service
             DrawMember(font, g);
             DrawEdgeWorkItems(font, g, isAllDraw);
             DrawCursorPosition(g, font);
-            DrawMileStones(font, g, GetMileStonesWithToday(_viewData));
+            DrawMileStones(font, g, GetMileStonesWithToday(_viewData.Core));
             DrawSelectedWorkItemBound(g, font);
             DrawRangeSelectBound(g);
         }

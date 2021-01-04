@@ -16,7 +16,6 @@ namespace ProjectsTM.ViewModel
             }
         }
         public FilteredItems FilteredItems { get; private set; }
-        public Detail Detail { get; set; } = new Detail();
 
         public AppData Original => _appData;
         private Filter filter = Filter.All(null);
@@ -48,17 +47,10 @@ namespace ProjectsTM.ViewModel
         public IUndoService UndoService { get; private set; }
         private WorkItems _selected;
 
-        public void ClearCallenderAndMembers()
-        {
-            this.Original.Callender = new Callender();
-            this.Original.Members = new Members();
-        }
-
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
-        public int FontSize { get; set; } = 6;
 
         public WorkItems Selected
         {
@@ -127,29 +119,6 @@ namespace ProjectsTM.ViewModel
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
             }
-        }
-
-        public void UpdateCallenderAndMembers(WorkItem wi)
-        {
-            var days = Original.Callender;
-            if (!days.Contains(wi.Period.From)) days.Add(wi.Period.From);
-            if (!days.Contains(wi.Period.To)) days.Add(wi.Period.To);
-            days.Sort();
-            if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
-        }
-
-        public void DecRatio()
-        {
-            if (Detail.ViewRatio <= 0.2) return;
-            if (FontSize <= 1) return;
-            FontSize--;
-            Detail.ViewRatio -= 0.1f;
-        }
-
-        public void IncRatio()
-        {
-            FontSize++;
-            Detail.ViewRatio += 0.1f;
         }
 
         public void SetColorConditions(ColorConditions colorConditions)
