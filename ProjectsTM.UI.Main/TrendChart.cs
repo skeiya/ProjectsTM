@@ -22,7 +22,7 @@ namespace ProjectsTM.UI.Main
 
         public TrendChart(AppData appData, string filePath)
         {
-            _viewData = new ViewData(appData, null);
+            _viewData = new ViewData(appData);
             _filePath = filePath;
             InitializeComponent();
             _filterComboBoxService = new FilterComboBoxService(_viewData, toolStripComboBox1);
@@ -122,7 +122,7 @@ namespace ProjectsTM.UI.Main
         {
             var oldAppData = GetOldAppData(monthsAgo);
             if (oldAppData == null) return new List<WorkItem>();
-            var oldViewData = new ViewData(oldAppData, null);
+            var oldViewData = new ViewData(oldAppData);
             oldViewData.SetFilter(_viewData.Filter);
             return oldViewData.FilteredItems.WorkItems.Where(w => w.Project.Equals(proj));
         }
