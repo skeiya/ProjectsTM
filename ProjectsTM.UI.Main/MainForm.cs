@@ -32,7 +32,6 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            workItemGrid1.HoveringTextChanged += (s, wi) => toolStripStatusLabelSelect.Text = (wi == null) ? string.Empty : wi.ToString();
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
