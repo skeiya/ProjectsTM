@@ -8,7 +8,7 @@ namespace ProjectsTM.UI.Main
 {
     public partial class MainForm : Form
     {
-        private readonly MainViewData _viewData = new MainViewData(new AppData(), new UndoService());
+        private readonly MainViewData _viewData = new MainViewData(new AppData());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
@@ -26,7 +26,7 @@ namespace ProjectsTM.UI.Main
             _fileWatchManager = new FileWatchManager(this, Reload);
             _viewData.FilterChanged += (s, e) => UpdateView();
             _viewData.AppDataChanged += (s, e) => UpdateView();
-            _viewData.UndoService.Changed += _undoService_Changed;
+            _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);

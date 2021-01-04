@@ -1,8 +1,7 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 using System.Collections.Generic;
 
-namespace ProjectsTM.Service
+namespace ProjectsTM.ViewModel
 {
     public class EditedEventArgs : IEditedEventArgs
     {

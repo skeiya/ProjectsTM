@@ -190,7 +190,7 @@ namespace ProjectsTM.UI.Main
             this.MouseUp += WorkItemGrid_MouseUp;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this.MouseWheel += WorkItemGrid_MouseWheel;
-            this._viewData.UndoService.Changed += _undoService_Changed;
+            this._viewData.UndoBuffer.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
             this.KeyDown += WorkItemGrid_KeyDown;
             this.KeyUp += WorkItemGrid_KeyUp;
@@ -204,7 +204,7 @@ namespace ProjectsTM.UI.Main
             this.MouseUp -= WorkItemGrid_MouseUp;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this.MouseWheel -= WorkItemGrid_MouseWheel;
-            this._viewData.UndoService.Changed -= _undoService_Changed;
+            this._viewData.UndoBuffer.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
             this.KeyUp -= WorkItemGrid_KeyUp;
@@ -277,7 +277,7 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
                 _editService.Add(wi);
-                _viewData.UndoService.Push();
+                _viewData.UndoBuffer.Push();
             }
         }
 
@@ -453,12 +453,12 @@ namespace ProjectsTM.UI.Main
 
         internal void Redo()
         {
-            _viewData.UndoService.Redo(_viewData.Core);
+            _viewData.UndoBuffer.Redo(_viewData.Core);
         }
 
         internal void Undo()
         {
-            _viewData.UndoService.Undo(_viewData.Core);
+            _viewData.UndoBuffer.Undo(_viewData.Core);
         }
 
         private RowIndex Day2Row(CallenderDay day)

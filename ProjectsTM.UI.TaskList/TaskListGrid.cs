@@ -313,13 +313,13 @@ namespace ProjectsTM.UI.TaskList
 
         private void AttachEvents()
         {
-            _viewData.UndoService.Changed += _undoService_Changed;
+            _viewData.UndoBuffer.Changed += _undoService_Changed;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
         }
 
         private void DetatchEvents()
         {
-            _viewData.UndoService.Changed -= _undoService_Changed;
+            _viewData.UndoBuffer.Changed -= _undoService_Changed;
             _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
