@@ -51,7 +51,6 @@ namespace ProjectsTM.ViewModel
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
-        public int FontSize { get; set; } = 6;
 
         public WorkItems Selected
         {
@@ -131,6 +130,14 @@ namespace ProjectsTM.ViewModel
             if (!Original.Members.Contains(wi.AssignedMember)) Original.Members.Add(wi.AssignedMember);
         }
 
+        public void SetColorConditions(ColorConditions colorConditions)
+        {
+            if (Original.ColorConditions.Equals(colorConditions)) return;
+            Original.ColorConditions = colorConditions;
+        }
+
+        public int FontSize { get; set; } = 6;
+
         public void DecRatio()
         {
             if (Detail.ViewRatio <= 0.2) return;
@@ -144,12 +151,7 @@ namespace ProjectsTM.ViewModel
             FontSize++;
             Detail.ViewRatio += 0.1f;
         }
-        public Detail Detail { get; set; } = new Detail();
 
-        public void SetColorConditions(ColorConditions colorConditions)
-        {
-            if (Original.ColorConditions.Equals(colorConditions)) return;
-            Original.ColorConditions = colorConditions;
-        }
+        public Detail Detail { get; set; } = new Detail();
     }
 }
