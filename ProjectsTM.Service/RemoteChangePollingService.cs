@@ -50,7 +50,7 @@ namespace ProjectsTM.Service
         private async Task TriggerUnpushedCommitCheck(string filePath)
         {
             HasUnpushedCommit = await GitRepositoryService.HasUnpushedCommit(filePath).ConfigureAwait(true);
-            CheckedUnpushedCommit.Invoke(this, null);
+            CheckedUnpushedCommit?.Invoke(this, null);
         }
     }
 }
