@@ -47,10 +47,11 @@
             this.gridControl1.FixedColCount = 0;
             this.gridControl1.FixedRowCount = 0;
             this.gridControl1.HOffset = 0;
-            this.gridControl1.Location = new System.Drawing.Point(8, 39);
+            this.gridControl1.Location = new System.Drawing.Point(13, 58);
             this.gridControl1.LockUpdate = true;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(730, 240);
+            this.gridControl1.Size = new System.Drawing.Size(1217, 360);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.VOffset = 0;
             // 
@@ -59,19 +60,20 @@
             this.comboBoxPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxPattern.FormattingEnabled = true;
-            this.comboBoxPattern.Location = new System.Drawing.Point(8, 12);
+            this.comboBoxPattern.Location = new System.Drawing.Point(13, 18);
+            this.comboBoxPattern.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.comboBoxPattern.Name = "comboBoxPattern";
-            this.comboBoxPattern.Size = new System.Drawing.Size(498, 20);
+            this.comboBoxPattern.Size = new System.Drawing.Size(827, 26);
             this.comboBoxPattern.TabIndex = 0;
             this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
+            this.comboBoxPattern.SelectedIndexChanged += new System.EventHandler(this.comboBoxPattern_SelectedIndexChanged);
             // 
             // buttonUpdate
             // 
             this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUpdate.Location = new System.Drawing.Point(663, 10);
-            this.buttonUpdate.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonUpdate.Location = new System.Drawing.Point(1105, 15);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.Size = new System.Drawing.Size(125, 34);
             this.buttonUpdate.TabIndex = 3;
             this.buttonUpdate.Text = "更新";
             this.buttonUpdate.UseVisualStyleBackColor = true;
@@ -81,10 +83,9 @@
             // 
             this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelSum.AutoSize = true;
-            this.labelSum.Location = new System.Drawing.Point(12, 288);
-            this.labelSum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelSum.Location = new System.Drawing.Point(20, 432);
             this.labelSum.Name = "labelSum";
-            this.labelSum.Size = new System.Drawing.Size(29, 12);
+            this.labelSum.Size = new System.Drawing.Size(44, 18);
             this.labelSum.TabIndex = 5;
             this.labelSum.Text = "合計";
             // 
@@ -92,9 +93,10 @@
             // 
             this.labelErrorCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelErrorCount.AutoSize = true;
-            this.labelErrorCount.Location = new System.Drawing.Point(148, 288);
+            this.labelErrorCount.Location = new System.Drawing.Point(247, 432);
+            this.labelErrorCount.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.labelErrorCount.Name = "labelErrorCount";
-            this.labelErrorCount.Size = new System.Drawing.Size(44, 12);
+            this.labelErrorCount.Size = new System.Drawing.Size(67, 18);
             this.labelErrorCount.TabIndex = 6;
             this.labelErrorCount.Text = "エラー数";
             // 
@@ -104,9 +106,10 @@
             this.checkBoxShowMS.AutoSize = true;
             this.checkBoxShowMS.Checked = true;
             this.checkBoxShowMS.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxShowMS.Location = new System.Drawing.Point(512, 15);
+            this.checkBoxShowMS.Location = new System.Drawing.Point(866, 22);
+            this.checkBoxShowMS.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.checkBoxShowMS.Name = "checkBoxShowMS";
-            this.checkBoxShowMS.Size = new System.Drawing.Size(64, 16);
+            this.checkBoxShowMS.Size = new System.Drawing.Size(94, 22);
             this.checkBoxShowMS.TabIndex = 1;
             this.checkBoxShowMS.Text = "MS表示";
             this.checkBoxShowMS.UseVisualStyleBackColor = true;
@@ -115,9 +118,10 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(269, 288);
+            this.label1.Location = new System.Drawing.Point(448, 432);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(12, 12);
+            this.label1.Size = new System.Drawing.Size(19, 18);
             this.label1.TabIndex = 7;
             this.label1.Text = "&&";
             // 
@@ -125,17 +129,19 @@
             // 
             this.textBoxAndCondition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxAndCondition.Location = new System.Drawing.Point(287, 285);
+            this.textBoxAndCondition.Location = new System.Drawing.Point(478, 428);
+            this.textBoxAndCondition.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBoxAndCondition.Name = "textBoxAndCondition";
-            this.textBoxAndCondition.Size = new System.Drawing.Size(451, 19);
+            this.textBoxAndCondition.Size = new System.Drawing.Size(749, 25);
             this.textBoxAndCondition.TabIndex = 8;
             // 
             // buttonEazyRegex
             // 
             this.buttonEazyRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEazyRegex.Location = new System.Drawing.Point(582, 10);
+            this.buttonEazyRegex.Location = new System.Drawing.Point(970, 15);
+            this.buttonEazyRegex.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.buttonEazyRegex.Name = "buttonEazyRegex";
-            this.buttonEazyRegex.Size = new System.Drawing.Size(75, 23);
+            this.buttonEazyRegex.Size = new System.Drawing.Size(125, 34);
             this.buttonEazyRegex.TabIndex = 2;
             this.buttonEazyRegex.Text = "簡易指定...";
             this.buttonEazyRegex.UseVisualStyleBackColor = true;
@@ -143,9 +149,9 @@
             // TaskListForm
             // 
             this.AcceptButton = this.buttonUpdate;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(750, 307);
+            this.ClientSize = new System.Drawing.Size(1250, 460);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.buttonEazyRegex);
             this.Controls.Add(this.textBoxAndCondition);
@@ -156,6 +162,7 @@
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.comboBoxPattern);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "TaskListForm";
             this.Text = "タスクリスト";
             this.ResumeLayout(false);

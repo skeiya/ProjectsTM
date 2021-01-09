@@ -12,13 +12,15 @@ namespace ProjectsTM.UI.TaskList
     {
         private readonly ViewData _viewData;
         private PatternHistory _history;
+        private string _userName;
         private TaskListContextMenuHandler _taskListContextMenuHandler;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, string userName, PatternHistory patternHistory)
         {
             InitializeComponent();
 
             this._viewData = viewData;
+            _userName = userName;
            _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
@@ -102,6 +104,7 @@ namespace ProjectsTM.UI.TaskList
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
         {
             comboBoxPattern.Items.Clear();
+            comboBoxPattern.Items.Add($"あなた({_userName})のタスク");
             comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
         private void buttonUpdate_Click(object sender, System.EventArgs e)
@@ -114,6 +117,19 @@ namespace ProjectsTM.UI.TaskList
             _history.Append(comboBoxPattern.Text);
             gridControl1.Option = GetOption();
             gridControl1.UpdateView();
+        }
+
+        private void comboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!IsUserTaskSelected()) return;
+            gridControl1.Option = new TaskListOption(_userName, false, string.Empty);
+            gridControl1.UpdateView();
+            comboBoxPattern.SelectedIndex = -1;
+        }
+
+        private bool IsUserTaskSelected()
+        {
+            return comboBoxPattern.SelectedIndex == 0;
         }
     }
 }
