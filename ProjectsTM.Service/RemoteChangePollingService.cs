@@ -7,7 +7,7 @@ namespace ProjectsTM.Service
     public class RemoteChangePollingService
     {
         public event EventHandler<bool> FoundRemoteChange;
-        public event EventHandler FoundUnpushedCommit;
+        public event EventHandler CheckedUnpushedCommit;
         private readonly Timer _timer = new Timer();
         private readonly AppDataFileIOService _fileIOService;
         public bool HasUnpushedCommit { get; private set; } = false;
@@ -50,7 +50,7 @@ namespace ProjectsTM.Service
         private async Task TriggerUnpushedCommitCheck(string filePath)
         {
             HasUnpushedCommit = await GitRepositoryService.HasUnpushedCommit(filePath).ConfigureAwait(true);
-            FoundUnpushedCommit.Invoke(this, null);
+            CheckedUnpushedCommit.Invoke(this, null);
         }
     }
 }
