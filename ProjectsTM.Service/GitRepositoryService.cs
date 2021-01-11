@@ -19,6 +19,34 @@ namespace ProjectsTM.Service
             return task;
         }
 
+        public static Task<bool> HasUnpushedCommit(string filePath)
+        {
+            Task<bool> task = Task.Run(() =>
+            {
+                if (!IsActive()) return false;
+                if (string.IsNullOrEmpty(filePath)) return false;
+                var repo = GitCmdRepository.FromFilePath(filePath);
+                if (repo == null) return false;
+                return !IsUnpushedCommitEmpty(repo);
+            }
+            );
+            return task;
+        }
+
+        public static Task<bool> HasUncommittedChange(string filePath)
+        {
+            Task<bool> task = Task.Run(() =>
+            {
+                if (!IsActive()) return false;
+                if (string.IsNullOrEmpty(filePath)) return false;
+                var repo = GitCmdRepository.FromFilePath(filePath);
+                if (repo == null) return false;
+                return !IsUncommitChangeEmpty(repo);
+            }
+            );
+            return task;
+        }
+
         public static bool IsActive()
         {
             return !string.IsNullOrEmpty(GitCmdRepository.GetVersion());

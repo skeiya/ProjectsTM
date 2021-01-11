@@ -7,8 +7,11 @@ namespace ProjectsTM.Service
     public class RemoteChangePollingService
     {
         public event EventHandler<bool> FoundRemoteChange;
+        public event EventHandler CheckedUnpushedChange;
         private readonly Timer _timer = new Timer();
         private readonly AppDataFileIOService _fileIOService;
+        public bool HasUnpushedCommit { get; private set; } = false;
+        public bool HasUncommitedChange { get; private set; } = false;
 
         public RemoteChangePollingService(AppDataFileIOService fileIOService)
         {
@@ -31,6 +34,7 @@ namespace ProjectsTM.Service
         {
             if (string.IsNullOrEmpty(_fileIOService.FilePath)) return;
             await TriggerRemoteChangeCheck(_fileIOService.FilePath).ConfigureAwait(true);
+            await TriggerUnpushedChangeCheck(_fileIOService.FilePath).ConfigureAwait(true);
         }
 
         private async Task TriggerRemoteChangeCheck(string filePath)
@@ -42,6 +46,13 @@ namespace ProjectsTM.Service
                 if (GitRepositoryService.TryAutoPull(filePath)) hasUnmergedRemoteCommit = false;
             }
             FoundRemoteChange?.Invoke(this, hasUnmergedRemoteCommit);
+        }
+
+        private async Task TriggerUnpushedChangeCheck(string filePath)
+        {
+            HasUnpushedCommit = await GitRepositoryService.HasUnpushedCommit(filePath).ConfigureAwait(true);
+            HasUncommitedChange = await GitRepositoryService.HasUncommittedChange(filePath).ConfigureAwait(true);
+            CheckedUnpushedChange?.Invoke(this, null);
         }
     }
 }
