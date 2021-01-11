@@ -11,9 +11,9 @@ namespace ProjectsTM.ViewModel
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
-        public MainViewData(AppData appData, IUndoService undoService)
+        public MainViewData(AppData appData)
         {
-            _viewData = new ViewData(appData, undoService);
+            _viewData = new ViewData(appData);
             _viewData.FilterChanged += (s, e) => this.FilterChanged?.Invoke(s, e);
             _viewData.SelectedWorkItemChanged += (s, e) => this.SelectedWorkItemChanged?.Invoke(s, e);
             _viewData.AppDataChanged += (s, e) => this.AppDataChanged?.Invoke(s, e);
@@ -21,7 +21,7 @@ namespace ProjectsTM.ViewModel
 
         public AppData Original => _viewData.Original;
 
-        public IUndoService UndoService => _viewData.UndoService;
+        public UndoBuffer UndoBuffer => _viewData.UndoBuffer;
 
         public WorkItems Selected
         {

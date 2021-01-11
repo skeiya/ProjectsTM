@@ -1,42 +1,15 @@
 ﻿using ProjectsTM.Model;
-using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
 
-namespace ProjectsTM.Service
+namespace ProjectsTM.ViewModel
 {
-    public class UndoService : IUndoService
+    public class UndoBuffer
     {
         private readonly Stack<AtomicAction> _undoStack = new Stack<AtomicAction>();
         private readonly Stack<AtomicAction> _redoStack = new Stack<AtomicAction>();
-
-        public event EventHandler<IEditedEventArgs> Changed;
-
-        public UndoService()
-        {
-        }
-
         private readonly AtomicAction _atomicAction = new AtomicAction();
-
-        public void Delete(WorkItems wis)
-        {
-            foreach (var w in wis) Delete(w);
-        }
-
-        public void Delete(WorkItem w)
-        {
-            _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
-        }
-
-        public void Add(WorkItems wis)
-        {
-            foreach (var w in wis) Add(w);
-        }
-
-        public void Add(WorkItem w)
-        {
-            _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize(), w.AssignedMember));
-        }
+        public event EventHandler<IEditedEventArgs> Changed;
 
         public void Push()
         {
@@ -95,6 +68,26 @@ namespace ProjectsTM.Service
             _redoStack.Clear();
             _undoStack.Clear();
             _atomicAction.Clear();
+        }
+
+        public void Delete(WorkItems wis)
+        {
+            foreach (var w in wis) Delete(w);
+        }
+
+        public void Delete(WorkItem w)
+        {
+            _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
+        }
+
+        public void Add(WorkItems wis)
+        {
+            foreach (var w in wis) Add(w);
+        }
+
+        public void Add(WorkItem w)
+        {
+            _atomicAction.Add(new EditAction(EditActionType.Add, w.Serialize(), w.AssignedMember));
         }
     }
 }

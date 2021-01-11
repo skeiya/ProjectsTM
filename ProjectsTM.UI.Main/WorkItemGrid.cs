@@ -15,13 +15,13 @@ namespace ProjectsTM.UI.Main
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private MainViewData _viewData;
+        private ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
         private readonly DrawService _drawService = new DrawService();
         private KeyAndMouseHandleService _keyAndMouseHandleService;
         private RowColResolver _rowColResolver;
-
         public WorkItemEditService EditService => _editService;
 
         public Size FullSize => new Size(GridWidth, GridHeight);
@@ -37,6 +37,7 @@ namespace ProjectsTM.UI.Main
         {
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
+
         }
 
         public void Initialize(MainViewData viewData)
@@ -50,19 +51,28 @@ namespace ProjectsTM.UI.Main
             this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
             _rowColResolver = new RowColResolver(this, _viewData.Core);
-            if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
             _editService = new WorkItemEditService(_viewData.Core);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
+            {
+                if (ContextMenuStrip != null) ContextMenuStrip.Dispose();
+                ContextMenuStrip = new ContextMenuStrip();
+                _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this);
+                _contextMenuHandler.Initialize(ContextMenuStrip);
+
+                if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
+            }
+
             ApplyDetailSetting();
             LockUpdate = false;
-            if (_drawService != null) _drawService.Dispose();
-            _drawService.Initialize(
-                _viewData,
-                this,
-                () => _workItemDragService.IsActive(),
-                () => _workItemDragService.IsMoveing(),
-                () => _workItemDragService.DragStartInfo,
-                this.Font);
+            {
+                if (_drawService != null) _drawService.Dispose();
+                _drawService.Initialize(
+                    _viewData,
+                    this,
+                    () => _workItemDragService.IsActive(),
+                    () => _workItemDragService.DragStartInto,
+                    this.Font);
+            }
         }
 
         private bool SelectNextWorkItem(bool prev)
@@ -181,7 +191,7 @@ namespace ProjectsTM.UI.Main
             this.MouseUp += WorkItemGrid_MouseUp;
             this.MouseDoubleClick += WorkItemGrid_MouseDoubleClick;
             this.MouseWheel += WorkItemGrid_MouseWheel;
-            this._viewData.UndoService.Changed += _undoService_Changed;
+            this._viewData.UndoBuffer.Changed += _undoService_Changed;
             this.MouseMove += WorkItemGrid_MouseMove;
             this.KeyDown += WorkItemGrid_KeyDown;
             this.KeyUp += WorkItemGrid_KeyUp;
@@ -195,7 +205,7 @@ namespace ProjectsTM.UI.Main
             this.MouseUp -= WorkItemGrid_MouseUp;
             this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
             this.MouseWheel -= WorkItemGrid_MouseWheel;
-            this._viewData.UndoService.Changed -= _undoService_Changed;
+            this._viewData.UndoBuffer.Changed -= _undoService_Changed;
             this.MouseMove -= WorkItemGrid_MouseMove;
             this.KeyDown -= WorkItemGrid_KeyDown;
             this.KeyUp -= WorkItemGrid_KeyUp;
@@ -246,7 +256,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new DivideWorkItemForm(count))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                EditService.Divide(selected, dlg.Divided, dlg.Remain);
+                _editService.Divide(selected, dlg.Divided, dlg.Remain);
             }
         }
 
@@ -268,7 +278,7 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var wi = dlg.GetWorkItem();
                 _editService.Add(wi);
-                _viewData.UndoService.Push();
+                _viewData.UndoBuffer.Push();
             }
         }
 
@@ -454,12 +464,12 @@ namespace ProjectsTM.UI.Main
 
         internal void Redo()
         {
-            _viewData.UndoService.Redo(_viewData.Core);
+            _viewData.UndoBuffer.Redo(_viewData.Core);
         }
 
         internal void Undo()
         {
-            _viewData.UndoService.Undo(_viewData.Core);
+            _viewData.UndoBuffer.Undo(_viewData.Core);
         }
 
         private RowIndex Day2Row(CallenderDay day)

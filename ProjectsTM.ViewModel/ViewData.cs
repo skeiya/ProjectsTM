@@ -24,7 +24,7 @@ namespace ProjectsTM.ViewModel
         {
             if (appData == null) return;
             _appData = appData;
-            UndoService.Clear();
+            UndoBuffer.Clear();
             UpdateFilter();
             UpdateFilteredItems();
             UpdateShowMembers();
@@ -44,7 +44,7 @@ namespace ProjectsTM.ViewModel
         }
 
         private AppData _appData;
-        public IUndoService UndoService { get; private set; }
+        public UndoBuffer UndoBuffer { get; private set; } = new UndoBuffer();
         private WorkItems _selected;
 
         public event EventHandler FilterChanged;
@@ -67,9 +67,8 @@ namespace ProjectsTM.ViewModel
             }
         }
 
-        public ViewData(AppData appData, IUndoService undoService)
+        public ViewData(AppData appData)
         {
-            UndoService = undoService;
             SetAppData(appData);
         }
 

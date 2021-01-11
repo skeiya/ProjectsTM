@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="AppDataFileIOService.cs" />
     <Compile Include="AppDataSerializeService.cs" />
-    <Compile Include="AtomicAction.cs" />
     <Compile Include="CalculateSumService.cs" />
     <Compile Include="CountMemberNumService.cs" />
     <Compile Include="CsvReadService.cs" />
@@ -59,9 +58,6 @@
     <Compile Include="DragState.cs" />
     <Compile Include="DrawService.cs" />
     <Compile Include="DummyDataService.cs" />
-    <Compile Include="EditAction.cs" />
-    <Compile Include="EditActionType.cs" />
-    <Compile Include="EditedEventArgs.cs" />
     <Compile Include="FileDragService.cs" />
     <Compile Include="FilePathService.cs" />
     <Compile Include="FilterComboBoxService.cs" />
@@ -76,7 +72,6 @@
     <Compile Include="RemoteChangePollingService.cs" />
     <Compile Include="RSFileExportService.cs" />
     <Compile Include="ToolTipService.cs" />
-    <Compile Include="UndoService.cs" />
     <Compile Include="UserSettingUIService.cs" />
     <Compile Include="VersionUpdateService.cs" />
     <Compile Include="WorkItemCopyPasteService.cs" />

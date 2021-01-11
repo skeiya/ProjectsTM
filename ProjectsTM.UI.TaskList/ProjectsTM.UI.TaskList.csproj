@@ -53,7 +53,7 @@
     <Compile Include="ColIds.cs" />
     <Compile Include="ColSpecification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskListContextMenuHandler.cs" />
+    <Compile Include="ContextMenuHandler.cs" />
     <Compile Include="TaskListForm.cs">
       <SubType>Form</SubType>
     </Compile>

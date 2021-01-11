@@ -1,6 +1,6 @@
 ﻿using ProjectsTM.Model;
 
-namespace ProjectsTM.Service
+namespace ProjectsTM.ViewModel
 {
     public class EditAction
     {

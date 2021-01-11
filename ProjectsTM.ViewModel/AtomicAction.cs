@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ProjectsTM.Service
+namespace ProjectsTM.ViewModel
 {
     public class AtomicAction : IEnumerable<EditAction>
     {
@@ -16,7 +16,7 @@ namespace ProjectsTM.Service
             return _list.GetEnumerator();
         }
 
-        internal void Add(EditAction action)
+        public void Add(EditAction action)
         {
             _list.Add(action);
         }

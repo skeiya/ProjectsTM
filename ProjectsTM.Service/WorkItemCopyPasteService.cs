@@ -6,7 +6,7 @@ namespace ProjectsTM.Service
     public class WorkItemCopyPasteService
     {
         private WorkItem _copiedWorkItem;
-        
+
         public void CopyWorkItem(WorkItems selected)
         {
             if (selected == null) return;

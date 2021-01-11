@@ -1,4 +1,4 @@
-﻿namespace ProjectsTM.Service
+﻿namespace ProjectsTM.ViewModel
 {
     public enum EditActionType
     {

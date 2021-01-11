@@ -58,13 +58,15 @@ namespace ProjectsTM.Model
 
         internal static MileStone FromXml(XElement m)
         {
-            var result = new MileStone();
-            result.Name = m.Attribute("Name").Value;
-            result.Project = Project.FromXml(m);
-            result.Day = CallenderDay.FromXml(m.Element("Date"));
-            result.ColorText = m.Element("Color").Value;
-            result.MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value);
-            result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value);
+            var result = new MileStone
+            {
+                Name = m.Attribute("Name").Value,
+                Project = Project.FromXml(m),
+                Day = CallenderDay.FromXml(m.Element("Date")),
+                ColorText = m.Element("Color").Value,
+                MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value),
+                State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value),
+            };
             return result;
         }
 

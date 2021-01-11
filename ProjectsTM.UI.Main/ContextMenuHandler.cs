@@ -1,30 +1,38 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
 {
-    class ContextMenuHandler
+    internal class ContextMenuHandler
     {
         private readonly ViewData _viewData;
-        private readonly WorkItemGrid workItemGrid1;
+        private readonly WorkItemGrid _grid;
 
-        public ContextMenuHandler(ViewData viewData, WorkItemGrid workItemGrid1)
+        public ContextMenuHandler(ViewData viewData, WorkItemGrid grid)
         {
-            _viewData = viewData;
-            this.workItemGrid1 = workItemGrid1;
+            if (viewData is null) throw new ArgumentNullException(nameof(viewData));
+            if (grid is null) throw new ArgumentNullException(nameof(grid));
 
-            workItemGrid1.ContextMenuStrip = new ContextMenuStrip();
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("編集(&E)...", null, EditMenu_Click, Keys.Control | Keys.E));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("コピー(&C)", null, CopyMenu_Click, Keys.Control | Keys.C));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("貼り付け(&P)", null, PasteMenu_Click, Keys.Control | Keys.V));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("削除(&D)", null, DeleteMenu_Click, Keys.Delete));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("分割(&I)...", null, DivideMenu_Click, Keys.Control | Keys.I));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("今日にジャンプ(&T)", null, JumpTodayMenu_Click, Keys.Control | Keys.T));
-            workItemGrid1.ContextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
+            _viewData = viewData;
+            _grid = grid;
+        }
+
+        public void Initialize(ContextMenuStrip contextMenuStrip)
+        {
+            if (contextMenuStrip is null) throw new ArgumentNullException(nameof(contextMenuStrip));
+
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("編集(&E)...", null, EditMenu_Click, Keys.Control | Keys.E));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("コピー(&C)", null, CopyMenu_Click, Keys.Control | Keys.C));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("貼り付け(&P)", null, PasteMenu_Click, Keys.Control | Keys.V));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("削除(&D)", null, DeleteMenu_Click, Keys.Delete));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("分割(&I)...", null, DivideMenu_Click, Keys.Control | Keys.I));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("今日にジャンプ(&T)", null, JumpTodayMenu_Click, Keys.Control | Keys.T));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
             var manageItem = new ToolStripMenuItem("管理用(&M)");
-            workItemGrid1.ContextMenuStrip.Items.Add(manageItem);
+            contextMenuStrip.Items.Add(manageItem);
             manageItem.DropDownItems.Add(new ToolStripMenuItem("&2分割", null, DivideInto2PartsMenu_Click, Keys.Control | Keys.D2));
             manageItem.DropDownItems.Add(new ToolStripMenuItem("半分に縮小(&H)", null, MakeHalfMenu_Click, Keys.Control | Keys.H));
             manageItem.DropDownItems.Add("以降を選択").Click += SelectAfterwardMenu_Click;
@@ -35,12 +43,12 @@ namespace ProjectsTM.UI.Main
 
         private void PasteMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.PasteWorkItem();
+            _grid.PasteWorkItem();
         }
 
         private void CopyMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.CopyWorkItem();
+            _grid.CopyWorkItem();
         }
 
         private void BackgroundMenu_Click(object sender, EventArgs e)
@@ -50,35 +58,35 @@ namespace ProjectsTM.UI.Main
 
         private void EditMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.EditSelectedWorkItem();
+            _grid.EditSelectedWorkItem();
         }
 
 
         private void DeleteMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.EditService.Delete();
+            _grid.EditService.Delete();
         }
 
         private void AlignSelectedMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.EditService.AlignSelected();
+            _grid.EditService.AlignSelected();
         }
 
         private void MakeHalfMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.EditService.MakeHalf();
+            _grid.EditService.MakeHalf();
         }
 
         private void DivideInto2PartsMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.EditService.DivideInto2Parts();
+            _grid.EditService.DivideInto2Parts();
         }
 
         private void SelectAfterwardMenu_Click(object sender, EventArgs e)
         {
             var selected = _viewData.Selected;
             if (selected == null) return;
-            workItemGrid1.EditService.SelectAfterward(selected);
+            _grid.EditService.SelectAfterward(selected);
         }
 
         private void DoneMenu_Click(object sender, EventArgs e)
@@ -90,23 +98,23 @@ namespace ProjectsTM.UI.Main
         {
             var selected = _viewData.Selected;
             if (selected == null) return;
-            workItemGrid1.EditService.ChangeState(selected, state);
+            _grid.EditService.ChangeState(selected, state);
         }
 
         private void DivideMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Divide();
+            _grid.Divide();
         }
         private void JumpTodayMenu_Click(object sender, EventArgs e)
         {
-            workItemGrid1.MoveToToday();
+            _grid.MoveToToday();
         }
 
         private void AlignAfterwardMenu_Click(object sender, EventArgs e)
         {
-            if (!workItemGrid1.EditService.AlignAfterward())
+            if (!_grid.EditService.AlignAfterward())
             {
-                MessageBox.Show(workItemGrid1, "期間を正常に更新できませんでした。");
+                MessageBox.Show(_grid, "期間を正常に更新できませんでした。");
             }
         }
     }

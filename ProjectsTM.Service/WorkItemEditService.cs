@@ -22,9 +22,9 @@ namespace ProjectsTM.Service
             {
                 if (items.Contains(w)) continue;
                 items.Add(w);
-                _viewData.UndoService.Add(w);
+                _viewData.UndoBuffer.Add(w);
             }
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Push();
         }
 
         internal void CopyAndAdd(WorkItem orgItem, CallenderDay newFrom, Member newMember)
@@ -49,16 +49,16 @@ namespace ProjectsTM.Service
             var items = _viewData.Original.WorkItems;
             if (items.Contains(wi)) return;
             items.Add(wi);
-            _viewData.UndoService.Add(wi);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Add(wi);
+            _viewData.UndoBuffer.Push();
         }
 
         public void Delete()
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
-            _viewData.UndoService.Delete(_viewData.Selected);
+            _viewData.UndoBuffer.Delete(_viewData.Selected);
             _viewData.Selected = new WorkItems();
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Push();
         }
 
         public void Divide(WorkItem selected, int divided, int remain)
@@ -75,19 +75,19 @@ namespace ProjectsTM.Service
             workItems.Add(d1);
             workItems.Add(d2);
 
-            _viewData.UndoService.Delete(selected);
-            _viewData.UndoService.Add(d1);
-            _viewData.UndoService.Add(d2);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Delete(selected);
+            _viewData.UndoBuffer.Add(d1);
+            _viewData.UndoBuffer.Add(d2);
+            _viewData.UndoBuffer.Push();
         }
 
         public void Replace(WorkItems before, WorkItems after)
         {
             _viewData.Original.WorkItems.Remove(before);
             _viewData.Original.WorkItems.Add(after);
-            _viewData.UndoService.Delete(before);
-            _viewData.UndoService.Add(after);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Delete(before);
+            _viewData.UndoBuffer.Add(after);
+            _viewData.UndoBuffer.Push();
         }
 
         public void Replace(WorkItem before, WorkItem after)
@@ -95,9 +95,9 @@ namespace ProjectsTM.Service
             if (before.Equals(after)) return;
             _viewData.Original.WorkItems.Remove(before);
             _viewData.Original.WorkItems.Add(after);
-            _viewData.UndoService.Delete(before);
-            _viewData.UndoService.Add(after);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Delete(before);
+            _viewData.UndoBuffer.Add(after);
+            _viewData.UndoBuffer.Push();
         }
 
         public void ChangeState(WorkItems selected, TaskState state)
@@ -111,9 +111,9 @@ namespace ProjectsTM.Service
             workItems.Remove(selected);
             workItems.Add(newWis);
 
-            _viewData.UndoService.Delete(selected);
-            _viewData.UndoService.Add(newWis);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Delete(selected);
+            _viewData.UndoBuffer.Add(newWis);
+            _viewData.UndoBuffer.Push();
         }
 
         public void SelectAfterward(WorkItems starts)
@@ -250,9 +250,9 @@ namespace ProjectsTM.Service
             workItems.Add(add);
             _viewData.Selected = add;
 
-            _viewData.UndoService.Delete(divided);
-            _viewData.UndoService.Add(add);
-            _viewData.UndoService.Push();
+            _viewData.UndoBuffer.Delete(divided);
+            _viewData.UndoBuffer.Add(add);
+            _viewData.UndoBuffer.Push();
         }
 
         internal void ShiftDays(int shift)
