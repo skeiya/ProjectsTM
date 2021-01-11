@@ -70,7 +70,8 @@ namespace ProjectsTM.UI.Main
                     _viewData,
                     this,
                     () => _workItemDragService.IsActive(),
-                    () => _workItemDragService.DragStartInto,
+                    () => _workItemDragService.IsMoveing(),
+                    () => _workItemDragService.DragStartInfo,
                     this.Font);
             }
         }
