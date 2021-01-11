@@ -9,7 +9,7 @@ namespace ProjectsTM.Service
 {
     public class ToolTipService : IDisposable
     {
-        private ToolTip _toolTip = new ToolTip();
+        private readonly ToolTip _toolTip = new ToolTip();
         private bool disposedValue;
         private readonly ViewData _viewData;
         private readonly Control _parentControl;
@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
         {
-            foreach (var w in _viewData.GetFilteredWorkItems())
+            foreach (var w in _viewData.FilteredItems.WorkItems)
             {
                 if (w.Name != hoveringWorkItem.Name) continue;
                 if (w.Equals(hoveringWorkItem)) continue;

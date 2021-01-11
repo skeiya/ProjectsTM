@@ -221,7 +221,7 @@ namespace ProjectsTM.Service
             return State != DragState.None;
         }
 
-        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action RangeSelect)
+        internal void End(WorkItemEditService editService, ViewData viewData, bool isCancel, Action rangeSelect)
         {
             switch (State)
             {
@@ -232,9 +232,9 @@ namespace ProjectsTM.Service
                     ClearDragState();
                     return;
                 case DragState.RangeSelect:
-                    if (!isCancel && RangeSelect != null)
+                    if (!isCancel && rangeSelect != null)
                     {
-                        RangeSelect();
+                        rangeSelect();
                     }
                     ClearDragState();
                     return;

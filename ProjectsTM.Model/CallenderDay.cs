@@ -50,15 +50,19 @@ namespace ProjectsTM.Model
 
         internal XElement ToXml()
         {
-            var xml = new XElement("Date");
-            xml.Value = Date;
+            var xml = new XElement("Date")
+            {
+                Value = Date,
+            };
             return xml;
         }
 
         internal static CallenderDay FromXml(XElement e)
         {
-            var result = new CallenderDay();
-            result.Date = e.Value;
+            var result = new CallenderDay
+            {
+                Date = e.Value,
+            };
             return result;
         }
 

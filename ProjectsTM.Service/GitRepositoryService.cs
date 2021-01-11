@@ -41,6 +41,14 @@ namespace ProjectsTM.Service
             return matches.Count;
         }
 
+        private static string ParseCommitId(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return string.Empty;
+            var matche = Regex.Match(str, @"^commit ........................................");
+            if (!matche.Success) return string.Empty;
+            return matche.Value.Replace("commit ", string.Empty);
+        }
+
         public static bool TryAutoPull(string filePath)
         {
             var repo = GitCmdRepository.FromFilePath(filePath);
@@ -52,8 +60,6 @@ namespace ProjectsTM.Service
         /// <summary>
         /// ローカルの変更が無いことを確認できた場合のみtrueを変えす。異常時含め、それ以外のはすべてfalseを返す。
         /// </summary>
-        /// <param name="repo"></param>
-        /// <returns></returns>
         private static bool IsLocalChangeEmpty(GitCmdRepository repo)
         {
             if (!IsUncommitChangeEmpty(repo)) return false;
@@ -75,6 +81,12 @@ namespace ProjectsTM.Service
         private static bool IsUncommitChangeEmpty(GitCmdRepository repo)
         {
             return string.IsNullOrEmpty(repo.Status());
+        }
+
+        public static string GetOldFileContentSomeMonthsAgo(string filePath, int months)
+        {
+            var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
+            return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
     }
 }

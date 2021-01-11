@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace ProjectsTM.Logic
 {
-    public class PenCache
+    public static class PenCache
     {
-        private static Dictionary<Color, Pen> _cache = new Dictionary<Color, Pen>();
+        private static readonly Dictionary<Color, Pen> _cache = new Dictionary<Color, Pen>();
         public static Pen GetPen(Color c, float width)
         {
             if (_cache.TryGetValue(c, out var b)) return b;

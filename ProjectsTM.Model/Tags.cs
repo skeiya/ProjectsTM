@@ -8,11 +8,11 @@ namespace ProjectsTM.Model
 {
     public class Tags
     {
-        private List<string> _tags = new List<string>();
+        private readonly List<string> _tags = new List<string>();
 
-        public Tags(List<string> result)
+        public Tags(IEnumerable<string> result)
         {
-            _tags = result;
+            _tags = result.ToList();
         }
 
         public override string ToString()
@@ -33,8 +33,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as Tags;
-            if (target == null) return false;
+            if (!(obj is Tags target)) return false;
             return _tags.SequenceEqual(target._tags);
         }
 
@@ -57,8 +56,10 @@ namespace ProjectsTM.Model
 
         internal XElement ToXml()
         {
-            var xml = new XElement(nameof(Tags));
-            xml.Value = ToString();
+            var xml = new XElement(nameof(Tags))
+            {
+                Value = ToString(),
+            };
             return xml;
         }
 

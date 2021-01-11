@@ -42,7 +42,7 @@ Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Logic.dll"; DestDir: "{app}"; F
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.Service.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.MainForm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.Main.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.UI.TaskList.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ProjectsTM.exe\bin\Release\ProjectsTM.ViewModel.dll"; DestDir: "{app}"; Flags: ignoreversion
 

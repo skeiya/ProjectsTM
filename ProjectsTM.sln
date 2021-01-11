@@ -19,11 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsTM.UI.TaskList", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsTM.UI.Common", "ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj", "{451BC99B-E4B8-44C8-9828-F916F98F5CC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsTM.UI.MainForm", "ProjectsTM.UI.MainForm\ProjectsTM.UI.MainForm.csproj", "{799E1AC1-909E-4A12-85C3-46FA01C548D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsTM.UI.Main", "ProjectsTM.UI.Main\ProjectsTM.UI.Main.csproj", "{799E1AC1-909E-4A12-85C3-46FA01C548D4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{2D1600AB-15EE-4436-89F4-1330AC997B39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTest\UnitTestProject\UnitTestProject.csproj", "{2A259937-FEFE-4702-8E7E-C27C943E2ECC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A8759DAD-450A-4165-9358-1429EE7EC541}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

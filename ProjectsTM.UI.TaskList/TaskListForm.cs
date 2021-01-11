@@ -10,18 +10,14 @@ namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListForm : Form
     {
-        private readonly ViewData _viewData;
-        private PatternHistory _history;
-        private string _userName;
-        private TaskListContextMenuHandler _taskListContextMenuHandler;
+        private readonly PatternHistory _history;
+        private readonly string _userName;
 
         public TaskListForm(ViewData viewData, string userName, PatternHistory patternHistory)
         {
             InitializeComponent();
 
-            this._viewData = viewData;
             _userName = userName;
-           _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Option = GetOption();
@@ -135,7 +131,7 @@ namespace ProjectsTM.UI.TaskList
             return comboBoxPattern.SelectedIndex != 0 || IsPersonalSettingNotSet(_userName);
         }
 
-        private bool IsPersonalSettingNotSet(string userName)
+        private static bool IsPersonalSettingNotSet(string userName)
         {
             return userName.Equals("未設定");
         }
