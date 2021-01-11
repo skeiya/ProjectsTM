@@ -54,6 +54,7 @@
     <Compile Include="CalculateSumService.cs" />
     <Compile Include="CountMemberNumService.cs" />
     <Compile Include="CsvReadService.cs" />
+    <Compile Include="DragStartInfo.cs" />
     <Compile Include="DragState.cs" />
     <Compile Include="DrawService.cs" />
     <Compile Include="DummyDataService.cs" />

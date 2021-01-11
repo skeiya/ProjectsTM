@@ -70,6 +70,8 @@ namespace ProjectsTM.UI.Main
                     _viewData,
                     this,
                     () => _workItemDragService.IsActive(),
+                    () => _workItemDragService.IsMoveing(),
+                    () => _workItemDragService.DragStartInfo,
                     this.Font);
             }
         }
@@ -236,7 +238,7 @@ namespace ProjectsTM.UI.Main
         {
             if (_workItemDragService.State != DragState.RangeSelect) return null;
             var p1 = this.PointToClient(Cursor.Position);
-            var p2 = Raw2Client(_workItemDragService.DragedLocation);
+            var p2 = Raw2Client(_workItemDragService.DragStartInfo.Location);
             return Point2Rect.GetRectangle(p1, p2);
         }
 
@@ -428,6 +430,16 @@ namespace ProjectsTM.UI.Main
             var rowRange = GetRowRange(wi);
             if (rowRange.Row == null) return null;
             return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
+        }
+
+        public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(WorkItems wis, IEnumerable<Member> members)
+        {
+            var rects = new List<ClientRectangle?>();
+            foreach(var wi in wis)
+            {
+                rects.Add(GetWorkItemDrawRectClient(wi, members));
+            }
+            return rects;
         }
 
         private ColIndex Member2Col(Member m, IEnumerable<Member> members)

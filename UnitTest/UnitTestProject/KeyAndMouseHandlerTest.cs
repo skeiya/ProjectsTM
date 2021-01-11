@@ -65,7 +65,7 @@ namespace UnitTestProject
 
             var dragService = new WorkItemDragService();
             var drawService = new DrawService();
-            drawService.Initialize(viewData, grid, dragService.IsActive, new Font(FontFamily.GenericSansSerif, 8));
+            drawService.Initialize(viewData, grid, dragService.IsActive, dragService.IsMoveing,() => dragService.DragStartInfo, new Font(FontFamily.GenericSansSerif, 8));
             var editService = new WorkItemEditService(viewData.Core);
             service = new KeyAndMouseHandleService(viewData.Core, grid, dragService, drawService, editService, grid);
         }
