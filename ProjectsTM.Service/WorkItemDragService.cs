@@ -217,9 +217,7 @@ namespace ProjectsTM.Service
         {
             if (selected == null) return;
             _backup = selected.Clone();
-            _dragStartInfo = new DragStartInfo();
-            _dragStartInfo.Location = location;
-            _dragStartInfo.Rects = rects;
+            _dragStartInfo = new DragStartInfo(location, rects);
             _draggedDay = draggedDay;
 
             State = DragState.BeforeMoving;
@@ -227,9 +225,7 @@ namespace ProjectsTM.Service
 
         internal void StartRangeSelect(RawPoint location)
         {
-            _dragStartInfo = new DragStartInfo();
-            _dragStartInfo.Location = location;
-            _dragStartInfo.Rects = null;
+            _dragStartInfo = new DragStartInfo(location, null);
             State = DragState.BeforeRangeSelect;
         }
 
