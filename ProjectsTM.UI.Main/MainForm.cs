@@ -31,7 +31,7 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            _remoteChangePollingService.CheckedUnpushedCommit += _remoteChangePollingService_CheckedUnpushedCommit;
+            _remoteChangePollingService.CheckedUnpushedAndUncommitted += _remoteChangePollingService_CheckedUnpushedAndUncommitted;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
@@ -40,7 +40,7 @@ namespace ProjectsTM.UI.Main
             this.Load += MainForm_Load;
         }
 
-        private void _remoteChangePollingService_CheckedUnpushedCommit(object sender, EventArgs e)
+        private void _remoteChangePollingService_CheckedUnpushedAndUncommitted(object sender, EventArgs e)
         {
             UpdateView();
         }
@@ -54,6 +54,7 @@ namespace ProjectsTM.UI.Main
             UpdateDisplayOfSum(null);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty;
+            toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty;
         }
 
         private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)

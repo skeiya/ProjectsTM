@@ -54,6 +54,7 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
             this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
             this.toolStripStatusHasUnpushedCommit = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusHasUncommittedChange = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -327,7 +328,8 @@ namespace ProjectsTM.UI.Main
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSum,
             this.toolStripStatusLabelViewRatio,
-            this.toolStripStatusHasUnpushedCommit});
+            this.toolStripStatusHasUnpushedCommit,
+            this.toolStripStatusHasUncommittedChange});
             this.statusStrip1.Location = new System.Drawing.Point(0, 322);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
@@ -347,6 +349,12 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusLabelViewRatio.Size = new System.Drawing.Size(43, 17);
             this.toolStripStatusLabelViewRatio.Text = "拡大率";
             // 
+            // toolStripStatusHasUnpushedCommit
+            // 
+            this.toolStripStatusHasUnpushedCommit.Name = "toolStripStatusHasUnpushedCommit";
+            this.toolStripStatusHasUnpushedCommit.Size = new System.Drawing.Size(85, 17);
+            this.toolStripStatusHasUnpushedCommit.Text = "未プッシュコミット";
+            // 
             // workItemGrid1
             // 
             this.workItemGrid1.AllowDrop = true;
@@ -361,11 +369,11 @@ namespace ProjectsTM.UI.Main
             this.workItemGrid1.TabIndex = 12;
             this.workItemGrid1.VOffset = 0;
             // 
-            // toolStripStatusHasUnpushedCommit
+            // toolStripStatusHasUncommittedChange
             // 
-            this.toolStripStatusHasUnpushedCommit.Name = "toolStripStatusHasUnpushedCommit";
-            this.toolStripStatusHasUnpushedCommit.Size = new System.Drawing.Size(85, 17);
-            this.toolStripStatusHasUnpushedCommit.Text = "未プッシュコミット";
+            this.toolStripStatusHasUncommittedChange.Name = "toolStripStatusHasUncommittedChange";
+            this.toolStripStatusHasUncommittedChange.Size = new System.Drawing.Size(84, 17);
+            this.toolStripStatusHasUncommittedChange.Text = "未コミットの編集";
             // 
             // MainForm
             // 
@@ -426,6 +434,7 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUnpushedCommit;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUncommittedChange;
     }
 }
 
