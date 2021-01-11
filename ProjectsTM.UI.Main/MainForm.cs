@@ -31,7 +31,7 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            _remoteChangePollingService.CheckedUnpushedAndUncommitted += _remoteChangePollingService_CheckedUnpushedAndUncommitted;
+            _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
             workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
@@ -40,7 +40,7 @@ namespace ProjectsTM.UI.Main
             this.Load += MainForm_Load;
         }
 
-        private void _remoteChangePollingService_CheckedUnpushedAndUncommitted(object sender, EventArgs e)
+        private void _remoteChangePollingService_CheckedUnpushedChange(object sender, EventArgs e)
         {
             UpdateView();
         }
