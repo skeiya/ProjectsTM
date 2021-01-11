@@ -348,7 +348,7 @@ namespace ProjectsTM.Service
             if (rect == null) return;
             var moveX = _grid.Global2Raw(Cursor.Position).X - _dragStartInfo().Location.X;
             var moveY = _grid.Global2Raw(Cursor.Position).Y - _dragStartInfo().Location.Y;
-            var tempRect = new Rectangle(rect.Value.X + moveX, rect.Value.Y + moveY, rect.Value.Width, res.Value.Value.Height);
+            var tempRect = new Rectangle(rect.Value.X + moveX, rect.Value.Y + moveY, res.Value.Value.Width, res.Value.Value.Height);
             DrawWorkItemCore(wi, edge, font, g, tempRect);
         }
 
