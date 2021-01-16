@@ -397,8 +397,14 @@ namespace ProjectsTM.UI.Main
         internal void MoveToTodayMe(string userName)
         {
             var user = _viewData.FilteredItems.Members.FirstOrDefault(m => m.NaturalString.Equals(userName));
-            if (user == null) return;
-            MoveToTodayAndMember(user);
+            if (user != null)
+            {
+                MoveToTodayAndMember(user);
+            }
+            else
+            {
+                MoveToToday();
+            }
         }
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
