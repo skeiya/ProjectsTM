@@ -88,9 +88,9 @@
       <Project>{451bc99b-e4b8-44c8-9828-f916f98f5cc7}</Project>
       <Name>ProjectsTM.UI.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.UI.Main\ProjectsTM.UI.Main.csproj">
+    <ProjectReference Include="..\..\ProjectsTM.UI.MainForm\ProjectsTM.UI.MainForm.csproj">
       <Project>{799e1ac1-909e-4a12-85c3-46fa01c548d4}</Project>
-      <Name>ProjectsTM.UI.Main</Name>
+      <Name>ProjectsTM.UI.MainForm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj">
       <Project>{d9c038e1-45db-433c-9260-4d7cbc93f347}</Project>

@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{799E1AC1-909E-4A12-85C3-46FA01C548D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProjectsTM.UI.MainForm</RootNamespace>
+    <AssemblyName>ProjectsTM.UI.MainForm</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColorConditionEditorForm.cs" />
+    <Compile Include="ColorConditionEditorForm.Designer.cs">
+      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorManagementForm.cs" />
+    <Compile Include="ColorManagementForm.Designer.cs">
+      <DependentUpon>ColorManagementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContextMenuHandler.cs" />
+    <Compile Include="DevideWorkItemForm.cs" />
+    <Compile Include="DevideWorkItemForm.Designer.cs">
+      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterForm.cs" />
+    <Compile Include="FilterForm.Designer.cs">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs" />
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageAbsentInfoForm.cs" />
+    <Compile Include="ManageAbsentInfoForm.Designer.cs">
+      <DependentUpon>ManageAbsentInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageMemberForm.cs" />
+    <Compile Include="ManageMemberForm.Designer.cs">
+      <DependentUpon>ManageMemberForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManagementWokingDaysForm.cs" />
+    <Compile Include="ManagementWokingDaysForm.Designer.cs">
+      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageMileStoneForm.cs" />
+    <Compile Include="ManageMileStoneForm.Designer.cs">
+      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManageMySettingForm.cs" />
+    <Compile Include="ManageMySettingForm.Designer.cs">
+      <DependentUpon>ManageMySettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectSelectForm.cs" />
+    <Compile Include="ProjectSelectForm.Designer.cs">
+      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RowRange.cs" />
+    <Compile Include="RowColResolver.cs" />
+    <Compile Include="RsExportSelectForm.cs" />
+    <Compile Include="RsExportSelectForm.Designer.cs">
+      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrendChart.cs" />
+    <Compile Include="TrendChart.Designer.cs">
+      <DependentUpon>TrendChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VersionForm.cs" />
+    <Compile Include="VersionForm.Designer.cs">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorkItemGrid.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ColorConditionEditorForm.resx">
+      <DependentUpon>ColorConditionEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorManagementForm.resx">
+      <DependentUpon>ColorManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DevideWorkItemForm.resx">
+      <DependentUpon>DevideWorkItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageAbsentInfoForm.resx">
+      <DependentUpon>ManageAbsentInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageMemberForm.resx">
+      <DependentUpon>ManageMemberForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagementWokingDaysForm.resx">
+      <DependentUpon>ManagementWokingDaysForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageMileStoneForm.resx">
+      <DependentUpon>ManageMileStoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManageMySettingForm.resx">
+      <DependentUpon>ManageMySettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectSelectForm.resx">
+      <DependentUpon>ProjectSelectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RsExportSelectForm.resx">
+      <DependentUpon>RsExportSelectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrendChart.resx">
+      <DependentUpon>TrendChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VersionForm.resx">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeGridControl\FreeGridControl.csproj">
+      <Project>{ba48dcdd-d652-409a-b204-de163c403e12}</Project>
+      <Name>FreeGridControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Logic\ProjectsTM.Logic.csproj">
+      <Project>{f086cca0-3428-4bf9-9c59-2f51f24563a3}</Project>
+      <Name>ProjectsTM.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Model\ProjectsTM.Model.csproj">
+      <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
+      <Name>ProjectsTM.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Service\ProjectsTM.Service.csproj">
+      <Project>{e76f7b1a-25a3-423d-98fe-c2f8c466764e}</Project>
+      <Name>ProjectsTM.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj">
+      <Project>{451bc99b-e4b8-44c8-9828-f916f98f5cc7}</Project>
+      <Name>ProjectsTM.UI.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj">
+      <Project>{d9c038e1-45db-433c-9260-4d7cbc93f347}</Project>
+      <Name>ProjectsTM.UI.TaskList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj">
+      <Project>{8e66a8da-c23e-4d86-a83f-ab8c2574e129}</Project>
+      <Name>ProjectsTM.ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-filter-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-swatch-48.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
