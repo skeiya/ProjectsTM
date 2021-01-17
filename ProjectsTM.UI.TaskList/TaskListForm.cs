@@ -104,7 +104,7 @@ namespace ProjectsTM.UI.TaskList
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
         {
             comboBoxPattern.Items.Clear();
-            if (!IsPersonalSettingNotSet(_userName))
+            if (IsPersonalSettingSet(_userName))
             {
                 comboBoxPattern.Items.Add($"あなた({_userName})のタスク");
             }
@@ -126,18 +126,24 @@ namespace ProjectsTM.UI.TaskList
         private void comboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (IsUserTaskSortSelected()) return;
-            gridControl1.Option = new TaskListOption(_userName, false, string.Empty);
+            gridControl1.Option = new TaskListOption(AdjustUserNameFormat(_userName), false, string.Empty);
             gridControl1.UpdateView();
             comboBoxPattern.SelectedIndex = -1;
         }
         private bool IsUserTaskSortSelected()
         {
-            return comboBoxPattern.SelectedIndex != 0 || IsPersonalSettingNotSet(_userName);
+            return comboBoxPattern.SelectedIndex != 0 || !IsPersonalSettingSet(_userName);
+        }
+        
+        private string AdjustUserNameFormat(string userName)
+        {
+            var adjustedUserName = userName.Replace("(", @"\(").Replace(")", @"\)");
+            return adjustedUserName;
         }
 
-        private bool IsPersonalSettingNotSet(string userName)
+        private bool IsPersonalSettingSet(string userName)
         {
-            return userName.Equals("未設定");
+            return !userName.Equals("未設定");
         }
     }
 }
