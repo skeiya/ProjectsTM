@@ -9,7 +9,6 @@ namespace ProjectsTM.UI.Common
 {
     public partial class EditWorkItemForm : BaseForm
     {
-        private readonly WorkItem _wi;
         private readonly Callender _callender;
         private readonly IEnumerable<Member> _members;
 
@@ -17,16 +16,15 @@ namespace ProjectsTM.UI.Common
         {
             InitializeComponent();
             if (wi == null) wi = new WorkItem();
-            this._wi = wi;
             this._callender = callender;
             this._members = members;
-            comboBoxWorkItemName.Text = wi.Name == null ? string.Empty : wi.Name;
+            comboBoxWorkItemName.Text = wi.Name ?? string.Empty;
             comboBoxProject.Text = wi.Project == null ? string.Empty : wi.Project.ToString();
             comboBoxMember.Text = wi.AssignedMember == null ? string.Empty : wi.AssignedMember.ToSerializeString();
             textBoxFrom.Text = wi.Period == null ? string.Empty : wi.Period.From.ToString();
             textBoxTo.Text = wi.Period == null ? string.Empty : _callender.GetPeriodDayCount(wi.Period).ToString();
             textBoxTags.Text = wi.Tags == null ? string.Empty : wi.Tags.ToString();
-            textBoxDescription.Text = wi.Description == null ? string.Empty : wi.Description;
+            textBoxDescription.Text = wi.Description ?? string.Empty;
             InitDropDownList(wi.State);
             InitCombbox(members, workItems);
             UpdateEndDay();
@@ -146,8 +144,7 @@ namespace ProjectsTM.UI.Common
 
         private static CallenderDay GetDayByCount(string countText, CallenderDay from, Callender callender)
         {
-            var dayCount = 0;
-            if (!int.TryParse(countText, out dayCount)) return null;
+            if (!int.TryParse(countText, out int dayCount)) return null;
             return callender.ApplyOffset(from, dayCount - 1);
         }
 
@@ -164,7 +161,6 @@ namespace ProjectsTM.UI.Common
 
         private Project GetProject()
         {
-            //return comboBoxProject.SelectedItem as Project;
             return new Project(comboBoxProject.Text);
         }
 

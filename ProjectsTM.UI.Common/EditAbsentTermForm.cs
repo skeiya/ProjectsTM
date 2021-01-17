@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Model;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
@@ -7,7 +8,6 @@ namespace ProjectsTM.UI.Common
     public partial class EditAbsentTermForm : BaseForm
     {
         private readonly Member _member;
-        private readonly AbsentTerm _absentTerm;
         private readonly Callender _callender;
 
         public AbsentTerm EditAbsentTerm => CreateAbsentTerm();
@@ -17,7 +17,6 @@ namespace ProjectsTM.UI.Common
             InitializeComponent();
             this._member = member;
             if (absentTerm == null) absentTerm = new AbsentTerm(member, new Period());
-            this._absentTerm = absentTerm;
             this._callender = callender;
             Period p = absentTerm.Period;
             textBoxFrom.Text = (p?.From == null || p.From == AbsentTerm.UnlimitedFrom) ? string.Empty : p.From.ToString();
@@ -45,8 +44,8 @@ namespace ProjectsTM.UI.Common
 
         private Period GetPeriod(string fromText, string toText)
         {
-            var from = fromText == string.Empty ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
-            var to = toText == string.Empty ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
+            var from = string.IsNullOrEmpty(fromText) ? AbsentTerm.UnlimitedFrom : GetDayByDate(fromText);
+            var to = string.IsNullOrEmpty(toText) ? AbsentTerm.UnlimitedTo : GetDayByDate(toText);
             if (!CheckAbsentPeriod(from, to)) return null;
             return new Period(from, to);
         }
@@ -55,13 +54,13 @@ namespace ProjectsTM.UI.Common
         {
             if (from == null || to == null) return false;
             if (from == AbsentTerm.UnlimitedFrom && to == AbsentTerm.UnlimitedTo) return false;
-            if (from != AbsentTerm.UnlimitedFrom && !_callender.Days.Contains(from)) return false;
-            if (to != AbsentTerm.UnlimitedTo && !_callender.Days.Contains(to)) return false;
+            if (from != AbsentTerm.UnlimitedFrom && !_callender.Contains(from)) return false;
+            if (to != AbsentTerm.UnlimitedTo && !_callender.Contains(to)) return false;
             if (from >= to) return false;
             return true;
         }
 
-        private CallenderDay GetDayByDate(string text)
+        private static CallenderDay GetDayByDate(string text)
         {
             return CallenderDay.Parse(text);
         }

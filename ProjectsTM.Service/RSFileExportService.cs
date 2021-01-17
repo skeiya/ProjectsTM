@@ -32,7 +32,7 @@ namespace ProjectsTM.Service
 
         public static string MakeTextAllData(AppData appData)
         {
-            return MakeTextCore(appData, "");
+            return MakeTextCore(appData, string.Empty);
         }
 
         private static string MakeTextCore(AppData appData, string selectGetsudo)
@@ -154,7 +154,7 @@ namespace ProjectsTM.Service
             var result = new List<Tuple<int, int>>();
 
             var month = 0;
-            foreach (var d in callender.Days)
+            foreach (var d in callender)
             {
                 if (month != d.Month)
                 {

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
 {
     public class Project
     {
-        private string _name;
+        private readonly string _name;
 
         public Project(string name)
         {

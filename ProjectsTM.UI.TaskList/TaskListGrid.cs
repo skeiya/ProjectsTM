@@ -19,6 +19,7 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private ViewData _viewData;
+        private ContextMenuHandler _contextMenuHandler;
         public TaskListOption Option = new TaskListOption();
         private WorkItemEditService _editService;
 
@@ -26,9 +27,9 @@ namespace ProjectsTM.UI.TaskList
         private ColIndex _sortCol = ColDefinition.InitialSortCol;
         private bool _isReverse = false;
         private RowIndex _lastSelect;
-        private WidthAdjuster _widthAdjuster;
+        private readonly WidthAdjuster _widthAdjuster;
         private Point _mouseDownPoint;
-        private readonly int MAX_SORTABLE_DISTANCE = 20;
+        private const int MaxSortableDistance = 20;
         public WorkItemEditService EditService => _editService;
 
         public TaskListGrid()
@@ -67,7 +68,7 @@ namespace ProjectsTM.UI.TaskList
             var mouseUpPoint = e.Location;
             if (r.Value < FixedRowCount)
             {
-                if(CalcDistace(_mouseDownPoint, mouseUpPoint) <= MAX_SORTABLE_DISTANCE)
+                if (CalcDistace(_mouseDownPoint, mouseUpPoint) <= MaxSortableDistance)
                 {
                     HandleSortRequest(rawLocation);
                 }
@@ -76,7 +77,7 @@ namespace ProjectsTM.UI.TaskList
             SelectItems(r);
         }
 
-        private double CalcDistace(Point downPoint, Point upPoint)
+        private static double CalcDistace(Point downPoint, Point upPoint)
         {
             var deltaX = upPoint.X - downPoint.X;
             var deltaY = upPoint.Y - downPoint.Y;
@@ -134,18 +135,16 @@ namespace ProjectsTM.UI.TaskList
         private void SetStrOneLine(StringBuilder copyData, WorkItem w)
         {
             const string DOUBLE_Q = "\"";
-            const string TAB = "\t";
-            copyData.Append(w.Name.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Project.ToString()); copyData.Append(TAB);
-            copyData.Append(w.AssignedMember.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Tags.ToString()); copyData.Append(TAB);
-            copyData.Append(w.State); copyData.Append(TAB);
-            copyData.Append(w.Period.From.ToString()); copyData.Append(TAB);
-            copyData.Append(w.Period.To.ToString()); copyData.Append(TAB);
-            copyData.Append(_viewData.Original.Callender.GetPeriodDayCount(w.Period).ToString());
-            copyData.Append(TAB);
-            copyData.Append(DOUBLE_Q); copyData.Append(w.Description); copyData.Append(DOUBLE_Q);
-            copyData.AppendLine(TAB);
+            copyData.Append($"{w.Name}\t");
+            copyData.Append($"{w.Project}\t");
+            copyData.Append($"{w.AssignedMember}\t");
+            copyData.Append($"{w.Tags}\t");
+            copyData.Append($"{w.State}\t");
+            copyData.Append($"{w.Period.From}\t");
+            copyData.Append($"{w.Period.To}\t");
+            copyData.Append($"{_viewData.Original.Callender.GetPeriodDayCount(w.Period)}\t");
+            copyData.Append($"{DOUBLE_Q}{w.Description}{DOUBLE_Q}");
+            copyData.AppendLine("\t");
         }
 
         private void CopyToClipboard()
@@ -206,7 +205,7 @@ namespace ProjectsTM.UI.TaskList
             SelectRange(0, _listItems.Count - 1);
         }
 
-        private void SwapIfUpsideDown(ref int from, ref int to)
+        private static void SwapIfUpsideDown(ref int from, ref int to)
         {
             if (from <= to) return;
             int buf = from;
@@ -262,11 +261,10 @@ namespace ProjectsTM.UI.TaskList
                     return;
                 }
             }
-            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.GetFilteredMembers()))
+            using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
-                _viewData.UpdateCallenderAndMembers(newWi);
                 _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected = new WorkItems(newWi);
             }
@@ -299,6 +297,10 @@ namespace ProjectsTM.UI.TaskList
         private void InitializeGrid()
         {
             LockUpdate = true;
+            ContextMenuStrip = new ContextMenuStrip();
+            _contextMenuHandler = new ContextMenuHandler(_viewData, this);
+            _contextMenuHandler.Initialize(ContextMenuStrip);
+
             UpdateListItem();
             ColCount = ColDefinition.Count;
             FixedRowCount = 1;
@@ -311,20 +313,20 @@ namespace ProjectsTM.UI.TaskList
 
         private void AttachEvents()
         {
-            _viewData.UndoService.Changed += _undoService_Changed;
+            _viewData.UndoBuffer.Changed += _undoService_Changed;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
         }
 
         private void DetatchEvents()
         {
-            _viewData.UndoService.Changed -= _undoService_Changed;
+            _viewData.UndoBuffer.Changed -= _undoService_Changed;
             _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
         private void UpdateLastSelect()
         {
             if (_viewData.Selected == null ||
-                _viewData.Selected.Count() == 0) { _lastSelect = null; return; }
+                !_viewData.Selected.Any()) { _lastSelect = null; return; }
 
             if (_viewData.Selected.Count() == 1)
             {
@@ -355,13 +357,12 @@ namespace ProjectsTM.UI.TaskList
             this.Invalidate();
         }
 
-        private readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
+        private static readonly ColIndex AutoExtendCol = ColDefinition.AutoExtendCol;
 
         private void UpdateExtendColWidth()
         {
             if (ColWidths.Count <= AutoExtendCol.Value) return;
             LockUpdate = true;
-            var g = this.CreateGraphics();
             ColWidths[AutoExtendCol.Value] = GetWidth(AutoExtendCol);
             LockUpdate = false;
         }
@@ -385,7 +386,7 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        int GetStringLineCount(string s)
+        static int GetStringLineCount(string s)
         {
             int n = 1;
             foreach (var c in s)
@@ -424,15 +425,14 @@ namespace ProjectsTM.UI.TaskList
 
         private Dictionary<WorkItem, string> GetAuditList()
         {
-            var result = new Dictionary<WorkItem, string>();
-            OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ForEach(w => result.Add(w, "衝突"));
+            var result = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ToDictionary(w => w, _ => "衝突");
             CallenderDay soon = null;
             for (int i = 5; i >= 0; i--)
             {
                 soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, i);
                 if (soon != null) break;
             }
-            foreach (var wi in _viewData.GetFilteredWorkItems())
+            foreach (var wi in _viewData.FilteredItems.WorkItems)
             {
                 if (result.TryGetValue(wi, out var dummy)) continue;
                 if (IsNotEndError(wi))
@@ -449,7 +449,7 @@ namespace ProjectsTM.UI.TaskList
             return result;
         }
 
-        private bool IsNotEndError(WorkItem wi)
+        private static bool IsNotEndError(WorkItem wi)
         {
             if (wi.State == TaskState.Done) return false;
             if (wi.State == TaskState.Background) return false;
@@ -469,7 +469,7 @@ namespace ProjectsTM.UI.TaskList
             return ColDefinition.Count < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
         }
 
-        private bool IsStartSoon(WorkItem wi, CallenderDay soon)
+        private static bool IsStartSoon(WorkItem wi, CallenderDay soon)
         {
             return wi.Period.From <= soon;
         }
@@ -478,7 +478,7 @@ namespace ProjectsTM.UI.TaskList
         {
             var list = new List<TaskListItem>();
             var audit = GetAuditList();
-            foreach (var wi in _viewData.GetFilteredWorkItems())
+            foreach (var wi in _viewData.FilteredItems.WorkItems)
             {
                 if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);
@@ -505,7 +505,7 @@ namespace ProjectsTM.UI.TaskList
 
         private static WorkItem ConvertWorkItem(MileStone ms)
         {
-            return new WorkItem(ms.Project, ms.Name, new Tags(new List<string>() { "MS" }), new Period(ms.Day, ms.Day), new Member(), ms.State, "");
+            return new WorkItem(ms.Project, ms.Name, new Tags(new List<string>() { "MS" }), new Period(ms.Day, ms.Day), new Member(), ms.State, string.Empty);
         }
 
         private static Color GetColor(TaskState state, string error)

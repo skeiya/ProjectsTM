@@ -22,7 +22,7 @@ namespace ProjectsTM.UI.TaskList
             ErrMsg = string.IsNullOrEmpty(errMsg) ? string.Empty : errMsg;
         }
 
-        public WorkItem WorkItem { get;  internal set; }
+        public WorkItem WorkItem { get; internal set; }
 
         public MileStone MileStone { get; set; }
         public Color Color { get; private set; }

@@ -1,18 +1,17 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectsTM.Model;
 using ProjectsTM.Service;
-using ProjectsTM.UI.MainForm;
+using ProjectsTM.UI.Main;
 using ProjectsTM.ViewModel;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace UnitTestProject
 {
     [TestClass]
     public class KeyAndMouseHandlerTest
     {
-        private static void PrepareCommon(out WorkItem i, out WorkItem g, out ViewData viewData, out KeyAndMouseHandleService service, out WorkItemGrid grid)
+        private static void PrepareCommon(out WorkItem i, out WorkItem g, out MainViewData viewData, out KeyAndMouseHandleService service, out WorkItemGrid grid)
         {
             var appData = new AppData();
             var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
@@ -35,7 +34,7 @@ namespace UnitTestProject
             appData.WorkItems.Add(i);
             appData.WorkItems.Add(g);
 
-            viewData = new ViewData(appData, new UndoService());
+            viewData = new MainViewData(appData);
             grid = new WorkItemGrid();
             grid.Initialize(viewData);
 
@@ -67,14 +66,14 @@ namespace UnitTestProject
             var dragService = new WorkItemDragService();
             var drawService = new DrawService();
             drawService.Initialize(viewData, grid, dragService.IsActive, new Font(FontFamily.GenericSansSerif, 8));
-            var editService = new WorkItemEditService(viewData);
-            service = new KeyAndMouseHandleService(viewData, grid, dragService, drawService, editService, grid);
+            var editService = new WorkItemEditService(viewData.Core);
+            service = new KeyAndMouseHandleService(viewData.Core, grid, dragService, drawService, editService, grid);
         }
 
         [TestMethod]
         public void MouseLeftDown_and_WorkItemSelect()
         {
-            PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
+            PrepareCommon(out var i, out var g, out var viewData, out var service, out _);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
             Assert.AreEqual(viewData.Selected.Unique, i);
@@ -92,11 +91,11 @@ namespace UnitTestProject
             Assert.AreEqual(viewData.Selected.Unique, g);
         }
 
- 
+
         [TestMethod]
         public void MouseLeftDown_and_WorkItemDrag()
         {
-            PrepareCommon(out var i, out var g, out var viewData, out var service, out var grid);
+            PrepareCommon(out var i, out _, out var viewData, out var service, out var grid);
 
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0));
             service.MouseDown(new MouseEventArgs(MouseButtons.Left, 1, 50, 30, 0)); // @@@ ここは不要にしたい

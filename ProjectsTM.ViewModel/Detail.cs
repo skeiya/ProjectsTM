@@ -2,12 +2,12 @@
 {
     public class Detail
     {
-        public int CompanyHeightCore { set; get; } = 10;
-        public int NameHeightCore { set; get; } = 10;
-        public int RowHeightCore { set; get; } = 10;
-        public int DateWidthCore { set; get; } = 50;
-        public int ColWidthCore { set; get; } = 20;
-        public float ViewRatio { set; get; } = 1.0f;
+        public int CompanyHeightCore { get; set; } = 10;
+        public int NameHeightCore { get; set; } = 10;
+        public int RowHeightCore { get; set; } = 10;
+        public int DateWidthCore { get; set; } = 50;
+        public int ColWidthCore { get; set; } = 20;
+        public float ViewRatio { get; set; } = 1.0f;
 
         internal Detail Clone()
         {

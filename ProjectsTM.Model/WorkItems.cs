@@ -20,7 +20,7 @@ namespace ProjectsTM.Model
             foreach (var w in wis) Add(w);
         }
 
-        private SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
+        private readonly SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
         public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
 
@@ -88,7 +88,7 @@ namespace ProjectsTM.Model
             int result = 0;
             foreach (var wi in this.Where((w) => w.AssignedMember.Equals(member) && w.Project.Equals(project)))
             {
-                foreach (var d in callender.GetPediodDays(wi.Period))
+                foreach (var d in callender.GetPeriodDays(wi.Period))
                 {
                     if (!Callender.IsSameGetsudo(d, year, month)) continue;
                     result++;
@@ -109,8 +109,7 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as WorkItems;
-            if (target == null) return false;
+            if (!(obj is WorkItems target)) return false;
             if (_items.Count != target._items.Count) return false;
             return _items.SequenceEqual(target._items);
         }

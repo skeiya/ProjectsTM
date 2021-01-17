@@ -6,7 +6,7 @@ namespace ProjectsTM.Service
 {
     public static class OverwrapedWorkItemsCollectService
     {
-        public static List<WorkItem> Get(WorkItems workItems)
+        public static IEnumerable<WorkItem> Get(WorkItems workItems)
         {
             var result = new List<WorkItem>();
             foreach (var members in workItems.EachMembers)

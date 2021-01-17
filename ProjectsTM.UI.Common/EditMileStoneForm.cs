@@ -1,5 +1,6 @@
 ﻿using ProjectsTM.Model;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Common
@@ -8,7 +9,7 @@ namespace ProjectsTM.UI.Common
     {
         private readonly Callender _callender;
         private MileStone _mileStone;
-        private MileStoneFilters _mileStoneFilters;
+        private readonly MileStoneFilters _mileStoneFilters;
 
         public MileStone MileStone => _mileStone;
 
@@ -50,8 +51,7 @@ namespace ProjectsTM.UI.Common
         private bool ComboBox1_Contain(MileStoneFilter msFilter)
         {
             if (msFilter == null ||
-                msFilter.Name == null ||
-                msFilter.Name == String.Empty ||
+                string.IsNullOrEmpty(msFilter.Name) ||
                 !comboBox1.Items.Contains(msFilter.Name)) return false;
             return true;
         }
@@ -93,7 +93,7 @@ namespace ProjectsTM.UI.Common
         private MileStone CreateMileStone()
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
-            if (!_callender.Days.Contains(day)) return ErrorMsg_NonWokingDay();
+            if (!_callender.Contains(day)) return ErrorMsg_NonWokingDay();
             return new MileStone(textBoxName.Text, new Project(textBoxProject.Text), day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
         }
 

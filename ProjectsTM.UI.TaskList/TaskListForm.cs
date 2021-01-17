@@ -10,18 +10,14 @@ namespace ProjectsTM.UI.TaskList
 {
     public partial class TaskListForm : Form
     {
-        private readonly ViewData _viewData;
-        private PatternHistory _history;
-        private string _userName;
-        private TaskListContextMenuHandler _taskListContextMenuHandler;
+        private readonly PatternHistory _history;
+        private readonly string _userName;
 
         public TaskListForm(ViewData viewData, string userName, PatternHistory patternHistory)
         {
             InitializeComponent();
 
-            this._viewData = viewData;
             _userName = userName;
-           _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Option = GetOption();
@@ -140,7 +136,7 @@ namespace ProjectsTM.UI.TaskList
             var adjustedUserName = userName.Replace("(", @"\(").Replace(")", @"\)");
             return adjustedUserName;
         }
-
+        
         private bool IsPersonalSettingSet(string userName)
         {
             return !userName.Equals("未設定");
