@@ -482,6 +482,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);
+                if (Option.IsShowOverwrap && error != "衝突") continue;
                 list.Add(new TaskListItem(wi, GetColor(wi.State, error), error));
             }
             if (Option.IsShowMS)

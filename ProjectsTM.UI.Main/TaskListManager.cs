@@ -10,6 +10,7 @@ namespace ProjectsTM.UI.Main
         private readonly ViewData _viewData;
         private readonly PatternHistory _patternHistory;
         private readonly IWin32Window _parent;
+        private bool _overWrapCheck;
 
         public TaskListManager(ViewData viewData, PatternHistory patternHistory, IWin32Window parent)
         {
@@ -25,11 +26,19 @@ namespace ProjectsTM.UI.Main
             if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
         }
 
-        internal void Show()
+        internal void ShowOverWrapCheck()
         {
+            Show(true);
+        }
+
+        internal void Show(bool overWrapCheck)
+        {
+            if (_overWrapCheck != overWrapCheck) TaskListForm?.Dispose();
+            _overWrapCheck = overWrapCheck;
+
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory);
+                TaskListForm = new TaskListForm(_viewData, _patternHistory, _overWrapCheck);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(_parent);
         }

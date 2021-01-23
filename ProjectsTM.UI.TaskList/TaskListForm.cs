@@ -11,12 +11,14 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListForm : Form
     {
         private readonly PatternHistory _history;
+        private readonly bool _overWrapCheck;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, bool overWrapCheck)
         {
             InitializeComponent();
 
             this._history = patternHistory;
+            this._overWrapCheck = overWrapCheck;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
             gridControl1.Option = GetOption();
             gridControl1.Initialize(viewData);
@@ -24,6 +26,11 @@ namespace ProjectsTM.UI.TaskList
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
+            if (_overWrapCheck)
+            {
+                this.Text = "衝突チェック";
+                this.checkBoxShowMS.Checked = false;
+            }
         }
 
         private void buttonEazyRegex_Click(object sender, EventArgs e)
@@ -37,7 +44,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, _overWrapCheck);
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
