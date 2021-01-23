@@ -5,8 +5,8 @@ namespace ProjectsTM.UI.Main
 {
     public partial class PromptUserNameSettting : Form
     {
-        public DialogResult Result { get; set; } = DialogResult.No;
-        public bool HideSetting { get; set; } = false;
+        public DialogResult Result { get; private set; } = DialogResult.No;
+        public bool HideSetting { get; private set; } = false;
 
         public PromptUserNameSettting()
         {
