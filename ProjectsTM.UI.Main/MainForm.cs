@@ -15,7 +15,7 @@ namespace ProjectsTM.UI.Main
         private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
-        private bool _hidePromptUserNameSetting = false;
+        private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
 
@@ -37,15 +37,15 @@ namespace ProjectsTM.UI.Main
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { workItemGrid1.MoveToTodayMe(_userName); PromptAfterShown(); };
+            this.Shown += (s, e) => { workItemGrid1.MoveToTodayMe(_userName); SuggestSetting(); };
             this.Load += MainForm_Load;
         }
 
-        private void PromptAfterShown()
+        private void SuggestSetting()
         {
-            if (_hidePromptUserNameSetting) return;
+            if (_hideSuggestionForUserNameSetting) return;
             if (_userName != "未設定") return;
-            using (var dlg = new PromptUserNameSettting())
+            using (var dlg = new SuggestUserNameSettting())
             {
                 dlg.ShowDialog(this);
                 switch (dlg.Result)
@@ -55,7 +55,7 @@ namespace ProjectsTM.UI.Main
                         break;
 
                     case DialogResult.No:
-                        _hidePromptUserNameSetting = dlg.HideSetting;
+                        _hideSuggestionForUserNameSetting = dlg.HideSetting;
                         break;
 
                     default:
@@ -102,7 +102,7 @@ namespace ProjectsTM.UI.Main
                 OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _userName = setting.UserName;
-                _hidePromptUserNameSetting = setting.HidePromptUserNameSetting;
+                _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
             }
             catch
             {
@@ -119,7 +119,7 @@ namespace ProjectsTM.UI.Main
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
                 UserName = _userName,
-                HidePromptUserNameSetting = _hidePromptUserNameSetting,
+                HideSuggestionForUserNameSetting = _hideSuggestionForUserNameSetting,
             };
             UserSettingUIService.Save(setting);
             MainFormStateManager.Save(this);

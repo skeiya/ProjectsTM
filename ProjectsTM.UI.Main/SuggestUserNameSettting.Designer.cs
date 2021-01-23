@@ -1,6 +1,6 @@
 ﻿namespace ProjectsTM.UI.Main
 {
-    partial class PromptUserNameSettting
+    partial class SuggestUserNameSettting
     {
         /// <summary>
         /// Required designer variable.
@@ -73,7 +73,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // PromptUserNameSettting
+            // SuggestUserNameSettting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -82,7 +82,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label1);
-            this.Name = "PromptUserNameSettting";
+            this.Name = "SuggestUserNameSettting";
             this.Text = "名前を教えてください";
             this.ResumeLayout(false);
             this.PerformLayout();

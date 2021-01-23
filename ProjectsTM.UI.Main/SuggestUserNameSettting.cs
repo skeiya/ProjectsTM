@@ -3,12 +3,12 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
 {
-    public partial class PromptUserNameSettting : Form
+    public partial class SuggestUserNameSettting : Form
     {
         public DialogResult Result { get; private set; } = DialogResult.No;
         public bool HideSetting { get; private set; } = false;
 
-        public PromptUserNameSettting()
+        public SuggestUserNameSettting()
         {
             InitializeComponent();
         }
