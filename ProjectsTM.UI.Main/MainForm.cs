@@ -261,7 +261,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
-            _taskListManager.Show(false);
+            _taskListManager.Show();
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)

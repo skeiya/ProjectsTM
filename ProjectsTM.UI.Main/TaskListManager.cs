@@ -31,7 +31,7 @@ namespace ProjectsTM.UI.Main
             Show(true);
         }
 
-        internal void Show(bool overWrapCheck)
+        internal void Show(bool overWrapCheck = false)
         {
             if (_overWrapCheck != overWrapCheck) TaskListForm?.Dispose();
             _overWrapCheck = overWrapCheck;
