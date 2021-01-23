@@ -10,7 +10,7 @@ namespace ProjectsTM.UI.Main
         private readonly ViewData _viewData;
         private readonly PatternHistory _patternHistory;
         private readonly IWin32Window _parent;
-        private bool _overlapCheck;
+        private bool _overlapCheck = false;
 
         public TaskListManager(ViewData viewData, PatternHistory patternHistory, IWin32Window parent)
         {
