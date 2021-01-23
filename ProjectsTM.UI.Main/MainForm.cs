@@ -15,6 +15,7 @@ namespace ProjectsTM.UI.Main
         private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
         private string _userName = "未設定";
+        private bool _hidePromptUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
 
@@ -36,8 +37,28 @@ namespace ProjectsTM.UI.Main
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => workItemGrid1.MoveToTodayMe(_userName);
+            this.Shown += (s, e) => { workItemGrid1.MoveToTodayMe(_userName); PromptAfterShown(); };
             this.Load += MainForm_Load;
+        }
+
+        private void PromptAfterShown()
+        {
+            if (_hidePromptUserNameSetting) return;
+            if (_userName != "未設定") return;
+            using (var dlg = new PromptUserNameSettting())
+            {
+                dlg.ShowDialog(this);
+                switch (dlg.Result)
+                {
+                    case DialogResult.Yes:
+                        ToolStripMenuItemMySetting_Click(null, null);
+                        break;
+
+                    case DialogResult.No:
+                        _hidePromptUserNameSetting = dlg.HideSetting;
+                        break;
+                }
+            }
         }
 
         private void _remoteChangePollingService_CheckedUnpushedChange(object sender, EventArgs e)
@@ -78,6 +99,7 @@ namespace ProjectsTM.UI.Main
                 OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _userName = setting.UserName;
+                _hidePromptUserNameSetting = setting.HidePromptUserNameSetting;
             }
             catch
             {
@@ -94,6 +116,7 @@ namespace ProjectsTM.UI.Main
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
                 UserName = _userName,
+                HidePromptUserNameSetting = _hidePromptUserNameSetting,
             };
             UserSettingUIService.Save(setting);
             MainFormStateManager.Save(this);

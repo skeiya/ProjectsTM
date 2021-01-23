@@ -52,6 +52,12 @@
   <ItemGroup>
     <Compile Include="FileWatchManager.cs" />
     <Compile Include="ImageOutputer.cs" />
+    <Compile Include="PromptUserNameSettting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PromptUserNameSettting.Designer.cs">
+      <DependentUpon>PromptUserNameSettting.cs</DependentUpon>
+    </Compile>
     <Compile Include="RsExportManager.cs" />
     <Compile Include="TaskListManager.cs" />
     <Compile Include="TrendChartBackgroundWorkForm.cs">
@@ -153,6 +159,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PromptUserNameSettting.resx">
+      <DependentUpon>PromptUserNameSettting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TrendChartBackgroundWorkForm.resx">
       <DependentUpon>TrendChartBackgroundWorkForm.cs</DependentUpon>
     </EmbeddedResource>
