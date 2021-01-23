@@ -57,6 +57,9 @@ namespace ProjectsTM.UI.Main
                     case DialogResult.No:
                         _hidePromptUserNameSetting = dlg.HideSetting;
                         break;
+
+                    default:
+                        break;
                 }
             }
         }
