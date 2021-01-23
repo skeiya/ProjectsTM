@@ -109,7 +109,7 @@ namespace ProjectsTM.UI.Main
         {
             if (!_fileIOService.IsDirty) return;
             if (MessageBox.Show("保存されていない変更があります。上書き保存しますか？", "保存", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
-            if (!_fileIOService.Save(_viewData.Original, _taskListManager.ShowOverWrapCheck)) e.Cancel = true;
+            if (!_fileIOService.Save(_viewData.Original, _taskListManager.ShowOverlapCheck)) e.Cancel = true;
         }
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
@@ -147,7 +147,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
         {
-            _fileIOService.Save(_viewData.Original, _taskListManager.ShowOverWrapCheck);
+            _fileIOService.Save(_viewData.Original, _taskListManager.ShowOverlapCheck);
         }
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
@@ -194,7 +194,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSaveAsOtherName_Click(object sender, EventArgs e)
         {
-            _fileIOService.SaveOtherName(_viewData.Original, _taskListManager.ShowOverWrapCheck);
+            _fileIOService.SaveOtherName(_viewData.Original, _taskListManager.ShowOverlapCheck);
         }
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
