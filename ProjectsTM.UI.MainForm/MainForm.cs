@@ -452,7 +452,7 @@ namespace ProjectsTM.UI.MainForm
         {
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory);
+                TaskListForm = new TaskListForm(_viewData, _userName, _patternHistory);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(this);
         }
