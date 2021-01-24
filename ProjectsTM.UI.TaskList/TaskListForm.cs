@@ -13,12 +13,14 @@ namespace ProjectsTM.UI.TaskList
         private readonly ViewData _viewData;
         private PatternHistory _history;
         private TaskListContextMenuHandler _taskListContextMenuHandler;
+        private readonly string _userName;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, string userName, PatternHistory patternHistory)
         {
             InitializeComponent();
 
             this._viewData = viewData;
+            _userName = userName;
            _taskListContextMenuHandler = new TaskListContextMenuHandler(viewData, gridControl1);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
@@ -27,6 +29,7 @@ namespace ProjectsTM.UI.TaskList
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
+            this.comboBoxPattern.SelectedIndexChanged += comboBoxPattern_SelectedIndexChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
         }
 
@@ -102,6 +105,10 @@ namespace ProjectsTM.UI.TaskList
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
         {
             comboBoxPattern.Items.Clear();
+            if (IsPersonalSettingSet(_userName))
+            {
+                comboBoxPattern.Items.Add($"あなた({_userName})のタスク");
+            }
             comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
         private void buttonUpdate_Click(object sender, System.EventArgs e)
@@ -114,6 +121,30 @@ namespace ProjectsTM.UI.TaskList
             _history.Append(comboBoxPattern.Text);
             gridControl1.Option = GetOption();
             gridControl1.UpdateView();
+        }
+
+        private void comboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (IsUserTaskSortSelected()) return;
+            gridControl1.Option = new TaskListOption(AdjustUserNameFormat(_userName), false, string.Empty);
+            gridControl1.UpdateView();
+            comboBoxPattern.SelectedIndex = -1;
+        }
+
+        private bool IsUserTaskSortSelected()
+        {
+            return comboBoxPattern.SelectedIndex != 0 || !IsPersonalSettingSet(_userName);
+        }
+
+        private string AdjustUserNameFormat(string userName)
+        {
+            var adjustedUserName = userName.Replace("(", @"\(").Replace(")", @"\)");
+            return adjustedUserName;
+        }
+
+        private bool IsPersonalSettingSet(string userName)
+        {
+            return !userName.Equals("未設定");
         }
     }
 }
