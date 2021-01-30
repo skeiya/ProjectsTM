@@ -24,11 +24,7 @@ namespace ProjectsTM.UI.TaskList
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
-            if (option.IsShowOverlap)
-            {
-                this.Text = "衝突チェック";
-                this.checkBoxShowMS.Checked = false;
-            }
+            this.checkBoxShowMS.Checked = option.IsShowMS;
         }
 
         private void buttonEazyRegex_Click(object sender, EventArgs e)
@@ -42,7 +38,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.IsShowOverlap);
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.ErrorDisplayType);
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)

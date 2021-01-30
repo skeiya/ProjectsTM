@@ -431,7 +431,7 @@ namespace ProjectsTM.UI.TaskList
             {
                 if (!IsMatchPattern(wi.ToString())) continue;
                 audit.TryGetValue(wi, out string error);
-                if (Option.IsShowOverlap && error != "衝突") continue;
+                if (!IsDisplay(error)) continue;
                 list.Add(new TaskListItem(wi, GetColor(wi.State, error), error));
             }
             if (Option.IsShowMS)
@@ -444,6 +444,21 @@ namespace ProjectsTM.UI.TaskList
                 }
             }
             return list;
+        }
+
+        private bool IsDisplay(string error)
+        {
+            switch (Option.ErrorDisplayType)
+            {
+                case ErrorDisplayType.All:
+                    return true;
+                case ErrorDisplayType.ErrorOnly:
+                    return !string.IsNullOrEmpty(error);
+                case ErrorDisplayType.OverlapOnly:
+                    return (!string.IsNullOrEmpty(error)) && error.Equals("衝突");
+                default:
+                    return true;
+            }
         }
 
         private bool IsMatchPattern(string target)

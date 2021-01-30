@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -10,7 +11,6 @@ namespace ProjectsTM.UI.Main
         private readonly ViewData _viewData;
         private readonly PatternHistory _patternHistory;
         private readonly IWin32Window _parent;
-        private bool _overlapCheck = false;
 
         public TaskListManager(ViewData viewData, PatternHistory patternHistory, IWin32Window parent)
         {
@@ -19,32 +19,44 @@ namespace ProjectsTM.UI.Main
             _parent = parent;
         }
 
-        private TaskListForm TaskListForm { get; set; }
+        private readonly List<TaskListForm> taskListForms = new List<TaskListForm>();
 
         internal void UpdateView()
         {
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
+            foreach (var f in taskListForms)
+            {
+                f.UpdateView();
+            }
+        }
+
+        internal void Show()
+        {
+            ShowCore(new TaskListOption());
         }
 
         internal void ShowOverlapCheck()
         {
-            Show(true);
+            var option = new TaskListOption()
+            {
+                ErrorDisplayType = ErrorDisplayType.OverlapOnly,
+                IsShowMS = false,
+            };
+            ShowCore(option);
         }
 
-        internal void Show(bool overlapCheck = false)
+        private void ShowCore(TaskListOption option)
         {
-            if (_overlapCheck != overlapCheck) TaskListForm?.Dispose();
-            _overlapCheck = overlapCheck;
+            var f = new TaskListForm(_viewData, _patternHistory, option);
+            f.FormClosed += taskListForm_FormClosed;
+            f.Show(_parent);
+            taskListForms.Add(f);
+        }
 
-            if (TaskListForm == null || TaskListForm.IsDisposed)
-            {
-                var option = new TaskListOption()
-                {
-                    IsShowOverlap = _overlapCheck,
-                };
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, option);
-            }
-            if (!TaskListForm.Visible) TaskListForm.Show(_parent);
+        private void taskListForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!(sender is TaskListForm f)) return;
+            taskListForms.Remove(f);
+            f.Dispose();
         }
     }
 }

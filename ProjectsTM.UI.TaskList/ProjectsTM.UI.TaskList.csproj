@@ -52,6 +52,7 @@
     <Compile Include="ColDefinition.cs" />
     <Compile Include="ColIds.cs" />
     <Compile Include="ColSpecification.cs" />
+    <Compile Include="ErrorDisplayType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContextMenuHandler.cs" />
     <Compile Include="TaskListForm.cs">
