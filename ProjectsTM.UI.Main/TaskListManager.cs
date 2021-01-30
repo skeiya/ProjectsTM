@@ -38,7 +38,11 @@ namespace ProjectsTM.UI.Main
 
             if (TaskListForm == null || TaskListForm.IsDisposed)
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory, _overlapCheck);
+                var option = new TaskListOption()
+                {
+                    IsShowOverlap = _overlapCheck,
+                };
+                TaskListForm = new TaskListForm(_viewData, _patternHistory, option);
             }
             if (!TaskListForm.Visible) TaskListForm.Show(_parent);
         }

@@ -11,22 +11,20 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListForm : Form
     {
         private readonly PatternHistory _history;
-        private readonly bool _overlapCheck;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory, bool overlapCheck)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option)
         {
             InitializeComponent();
 
             this._history = patternHistory;
-            this._overlapCheck = overlapCheck;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Option = GetOption();
+            gridControl1.Option = option;
             gridControl1.Initialize(viewData);
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
-            if (_overlapCheck)
+            if (option.IsShowOverlap)
             {
                 this.Text = "衝突チェック";
                 this.checkBoxShowMS.Checked = false;
@@ -44,7 +42,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, _overlapCheck);
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.IsShowOverlap);
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
