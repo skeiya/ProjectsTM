@@ -1,21 +1,29 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.Common;
+using System.Linq;
 
 namespace ProjectsTM.UI.Main
 {
     public partial class ManageMySettingForm : BaseForm
     {
         private readonly Members _members;
-        public string Selected => comboBox1.SelectedItem.ToString();
+        public Member Selected
+        {
+            get
+            {
+                if (comboBox1.SelectedIndex <= 0) return null;
+                return _members.ToArray().ElementAt(comboBox1.SelectedIndex - 1);
+            }
+        }
 
-        public ManageMySettingForm(Members members, string userName)
+        public ManageMySettingForm(Members members, Member me)
         {
             _members = members;
             InitializeComponent();
-            InitCombo(userName);
+            InitCombo(me);
         }
 
-        private void InitCombo(string userName)
+        private void InitCombo(Member me)
         {
             comboBox1.Items.Clear();
             comboBox1.Items.Add("未設定");
@@ -23,7 +31,7 @@ namespace ProjectsTM.UI.Main
             foreach (var m in _members)
             {
                 comboBox1.Items.Add(m.ToString());
-                if (!userName.Equals(m.ToString())) continue;
+                if (me == null || !me.Equals(m)) continue;
                 comboBox1.SelectedIndex = comboBox1.Items.Count - 1;
                 found = true;
             }
