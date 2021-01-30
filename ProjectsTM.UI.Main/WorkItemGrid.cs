@@ -343,14 +343,6 @@ namespace ProjectsTM.UI.Main
             this.Invalidate();
         }
 
-        private void MoveVisibleDayAndMember(CallenderDay day, Member m)
-        {
-            if (day == null || m == null) return;
-            var row = Day2Row(day);
-            if (row == null) return;
-            MoveVisibleRowCol(row, Member2Col(m, _viewData.FilteredItems.Members));
-        }
-
         private void WorkItemGrid_MouseDown(object sender, MouseEventArgs e)
         {
             _keyAndMouseHandleService.MouseDown(e);
@@ -387,24 +379,19 @@ namespace ProjectsTM.UI.Main
             MoveToTodayAndMember(m);
         }
 
-        private void MoveToTodayAndMember(Member m)
+        internal void MoveToTodayAndMember(Member m)
         {
             var now = DateTime.Now;
             var today = new CallenderDay(now.Year, now.Month, now.Day);
             MoveVisibleDayAndMember(today, m);
         }
 
-        internal void MoveToTodayMe(string userName)
+        private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
-            var user = _viewData.FilteredItems.Members.FirstOrDefault(m => m.NaturalString.Equals(userName));
-            if (user != null)
-            {
-                MoveToTodayAndMember(user);
-            }
-            else
-            {
-                MoveToToday();
-            }
+            if (day == null || m == null) return;
+            var row = Day2Row(day);
+            if (row == null) return;
+            MoveVisibleRowCol(row, Member2Col(m, _viewData.FilteredItems.Members));
         }
 
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
@@ -441,7 +428,7 @@ namespace ProjectsTM.UI.Main
         public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(WorkItems wis, IEnumerable<Member> members)
         {
             var rects = new List<ClientRectangle?>();
-            foreach(var wi in wis)
+            foreach (var wi in wis)
             {
                 rects.Add(GetWorkItemDrawRectClient(wi, members));
             }
