@@ -45,22 +45,11 @@ namespace ProjectsTM.UI.Main
         {
             if (_hideSuggestionForUserNameSetting) return;
             if (_me != null) return;
-            using (var dlg = new SuggestUserNameSettting())
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
             {
-                dlg.ShowDialog(this);
-                switch (dlg.Result)
-                {
-                    case DialogResult.Yes:
-                        ToolStripMenuItemMySetting_Click(null, null);
-                        break;
-
-                    case DialogResult.No:
-                        _hideSuggestionForUserNameSetting = dlg.HideSetting;
-                        break;
-
-                    default:
-                        break;
-                }
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                _me = dlg.Selected;
+                _hideSuggestionForUserNameSetting = dlg.HideSetting;
             }
         }
 
@@ -297,10 +286,11 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me))
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
             {
-                dlg.ShowDialog(this);
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _me = dlg.Selected;
+                _hideSuggestionForUserNameSetting = dlg.HideSetting;
             }
         }
 
