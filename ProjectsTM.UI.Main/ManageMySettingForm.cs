@@ -16,11 +16,20 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        public ManageMySettingForm(Members members, Member me)
+        public bool HideSetting => checkBox1.Checked;
+
+        public ManageMySettingForm(Members members, Member me, bool hideSetting)
         {
-            _members = members;
             InitializeComponent();
+            comboBox1.SelectedValueChanged += ComboBox1_SelectedValueChanged;
+            _members = members;
+            checkBox1.Checked = hideSetting;
             InitCombo(me);
+        }
+
+        private void ComboBox1_SelectedValueChanged(object sender, System.EventArgs e)
+        {
+            checkBox1.Enabled = Selected == null;
         }
 
         private void InitCombo(Member me)
@@ -36,6 +45,18 @@ namespace ProjectsTM.UI.Main
                 found = true;
             }
             if (!found) comboBox1.SelectedIndex = 0;
+        }
+
+        private void buttonOK_Click(object sender, System.EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
+        }
+
+        private void buttonCancel_Click(object sender, System.EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Close();
         }
     }
 }
