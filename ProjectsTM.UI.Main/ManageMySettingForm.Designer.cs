@@ -47,7 +47,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(48, 10);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
+            this.comboBox1.Size = new System.Drawing.Size(204, 20);
             this.comboBox1.TabIndex = 1;
             // 
             // ManageMySettingForm
@@ -57,7 +57,9 @@
             this.ClientSize = new System.Drawing.Size(264, 46);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ManageMySettingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "個人設定";
             this.ResumeLayout(false);
             this.PerformLayout();
