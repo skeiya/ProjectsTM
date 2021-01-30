@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
-        private string _userName = "未設定";
+        private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
@@ -37,14 +37,14 @@ namespace ProjectsTM.UI.Main
             workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { workItemGrid1.MoveToTodayMe(_userName); SuggestSetting(); };
+            this.Shown += (s, e) => { workItemGrid1.MoveToTodayAndMember(_me); SuggestSetting(); };
             this.Load += MainForm_Load;
         }
 
         private void SuggestSetting()
         {
             if (_hideSuggestionForUserNameSetting) return;
-            if (_userName != "未設定") return;
+            if (_me != null) return;
             using (var dlg = new SuggestUserNameSettting())
             {
                 dlg.ShowDialog(this);
@@ -101,7 +101,7 @@ namespace ProjectsTM.UI.Main
                 _patternHistory = setting.PatternHistory;
                 OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
-                _userName = setting.UserName;
+                _me = Member.Parse(setting.UserName);
                 _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
             }
             catch
@@ -118,7 +118,7 @@ namespace ProjectsTM.UI.Main
                 FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                UserName = _userName,
+                UserName = _me == null ? string.Empty : _me.ToSerializeString(),
                 HideSuggestionForUserNameSetting = _hideSuggestionForUserNameSetting,
             };
             UserSettingUIService.Save(setting);
@@ -297,10 +297,10 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _userName))
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me))
             {
                 dlg.ShowDialog(this);
-                _userName = dlg.Selected;
+                _me = dlg.Selected;
             }
         }
 
