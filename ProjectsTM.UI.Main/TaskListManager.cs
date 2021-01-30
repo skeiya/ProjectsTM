@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.TaskList;
 using ProjectsTM.ViewModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -18,20 +19,44 @@ namespace ProjectsTM.UI.Main
             _parent = parent;
         }
 
-        private TaskListForm TaskListForm { get; set; }
+        private readonly List<TaskListForm> taskListForms = new List<TaskListForm>();
 
         internal void UpdateView()
         {
-            if (TaskListForm != null && TaskListForm.Visible) TaskListForm.UpdateView();
+            foreach (var f in taskListForms)
+            {
+                f.UpdateView();
+            }
         }
 
         internal void Show()
         {
-            if (TaskListForm == null || TaskListForm.IsDisposed)
+            ShowCore(new TaskListOption());
+        }
+
+        internal void ShowOverlapCheck()
+        {
+            var option = new TaskListOption()
             {
-                TaskListForm = new TaskListForm(_viewData, _patternHistory);
-            }
-            if (!TaskListForm.Visible) TaskListForm.Show(_parent);
+                ErrorDisplayType = ErrorDisplayType.OverlapOnly,
+                IsShowMS = false,
+            };
+            ShowCore(option);
+        }
+
+        private void ShowCore(TaskListOption option)
+        {
+            var f = new TaskListForm(_viewData, _patternHistory, option);
+            f.FormClosed += taskListForm_FormClosed;
+            f.Show(_parent);
+            taskListForms.Add(f);
+        }
+
+        private void taskListForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!(sender is TaskListForm f)) return;
+            taskListForms.Remove(f);
+            f.Dispose();
         }
     }
 }

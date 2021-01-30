@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxAndCondition = new System.Windows.Forms.TextBox();
             this.buttonEazyRegex = new System.Windows.Forms.Button();
+            this.comboBoxErrorDisplay = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -61,7 +62,7 @@
             this.comboBoxPattern.FormattingEnabled = true;
             this.comboBoxPattern.Location = new System.Drawing.Point(8, 12);
             this.comboBoxPattern.Name = "comboBoxPattern";
-            this.comboBoxPattern.Size = new System.Drawing.Size(498, 20);
+            this.comboBoxPattern.Size = new System.Drawing.Size(400, 20);
             this.comboBoxPattern.TabIndex = 0;
             this.comboBoxPattern.DropDown += new System.EventHandler(this.comboBoxPattern_DropDown);
             // 
@@ -104,7 +105,7 @@
             this.checkBoxShowMS.AutoSize = true;
             this.checkBoxShowMS.Checked = true;
             this.checkBoxShowMS.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxShowMS.Location = new System.Drawing.Point(512, 15);
+            this.checkBoxShowMS.Location = new System.Drawing.Point(495, 15);
             this.checkBoxShowMS.Name = "checkBoxShowMS";
             this.checkBoxShowMS.Size = new System.Drawing.Size(64, 16);
             this.checkBoxShowMS.TabIndex = 1;
@@ -133,12 +134,22 @@
             // buttonEazyRegex
             // 
             this.buttonEazyRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEazyRegex.Location = new System.Drawing.Point(582, 10);
+            this.buttonEazyRegex.Location = new System.Drawing.Point(414, 10);
             this.buttonEazyRegex.Name = "buttonEazyRegex";
             this.buttonEazyRegex.Size = new System.Drawing.Size(75, 23);
             this.buttonEazyRegex.TabIndex = 2;
             this.buttonEazyRegex.Text = "簡易指定...";
             this.buttonEazyRegex.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxErrorDisplay
+            // 
+            this.comboBoxErrorDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxErrorDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxErrorDisplay.FormattingEnabled = true;
+            this.comboBoxErrorDisplay.Location = new System.Drawing.Point(565, 12);
+            this.comboBoxErrorDisplay.Name = "comboBoxErrorDisplay";
+            this.comboBoxErrorDisplay.Size = new System.Drawing.Size(93, 20);
+            this.comboBoxErrorDisplay.TabIndex = 9;
             // 
             // TaskListForm
             // 
@@ -146,6 +157,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 307);
+            this.Controls.Add(this.comboBoxErrorDisplay);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.buttonEazyRegex);
             this.Controls.Add(this.textBoxAndCondition);
@@ -173,5 +185,6 @@
         private System.Windows.Forms.TextBox textBoxAndCondition;
         private System.Windows.Forms.Button buttonEazyRegex;
         private TaskListGrid gridControl1;
+        private System.Windows.Forms.ComboBox comboBoxErrorDisplay;
     }
 }

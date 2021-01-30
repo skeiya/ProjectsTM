@@ -45,13 +45,13 @@ namespace ProjectsTM.Service
 
         public bool IsDirty => _isDirty;
 
-        public bool Save(AppData appData, Action showOverwrapCheck)
+        public bool Save(AppData appData, Action showOverlapCheck)
         {
             if (string.IsNullOrEmpty(_previousFileName))
             {
-                return SaveOtherName(appData, showOverwrapCheck);
+                return SaveOtherName(appData, showOverlapCheck);
             }
-            if (!CheckOverwrap(appData, showOverwrapCheck)) return false;
+            if (!CheckOverlap(appData, showOverlapCheck)) return false;
             _watcher.EnableRaisingEvents = false;
             try
             {
@@ -67,9 +67,9 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        public bool SaveOtherName(AppData appData, Action showOverwrapCheck)
+        public bool SaveOtherName(AppData appData, Action showOverlapCheck)
         {
-            if (!CheckOverwrap(appData, showOverwrapCheck)) return false;
+            if (!CheckOverlap(appData, showOverlapCheck)) return false;
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return false;
@@ -91,11 +91,11 @@ namespace ProjectsTM.Service
             }
         }
 
-        private static bool CheckOverwrap(AppData appData, Action showOverwrapCheck)
+        private static bool CheckOverlap(AppData appData, Action showOverlapCheck)
         {
-            if (!OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
+            if (!OverlapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
-            showOverwrapCheck();
+            showOverlapCheck();
             return false;
         }
 

@@ -12,18 +12,51 @@ namespace ProjectsTM.UI.TaskList
     {
         private readonly PatternHistory _history;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option)
         {
             InitializeComponent();
 
+            InitializeCombobox(option.ErrorDisplayType);
             this._history = patternHistory;
             gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Option = GetOption();
+            gridControl1.Option = option;
             gridControl1.Initialize(viewData);
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
+            this.checkBoxShowMS.Checked = option.IsShowMS;
+        }
+
+        private void InitializeCombobox(ErrorDisplayType errorDisplayType)
+        {
+            foreach (ErrorDisplayType d in Enum.GetValues(typeof(ErrorDisplayType)))
+            {
+                comboBoxErrorDisplay.Items.Add(GetString(d));
+            }
+            comboBoxErrorDisplay.SelectedIndex = (int)errorDisplayType;
+            comboBoxErrorDisplay.SelectedIndexChanged += ComboBoxErrorDisplay_SelectedIndexChanged;
+        }
+
+        private void ComboBoxErrorDisplay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gridControl1.Option.ErrorDisplayType = (ErrorDisplayType)comboBoxErrorDisplay.SelectedIndex;
+            UpdateList();
+        }
+
+        private static string GetString(ErrorDisplayType d)
+        {
+            switch (d)
+            {
+                case ErrorDisplayType.All:
+                    return "すべて表示";
+                case ErrorDisplayType.ErrorOnly:
+                    return "エラーのみ";
+                case ErrorDisplayType.OverlapOnly:
+                    return "衝突のみ";
+                default:
+                    return string.Empty;
+            }
         }
 
         private void buttonEazyRegex_Click(object sender, EventArgs e)
@@ -37,7 +70,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text);
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.ErrorDisplayType);
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
