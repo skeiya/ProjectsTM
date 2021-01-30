@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ProjectsTM.Service
 {
-    public static class OverwrapedWorkItemsCollectService
+    public static class OverlapedWorkItemsCollectService
     {
         public static IEnumerable<WorkItem> Get(WorkItems workItems)
         {

@@ -423,61 +423,10 @@ namespace ProjectsTM.UI.TaskList
             ListUpdated?.Invoke(this, null);
         }
 
-        private Dictionary<WorkItem, string> GetAuditList()
-        {
-            var result = OverwrapedWorkItemsCollectService.Get(_viewData.Original.WorkItems).ToDictionary(w => w, _ => "衝突");
-            CallenderDay soon = null;
-            for (int i = 5; i >= 0; i--)
-            {
-                soon = _viewData.Original.Callender.ApplyOffset(_viewData.Original.Callender.NearestFromToday, i);
-                if (soon != null) break;
-            }
-            foreach (var wi in _viewData.FilteredItems.WorkItems)
-            {
-                if (result.TryGetValue(wi, out var dummy)) continue;
-                if (IsNotEndError(wi))
-                {
-                    result.Add(wi, "未完");
-                    continue;
-                }
-                if (IsTooBigError(wi, soon))
-                {
-                    result.Add(wi, "過大");
-                    continue;
-                }
-            }
-            return result;
-        }
-
-        private static bool IsNotEndError(WorkItem wi)
-        {
-            if (wi.State == TaskState.Done) return false;
-            if (wi.State == TaskState.Background) return false;
-            return wi.Period.To < CallenderDay.Today;
-        }
-
-        private bool IsTooBigError(WorkItem wi, CallenderDay soon)
-        {
-            if (wi.State == TaskState.Background) return false;
-            if (wi.State == TaskState.Done) return false;
-            if (!IsStartSoon(wi, soon)) return false;
-            return IsTooBig(wi);
-        }
-
-        private bool IsTooBig(WorkItem wi)
-        {
-            return ColDefinition.Count < _viewData.Original.Callender.GetPeriodDayCount(wi.Period);
-        }
-
-        private static bool IsStartSoon(WorkItem wi, CallenderDay soon)
-        {
-            return wi.Period.From <= soon;
-        }
-
         private List<TaskListItem> GetFilterList()
         {
             var list = new List<TaskListItem>();
-            var audit = GetAuditList();
+            var audit = TaskErrorCheckService.GetAuditList(_viewData);
             foreach (var wi in _viewData.FilteredItems.WorkItems)
             {
                 if (!IsMatchPattern(wi.ToString())) continue;

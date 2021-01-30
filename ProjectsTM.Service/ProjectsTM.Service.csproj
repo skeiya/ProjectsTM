@@ -66,11 +66,12 @@
     <Compile Include="GitRepositoryService.cs" />
     <Compile Include="KeyAndMouseHandleService.cs" />
     <Compile Include="LaunchHelpService.cs" />
-    <Compile Include="OverwrapedWorkItemsCollectService.cs" />
+    <Compile Include="OverlapedWorkItemsCollectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedrawLock.cs" />
     <Compile Include="RemoteChangePollingService.cs" />
     <Compile Include="RSFileExportService.cs" />
+    <Compile Include="TaskErrorCheckService.cs" />
     <Compile Include="ToolTipService.cs" />
     <Compile Include="UserSettingUIService.cs" />
     <Compile Include="VersionUpdateService.cs" />

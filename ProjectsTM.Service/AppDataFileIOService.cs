@@ -93,7 +93,7 @@ namespace ProjectsTM.Service
 
         private static bool CheckOverlap(AppData appData, Action showOverlapCheck)
         {
-            if (!OverwrapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
+            if (!OverlapedWorkItemsCollectService.Get(appData.WorkItems).Any()) return true;
             if (MessageBox.Show("範囲が重複している項目があります。保存を継続しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes) return true;
             showOverlapCheck();
             return false;
