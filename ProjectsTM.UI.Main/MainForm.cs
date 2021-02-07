@@ -14,6 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
+        private WorkItemLastUpdateInfoService _lastUpdateInfoService = new WorkItemLastUpdateInfoService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -30,6 +31,7 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
+            _fileIOService.FileSaved += FileIOService_FileSaved;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
@@ -39,6 +41,11 @@ namespace ProjectsTM.UI.Main
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { workItemGrid1.MoveToTodayAndMember(_me); SuggestSetting(); };
             this.Load += MainForm_Load;
+        }
+
+        private void FileIOService_FileSaved(object sender, string filePath)
+        {
+            _lastUpdateInfoService.Load(filePath);
         }
 
         private void SuggestSetting()
@@ -62,7 +69,7 @@ namespace ProjectsTM.UI.Main
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            workItemGrid1.Initialize(_viewData);
+            workItemGrid1.Initialize(_viewData, _lastUpdateInfoService);
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(null);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
@@ -118,6 +125,7 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
+            _lastUpdateInfoService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -78,6 +78,7 @@
     <Compile Include="WorkItemCopyPasteService.cs" />
     <Compile Include="WorkItemDragService.cs" />
     <Compile Include="WorkItemEditService.cs" />
+    <Compile Include="WorkItemLastUpdateInfoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FreeGridControl\FreeGridControl.csproj">

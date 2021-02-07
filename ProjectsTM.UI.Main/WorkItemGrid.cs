@@ -40,7 +40,7 @@ namespace ProjectsTM.UI.Main
 
         }
 
-        public void Initialize(MainViewData viewData)
+        public void Initialize(MainViewData viewData, WorkItemLastUpdateInfoService lastUpdateInfoService)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
@@ -59,7 +59,7 @@ namespace ProjectsTM.UI.Main
                 _contextMenuHandler.Initialize(ContextMenuStrip);
 
                 if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, lastUpdateInfoService);
             }
 
             ApplyDetailSetting();

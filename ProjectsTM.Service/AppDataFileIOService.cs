@@ -11,7 +11,7 @@ namespace ProjectsTM.Service
     {
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
-        public event EventHandler FileSaved;
+        public event EventHandler<string> FileSaved;
         private DateTime _last;
         private bool _isDirty = false;
 
@@ -57,7 +57,7 @@ namespace ProjectsTM.Service
             {
                 appData.WorkItems.SortByPeriodStartDate();
                 AppDataSerializeService.Serialize(_previousFileName, appData);
-                FileSaved?.Invoke(this, null);
+                FileSaved?.Invoke(this, _previousFileName);
                 _isDirty = false;
             }
             finally
@@ -78,7 +78,7 @@ namespace ProjectsTM.Service
                 {
                     appData.WorkItems.SortByPeriodStartDate();
                     AppDataSerializeService.Serialize(dlg.FileName, appData);
-                    FileSaved?.Invoke(this, null);
+                    FileSaved?.Invoke(this, dlg.FileName);
                     _previousFileName = dlg.FileName;
                 }
                 finally
