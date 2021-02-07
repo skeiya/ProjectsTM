@@ -25,7 +25,9 @@ namespace ProjectsTM.Service
                 {
                     if (w.Element("HashCode") == null) continue;
                     if (!workItem.GetMd5Code().Equals(w.Element("HashCode").Value)) continue;
-                    return "履歴：" + GitRepositoryService.GetLastUpdateInfo(_filePath, ((IXmlLineInfo)w.Element("HashCode")).LineNumber);
+                    var result = GitRepositoryService.GetLastUpdateInfo(_filePath, ((IXmlLineInfo)w.Element("HashCode")).LineNumber);
+                    if (!string.IsNullOrEmpty(result)) return "履歴：" + result;
+                    return string.Empty;
                 }
             }
             return string.Empty;
