@@ -70,10 +70,7 @@ namespace ProjectsTM.Service
             s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
             if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
-            if (_lastUpdateInfoService != null)
-            {
-                s.AppendLine(_lastUpdateInfoService.GetInfo(wi));
-            }
+            if (_lastUpdateInfoService != null) s.AppendLine(_lastUpdateInfoService.GetInfo(wi));
             AddDescription(s, wi);
 
             return s.ToString();
