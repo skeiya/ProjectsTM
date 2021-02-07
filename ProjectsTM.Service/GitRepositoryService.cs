@@ -116,5 +116,19 @@ namespace ProjectsTM.Service
             var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
             return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
+
+        public static string GetLastUpdateInfo(string filePath, int lineNo)
+        {
+            var lastUpdateDateAndUserName = ParseLastUpdateDateAndUserName(GitCmdRepository.GitBlameOneLine(filePath, lineNo));
+            return lastUpdateDateAndUserName;
+        }
+
+        public static string ParseLastUpdateDateAndUserName(string str)
+        {
+             if (string.IsNullOrEmpty(str)) return string.Empty;
+             var matche = Regex.Match(str, @"........ .*");
+             if (!matche.Success) return string.Empty;
+             return str;
+        }
     }
 }
