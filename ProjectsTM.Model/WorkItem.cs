@@ -73,7 +73,31 @@ namespace ProjectsTM.Model
             xml.Add(Project.ToXml());
             xml.Add(Tags.ToXml());
             xml.Add(new XElement(nameof(State), State));
+            xml.Add(new XElement("HashCode", GetMd5Code()));
             return xml;
+        }
+
+        public string GetMd5Code()
+        {
+            var srcStr = Name +
+                Period.To.ToString() + Period.From.ToString() +
+                Description.ToString() +
+                Project.ToString() +
+                Tags.ToString() +
+                State.ToString();
+
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                byte[] srcBytes = System.Text.Encoding.UTF8.GetBytes(srcStr);
+                byte[] destBytes = md5.ComputeHash(srcBytes);
+                System.Text.StringBuilder destStrBuilder;
+                destStrBuilder = new System.Text.StringBuilder();
+                foreach (byte curByte in destBytes)
+                {
+                    destStrBuilder.Append(curByte.ToString("x2"));
+                }
+                return destStrBuilder.ToString();
+            }
         }
 
         public static WorkItem CreateProto(Period period, Member member)
