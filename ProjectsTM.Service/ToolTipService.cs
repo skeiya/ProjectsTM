@@ -72,7 +72,7 @@ namespace ProjectsTM.Service
             if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
             if (_lastUpdateInfoService != null)
             {
-                s.Append("履歴："); s.AppendLine(_lastUpdateInfoService.GetInfo(wi));
+                s.AppendLine(_lastUpdateInfoService.GetInfo(wi));
             }
             AddDescription(s, wi);
 
