@@ -125,10 +125,10 @@ namespace ProjectsTM.Service
 
         private static string ParseLastUpdateDateAndUserName(string str)
         {
-             if (string.IsNullOrEmpty(str)) return string.Empty;
-             var matche = Regex.Match(str, @"........ .*");
-             if (!matche.Success) return string.Empty;
-             return str;
+            if (string.IsNullOrEmpty(str)) return string.Empty;
+            var matche = Regex.Match(str, @"........ .*           <HashCode>.*</HashCode>");
+            if (!matche.Success) return string.Empty;
+            return Regex.Replace(str, ".............           <HashCode>.*</HashCode>", string.Empty);
         }
     }
 }
