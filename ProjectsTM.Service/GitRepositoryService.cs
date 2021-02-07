@@ -123,7 +123,7 @@ namespace ProjectsTM.Service
             return lastUpdateDateAndUserName;
         }
 
-        public static string ParseLastUpdateDateAndUserName(string str)
+        private static string ParseLastUpdateDateAndUserName(string str)
         {
              if (string.IsNullOrEmpty(str)) return string.Empty;
              var matche = Regex.Match(str, @"........ .*");
