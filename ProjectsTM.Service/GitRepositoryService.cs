@@ -117,7 +117,7 @@ namespace ProjectsTM.Service
             return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
 
-        public static string GetLastUpdateInfo(string filePath, int lineNo)
+        public static string GetLastUpdateDateAndUserName(string filePath, int lineNo)
         {
             var lastUpdateDateAndUserName = ParseLastUpdateDateAndUserName(GitCmdRepository.GitBlameOneLine(filePath, lineNo));
             return lastUpdateDateAndUserName;
