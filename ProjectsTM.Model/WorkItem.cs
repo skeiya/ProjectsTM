@@ -80,6 +80,7 @@ namespace ProjectsTM.Model
         public string GetMd5Code()
         {
             var srcStr = Name +
+                AssignedMember.ToSerializeString() +
                 Period.To.ToString() + Period.From.ToString() +
                 Description.ToString() +
                 Project.ToString() +
