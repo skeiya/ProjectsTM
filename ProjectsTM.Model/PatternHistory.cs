@@ -60,17 +60,12 @@ namespace ProjectsTM.Model
 
         public void Load(string path)
         {
-            if (File.Exists(path))
+            if (!File.Exists(path)) return;
+            var xml = XElement.Load(path);
+            var h = PatternHistory.FromXml(xml);
+            foreach (var p in h.Items)
             {
-                var s = new XmlSerializer(typeof(PatternHistory));
-                using (var r = new FileStream(path, FileMode.Open))
-                {
-                    var h = (PatternHistory)s.Deserialize(r);
-                    foreach (var p in h.Items)
-                    {
-                        Append(p);
-                    }
-                }
+                Append(p);
             }
         }
 
