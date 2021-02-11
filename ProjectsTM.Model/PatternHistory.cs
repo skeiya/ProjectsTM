@@ -51,6 +51,7 @@ namespace ProjectsTM.Model
         public static PatternHistory FromXml(XElement xml)
         {
             var result = new PatternHistory();
+            if (xml.Element(nameof(PatternHistory)) == null) return result;
             foreach (var p in xml.Element(nameof(PatternHistory)).Elements("Pattern"))
             {
                 result.ListCore.Add(p.Value);

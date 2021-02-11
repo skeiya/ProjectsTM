@@ -74,7 +74,7 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public static WorkItem FromXml(XElement xml, Member assign)
+        internal static WorkItem FromXml(XElement xml, Member assign)
         {
             var result = new WorkItem();
             result.Name = xml.Attribute("Name").Value;
