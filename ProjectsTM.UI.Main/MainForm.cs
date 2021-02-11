@@ -94,7 +94,7 @@ namespace ProjectsTM.UI.Main
                 var setting = UserSettingUIService.Load();
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
-                _patternHistory = setting.PatternHistory;
+                _patternHistory.CopyFrom(setting.PatternHistory);
                 OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);

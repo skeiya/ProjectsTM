@@ -27,7 +27,7 @@ namespace ProjectsTM.ViewModel
             viewData.Selected = new WorkItems();
             foreach (var a in p)
             {
-                var w = WorkItem.Deserialize(a.WorkItemText);
+                var w = WorkItem.Deserialize(a.WorkItemText, a.Member);
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Remove(w);
@@ -49,7 +49,7 @@ namespace ProjectsTM.ViewModel
             viewData.Selected = new WorkItems();
             foreach (var a in r)
             {
-                var w = WorkItem.Deserialize(a.WorkItemText);
+                var w = WorkItem.Deserialize(a.WorkItemText, a.Member);
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Add(w);

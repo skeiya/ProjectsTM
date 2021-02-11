@@ -2,16 +2,15 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
     public class PatternHistory
     {
-        [XmlIgnore]
         public ReadOnlyCollection<string> Items => ListCore.Reverse<string>().ToList().AsReadOnly();
 
-        [XmlElement]
         private List<string> ListCore { get; } = new List<string>();
 
         private static int Depth => 20;
@@ -42,20 +41,37 @@ namespace ProjectsTM.Model
             return ListCore[ListCore.Count - 1].Equals(text);
         }
 
+        public XElement ToXml()
+        {
+            var xml = new XElement(nameof(PatternHistory));
+            ListCore.ForEach(h => xml.Add(new XElement("Pattern") { Value = h.ToString() }));
+            return xml;
+        }
+
+        public static PatternHistory FromXml(XElement xml)
+        {
+            var result = new PatternHistory();
+            foreach (var p in xml.Element(nameof(PatternHistory)).Elements("Pattern"))
+            {
+                result.ListCore.Add(p.Value);
+            }
+            return result;
+        }
+
         public void Load(string path)
         {
-            if (File.Exists(path))
+            if (!File.Exists(path)) return;
+            var xml = XElement.Load(path);
+            var h = PatternHistory.FromXml(xml);
+            foreach (var p in h.Items)
             {
-                var s = new XmlSerializer(typeof(PatternHistory));
-                using (var r = new FileStream(path, FileMode.Open))
-                {
-                    var h = (PatternHistory)s.Deserialize(r);
-                    foreach (var p in h.Items)
-                    {
-                        Append(p);
-                    }
-                }
+                Append(p);
             }
+        }
+
+        public void CopyFrom(PatternHistory patternHistory)
+        {
+            this.ListCore.AddRange(patternHistory.Items);
         }
     }
 }
