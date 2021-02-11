@@ -13,7 +13,7 @@ namespace ProjectsTM.UI.Main
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
-        private PatternHistory _patternHistory = new PatternHistory();
+        private readonly PatternHistory _patternHistory = new PatternHistory();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -87,7 +87,7 @@ namespace ProjectsTM.UI.Main
                 var setting = UserSettingUIService.Load();
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
-                _patternHistory = setting.PatternHistory;
+                _patternHistory.CopyFrom(setting.PatternHistory);
                 OpenAppData(_fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);

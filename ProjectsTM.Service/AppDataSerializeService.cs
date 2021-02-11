@@ -34,10 +34,7 @@ namespace ProjectsTM.Service
 
         public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
-            XmlDocument doc = new XmlDocument
-            {
-                PreserveWhitespace = false,
-            };
+            XmlDocument doc = new XmlDocument();
             doc.Load(reader);
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {
