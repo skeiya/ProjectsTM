@@ -19,12 +19,12 @@ namespace ProjectsTM.Service
             return new GitCmdRepository(repositoryDir);
         }
 
-        public static string GitBlameOneLine(string path, int lineNo)
+        public static string GitBlame(string path, int startLine, int endLine)
         {
             var dir = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(dir)) return string.Empty;
-            var reader = new StringReader(GitCommandRaw("-C " + dir + " blame -L " + lineNo + ",+1 " + path));
-            return reader.ReadLine();
+            var reader = new StringReader(GitCommandRaw("-C " + dir + " blame -L " + startLine.ToString() + "," + endLine.ToString() + " " + path));
+            return reader.ReadToEnd();
         }
 
         public static string GitOldCommitMonthsAgo(string path, int months)

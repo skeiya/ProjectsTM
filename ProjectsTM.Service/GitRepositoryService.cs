@@ -117,18 +117,35 @@ namespace ProjectsTM.Service
             return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
 
-        public static string GetLastUpdateDateAndUserName(string filePath, int lineNo)
+        public static string GetLastUpdateDateAndUserName(string filePath, int startLine, int endLine)
         {
-            var lastUpdateDateAndUserName = ParseLastUpdateDateAndUserName(GitCmdRepository.GitBlameOneLine(filePath, lineNo));
+            var lastUpdateDateAndUserName = ParseLastUpdateDateAndUserName(GitCmdRepository.GitBlame(filePath, startLine, endLine));
             return lastUpdateDateAndUserName;
         }
 
         private static string ParseLastUpdateDateAndUserName(string str)
         {
             if (string.IsNullOrEmpty(str)) return string.Empty;
-            var matche = Regex.Match(str, @"........ .*           <HashCode>.*</HashCode>");
-            if (!matche.Success) return string.Empty;
-            return Regex.Replace(str, ".............           <HashCode>.*</HashCode>", string.Empty);
+            MatchCollection result = Regex.Matches(str, @"........ .* (....)-(..)-(..) (..):(..):(..)");
+            if (result.Count <= 0) return string.Empty;
+            return GetLatestDateAndUserName(result);
         }
+
+        private static string GetLatestDateAndUserName(MatchCollection matches)
+        {
+            if (matches.Count <= 0) return string.Empty;
+            var result = matches[0];
+            for (int i = 0; i < matches.Count; i++)
+            {
+                string strResult = string.Empty; string strM = string.Empty;
+                for (int j = 1; j < result.Groups.Count; j++)
+                {
+                    strResult += result.Groups[j].Value;
+                    strM += matches[i].Groups[j].Value;
+                }
+                if (ulong.Parse(strResult) < ulong.Parse(strM)) result = matches[i];
+            }
+            return result.Value;
+        }       
     }
 }

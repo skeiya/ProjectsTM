@@ -13,14 +13,14 @@ namespace ProjectsTM.Service
         private bool disposedValue;
         private readonly ViewData _viewData;
         private readonly Control _parentControl;
-        private readonly WorkItemLastUpdateInfoService _lastUpdateInfoService;
+        private readonly WorkItemLastUpdateDateAndUserNameService _lastUpdateDateAndUserNameService;
 
-        public ToolTipService(Control c, ViewData viewData, WorkItemLastUpdateInfoService lastUpdateInfoService)
+        public ToolTipService(Control c, ViewData viewData, WorkItemLastUpdateDateAndUserNameService lastUpdateDateAndUserNameService)
         {
             this._toolTip.ShowAlways = true;
             this._parentControl = c;
             this._viewData = viewData;
-            this._lastUpdateInfoService = lastUpdateInfoService;
+            this._lastUpdateDateAndUserNameService = lastUpdateDateAndUserNameService;
         }
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
@@ -70,7 +70,12 @@ namespace ProjectsTM.Service
             s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
             if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
-            if (_lastUpdateInfoService != null) s.AppendLine(_lastUpdateInfoService.GetInfo(wi));
+            s.AppendLine();
+            if (_lastUpdateDateAndUserNameService != null)
+            { 
+                s.Append("最終更新："); s.AppendLine(); 
+                s.AppendLine(_lastUpdateDateAndUserNameService.GetDateAndUserName(wi)); 
+            }
             AddDescription(s, wi);
 
             return s.ToString();

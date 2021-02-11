@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private PatternHistory _patternHistory = new PatternHistory();
-        private WorkItemLastUpdateInfoService _lastUpdateInfoService = new WorkItemLastUpdateInfoService();
+        private WorkItemLastUpdateDateAndUserNameService _lastUpdateDateAndUserNameService = new WorkItemLastUpdateDateAndUserNameService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -45,7 +45,7 @@ namespace ProjectsTM.UI.Main
 
         private void FileIOService_FileSaved(object sender, string filePath)
         {
-            _lastUpdateInfoService.Load(filePath);
+            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void SuggestSetting()
@@ -69,7 +69,7 @@ namespace ProjectsTM.UI.Main
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            workItemGrid1.Initialize(_viewData, _lastUpdateInfoService);
+            workItemGrid1.Initialize(_viewData, _lastUpdateDateAndUserNameService);
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(null);
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
@@ -125,7 +125,7 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-            _lastUpdateInfoService.Load(filePath);
+            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
