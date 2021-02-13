@@ -276,6 +276,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
+            _taskListManager.UserName = _me == null ? string.Empty : _me.NaturalString;
             _taskListManager.Show();
         }
 

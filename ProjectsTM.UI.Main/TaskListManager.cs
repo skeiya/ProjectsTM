@@ -12,6 +12,8 @@ namespace ProjectsTM.UI.Main
         private readonly PatternHistory _patternHistory;
         private readonly IWin32Window _parent;
 
+        public string UserName { get; set; }
+
         public TaskListManager(ViewData viewData, PatternHistory patternHistory, IWin32Window parent)
         {
             _viewData = viewData;
@@ -46,7 +48,7 @@ namespace ProjectsTM.UI.Main
 
         private void ShowCore(TaskListOption option)
         {
-            var f = new TaskListForm(_viewData, _patternHistory, option);
+            var f = new TaskListForm(_viewData, _patternHistory, option, UserName);
             f.FormClosed += taskListForm_FormClosed;
             f.Show(_parent);
             taskListForms.Add(f);
