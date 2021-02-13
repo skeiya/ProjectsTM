@@ -13,8 +13,8 @@ namespace ProjectsTM.UI.Main
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
-        private PatternHistory _patternHistory = new PatternHistory();
-        private WorkItemLastUpdateDateAndUserNameService _lastUpdateDateAndUserNameService = new WorkItemLastUpdateDateAndUserNameService();
+        private readonly PatternHistory _patternHistory = new PatternHistory();
+        private readonly WorkItemLastUpdateDateAndUserNameService _lastUpdateDateAndUserNameService = new WorkItemLastUpdateDateAndUserNameService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
