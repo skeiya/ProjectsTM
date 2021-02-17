@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
-        private DateTime _last;
+        private DateTime _last = DateTime.MinValue;
         private bool _isDirty = false;
 
         public AppDataFileIOService()
@@ -29,7 +29,6 @@ namespace ProjectsTM.Service
 
         private bool IsEnoughTerm()
         {
-            if (_last == null) return true;
             var now = DateTime.Now;
             var span = now - _last;
             if (span.TotalSeconds < 3) return false;
