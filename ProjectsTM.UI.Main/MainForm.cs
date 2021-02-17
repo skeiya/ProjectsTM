@@ -64,7 +64,7 @@ namespace ProjectsTM.UI.Main
             _taskListManager.UpdateView();
             workItemGrid1.Initialize(_viewData);
             _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(null);
+            UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty;
             toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty;
@@ -135,7 +135,7 @@ namespace ProjectsTM.UI.Main
 
         private void UpdateDisplayOfSum(IEditedEventArgs e)
         {
-            var sum = _calculateSumService.Calculate(_viewData.Core, e?.UpdatedMembers);
+            var sum = _calculateSumService.Calculate(_viewData.Core, e.UpdatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
