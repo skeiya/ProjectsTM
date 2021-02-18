@@ -98,15 +98,10 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        public AppData Open()
+        public AppData Open(string path)
         {
-            using (var dlg = new OpenFileDialog())
-            {
-                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
-                if (dlg.ShowDialog() != DialogResult.OK) return null;
-                _previousFileName = dlg.FileName;
-                return OpenFile(dlg.FileName);
-            }
+            _previousFileName = path;
+            return OpenFile(path);
         }
 
         public AppData ReOpen()

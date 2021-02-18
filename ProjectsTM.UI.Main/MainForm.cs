@@ -167,7 +167,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            OpenAppData(_fileIOService.Open());
+            using (var dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                OpenAppData(_fileIOService.Open(dlg.FileName));
+            }
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)
