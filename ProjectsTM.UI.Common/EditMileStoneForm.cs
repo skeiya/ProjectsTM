@@ -78,22 +78,24 @@ namespace ProjectsTM.UI.Common
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
+            if (!ValidateDay()) return;
             _mileStone = CreateMileStone();
             if (_mileStone == null) return;
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private static MileStone ErrorMsg_NonWokingDay()
+        private bool ValidateDay()
         {
+            var day = CallenderDay.Parse(textBoxDate.Text);
+            if (_callender.Contains(day)) return true;
             MessageBox.Show("非稼働日です。稼働日を入力してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            return null;
+            return false;
         }
 
         private MileStone CreateMileStone()
         {
             var day = CallenderDay.Parse(textBoxDate.Text);
-            if (!_callender.Contains(day)) return ErrorMsg_NonWokingDay();
             return new MileStone(textBoxName.Text, new Project(textBoxProject.Text), day, labelColor.BackColor, new MileStoneFilter(comboBox1.Text), GetState());
         }
 
