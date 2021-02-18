@@ -33,7 +33,7 @@ namespace ProjectsTM.Service
                     Environment.NewLine +
                     "※同名作業項目のメモ※";
             }
-            return null;
+            return string.Empty;
         }
 
         private string CreateDescriptionContent(WorkItem hoveringWorkItem)
