@@ -90,7 +90,6 @@ namespace ProjectsTM.Service
             foreach (var c in range.Cols)
             {
                 var absentTerms = absentInfo.GetAbsentTerms(_grid.Col2Member(c));
-                if (absentTerms == null) continue;
                 foreach (var a in absentTerms)
                 {
                     foreach (var r in range.Rows)
