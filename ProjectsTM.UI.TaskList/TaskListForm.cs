@@ -12,6 +12,7 @@ namespace ProjectsTM.UI.TaskList
     {
         private readonly PatternHistory _history;
         private readonly string _userName;
+        private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, string userName)
         {
@@ -149,7 +150,7 @@ namespace ProjectsTM.UI.TaskList
         private void SetUserNameSortSelect()
         {
             if (!IsUserSettingSet()) return;
-            comboBoxPattern.Items.Add($"あなた({_userName})に割り当てられたタスク");
+            comboBoxPattern.Items.Add(DispUserNameSortSelection);
         }
 
         private TaskListOption GetSortPatternFormUserName(string userName)
@@ -178,7 +179,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void AppendSelectiontToHistory()
         {
-            if (comboBoxPattern.Text.Equals($"あなた({_userName})に割り当てられたタスク")) return;
+            if (comboBoxPattern.Text.Equals(DispUserNameSortSelection)) return;
             _history.Append(comboBoxPattern.Text);
         }
     }
