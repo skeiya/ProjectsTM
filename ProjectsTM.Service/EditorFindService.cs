@@ -17,7 +17,7 @@ namespace ProjectsTM.Service
         public string Find(WorkItem workItem)
         {
             if (_xmlLines.TryGetValue(workItem, out var result)) return result;
-            result = GitRepositoryService.GetLastEditorName(_filePath, workItem.LineNumber, workItem.LineNumber + workItem.LinePosition);
+            result = GitRepositoryService.GetLastEditorName(_filePath, workItem.LineStart, workItem.LineEnd);
             _xmlLines.Add(workItem, result);
             return result;
         }

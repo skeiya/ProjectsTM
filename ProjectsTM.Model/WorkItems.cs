@@ -57,13 +57,7 @@ namespace ProjectsTM.Model
                 foreach (var w in m.Element(nameof(MembersWorkItems))
                     .Elements(nameof(WorkItem)))
                 {
-                    var workItem = WorkItem.FromXml(w, assign);
-                    if (w is IXmlLineInfo info && info.HasLineInfo())
-                    {
-                        workItem.LinePosition = info.LinePosition;
-                        workItem.LineNumber = info.LineNumber;
-                    }
-                    result.Add(workItem);
+                    result.Add(WorkItem.FromXml(w, assign));
                 }
             }
             return result;

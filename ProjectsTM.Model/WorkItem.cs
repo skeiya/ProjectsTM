@@ -49,8 +49,8 @@ namespace ProjectsTM.Model
             }
         }
 
-        public int LinePosition { get; internal set; }
-        public int LineNumber { get; internal set; }
+        public int LineStart { get; private set; } = -1;
+        public int LineEnd { get; private set; } = -1;
 
         public WorkItem() { }
 
@@ -87,6 +87,13 @@ namespace ProjectsTM.Model
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
             result.Description = xml.Element("Description").Value;
             result.AssignedMember = assign;
+
+            if (xml is IXmlLineInfo info && info.HasLineInfo())
+            {
+                result.LineStart = info.LineNumber;
+                result.LineEnd = info.LineNumber + info.LinePosition;
+            }
+
             return result;
         }
 
