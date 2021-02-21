@@ -100,17 +100,6 @@ namespace ProjectsTM.UI.Main
             listView1.Items[index + 1].Selected = true;
         }
 
-        private void ButtonImport_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK) return;
-                var appData = AppDataSerializeService.Deserialize(dlg.FileName);
-                _colorConditions.Apply(appData.ColorConditions);
-                UpdateList();
-            }
-        }
-
         internal ColorConditions GetColorConditions()
         {
             return _colorConditions;
