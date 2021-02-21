@@ -4,6 +4,7 @@ using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.TaskList
@@ -155,8 +156,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetSortPatternFormUserName(string userName)
         {
-            if (userName.Contains("(")) userName = userName.Replace("(", @"\(");
-            if (userName.Contains(")")) userName = userName.Replace(")", @"\)");
+            userName = Regex.Escape(userName);
             return new TaskListOption(userName, false, string.Empty, gridControl1.Option.ErrorDisplayType);
         }
 
