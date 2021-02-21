@@ -362,7 +362,7 @@ namespace ProjectsTM.UI.Main
 
         public Member X2Member(int x)
         {
-            if (GridWidth < x) return null;
+            if (GridWidth < x) return Member.Invalid;
             var c = X2Col(x);
             return Col2Member(c);
         }
