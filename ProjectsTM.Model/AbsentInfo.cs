@@ -13,7 +13,7 @@ namespace ProjectsTM.Model
 
         public AbsentTerms GetAbsentTerms(Member m)
         {
-            if (!_items.TryGetValue(m, out AbsentTerms value)) return null;
+            if (!_items.TryGetValue(m, out AbsentTerms value)) return new AbsentTerms();
             return value;
         }
 

@@ -362,7 +362,7 @@ namespace ProjectsTM.UI.Main
 
         public Member X2Member(int x)
         {
-            if (GridWidth < x) return null;
+            if (GridWidth < x) return Member.Invalid;
             var c = X2Col(x);
             return Col2Member(c);
         }
@@ -381,8 +381,7 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToTodayAndMember(Member m)
         {
-            var now = DateTime.Now;
-            var today = new CallenderDay(now.Year, now.Month, now.Day);
+            var today = _viewData.Original.Callender.NearestFromToday;
             MoveVisibleDayAndMember(today, m);
         }
 

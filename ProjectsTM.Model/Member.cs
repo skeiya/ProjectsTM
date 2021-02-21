@@ -8,11 +8,11 @@ namespace ProjectsTM.Model
     public class Member : IComparable<Member>
     {
         [XmlIgnore]
-        public string FirstName { get; private set; }
+        public string FirstName { get; private set; } = string.Empty;
         [XmlIgnore]
-        public string LastName { get; private set; }
+        public string LastName { get; private set; } = string.Empty;
         [XmlIgnore]
-        public string Company { get; private set; }
+        public string Company { get; private set; } = string.Empty;
 
         [XmlElement]
         public string MemberElement
@@ -87,6 +87,8 @@ namespace ProjectsTM.Model
         }
 
         public string NaturalString => LastName + " " + FirstName + "(" + Company + ")";
+
+        public static Member Invalid { get; } = new Member();
 
         public static Member Parse(string text)
         {
