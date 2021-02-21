@@ -36,7 +36,7 @@ namespace UnitTestProject
 
             viewData = new MainViewData(appData);
             grid = new WorkItemGrid();
-            grid.Initialize(viewData,null);
+            grid.Initialize(viewData, new EditorFindService());
 
             /* グリッドの列幅・行高
               24 12 12 35 35
