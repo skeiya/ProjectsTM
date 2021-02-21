@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
-        private readonly WorkItemLastUpdateDateAndUserNameService _lastUpdateDateAndUserNameService = new WorkItemLastUpdateDateAndUserNameService();
+        private readonly EditorFindService _lastUpdateDateAndUserNameService = new EditorFindService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;

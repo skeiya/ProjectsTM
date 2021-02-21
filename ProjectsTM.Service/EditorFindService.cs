@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProjectsTM.Service
 {
-    public class WorkItemLastUpdateDateAndUserNameService
+    public class EditorFindService
     {
         private string _filePath;
         private readonly Dictionary<WorkItem, string> _xmlLines = new Dictionary<WorkItem, string>();

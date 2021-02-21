@@ -21,14 +21,14 @@ namespace ProjectsTM.Service
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, WorkItemLastUpdateDateAndUserNameService lastUpdateDateAndUserNameService)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService)
         {
             this._viewData = viewData;
             this._grid = grid;
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
-            this._toolTipService = new ToolTipService(parentControl, _viewData, lastUpdateDateAndUserNameService);
+            this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService);
             HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
         }
 

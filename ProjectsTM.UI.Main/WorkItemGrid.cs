@@ -40,7 +40,7 @@ namespace ProjectsTM.UI.Main
 
         }
 
-        public void Initialize(MainViewData viewData, WorkItemLastUpdateDateAndUserNameService lastUpdateDateAndUserNameService)
+        public void Initialize(MainViewData viewData, EditorFindService lastUpdateDateAndUserNameService)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
