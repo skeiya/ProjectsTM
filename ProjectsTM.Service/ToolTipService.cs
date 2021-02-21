@@ -73,11 +73,9 @@ namespace ProjectsTM.Service
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
             if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
             s.AppendLine();
-            if (_lastUpdateDateAndUserNameService != null)
-            { 
-                s.Append("最終更新："); s.AppendLine(); 
-                s.AppendLine(_lastUpdateDateAndUserNameService.GetDateAndUserName(wi)); 
-            }
+            s.Append("最終更新：");
+            s.AppendLine();
+            s.AppendLine(_lastUpdateDateAndUserNameService.GetDateAndUserName(wi));
             s.Append(GetDescription(wi));
             return s.ToString();
         }

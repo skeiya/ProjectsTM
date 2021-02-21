@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -57,7 +58,13 @@ namespace ProjectsTM.Model
                 foreach (var w in m.Element(nameof(MembersWorkItems))
                     .Elements(nameof(WorkItem)))
                 {
-                    result.Add(WorkItem.FromXml(w, assign));
+                    var workItem = WorkItem.FromXml(w, assign);
+                    if (w is IXmlLineInfo info && info.HasLineInfo())
+                    {
+                        workItem.LinePosition = info.LinePosition;
+                        workItem.LineNumber = info.LineNumber;
+                    }
+                    result.Add(workItem);
                 }
             }
             return result;

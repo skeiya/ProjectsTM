@@ -49,6 +49,9 @@ namespace ProjectsTM.Model
             }
         }
 
+        public int LinePosition { get; internal set; }
+        public int LineNumber { get; internal set; }
+
         public WorkItem() { }
 
         public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state, string description)
