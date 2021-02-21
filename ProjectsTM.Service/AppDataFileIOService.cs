@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
         public event EventHandler FileSaved;
-        private DateTime _last;
+        private DateTime _last = DateTime.MinValue;
         private bool _isDirty = false;
 
         public AppDataFileIOService()
@@ -29,7 +29,6 @@ namespace ProjectsTM.Service
 
         private bool IsEnoughTerm()
         {
-            if (_last == null) return true;
             var now = DateTime.Now;
             var span = now - _last;
             if (span.TotalSeconds < 3) return false;
@@ -99,15 +98,10 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        public AppData Open()
+        public AppData Open(string path)
         {
-            using (var dlg = new OpenFileDialog())
-            {
-                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
-                if (dlg.ShowDialog() != DialogResult.OK) return null;
-                _previousFileName = dlg.FileName;
-                return OpenFile(dlg.FileName);
-            }
+            _previousFileName = path;
+            return OpenFile(path);
         }
 
         public AppData ReOpen()

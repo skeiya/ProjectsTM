@@ -74,9 +74,9 @@ namespace ProjectsTM.UI.Main
         internal Member Col2Member(ColIndex c)
         {
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
+            if (c == null) return Member.Invalid;
             var members = _viewData.FilteredItems.Members;
-            if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return null;
+            if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return Member.Invalid;
             var result = _viewData.FilteredItems.Members.ElementAt(c.Value - _grid.FixedColCount);
             _col2MemberChache.Add(c, result);
             return result;

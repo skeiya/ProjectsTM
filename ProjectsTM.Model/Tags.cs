@@ -17,7 +17,7 @@ namespace ProjectsTM.Model
 
         public override string ToString()
         {
-            if (_tags == null || _tags.Count == 0) return string.Empty;
+            if (_tags.Count == 0) return string.Empty;
             var result = _tags[0];
             for (int index = 1; index < _tags.Count; index++)
             {
@@ -44,7 +44,7 @@ namespace ProjectsTM.Model
 
         internal string ToDrawString()
         {
-            if (_tags == null || _tags.Count == 0) return string.Empty;
+            if (_tags.Count == 0) return string.Empty;
             var result = new StringBuilder();
             foreach (var t in _tags)
             {

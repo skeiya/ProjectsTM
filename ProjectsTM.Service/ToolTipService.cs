@@ -33,7 +33,7 @@ namespace ProjectsTM.Service
                     Environment.NewLine +
                     "※同名作業項目のメモ※";
             }
-            return null;
+            return string.Empty;
         }
 
         private string CreateDescriptionContent(WorkItem hoveringWorkItem)
@@ -42,18 +42,20 @@ namespace ProjectsTM.Service
             return GetDescrptionFromOtherWorkItem(hoveringWorkItem);
         }
 
-        private static void SetDescriptionContent(StringBuilder allStrForTooltip, string strDescription)
+        private static StringBuilder GetDescriptionContent(string strDescription)
         {
-            if (strDescription == null) return;
-            allStrForTooltip.AppendLine();
-            allStrForTooltip.AppendLine("---作業項目メモ---");
-            allStrForTooltip.AppendLine(strDescription);
+            var result = new StringBuilder();
+            if (string.IsNullOrEmpty(strDescription)) return result;
+            result.AppendLine();
+            result.AppendLine("---作業項目メモ---");
+            result.AppendLine(strDescription);
+            return result;
         }
 
-        private void AddDescription(StringBuilder allStringForTooltip, WorkItem hoveringWorkItem)
+        private StringBuilder GetDescription(WorkItem hoveringWorkItem)
         {
             string result = CreateDescriptionContent(hoveringWorkItem);
-            SetDescriptionContent(allStringForTooltip, result);
+            return GetDescriptionContent(result);
         }
 
         private string CreateStrForTooltip(WorkItem wi, int days)
@@ -68,8 +70,7 @@ namespace ProjectsTM.Service
             s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
             if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
-            AddDescription(s, wi);
-
+            s.Append(GetDescription(wi));
             return s.ToString();
         }
 
