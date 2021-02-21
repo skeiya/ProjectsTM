@@ -63,7 +63,7 @@ namespace ProjectsTM.UI.Main
 
         private void NotifyMySettingChanged()
         {
-            TaskListForm.ChangeMySetting?.Invoke(this, new MySettingChageEventArgs(Selected));
+            TaskListForm.ChangeMySetting?.Invoke(this, new MySettingChangeEventArgs(Selected));
         }
     }
 }

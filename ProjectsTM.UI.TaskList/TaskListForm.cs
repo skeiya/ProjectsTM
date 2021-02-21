@@ -16,7 +16,7 @@ namespace ProjectsTM.UI.TaskList
         private string _userName;
         private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
 
-        public delegate void MySettingChangedEventHandler(object sender, MySettingChageEventArgs e);
+        public delegate void MySettingChangedEventHandler(object sender, MySettingChangeEventArgs e);
 
         public static MySettingChangedEventHandler ChangeMySetting;
 
@@ -39,7 +39,7 @@ namespace ProjectsTM.UI.TaskList
             ChangeMySetting += UpdateMySetting;
         }
 
-        private void UpdateMySetting(object sender, MySettingChageEventArgs e)
+        private void UpdateMySetting(object sender, MySettingChangeEventArgs e)
         {
             _userName = e.MemberName;
             comboBoxPattern.Text = string.Empty;
