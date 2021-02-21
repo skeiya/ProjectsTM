@@ -119,6 +119,7 @@ namespace ProjectsTM.Service
 
         public static string GetLastUpdateDateAndUserName(string filePath, int startLine, int endLine)
         {
+            if (!IsActive()) return "gitがインストールされていません。";
             var lastUpdateDateAndUserName = ParseLastUpdateDateAndUserName(GitCmdRepository.GitBlame(filePath, startLine, endLine));
             return lastUpdateDateAndUserName;
         }
