@@ -15,7 +15,7 @@ namespace ProjectsTM.UI.TaskList
         private readonly string _userName;
         private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, string userName)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
             InitializeComponent();
 
@@ -30,7 +30,7 @@ namespace ProjectsTM.UI.TaskList
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
             this.checkBoxShowMS.Checked = option.IsShowMS;
             this.comboBoxPattern.SelectedIndexChanged += ComboBoxPattern_SelectedIndexChanged;
-            this._userName = userName;
+            this._userName = user.NaturalString;
         }
 
         private void InitializeCombobox(ErrorDisplayType errorDisplayType)

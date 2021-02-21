@@ -12,8 +12,6 @@ namespace ProjectsTM.UI.Main
         private readonly PatternHistory _patternHistory;
         private readonly IWin32Window _parent;
 
-        public Member User { get; set; }
-
         public TaskListManager(ViewData viewData, PatternHistory patternHistory, IWin32Window parent)
         {
             _viewData = viewData;
@@ -31,9 +29,9 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        internal void Show()
+        internal void Show(Member me)
         {
-            ShowCore(new TaskListOption());
+            ShowCore(new TaskListOption(), me);
         }
 
         internal void ShowOverlapCheck()
@@ -43,13 +41,12 @@ namespace ProjectsTM.UI.Main
                 ErrorDisplayType = ErrorDisplayType.OverlapOnly,
                 IsShowMS = false,
             };
-            ShowCore(option);
+            ShowCore(option, null);
         }
 
-        private void ShowCore(TaskListOption option)
+        private void ShowCore(TaskListOption option, Member me)
         {
-            var dispUserName = User == null ? string.Empty : User.NaturalString; 
-            var f = new TaskListForm(_viewData, _patternHistory, option, dispUserName);
+            var f = new TaskListForm(_viewData, _patternHistory, option, me);
             f.FormClosed += taskListForm_FormClosed;
             f.Show(_parent);
             taskListForms.Add(f);

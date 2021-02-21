@@ -276,8 +276,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
-            _taskListManager.User = _me;
-            _taskListManager.Show();
+            _taskListManager.Show(_me);
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
