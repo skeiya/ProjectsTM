@@ -17,6 +17,7 @@ namespace ProjectsTM.Model
                 var today = CallenderDay.Today;
                 if (_nearestDayCache.TryGetValue(today, out CallenderDay result)) return result;
                 result = _days.FirstOrDefault(d => today <= d);
+                if (result == null) result = _days.Last();
                 _nearestDayCache.Add(today, result);
                 return result;
             }

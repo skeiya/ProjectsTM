@@ -381,8 +381,7 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToTodayAndMember(Member m)
         {
-            var now = DateTime.Now;
-            var today = new CallenderDay(now.Year, now.Month, now.Day);
+            var today = _viewData.Original.Callender.NearestFromToday;
             MoveVisibleDayAndMember(today, m);
         }
 
