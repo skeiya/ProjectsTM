@@ -14,10 +14,10 @@ namespace ProjectsTM.Service
             _xmlLines.Clear();
         }
 
-        public string GetDateAndUserName(WorkItem workItem)
+        public string Find(WorkItem workItem)
         {
             if (_xmlLines.TryGetValue(workItem, out var result)) return result;
-            result = GitRepositoryService.GetLastUpdateDateAndUserName(_filePath, workItem.LineNumber, workItem.LineNumber + workItem.LinePosition);
+            result = GitRepositoryService.GetLastEditorName(_filePath, workItem.LineNumber, workItem.LineNumber + workItem.LinePosition);
             _xmlLines.Add(workItem, result);
             return result;
         }

@@ -75,7 +75,7 @@ namespace ProjectsTM.Service
             s.AppendLine();
             s.Append("最終更新：");
             s.AppendLine();
-            s.AppendLine(_editorFindService.GetDateAndUserName(wi));
+            s.AppendLine(_editorFindService.Find(wi));
             s.Append(GetDescription(wi));
             return s.ToString();
         }
