@@ -37,7 +37,7 @@ namespace ProjectsTM.Service
         }
 
         private readonly FileSystemWatcher _watcher;
-        private string _previousFileName;
+        private string _previousFileName = string.Empty;
         private bool disposedValue;
 
         public string FilePath => _previousFileName;

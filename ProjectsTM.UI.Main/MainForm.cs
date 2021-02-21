@@ -88,7 +88,7 @@ namespace ProjectsTM.UI.Main
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory.CopyFrom(setting.PatternHistory);
-                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
+                OpenAppData(string.IsNullOrEmpty(setting.FilePath) ? AppData.Dummy : _fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);
                 _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;

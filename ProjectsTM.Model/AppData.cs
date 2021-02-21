@@ -11,6 +11,51 @@ namespace ProjectsTM.Model
             get { return DataVersion; }
             set { }
         }
+
+        public static AppData Dummy
+        {
+            get
+            {
+                var appData = new AppData();
+                var ichiro = new Member("鈴木", "イチロー", "マリナーズ");
+                var gozzila = new Member("松井", "秀喜", "ヤンキース");
+                var godchild = new Member("田中", "将大", "ヤンキース");
+                appData.Members.Add(ichiro);
+                appData.Members.Add(gozzila);
+                appData.Members.Add(godchild);
+                appData.Callender.Add(new CallenderDay(2018, 4, 1));
+                appData.Callender.Add(new CallenderDay(2018, 4, 2));
+                appData.Callender.Add(new CallenderDay(2018, 4, 3));
+                appData.Callender.Add(new CallenderDay(2018, 5, 2));
+                appData.Callender.Add(new CallenderDay(2018, 6, 3));
+                appData.Callender.Add(new CallenderDay(2018, 7, 4));
+                appData.Callender.Add(new CallenderDay(2018, 7, 5));
+                appData.Callender.Add(new CallenderDay(2018, 7, 6));
+                appData.Callender.Add(new CallenderDay(2018, 7, 7));
+                appData.Callender.Add(new CallenderDay(2018, 8, 5));
+                appData.Callender.Add(new CallenderDay(2018, 8, 6));
+                appData.Callender.Add(new CallenderDay(2020, 11, 29));
+                appData.Callender.Add(new CallenderDay(2020, 12, 20));
+                appData.Callender.Add(new CallenderDay(2021, 2, 13));
+                var i = new WorkItem(
+                    new Project("PrjA"), "NameA", Tags.Parse(""),
+                    new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
+                    ichiro, TaskState.Active, "");
+                var g = new WorkItem(
+                    new Project("PrjB"), "NameB", Tags.Parse(""),
+                    new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
+                    gozzila, TaskState.Active, "");
+                var c = new WorkItem(
+                    new Project("PrjC"), "NameC", Tags.Parse(""),
+                    new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2020, 12, 20)),
+                    godchild, TaskState.Active, "");
+                appData.WorkItems.Add(i);
+                appData.WorkItems.Add(g);
+                appData.WorkItems.Add(c);
+                return appData;
+            }
+        }
+
         public Callender Callender = new Callender();
         public Members Members = new Members();
         public WorkItems WorkItems = new WorkItems();
