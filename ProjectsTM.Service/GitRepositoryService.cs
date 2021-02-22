@@ -145,7 +145,7 @@ namespace ProjectsTM.Service
                 }
                 if (ulong.Parse(strResult) < ulong.Parse(strM)) result = matches[i];
             }
-            return result.Groups[1].Value;
+            return result.Groups[1].Value.Substring(1);
         }
     }
 }
