@@ -97,6 +97,7 @@ namespace ProjectsTM.Service
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
                         CreateNoWindow = true,
+                        StandardOutputEncoding = Encoding.UTF8,
                     };
                     process.Start();
 
