@@ -116,5 +116,36 @@ namespace ProjectsTM.Service
             var commitId = ParseCommitId(GitCmdRepository.GitOldCommitMonthsAgo(filePath, months));
             return GitCmdRepository.GetOldFileContent(filePath, commitId);
         }
+
+        public static string GetLastEditorName(string filePath, int startLine, int endLine)
+        {
+            if (!IsActive()) return "gitがインストールされていません。";
+            return ParseLastEditorName(GitCmdRepository.GitBlame(filePath, startLine, endLine));
+        }
+
+        private static string ParseLastEditorName(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return string.Empty;
+            MatchCollection result = Regex.Matches(str, @"........ (.*) (....)-(..)-(..) (..):(..):(..)");
+            if (result.Count <= 0) return string.Empty;
+            return GetLastEditorName(result);
+        }
+
+        private static string GetLastEditorName(MatchCollection matches)
+        {
+            if (matches.Count <= 0) return string.Empty;
+            var result = matches[0];
+            for (int i = 0; i < matches.Count; i++)
+            {
+                string strResult = string.Empty; string strM = string.Empty;
+                for (int j = 2; j < result.Groups.Count; j++)
+                {
+                    strResult += result.Groups[j].Value;
+                    strM += matches[i].Groups[j].Value;
+                }
+                if (ulong.Parse(strResult) < ulong.Parse(strM)) result = matches[i];
+            }
+            return result.Groups[1].Value.Substring(1);
+        }
     }
 }

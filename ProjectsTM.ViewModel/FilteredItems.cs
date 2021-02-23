@@ -76,7 +76,6 @@ namespace ProjectsTM.ViewModel
 
         public WorkItem PickWorkItem(Member m, CallenderDay d)
         {
-            if (m == null) return null;
             foreach (var wi in GetWorkItemsOfMember(m))
             {
                 if (wi.Period.Contains(d)) return wi;

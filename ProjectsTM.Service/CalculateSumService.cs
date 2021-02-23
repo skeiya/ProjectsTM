@@ -29,14 +29,7 @@ namespace ProjectsTM.Service
 
         private void ClearDirtyCache(IEnumerable<Member> updatedMembers)
         {
-            if (updatedMembers == null)
-            {
-                _sumCache.Clear();
-            }
-            else
-            {
-                foreach (var m in updatedMembers) _sumCache.Remove(m);
-            }
+            foreach (var m in updatedMembers) _sumCache.Remove(m);
         }
 
         private void UpdateMemberCache(ViewData viewData, Member m)

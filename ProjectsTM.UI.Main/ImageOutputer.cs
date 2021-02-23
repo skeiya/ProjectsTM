@@ -16,7 +16,7 @@ namespace ProjectsTM.UI.Main
                 {
                     var size = new Size(orgGrid.GridWidth, orgGrid.GridHeight);
                     grid.Size = size;
-                    grid.Initialize(viewData);
+                    grid.Initialize(viewData, null);
                     using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
                     {
                         var g = Graphics.FromImage(bmp);

@@ -21,25 +21,20 @@ namespace ProjectsTM.Service
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService)
         {
             this._viewData = viewData;
             this._grid = grid;
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
-            this._toolTipService = new ToolTipService(parentControl, _viewData);
+            this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService);
             HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
         }
 
-        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
+        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem wi)
         {
-            if (e == null)
-            {
-                _toolTipService.Hide();
-                return;
-            }
-            _toolTipService.Update(e, _viewData.Original.Callender.GetPeriodDayCount(e.Period));
+            _toolTipService.Update(wi, _viewData.Original.Callender);
         }
 
         public void MouseDown(MouseEventArgs e)

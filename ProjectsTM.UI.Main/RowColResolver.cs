@@ -44,17 +44,15 @@ namespace ProjectsTM.UI.Main
         internal ColIndex Member2Col(Member m, IEnumerable<Member> members)
         {
             if (_member2ColChache.TryGetValue(m, out var col)) return col;
-            foreach (var c in ColIndex.Range(0, _grid.ColCount))
+            foreach (var c in ColIndex.Range(_grid.FixedColCount, _grid.ColCount - _grid.FixedColCount))
             {
-                if (members.ElementAt(c.Value).Equals(m))
+                if (members.ElementAt(c.Value - _grid.FixedColCount).Equals(m))
                 {
-                    var result = c.Offset(_grid.FixedColCount);
-                    _member2ColChache.Add(m, result);
-                    return result;
+                    _member2ColChache.Add(m, c);
+                    return c;
                 }
             }
-            Debug.Assert(false);
-            return null;
+            return new ColIndex(_grid.FixedColCount);
         }
 
         internal RowIndex Day2Row(CallenderDay day)
@@ -74,9 +72,9 @@ namespace ProjectsTM.UI.Main
         internal Member Col2Member(ColIndex c)
         {
             if (_col2MemberChache.TryGetValue(c, out var member)) return member;
-            if (c == null) return null;
+            if (c == null) return Member.Invalid;
             var members = _viewData.FilteredItems.Members;
-            if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return null;
+            if (c.Value - _grid.FixedColCount < 0 || members.Count() <= c.Value - _grid.FixedColCount) return Member.Invalid;
             var result = _viewData.FilteredItems.Members.ElementAt(c.Value - _grid.FixedColCount);
             _col2MemberChache.Add(c, result);
             return result;
