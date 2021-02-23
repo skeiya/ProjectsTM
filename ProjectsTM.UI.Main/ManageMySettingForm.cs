@@ -1,6 +1,5 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.UI.Common;
-using ProjectsTM.UI.TaskList;
 using System.Linq;
 
 namespace ProjectsTM.UI.Main
