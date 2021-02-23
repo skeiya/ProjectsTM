@@ -13,12 +13,14 @@ namespace ProjectsTM.Service
         private bool disposedValue;
         private readonly ViewData _viewData;
         private readonly Control _parentControl;
+        private readonly EditorFindService _editorFindService;
 
-        public ToolTipService(Control c, ViewData viewData)
+        public ToolTipService(Control c, ViewData viewData, EditorFindService editorFindService)
         {
             this._toolTip.ShowAlways = true;
             this._parentControl = c;
             this._viewData = viewData;
+            this._editorFindService = editorFindService;
         }
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
@@ -58,7 +60,7 @@ namespace ProjectsTM.Service
             return GetDescriptionContent(result);
         }
 
-        private string CreateStrForTooltip(WorkItem wi, int days)
+        private string GetDisplayString(WorkItem wi, Callender callender, string editor)
         {
             StringBuilder s = new StringBuilder();
             s.Append("名前:"); s.AppendLine(wi.Name);
@@ -69,15 +71,30 @@ namespace ProjectsTM.Service
             s.AppendLine();
             s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
-            if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
+            s.Append("人日:"); s.AppendLine(callender.GetPeriodDayCount(wi.Period).ToString());
+            s.AppendLine();
+            if (!string.IsNullOrEmpty(editor))
+            {
+                s.Append("最終更新："); s.AppendLine(editor);
+            }
             s.Append(GetDescription(wi));
             return s.ToString();
         }
 
-        public void Update(WorkItem wi, int days)
+        public async void Update(WorkItem wi, Callender callender)
         {
             if (wi == null) { this.Hide(); return; }
-            string s = CreateStrForTooltip(wi, days);
+            if (_editorFindService.TryFind(wi, out var dislayString))
+            {
+                string value = GetDisplayString(wi, callender, dislayString);
+                if (!value.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, value);
+                return;
+            }
+            string s = GetDisplayString(wi, callender, string.Empty);
+            if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
+
+            var editor = await _editorFindService.Find(wi).ConfigureAwait(true);
+            s = GetDisplayString(wi, callender, editor);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 

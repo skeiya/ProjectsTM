@@ -28,7 +28,7 @@ namespace ProjectsTM.Service
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader, IsOldFormat(fileName));
+                return AppData.FromXml(XElement.Load(fileName, LoadOptions.SetLineInfo));
             }
         }
 

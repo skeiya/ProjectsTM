@@ -49,6 +49,9 @@ namespace ProjectsTM.Model
             }
         }
 
+        public int LineStart { get; private set; } = -1;
+        public int LineEnd { get; private set; } = -1;
+
         public WorkItem() { }
 
         public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state, string description)
@@ -74,7 +77,7 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static WorkItem FromXml(XElement xml, Member assign)
+        public static WorkItem FromXml(XElement xml, Member assign)
         {
             var result = new WorkItem();
             result.Name = xml.Attribute("Name").Value;
@@ -84,6 +87,13 @@ namespace ProjectsTM.Model
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
             result.Description = xml.Element("Description").Value;
             result.AssignedMember = assign;
+
+            if (xml is IXmlLineInfo info && info.HasLineInfo())
+            {
+                result.LineStart = info.LineNumber;
+                result.LineEnd = info.LineNumber + info.LinePosition;
+            }
+
             return result;
         }
 
