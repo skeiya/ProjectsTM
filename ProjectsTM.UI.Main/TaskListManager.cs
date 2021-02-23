@@ -29,6 +29,15 @@ namespace ProjectsTM.UI.Main
             }
         }
 
+        internal void UpdateMySetting(Member me)
+        {
+            if (taskListForms.Count == 0) return;
+            taskListForms.ForEach(f =>
+            {
+                f.UpdateMySetting(me);
+            });
+        }
+
         internal void Show(Member me)
         {
             ShowCore(new TaskListOption(), me);

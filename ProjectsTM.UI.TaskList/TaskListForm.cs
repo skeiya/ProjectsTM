@@ -3,7 +3,6 @@ using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -17,8 +16,6 @@ namespace ProjectsTM.UI.TaskList
         private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
 
         public delegate void MySettingChangedEventHandler(object sender, MySettingChangeEventArgs e);
-
-        public static MySettingChangedEventHandler ChangeMySetting;
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
@@ -36,12 +33,11 @@ namespace ProjectsTM.UI.TaskList
             this.checkBoxShowMS.Checked = option.IsShowMS;
             this.comboBoxPattern.SelectedIndexChanged += ComboBoxPattern_SelectedIndexChanged;
             this._userName = user == null ? string.Empty : user.NaturalString;
-            ChangeMySetting += UpdateMySetting;
         }
 
-        private void UpdateMySetting(object sender, MySettingChangeEventArgs e)
+        public void UpdateMySetting(Member me)
         {
-            _userName = e.MemberName;
+            _userName = me == null ? string.Empty : me.NaturalString;
             comboBoxPattern.Text = string.Empty;
         }
 

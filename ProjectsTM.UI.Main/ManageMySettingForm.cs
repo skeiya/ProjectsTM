@@ -51,7 +51,6 @@ namespace ProjectsTM.UI.Main
         private void buttonOK_Click(object sender, System.EventArgs e)
         {
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            NotifyMySettingChanged();
             this.Close();
         }
 
@@ -59,11 +58,6 @@ namespace ProjectsTM.UI.Main
         {
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
-        }
-
-        private void NotifyMySettingChanged()
-        {
-            TaskListForm.ChangeMySetting?.Invoke(this, new MySettingChangeEventArgs(Selected));
         }
     }
 }

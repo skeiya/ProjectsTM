@@ -292,6 +292,7 @@ namespace ProjectsTM.UI.Main
                 _me = dlg.Selected;
                 _hideSuggestionForUserNameSetting = dlg.HideSetting;
             }
+            _taskListManager.UpdateMySetting(_me);
         }
 
         private void ToolStripMenuItemTrendChart_Click(object sender, EventArgs e)
