@@ -18,6 +18,7 @@ namespace ProjectsTM.Service
         private Cursor _originalCursor;
 
         public event EventHandler<WorkItem> HoveringTextChanged;
+        public event EventHandler HoveringTextHide;
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
@@ -30,6 +31,12 @@ namespace ProjectsTM.Service
             this._editService = editService;
             this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService);
             HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
+            HoveringTextHide += KeyAndMouseHandleService_HoveringTextHide;
+        }
+
+        private void KeyAndMouseHandleService_HoveringTextHide(object sender, EventArgs e)
+        {
+            _toolTipService.Hide();
         }
 
         private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem wi)
@@ -163,8 +170,14 @@ namespace ProjectsTM.Service
             if (_workItemDragService.IsActive()) return;
             if (_grid.IsFixedArea(location)) { UpdateHoveringMileStoneText(location); return; }
             RawPoint cur = _grid.Client2Raw(location);
-            _viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y), out var wi);
-            HoveringTextChanged?.Invoke(this, wi);
+            if (_viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y), out var wi))
+            {
+                HoveringTextChanged?.Invoke(this, wi);
+            }
+            else
+            {
+                HoveringTextHide?.Invoke(this, null);
+            }
         }
 
         private void UpdateHoveringMileStoneText(ClientPoint location)
