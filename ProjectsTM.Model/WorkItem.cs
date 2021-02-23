@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
     public class WorkItem : IComparable<WorkItem>
     {
-        [XmlIgnore]
         public Project Project { get; set; }
-        [XmlIgnore]
         public Tags Tags { get; set; }
         public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
         public string Description { get; set; } = string.Empty;
 
-        [XmlElement]
         public string ProjectElement
         {
             get { return Project.ToString(); }
             set { Project = new Project(value); }
         }
 
-        [XmlElement]
         public string TagsElement
         {
             get { return Tags.ToString(); }

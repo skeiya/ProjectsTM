@@ -60,6 +60,7 @@
     <Compile Include="SerializeTest.cs" />
     <Compile Include="KeyAndMouseHandlerTest.cs" />
     <Compile Include="FileVersionTest.cs" />
+    <Compile Include="UnitTestFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -103,6 +104,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="filterSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Versions\version1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
@@ -20,12 +19,9 @@ namespace ProjectsTM.Model
 
         public string Pattern = string.Empty;
 
-        [XmlIgnore]
         public Color BackColor = Color.White;
-        [XmlIgnore]
         public Color ForeColor = Color.Black;
 
-        [XmlElement]
         public string ColorText
         {
             get { return ColorSerializer.Serialize(BackColor) + "/" + ColorSerializer.Serialize(ForeColor); }
