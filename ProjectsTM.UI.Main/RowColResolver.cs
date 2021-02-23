@@ -2,7 +2,6 @@
 using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ProjectsTM.UI.Main
