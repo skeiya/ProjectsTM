@@ -11,12 +11,15 @@ namespace UnitTestProject
     public class FileVersionTest
     {
         [TestMethod]
-        public void TestVersion1()
+        public void TestVersions()
         {
-            var appData = AppDataSerializeService.Deserialize(Path.Combine("Version1", "oldformat.xml"));
-            Assert.IsTrue(appData.Callender.Contains(new CallenderDay(2021, 1, 1)));
-            Assert.IsTrue(appData.Members.Contains(new Member("a", "b", "c")));
-            Assert.IsTrue(appData.WorkItems.Count() == 1);
+            foreach (var v in Enumerable.Range(0, 6))
+            {
+                var appData = AppDataSerializeService.Deserialize(Path.Combine("Versions", "version" + v.ToString() + ".xml"));
+                Assert.IsTrue(appData.Callender.Contains(new CallenderDay(2021, 1, 1)));
+                Assert.IsTrue(appData.Members.Contains(new Member("a", "b", "c")));
+                Assert.IsTrue(appData.WorkItems.Count() == 1);
+            }
         }
     }
 }

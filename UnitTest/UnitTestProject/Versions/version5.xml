@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppData>
+  <Version>5</Version>
+  <Callender>
+    <Date>2021/01/01</Date>
+  </Callender>
+  <Members>
+    <Member>a/b/c</Member>
+  </Members>
+  <WorkItems>
+    <WorkItemsOfEachMember Name="a/b/c">
+      <MembersWorkItems>
+        <WorkItem Name="x">
+          <Period>
+            <From>2021/01/01</From>
+            <To>2021/01/01</To>
+          </Period>
+          <Description></Description>
+          <Project>y</Project>
+          <Tags></Tags>
+          <State>Active</State>
+        </WorkItem>
+      </MembersWorkItems>
+    </WorkItemsOfEachMember>
+  </WorkItems>
+  <ColorConditions />
+  <MileStones />
+  <AbsentInfo />
+</AppData>
