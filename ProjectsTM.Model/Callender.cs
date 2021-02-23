@@ -135,11 +135,6 @@ namespace ProjectsTM.Model
             return GetPeriodDays(period).Count();
         }
 
-        public bool IsEmpty()
-        {
-            return _days == null || _days.Count == 0;
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is Callender target)) return false;
