@@ -44,17 +44,15 @@ namespace ProjectsTM.UI.Main
         internal ColIndex Member2Col(Member m, IEnumerable<Member> members)
         {
             if (_member2ColChache.TryGetValue(m, out var col)) return col;
-            foreach (var c in ColIndex.Range(0, _grid.ColCount))
+            foreach (var c in ColIndex.Range(_grid.FixedColCount, _grid.ColCount - _grid.FixedColCount))
             {
-                if (members.ElementAt(c.Value).Equals(m))
+                if (members.ElementAt(c.Value - _grid.FixedColCount).Equals(m))
                 {
-                    var result = c.Offset(_grid.FixedColCount);
-                    _member2ColChache.Add(m, result);
-                    return result;
+                    _member2ColChache.Add(m, c);
+                    return c;
                 }
             }
-            Debug.Assert(false);
-            return null;
+            return new ColIndex(_grid.FixedColCount);
         }
 
         internal RowIndex Day2Row(CallenderDay day)
