@@ -32,14 +32,9 @@ namespace ProjectsTM.Service
             HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
         }
 
-        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem e)
+        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem wi)
         {
-            if (e == null)
-            {
-                _toolTipService.Hide();
-                return;
-            }
-            _toolTipService.Update(e, _viewData.Original.Callender.GetPeriodDayCount(e.Period));
+            _toolTipService.Update(wi, _viewData.Original.Callender);
         }
 
         public void MouseDown(MouseEventArgs e)

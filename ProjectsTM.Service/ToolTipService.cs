@@ -60,7 +60,7 @@ namespace ProjectsTM.Service
             return GetDescriptionContent(result);
         }
 
-        private string CreateStrForTooltip(WorkItem wi, int days)
+        private string CreateStrForTooltip(WorkItem wi, Callender callender)
         {
             StringBuilder s = new StringBuilder();
             s.Append("名前:"); s.AppendLine(wi.Name);
@@ -71,7 +71,7 @@ namespace ProjectsTM.Service
             s.AppendLine();
             s.Append("開始:"); s.AppendLine(wi.Period.From.ToString());
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
-            if (days > 0) { s.Append("人日:"); s.AppendLine(days.ToString()); }
+            s.Append("人日:"); s.AppendLine(callender.GetPeriodDayCount(wi.Period).ToString());
             s.AppendLine();
             s.Append("最終更新：");
             s.AppendLine();
@@ -80,10 +80,10 @@ namespace ProjectsTM.Service
             return s.ToString();
         }
 
-        public void Update(WorkItem wi, int days)
+        public void Update(WorkItem wi, Callender callender)
         {
             if (wi == null) { this.Hide(); return; }
-            string s = CreateStrForTooltip(wi, days);
+            string s = CreateStrForTooltip(wi, callender);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
