@@ -2,6 +2,7 @@
 using ProjectsTM.Service;
 using ProjectsTM.UI.Common;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
@@ -108,11 +109,12 @@ namespace ProjectsTM.UI.Main
 
         private void buttonAbsentManagement_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedIndex < 0) return;
             var m = listBox1.SelectedItem as Member;
-            if (m == null) return;
+            Debug.Assert(m != null);
             using (var dlg = new ManageAbsentInfoForm(m, _appData.AbsentInfo.OfMember(m), _appData.Callender))
             {
-                dlg.ShowDialog();
+                if (dlg.ShowDialog() != DialogResult.OK) return;
                 _appData.AbsentInfo.Replace(m, dlg.Edited);
             }
             UpdateList();
