@@ -56,12 +56,12 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static MileStone FromXml(XElement m)
+        internal static MileStone FromXml(XElement m, int version)
         {
             var result = new MileStone
             {
                 Name = m.Attribute("Name").Value,
-                Project = Project.FromXml(m),
+                Project = Project.FromXml(m, version),
                 Day = CallenderDay.FromXml(m.Element("Date")),
                 ColorText = m.Element("Color").Value,
                 MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value),

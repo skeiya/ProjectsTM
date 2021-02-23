@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using System.IO;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Service
@@ -31,7 +32,12 @@ namespace ProjectsTM.Service
 
         public static AppData LoadFromStream(StreamReader reader)
         {
-            return AppData.FromXml(XElement.Load(reader));
+            XmlDocument doc = new XmlDocument();
+            doc.Load(reader);
+            using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
+            {
+                return AppData.FromXml(XElement.Load(nodeReader));
+            }
         }
 
         public static AppData LoadFromString(string str)

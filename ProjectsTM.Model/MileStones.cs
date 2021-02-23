@@ -51,12 +51,12 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public static MileStones FromXml(XElement xml)
+        public static MileStones FromXml(XElement xml, int version)
         {
             var result = new MileStones();
             foreach (var m in xml.Elements(nameof(MileStone)))
             {
-                result.Add(MileStone.FromXml(m));
+                result.Add(MileStone.FromXml(m, version));
             }
             return result;
         }

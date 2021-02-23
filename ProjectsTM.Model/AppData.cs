@@ -108,9 +108,9 @@ namespace ProjectsTM.Model
                 result.Callender = Callender.FromXml(xml.Element(nameof(Callender)));
             }
             result.Members = Members.FromXml(xml.Element(nameof(Members)));
-            result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)));
+            result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)), version);
             result.ColorConditions = ColorConditions.FromXml(xml.Element(nameof(ColorConditions)));
-            result.MileStones = MileStones.FromXml(xml.Element(nameof(MileStones)));
+            result.MileStones = MileStones.FromXml(xml.Element(nameof(MileStones)), version);
             if (xml.Element(nameof(AbsentInfo)) != null)
             {
                 result.AbsentInfo = AbsentInfo.FromXml(xml.Element(nameof(AbsentInfo)));

@@ -77,13 +77,16 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public static WorkItem FromXml(XElement xml, Member assign)
+        public static WorkItem FromXml(XElement xml, Member assign, int version)
         {
             var result = new WorkItem();
-            result.Name = xml.Attribute("Name").Value;
-            result.Project = Project.FromXml(xml);
+            if (xml.Attribute("Name") != null)
+            {
+                result.Name = xml.Attribute("Name").Value;
+            }
+            result.Project = Project.FromXml(xml, version);
             result.Period = Period.FromXml(xml);
-            result.Tags = Tags.FromXml(xml);
+            result.Tags = Tags.FromXml(xml, version);
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
             result.Description = xml.Element("Description").Value;
             result.AssignedMember = assign;
@@ -166,7 +169,7 @@ namespace ProjectsTM.Model
             using (var n = new XmlNodeReader(doc))
             {
                 var xml = XElement.Load(n);
-                return WorkItem.FromXml(xml, assign);
+                return WorkItem.FromXml(xml, assign, AppData.DataVersion);
             }
         }
 
