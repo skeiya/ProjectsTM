@@ -60,7 +60,7 @@ namespace ProjectsTM.Service
             return GetDescriptionContent(result);
         }
 
-        private string CreateStrForTooltip(WorkItem wi, Callender callender)
+        private string GetDisplayString(WorkItem wi, Callender callender, string editor)
         {
             StringBuilder s = new StringBuilder();
             s.Append("名前:"); s.AppendLine(wi.Name);
@@ -73,17 +73,28 @@ namespace ProjectsTM.Service
             s.Append("終了:"); s.AppendLine(wi.Period.To.ToString());
             s.Append("人日:"); s.AppendLine(callender.GetPeriodDayCount(wi.Period).ToString());
             s.AppendLine();
-            s.Append("最終更新：");
-            s.AppendLine();
-            s.AppendLine(_editorFindService.Find(wi));
+            if (!string.IsNullOrEmpty(editor))
+            {
+                s.Append("最終更新："); s.AppendLine(editor);
+            }
             s.Append(GetDescription(wi));
             return s.ToString();
         }
 
-        public void Update(WorkItem wi, Callender callender)
+        public async void Update(WorkItem wi, Callender callender)
         {
             if (wi == null) { this.Hide(); return; }
-            string s = CreateStrForTooltip(wi, callender);
+            if (_editorFindService.TryFind(wi, out var dislayString))
+            {
+                string value = GetDisplayString(wi, callender, dislayString);
+                if (!value.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, value);
+                return;
+            }
+            string s = GetDisplayString(wi, callender, string.Empty);
+            if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
+
+            var editor = await _editorFindService.Find(wi).ConfigureAwait(true);
+            s = GetDisplayString(wi, callender, editor);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
