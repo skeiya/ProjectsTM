@@ -38,8 +38,14 @@ namespace ProjectsTM.ViewModel
             result.FilePath = xml.Element(nameof(FilePath)).Value;
             result.Detail = Detail.FromXml(xml);
             result.PatternHistory = PatternHistory.FromXml(xml);
-            result.UserName = xml.Element(nameof(UserName)).Value;
-            result.HideSuggestionForUserNameSetting = bool.Parse(xml.Element(nameof(HideSuggestionForUserNameSetting)).Value);
+            if (xml.Element(nameof(UserName)) != null)
+            {
+                result.UserName = xml.Element(nameof(UserName)).Value;
+            }
+            if (xml.Element(nameof(HideSuggestionForUserNameSetting)) != null)
+            {
+                result.HideSuggestionForUserNameSetting = bool.Parse(xml.Element(nameof(HideSuggestionForUserNameSetting)).Value);
+            }
             return result;
         }
     }

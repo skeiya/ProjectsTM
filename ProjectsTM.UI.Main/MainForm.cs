@@ -95,7 +95,7 @@ namespace ProjectsTM.UI.Main
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
                 _patternHistory.CopyFrom(setting.PatternHistory);
-                OpenAppData(string.IsNullOrEmpty(setting.FilePath) ? AppData.Dummy : _fileIOService.OpenFile(setting.FilePath));
+                SetAppData(string.IsNullOrEmpty(setting.FilePath) ? AppData.Dummy : _fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);
                 _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
@@ -150,7 +150,7 @@ namespace ProjectsTM.UI.Main
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
         {
             var fileName = FileDragService.Drop(e);
-            OpenAppData(_fileIOService.OpenFile(fileName));
+            SetAppData(_fileIOService.OpenFile(fileName));
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -179,7 +179,7 @@ namespace ProjectsTM.UI.Main
             {
                 dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                OpenAppData(_fileIOService.Open(dlg.FileName));
+                SetAppData(_fileIOService.Open(dlg.FileName));
             }
         }
 
@@ -266,10 +266,10 @@ namespace ProjectsTM.UI.Main
 
         private void Reload()
         {
-            OpenAppData(_fileIOService.ReOpen());
+            SetAppData(_fileIOService.ReOpen());
         }
 
-        private void OpenAppData(AppData appData)
+        private void SetAppData(AppData appData)
         {
             _viewData.SetAppData(appData);
         }

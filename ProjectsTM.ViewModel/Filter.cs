@@ -11,7 +11,7 @@ namespace ProjectsTM.ViewModel
         {
             if (v != null) WorkItem = v;
             if (period != null) Period = period;
-            if (showMembers != null) ShowMembers = showMembers;
+            if (showMembers != null) ShowMembers = showMembers.Clone();
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
             if (MSFilterSearchPattern != null) MSFilterSearchPattern = msFilterSearchPattern;
             IsAllFilter = isAllFilter;

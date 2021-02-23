@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ProjectsTM.Model
@@ -91,14 +92,36 @@ namespace ProjectsTM.Model
 
         public static AppData FromXml(XElement xml)
         {
+            var version = GetVersion(xml);
+
             var result = new AppData();
-            result.Callender = Callender.FromXml(xml.Element(nameof(Callender)));
+            if (version < 5)
+            {
+                foreach (var callenderDay in xml.Element("Callender").Element("Days").Elements("CallenderDay"))
+                {
+                    var ca = CallenderDay.Parse(callenderDay.Element("Date").Value);
+                    result.Callender.Add(ca);
+                }
+            }
+            else
+            {
+                result.Callender = Callender.FromXml(xml.Element(nameof(Callender)));
+            }
             result.Members = Members.FromXml(xml.Element(nameof(Members)));
             result.WorkItems = WorkItems.FromXml(xml.Element(nameof(WorkItems)));
             result.ColorConditions = ColorConditions.FromXml(xml.Element(nameof(ColorConditions)));
             result.MileStones = MileStones.FromXml(xml.Element(nameof(MileStones)));
-            result.AbsentInfo = AbsentInfo.FromXml(xml.Element(nameof(AbsentInfo)));
+            if (xml.Element(nameof(AbsentInfo)) != null)
+            {
+                result.AbsentInfo = AbsentInfo.FromXml(xml.Element(nameof(AbsentInfo)));
+            }
             return result;
+        }
+
+        private static int GetVersion(XElement xml)
+        {
+            if (!xml.Elements("Version").Any()) return 0;
+            return int.Parse(xml.Elements("Version").Single().Value);
         }
 
         public override int GetHashCode()
