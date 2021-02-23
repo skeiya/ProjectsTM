@@ -96,7 +96,7 @@ namespace ProjectsTM.ViewModel
             if (Filter.IsFreeTimeMemberShow) return;
             var members = FilteredItems.Members;
             if (members == null || !members.Any()) return;
-            var freeTimeMember = members.Where(m => !FilteredItems.GetWorkItemsOfMember(m).HasWorkItem(Filter.Period.IsValid ? Filter.Period : null));
+            var freeTimeMember = members.Where(m => !FilteredItems.GetWorkItemsOfMember(m).HasWorkItem(Filter.Period));
             foreach (var m in freeTimeMember)
             {
                 if (Filter.ShowMembers.Contains(m)) Filter.ShowMembers.Remove(m);
