@@ -15,8 +15,6 @@ namespace ProjectsTM.UI.TaskList
         private string _userName;
         private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
 
-        public delegate void MySettingChangedEventHandler(object sender, MySettingChangeEventArgs e);
-
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
             InitializeComponent();

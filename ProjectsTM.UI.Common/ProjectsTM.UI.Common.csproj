@@ -85,7 +85,6 @@
     <Compile Include="EditWorkItemForm.Designer.cs">
       <DependentUpon>EditWorkItemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MySettingChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
