@@ -28,16 +28,13 @@ namespace ProjectsTM.Service
         {
             using (var reader = StreamFactory.CreateReader(fileName))
             {
-                return LoadFromStream(reader, IsOldFormat(fileName));
+                return AppData.FromXml(XElement.Load(fileName, LoadOptions.SetLineInfo));
             }
         }
 
         public static AppData LoadFromStream(StreamReader reader, bool isOld)
         {
-            XmlDocument doc = new XmlDocument
-            {
-                PreserveWhitespace = false,
-            };
+            XmlDocument doc = new XmlDocument();
             doc.Load(reader);
             using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
             {

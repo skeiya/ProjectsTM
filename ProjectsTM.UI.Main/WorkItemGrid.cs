@@ -40,7 +40,7 @@ namespace ProjectsTM.UI.Main
 
         }
 
-        public void Initialize(MainViewData viewData)
+        public void Initialize(MainViewData viewData, EditorFindService editorFindService)
         {
             LockUpdate = true;
             if (_viewData != null) DetatchEvents();
@@ -59,7 +59,7 @@ namespace ProjectsTM.UI.Main
                 _contextMenuHandler.Initialize(ContextMenuStrip);
 
                 if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this);
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService);
             }
 
             ApplyDetailSetting();
@@ -362,7 +362,7 @@ namespace ProjectsTM.UI.Main
 
         public Member X2Member(int x)
         {
-            if (GridWidth < x) return null;
+            if (GridWidth < x) return Member.Invalid;
             var c = X2Col(x);
             return Col2Member(c);
         }
@@ -381,8 +381,7 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToTodayAndMember(Member m)
         {
-            var now = DateTime.Now;
-            var today = new CallenderDay(now.Year, now.Month, now.Day);
+            var today = _viewData.Original.Callender.NearestFromToday;
             MoveVisibleDayAndMember(today, m);
         }
 

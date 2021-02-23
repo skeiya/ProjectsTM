@@ -90,7 +90,6 @@ namespace ProjectsTM.Service
             foreach (var c in range.Cols)
             {
                 var absentTerms = absentInfo.GetAbsentTerms(_grid.Col2Member(c));
-                if (absentTerms == null) continue;
                 foreach (var a in absentTerms)
                 {
                     foreach (var r in range.Rows)
@@ -246,9 +245,9 @@ namespace ProjectsTM.Service
 
         private void DrawWorkItemCore(WorkItem wi, Pen edge, Font font, Graphics g, Rectangle rect)
         {
-            var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString());
-            var fillBrush = cond == null ? BrushCache.GetBrush(Control.DefaultBackColor) : BrushCache.GetBrush(cond.BackColor);
-            var front = cond == null ? Color.Black : cond.ForeColor;
+            var cond = _viewData.Original.ColorConditions.GetMatchColorCondition(wi.ToString(), Control.DefaultBackColor);
+            var fillBrush = BrushCache.GetBrush(cond.BackColor);
+            var front = cond.ForeColor;
             if (wi.State == TaskState.Done)
             {
                 font = FontCache.GetFont(_font.FontFamily, _viewData.FontSize, true);
@@ -285,7 +284,7 @@ namespace ProjectsTM.Service
         private static MileStones GetMileStonesWithToday(ViewData viewData)
         {
             var result = new MileStones();
-            var today = CallenderDay.Today;
+            var today = viewData.Original.Callender.NearestFromToday;
             if (viewData.Original.Callender.Contains(today))
             {
                 result.Add(new MileStone("Today", new Project("Pro1"), today, Color.Red, null, TaskState.Active));

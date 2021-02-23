@@ -13,7 +13,8 @@ namespace ProjectsTM.UI.Main
         private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
-        private PatternHistory _patternHistory = new PatternHistory();
+        private readonly PatternHistory _patternHistory = new PatternHistory();
+        private readonly EditorFindService _lastUpdateDateAndUserNameService = new EditorFindService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -30,6 +31,7 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
+            _fileIOService.FileSaved += FileIOService_FileSaved;
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
@@ -39,6 +41,11 @@ namespace ProjectsTM.UI.Main
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { workItemGrid1.MoveToTodayAndMember(_me); SuggestSetting(); };
             this.Load += MainForm_Load;
+        }
+
+        private void FileIOService_FileSaved(object sender, string filePath)
+        {
+            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void SuggestSetting()
@@ -62,9 +69,9 @@ namespace ProjectsTM.UI.Main
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            workItemGrid1.Initialize(_viewData);
+            workItemGrid1.Initialize(_viewData, _lastUpdateDateAndUserNameService);
             _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(null);
+            UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
             toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty;
             toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty;
@@ -87,8 +94,8 @@ namespace ProjectsTM.UI.Main
                 var setting = UserSettingUIService.Load();
                 _viewData.FontSize = setting.FontSize;
                 _viewData.Detail = setting.Detail;
-                _patternHistory = setting.PatternHistory;
-                OpenAppData(_fileIOService.OpenFile(setting.FilePath));
+                _patternHistory.CopyFrom(setting.PatternHistory);
+                OpenAppData(string.IsNullOrEmpty(setting.FilePath) ? AppData.Dummy : _fileIOService.OpenFile(setting.FilePath));
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);
                 _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
@@ -118,6 +125,7 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
+            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -135,7 +143,7 @@ namespace ProjectsTM.UI.Main
 
         private void UpdateDisplayOfSum(IEditedEventArgs e)
         {
-            var sum = _calculateSumService.Calculate(_viewData.Core, e?.UpdatedMembers);
+            var sum = _calculateSumService.Calculate(_viewData.Core, e.UpdatedMembers);
             toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
@@ -167,7 +175,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            OpenAppData(_fileIOService.Open());
+            using (var dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+                OpenAppData(_fileIOService.Open(dlg.FileName));
+            }
         }
 
         private void ToolStripMenuItemFilter_Click(object sender, EventArgs e)

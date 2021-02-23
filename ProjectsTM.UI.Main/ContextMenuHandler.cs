@@ -1,7 +1,6 @@
 ﻿using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main

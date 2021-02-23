@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -24,13 +25,13 @@ namespace ProjectsTM.Model
             _list.Add(cond);
         }
 
-        public ColorCondition GetMatchColorCondition(string input)
+        public ColorCondition GetMatchColorCondition(string input, Color defaultBackColor)
         {
             foreach (var c in _list)
             {
                 if (Regex.IsMatch(input, c.Pattern)) return c;
             }
-            return null;
+            return new ColorCondition(string.Empty, defaultBackColor, Color.Black);
         }
 
         public void Remove(ColorCondition c)

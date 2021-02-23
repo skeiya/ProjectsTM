@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -57,13 +56,7 @@ namespace ProjectsTM.Model
                 foreach (var w in m.Element(nameof(MembersWorkItems))
                     .Elements(nameof(WorkItem)))
                 {
-                    var taskName = w.Attribute("Name").Value;
-                    var project = Project.FromXml(w);
-                    var period = Period.FromXml(w);
-                    var tags = Tags.FromXml(w);
-                    var state = (TaskState)Enum.Parse(typeof(TaskState), w.Element("State").Value);
-                    var description = w.Element("Description").Value;
-                    result.Add(new WorkItem(project, taskName, tags, period, assign, state, description));
+                    result.Add(WorkItem.FromXml(w, assign));
                 }
             }
             return result;

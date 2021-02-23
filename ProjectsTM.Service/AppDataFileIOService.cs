@@ -11,8 +11,8 @@ namespace ProjectsTM.Service
     {
         public event EventHandler FileWatchChanged;
         public event EventHandler<string> FileOpened;
-        public event EventHandler FileSaved;
-        private DateTime _last;
+        public event EventHandler<string> FileSaved;
+        private DateTime _last = DateTime.MinValue;
         private bool _isDirty = false;
 
         public AppDataFileIOService()
@@ -29,7 +29,6 @@ namespace ProjectsTM.Service
 
         private bool IsEnoughTerm()
         {
-            if (_last == null) return true;
             var now = DateTime.Now;
             var span = now - _last;
             if (span.TotalSeconds < 3) return false;
@@ -38,7 +37,7 @@ namespace ProjectsTM.Service
         }
 
         private readonly FileSystemWatcher _watcher;
-        private string _previousFileName;
+        private string _previousFileName = string.Empty;
         private bool disposedValue;
 
         public string FilePath => _previousFileName;
@@ -57,7 +56,7 @@ namespace ProjectsTM.Service
             {
                 appData.WorkItems.SortByPeriodStartDate();
                 AppDataSerializeService.Serialize(_previousFileName, appData);
-                FileSaved?.Invoke(this, null);
+                FileSaved?.Invoke(this, _previousFileName);
                 _isDirty = false;
             }
             finally
@@ -78,7 +77,7 @@ namespace ProjectsTM.Service
                 {
                     appData.WorkItems.SortByPeriodStartDate();
                     AppDataSerializeService.Serialize(dlg.FileName, appData);
-                    FileSaved?.Invoke(this, null);
+                    FileSaved?.Invoke(this, dlg.FileName);
                     _previousFileName = dlg.FileName;
                 }
                 finally
@@ -99,15 +98,10 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        public AppData Open()
+        public AppData Open(string path)
         {
-            using (var dlg = new OpenFileDialog())
-            {
-                dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
-                if (dlg.ShowDialog() != DialogResult.OK) return null;
-                _previousFileName = dlg.FileName;
-                return OpenFile(dlg.FileName);
-            }
+            _previousFileName = path;
+            return OpenFile(path);
         }
 
         public AppData ReOpen()

@@ -1,7 +1,5 @@
-﻿using ProjectsTM.Logic;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -51,6 +49,9 @@ namespace ProjectsTM.Model
             }
         }
 
+        public int LineStart { get; private set; } = -1;
+        public int LineEnd { get; private set; } = -1;
+
         public WorkItem() { }
 
         public WorkItem(Project project, string name, Tags tags, Period period, Member assignedMember, TaskState state, string description)
@@ -74,6 +75,26 @@ namespace ProjectsTM.Model
             xml.Add(Tags.ToXml());
             xml.Add(new XElement(nameof(State), State));
             return xml;
+        }
+
+        public static WorkItem FromXml(XElement xml, Member assign)
+        {
+            var result = new WorkItem();
+            result.Name = xml.Attribute("Name").Value;
+            result.Project = Project.FromXml(xml);
+            result.Period = Period.FromXml(xml);
+            result.Tags = Tags.FromXml(xml);
+            result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
+            result.Description = xml.Element("Description").Value;
+            result.AssignedMember = assign;
+
+            if (xml is IXmlLineInfo info && info.HasLineInfo())
+            {
+                result.LineStart = info.LineNumber;
+                result.LineEnd = info.LineNumber + info.LinePosition;
+            }
+
+            return result;
         }
 
         public static WorkItem CreateProto(Period period, Member member)
@@ -130,43 +151,22 @@ namespace ProjectsTM.Model
 
         public string Serialize()
         {
-            var x = new XmlSerializer(typeof(WorkItem));
-            using (var s = new MemoryStream())
-            {
-                x.Serialize(s, this);
-                s.Flush();
-                s.Position = 0;
-                using (var r = StreamFactory.CreateReader(s))
-                {
-                    return r.ReadToEnd();
-                }
-            }
+            return ToXml().ToString();
         }
 
         public WorkItem Clone()
         {
-            return Deserialize(Serialize());
+            return Deserialize(Serialize(), AssignedMember);
         }
 
-        public static WorkItem Deserialize(string text)
+        public static WorkItem Deserialize(string text, Member assign)
         {
-            using (var s = new MemoryStream())
-            using (var w = StreamFactory.CreateWriter(s))
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(text);
+            using (var n = new XmlNodeReader(doc))
             {
-                w.Write(text);
-                w.Flush();
-                s.Position = 0;
-
-                XmlDocument doc = new XmlDocument
-                {
-                    PreserveWhitespace = false,
-                };
-                doc.Load(s);
-                using (var nodeReader = new XmlNodeReader(doc.DocumentElement))
-                {
-                    var x = new XmlSerializer(typeof(WorkItem));
-                    return (WorkItem)x.Deserialize(nodeReader);
-                }
+                var xml = XElement.Load(n);
+                return WorkItem.FromXml(xml, assign);
             }
         }
 
