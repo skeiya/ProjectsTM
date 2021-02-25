@@ -14,14 +14,14 @@ namespace ProjectsTM.UI.Main
 {
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
-        private MainViewData _viewData;
-        private ContextMenuHandler _contextMenuHandler;
+        private readonly MainViewData _viewData;
+        private readonly ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
-        private WorkItemEditService _editService;
+        private readonly WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
-        private readonly DrawService _drawService = new DrawService();
-        private KeyAndMouseHandleService _keyAndMouseHandleService;
-        private RowColResolver _rowColResolver;
+        private readonly DrawService _drawService;
+        private readonly KeyAndMouseHandleService _keyAndMouseHandleService;
+        private readonly RowColResolver _rowColResolver;
         public WorkItemEditService EditService => _editService;
 
         public Size FullSize => new Size(GridWidth, GridHeight);
@@ -33,8 +33,29 @@ namespace ProjectsTM.UI.Main
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
         public event EventHandler<float> RatioChanged;
-        public WorkItemGrid()
+        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService)
         {
+            this._viewData = viewData;
+            this.FixedRowCount = WorkItemGridConstants.FixedRows;
+            this.FixedColCount = WorkItemGridConstants.FixedCols;
+            _rowColResolver = new RowColResolver(this, _viewData.Core);
+            _editService = new WorkItemEditService(_viewData.Core);
+
+            UpdateGridFrame();
+
+            _drawService = new DrawService(
+                _viewData,
+                this,
+                () => _workItemDragService.IsActive(),
+                () => _workItemDragService.IsMoveing(),
+                () => _workItemDragService.DragStartInfo,
+                this.Font);
+
+            ContextMenuStrip = new ContextMenuStrip();
+            _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this, ContextMenuStrip);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
+
+            AttachEvents();
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
         }
@@ -44,40 +65,13 @@ namespace ProjectsTM.UI.Main
             return new ClientPoint(PointToClient(global));
         }
 
-        public void Initialize(MainViewData viewData, EditorFindService editorFindService)
+        public void UpdateGridFrame()
         {
             LockUpdate = true;
-            if (_viewData != null) DetatchEvents();
-            this._viewData = viewData;
-            AttachEvents();
-            this.FixedRowCount = WorkItemGridConstants.FixedRows;
-            this.FixedColCount = WorkItemGridConstants.FixedCols;
             this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
-            _rowColResolver = new RowColResolver(this, _viewData.Core);
-            _editService = new WorkItemEditService(_viewData.Core);
-            {
-                if (ContextMenuStrip != null) ContextMenuStrip.Dispose();
-                ContextMenuStrip = new ContextMenuStrip();
-                _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this);
-                _contextMenuHandler.Initialize(ContextMenuStrip);
-
-                if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
-            }
-
             ApplyDetailSetting();
             LockUpdate = false;
-            {
-                if (_drawService != null) _drawService.Dispose();
-                _drawService.Initialize(
-                    _viewData,
-                    this,
-                    () => _workItemDragService.IsActive(),
-                    () => _workItemDragService.IsMoveing(),
-                    () => _workItemDragService.DragStartInfo,
-                    this.Font);
-            }
         }
 
         private bool SelectNextWorkItem(bool prev)
@@ -200,20 +194,6 @@ namespace ProjectsTM.UI.Main
             this.MouseMove += WorkItemGrid_MouseMove;
             this.KeyDown += WorkItemGrid_KeyDown;
             this.KeyUp += WorkItemGrid_KeyUp;
-        }
-
-        private void DetatchEvents()
-        {
-            this._viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
-            this.OnDrawNormalArea -= WorkItemGrid_OnDrawNormalArea;
-            this.MouseDown -= WorkItemGrid_MouseDown;
-            this.MouseUp -= WorkItemGrid_MouseUp;
-            this.MouseDoubleClick -= WorkItemGrid_MouseDoubleClick;
-            this.MouseWheel -= WorkItemGrid_MouseWheel;
-            this._viewData.UndoBuffer.Changed -= _undoService_Changed;
-            this.MouseMove -= WorkItemGrid_MouseMove;
-            this.KeyDown -= WorkItemGrid_KeyDown;
-            this.KeyUp -= WorkItemGrid_KeyUp;
         }
 
         private void WorkItemGrid_MouseWheel(object sender, MouseEventArgs e)

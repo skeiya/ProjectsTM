@@ -10,17 +10,14 @@ namespace ProjectsTM.UI.Main
         private readonly ViewData _viewData;
         private readonly WorkItemGrid _grid;
 
-        public ContextMenuHandler(ViewData viewData, WorkItemGrid grid)
+        public ContextMenuHandler(ViewData viewData, WorkItemGrid grid, ContextMenuStrip contextMenuStrip)
         {
             if (viewData is null) throw new ArgumentNullException(nameof(viewData));
             if (grid is null) throw new ArgumentNullException(nameof(grid));
 
             _viewData = viewData;
             _grid = grid;
-        }
 
-        public void Initialize(ContextMenuStrip contextMenuStrip)
-        {
             if (contextMenuStrip is null) throw new ArgumentNullException(nameof(contextMenuStrip));
 
             contextMenuStrip.Items.Add(new ToolStripMenuItem("編集(&E)...", null, EditMenu_Click, Keys.Control | Keys.E));

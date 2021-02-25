@@ -24,7 +24,7 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
-            _workItemGrid = new WorkItemGrid();
+            _workItemGrid = new WorkItemGrid(_viewData, _lastUpdateDateAndUserNameService);
             _workItemGrid.Dock = DockStyle.Fill;
             panel1.Controls.Add(_workItemGrid);
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
@@ -73,7 +73,7 @@ namespace ProjectsTM.UI.Main
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            _workItemGrid.Initialize(_viewData, _lastUpdateDateAndUserNameService);
+            _workItemGrid.UpdateGridFrame();
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();

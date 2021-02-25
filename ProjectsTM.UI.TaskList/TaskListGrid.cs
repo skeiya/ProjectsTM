@@ -298,8 +298,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler = new ContextMenuHandler(_viewData, this);
-            _contextMenuHandler.Initialize(ContextMenuStrip);
+            _contextMenuHandler = new ContextMenuHandler(_viewData, this, ContextMenuStrip);
 
             UpdateListItem();
             ColCount = ColDefinition.Count;
