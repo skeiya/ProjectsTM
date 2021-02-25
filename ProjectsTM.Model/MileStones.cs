@@ -20,7 +20,6 @@ namespace ProjectsTM.Model
 
         public void Add(MileStone m)
         {
-            if (m == null) return;
             _list.Add(m);
         }
 

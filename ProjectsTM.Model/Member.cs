@@ -99,7 +99,6 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
             var target = obj as Member;
             if (target == null) return false;
             if (!FirstName.Equals(target.FirstName)) return false;

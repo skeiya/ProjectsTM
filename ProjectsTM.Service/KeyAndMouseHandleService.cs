@@ -3,6 +3,7 @@ using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -15,26 +16,46 @@ namespace ProjectsTM.Service
         private readonly WorkItemDragService _workItemDragService;
         private readonly DrawService _drawService;
         private readonly WorkItemEditService _editService;
+        private readonly Func<Point, ClientPoint> _global2Client;
         private Cursor _originalCursor;
 
         public event EventHandler<WorkItem> HoveringTextChanged;
+        public event EventHandler HoveringTextHide;
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService)
+        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService, Func<Point, ClientPoint> global2Client)
         {
             this._viewData = viewData;
             this._grid = grid;
             this._workItemDragService = workItemDragService;
             this._drawService = drawService;
             this._editService = editService;
-            this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService);
-            HoveringTextChanged += KeyAndMouseHandleService_HoveringTextChanged;
+            this._global2Client = global2Client;
+            this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService, GetCusorWorkItem, GetCursorDay, IsDragging, IsMilestoneArea);
         }
 
-        private void KeyAndMouseHandleService_HoveringTextChanged(object sender, WorkItem wi)
+        private bool IsMilestoneArea()
         {
-            _toolTipService.Update(wi, _viewData.Original.Callender);
+            return _grid.IsFixedArea(_global2Client(Cursor.Position));
+        }
+
+        private bool IsDragging()
+        {
+            return _workItemDragService.IsActive();
+        }
+
+        private CallenderDay GetCursorDay()
+        {
+            RawPoint cur = _grid.Global2Raw(Cursor.Position);
+            return _grid.Y2Day(cur.Y);
+        }
+
+        private WorkItem GetCusorWorkItem()
+        {
+            RawPoint cur = _grid.Global2Raw(Cursor.Position);
+            if (_viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y), out var workItem)) return workItem;
+            return null;
         }
 
         public void MouseDown(MouseEventArgs e)
@@ -57,8 +78,7 @@ namespace ProjectsTM.Service
                 }
             }
 
-            var wi = _grid.PickWorkItemFromPoint(curOnRaw);
-            if (wi == null)
+            if (!_grid.PickWorkItemFromPoint(curOnRaw, out var wi))
             {
                 _viewData.Selected = null;
                 return;
@@ -108,7 +128,6 @@ namespace ProjectsTM.Service
 
         public void MouseMove(ClientPoint location, Control control)
         {
-            UpdateHoveringText(location);
             _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(location), _viewData);
             if (IsWorkItemExpandArea(_viewData, location))
             {
@@ -157,24 +176,6 @@ namespace ProjectsTM.Service
         {
             var bottomBar = WorkItemDragService.GetBottomBarRect(workItemBounds);
             return bottomBar.Contains(point);
-        }
-
-        private void UpdateHoveringText(ClientPoint location)
-        {
-            if (_workItemDragService.IsActive()) return;
-            if (_grid.IsFixedArea(location)) { UpdateHoveringMileStoneText(location); return; }
-            RawPoint cur = _grid.Client2Raw(location);
-            var wi = _viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
-            HoveringTextChanged?.Invoke(this, wi);
-        }
-
-        private void UpdateHoveringMileStoneText(ClientPoint location)
-        {
-            var day = _grid.Y2Day(_grid.Client2Raw(location).Y);
-            if (day == null) { _toolTipService.Hide(); return; }
-            var ms = _viewData.Original.MileStones.Where(m => day.Equals(m.Day));
-            if (!ms.Any()) { _toolTipService.Hide(); return; }
-            _toolTipService.Update(day, ms);
         }
 
         public void DoubleClick(MouseEventArgs e)

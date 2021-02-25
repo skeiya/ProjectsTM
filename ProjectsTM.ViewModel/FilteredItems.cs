@@ -74,13 +74,20 @@ namespace ProjectsTM.ViewModel
             return members.Where(m => _filter.ShowMembers.Contains(m)).ToList();
         }
 
-        public WorkItem PickWorkItem(Member m, CallenderDay d)
+#pragma warning disable CA1021 // out パラメーターを使用しません
+        public bool PickWorkItem(Member m, CallenderDay d, out WorkItem result)
+#pragma warning restore CA1021 // out パラメーターを使用しません
         {
             foreach (var wi in GetWorkItemsOfMember(m))
             {
-                if (wi.Period.Contains(d)) return wi;
+                if (wi.Period.Contains(d))
+                {
+                    result = wi;
+                    return true;
+                }
             }
-            return null;
+            result = null;
+            return false;
         }
 
         public MembersWorkItems GetWorkItemsOfMember(Member m)

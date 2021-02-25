@@ -98,27 +98,32 @@ namespace ProjectsTM.Service
             return false;
         }
 
-        public AppData Open(string path)
+        public bool TryOpen(string path, out AppData result)
         {
             _previousFileName = path;
-            return OpenFile(path);
+            return TryOpenFile(path, out result);
         }
 
-        public AppData ReOpen()
+        public bool TryReOpen(out AppData result)
         {
-            if (!File.Exists(_previousFileName)) return null;
-            return OpenFile(_previousFileName);
+            if (!File.Exists(_previousFileName))
+            {
+                result = null;
+                return false;
+            }
+            return TryOpenFile(_previousFileName, out result);
         }
 
-        public AppData OpenFile(string fileName)
+        public bool TryOpenFile(string fileName, out AppData result)
         {
-            if (string.IsNullOrEmpty(fileName)) return null;
-            if (VersionUpdateService.UpdateByFileServer(Path.GetDirectoryName(fileName))) return null;
+            result = null;
+            if (string.IsNullOrEmpty(fileName)) return false;
+            if (VersionUpdateService.UpdateByFileServer(Path.GetDirectoryName(fileName))) return false;
             if (IsFutureVersion(fileName))
             {
                 MessageBox.Show("ご使用のツールより新しいバージョンで保存されたファイルです。ツールを更新してから開いてください。");
                 Environment.Exit(0);
-                return null;
+                return false;
             }
             _previousFileName = fileName;
             _watcher.Path = Path.GetDirectoryName(fileName);
@@ -128,7 +133,8 @@ namespace ProjectsTM.Service
             _watcher.EnableRaisingEvents = true;
             FileOpened?.Invoke(this, fileName);
             _isDirty = false;
-            return AppDataSerializeService.Deserialize(fileName);
+            result = AppDataSerializeService.Deserialize(fileName);
+            return true;
         }
 
         private static bool IsFutureVersion(string fileName)
