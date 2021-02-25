@@ -29,7 +29,6 @@ namespace ProjectsTM.Model
 
         public void Replace(Member member, AbsentTerms absentTerms)
         {
-            if (member == null || absentTerms == null) return;
             if (!absentTerms.Any()) return;
             RemoveInfoOfMember(member);
             _items.Add(member, absentTerms);
@@ -37,7 +36,6 @@ namespace ProjectsTM.Model
 
         public void RemoveInfoOfMember(Member m)
         {
-            if (m == null) return;
             if (!_items.ContainsKey(m)) return;
             _items.Remove(m);
         }

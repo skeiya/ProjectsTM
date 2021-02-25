@@ -482,12 +482,16 @@ namespace ProjectsTM.UI.Main
             return _viewData.Selected.Any(w => w.Period.Contains(d));
         }
 
-        public WorkItem PickWorkItemFromPoint(RawPoint location)
+        public bool PickWorkItemFromPoint(RawPoint location, out WorkItem result)
         {
             var m = X2Member(location.X);
             var d = Y2Day(location.Y);
-            if (m == null || d == null) return null;
-            return _viewData.FilteredItems.PickWorkItem(m, d);
+            if (m == null || d == null)
+            {
+                result = null;
+                return false;
+            }
+            return _viewData.FilteredItems.PickWorkItem(m, d, out result);
         }
     }
 }

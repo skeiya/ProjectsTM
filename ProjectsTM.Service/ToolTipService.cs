@@ -83,7 +83,6 @@ namespace ProjectsTM.Service
 
         public async void Update(WorkItem wi, Callender callender)
         {
-            if (wi == null) { this.Hide(); return; }
             if (_editorFindService.TryFind(wi, out var dislayString))
             {
                 string value = GetDisplayString(wi, callender, dislayString);
