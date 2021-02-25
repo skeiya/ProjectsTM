@@ -2,6 +2,7 @@
 using ProjectsTM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,13 +15,41 @@ namespace ProjectsTM.Service
         private readonly ViewData _viewData;
         private readonly Control _parentControl;
         private readonly EditorFindService _editorFindService;
+        private readonly Func<WorkItem> _getCusorWorkItem;
+        private readonly Func<CallenderDay> _getCursorDay;
+        private readonly Func<bool> _isDragging;
+        private readonly Func<bool> _isMilestoneArea;
+        private readonly Timer _timer;
 
-        public ToolTipService(Control c, ViewData viewData, EditorFindService editorFindService)
+        public ToolTipService(Control parent, ViewData viewData, EditorFindService editorFindService, Func<WorkItem> getCusorWorkItem, Func<CallenderDay> getCursorDay, Func<bool> isDragging, Func<bool> isMilestoneArea)
         {
             this._toolTip.ShowAlways = true;
-            this._parentControl = c;
+            this._parentControl = parent;
             this._viewData = viewData;
             this._editorFindService = editorFindService;
+            this._getCusorWorkItem = getCusorWorkItem;
+            this._getCursorDay = getCursorDay;
+            this._isDragging = isDragging;
+            this._isMilestoneArea = isMilestoneArea;
+            this._timer = new Timer();
+            this._timer.Interval = 100;
+            this._timer.Tick += _timer_Tick;
+            this._timer.Start();
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            if (_isDragging())
+            {
+                Hide();
+                return;
+            }
+            if (_isMilestoneArea())
+            {
+                UpdateHoveringMileStoneText();
+                return;
+            }
+            Update(_getCusorWorkItem(), _viewData.Original.Callender);
         }
 
         private string GetDescrptionFromOtherWorkItem(WorkItem hoveringWorkItem)
@@ -81,8 +110,38 @@ namespace ProjectsTM.Service
             return s.ToString();
         }
 
+        private void UpdateHoveringMileStoneText()
+        {
+            var day = _getCursorDay();
+            if (day == null)
+            {
+                Hide();
+                return;
+            }
+            var ms = _viewData.Original.MileStones.Where(m => day.Equals(m.Day));
+            if (!ms.Any())
+            {
+                Hide();
+                return;
+            }
+            _toolTip.SetToolTip(_parentControl, GetMilestoneDisplay(day, ms));
+        }
+
+        private static string GetMilestoneDisplay(CallenderDay day, IEnumerable<MileStone> mss)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(day.ToString());
+            foreach (var m in mss) sb.AppendLine(m.Name);
+            return sb.ToString();
+        }
+
         public async void Update(WorkItem wi, Callender callender)
         {
+            if (wi == null)
+            {
+                this.Hide();
+                return;
+            }
             if (_editorFindService.TryFind(wi, out var dislayString))
             {
                 string value = GetDisplayString(wi, callender, dislayString);
@@ -93,16 +152,13 @@ namespace ProjectsTM.Service
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
 
             var editor = await _editorFindService.Find(wi).ConfigureAwait(true);
+            if (disposedValue) return;
+            if (!wi.Equals(_getCusorWorkItem()))
+            {
+                Hide();
+                return;
+            }
             s = GetDisplayString(wi, callender, editor);
-            if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
-        }
-
-        public void Update(CallenderDay day, IEnumerable<MileStone> ms)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(day.ToString());
-            foreach (var m in ms) sb.AppendLine(m.Name);
-            string s = sb.ToString();
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
 
@@ -115,6 +171,7 @@ namespace ProjectsTM.Service
                 if (disposing)
                 {
                     _toolTip.Dispose();
+                    _timer.Dispose();
                 }
 
                 // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします

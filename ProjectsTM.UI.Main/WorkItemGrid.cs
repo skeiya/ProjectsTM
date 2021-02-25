@@ -37,7 +37,11 @@ namespace ProjectsTM.UI.Main
         {
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
+        }
 
+        private ClientPoint Global2Client(Point global)
+        {
+            return new ClientPoint(PointToClient(global));
         }
 
         public void Initialize(MainViewData viewData, EditorFindService editorFindService)
@@ -59,7 +63,7 @@ namespace ProjectsTM.UI.Main
                 _contextMenuHandler.Initialize(ContextMenuStrip);
 
                 if (_keyAndMouseHandleService != null) _keyAndMouseHandleService.Dispose();
-                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService);
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
             }
 
             ApplyDetailSetting();
