@@ -19,10 +19,14 @@ namespace ProjectsTM.UI.Main
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
+        private readonly WorkItemGrid _workItemGrid;
 
         public MainForm()
         {
             InitializeComponent();
+            _workItemGrid = new WorkItemGrid(_viewData, _lastUpdateDateAndUserNameService);
+            _workItemGrid.Dock = DockStyle.Fill;
+            panel1.Controls.Add(_workItemGrid);
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
             _taskListManager = new TaskListManager(_viewData.Core, _patternHistory, this);
             _fileWatchManager = new FileWatchManager(this, Reload);
@@ -35,11 +39,11 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
-            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            workItemGrid1.RatioChanged += (s, e) => UpdateView();
+            _workItemGrid.DragDrop += TaskDrawArea_DragDrop;
+            _workItemGrid.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { workItemGrid1.MoveToTodayAndMember(_me); SuggestSetting(); };
+            this.Shown += (s, e) => { _workItemGrid.MoveToTodayAndMember(_me); SuggestSetting(); };
             this.Load += MainForm_Load;
         }
 
@@ -69,7 +73,7 @@ namespace ProjectsTM.UI.Main
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            workItemGrid1.Initialize(_viewData, _lastUpdateDateAndUserNameService);
+            _workItemGrid.UpdateGridFrame();
             _filterComboBoxService.UpdateAppDataPart();
             UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
             toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
@@ -168,12 +172,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
-            ImageOutputer.Save(_viewData, workItemGrid1);
+            ImageOutputer.Save(_viewData, _workItemGrid);
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            workItemGrid1.AddNewWorkItem(null);
+            _workItemGrid.AddNewWorkItem(null);
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -212,12 +216,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            workItemGrid1.DecRatio();
+            _workItemGrid.DecRatio();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            workItemGrid1.IncRatio();
+            _workItemGrid.IncRatio();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
@@ -236,12 +240,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Undo();
+            _workItemGrid.Undo();
         }
 
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Redo();
+            _workItemGrid.Redo();
         }
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
@@ -251,12 +255,12 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
             }
-            workItemGrid1.Refresh();
+            _workItemGrid.Refresh();
         }
 
         private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Divide();
+            _workItemGrid.Divide();
         }
 
         private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)
@@ -337,6 +341,7 @@ namespace ProjectsTM.UI.Main
                 if (components != null)
                 {
                     components.Dispose();
+                    _workItemGrid.Dispose();
                 }
 
                 // Dispose stuff here

@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
 {
     public class DrawService : IDisposable
     {
-        private MainViewData _viewData;
+        private readonly MainViewData _viewData;
 
         private bool _redrawLock = false;
         internal void Lock(bool redrawLock)
@@ -20,17 +20,18 @@ namespace ProjectsTM.Service
             _redrawLock = redrawLock;
         }
 
-        private Func<bool> _isDragActive;
-        private Func<bool> _isDragMoving;
-        private Func<DragStartInfo> _dragStartInfo;
-        private ImageBuffer _imageBuffer;
+        private readonly Func<bool> _isDragActive;
+        private readonly Func<bool> _isDragMoving;
+        private readonly Func<DragStartInfo> _dragStartInfo;
+        private readonly ImageBuffer _imageBuffer;
         private IWorkItemGrid _grid;
 
-        public DrawService()
+        public DrawService(IWorkItemGrid grid)
         {
+            _grid = grid;
         }
 
-        public void Initialize(
+        public DrawService(
             MainViewData viewData,
             IWorkItemGrid grid,
             Func<bool> isDragActive,

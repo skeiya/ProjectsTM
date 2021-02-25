@@ -35,8 +35,7 @@ namespace UnitTestProject
             appData.WorkItems.Add(g);
 
             viewData = new MainViewData(appData);
-            grid = new WorkItemGrid();
-            grid.Initialize(viewData, new EditorFindService());
+            grid = new WorkItemGrid(viewData, new EditorFindService());
 
             /* グリッドの列幅・行高
               24 12 12 35 35
@@ -64,8 +63,7 @@ namespace UnitTestProject
             grid.RowHeights[7] = 9;
 
             var dragService = new WorkItemDragService();
-            var drawService = new DrawService();
-            drawService.Initialize(viewData, grid, dragService.IsActive, dragService.IsMoveing,() => dragService.DragStartInfo, new Font(FontFamily.GenericSansSerif, 8));
+            var drawService = new DrawService(viewData, grid, dragService.IsActive, dragService.IsMoveing, () => dragService.DragStartInfo, new Font(FontFamily.GenericSansSerif, 8));
             var editService = new WorkItemEditService(viewData.Core);
             service = new KeyAndMouseHandleService(viewData.Core, grid, dragService, drawService, editService, grid, new EditorFindService(), null);
         }

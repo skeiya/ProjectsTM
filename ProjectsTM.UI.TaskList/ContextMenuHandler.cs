@@ -10,17 +10,14 @@ namespace ProjectsTM.UI.TaskList
         private readonly ViewData _viewData;
         private readonly TaskListGrid _grid;
 
-        internal ContextMenuHandler(ViewData viewData, TaskListGrid grid)
+        internal ContextMenuHandler(ViewData viewData, TaskListGrid grid, ContextMenuStrip contextMenuStrip)
         {
             if (viewData is null) throw new ArgumentNullException(nameof(viewData));
             if (grid is null) throw new ArgumentNullException(nameof(grid));
 
             _viewData = viewData;
             _grid = grid;
-        }
 
-        internal void Initialize(ContextMenuStrip contextMenuStrip)
-        {
             if (contextMenuStrip is null) throw new ArgumentNullException(nameof(contextMenuStrip));
 
             contextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));

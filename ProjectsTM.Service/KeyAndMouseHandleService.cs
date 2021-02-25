@@ -19,8 +19,6 @@ namespace ProjectsTM.Service
         private readonly Func<Point, ClientPoint> _global2Client;
         private Cursor _originalCursor;
 
-        public event EventHandler<WorkItem> HoveringTextChanged;
-        public event EventHandler HoveringTextHide;
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
