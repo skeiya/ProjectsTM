@@ -52,9 +52,9 @@ namespace ProjectsTM.UI.Main
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
-            this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
             this.toolStripStatusHasUnpushedCommit = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusHasUncommittedChange = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -355,32 +355,26 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusHasUnpushedCommit.Size = new System.Drawing.Size(85, 17);
             this.toolStripStatusHasUnpushedCommit.Text = "未プッシュコミット";
             // 
-            // workItemGrid1
-            // 
-            this.workItemGrid1.AllowDrop = true;
-            this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.workItemGrid1.FixedColCount = 0;
-            this.workItemGrid1.FixedRowCount = 0;
-            this.workItemGrid1.HOffset = 0;
-            this.workItemGrid1.Location = new System.Drawing.Point(0, 25);
-            this.workItemGrid1.LockUpdate = true;
-            this.workItemGrid1.Name = "workItemGrid1";
-            this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
-            this.workItemGrid1.TabIndex = 12;
-            this.workItemGrid1.VOffset = 0;
-            // 
             // toolStripStatusHasUncommittedChange
             // 
             this.toolStripStatusHasUncommittedChange.Name = "toolStripStatusHasUncommittedChange";
             this.toolStripStatusHasUncommittedChange.Size = new System.Drawing.Size(84, 17);
             this.toolStripStatusHasUncommittedChange.Text = "未コミットの編集";
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(537, 297);
+            this.panel1.TabIndex = 12;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 344);
-            this.Controls.Add(this.workItemGrid1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -426,7 +420,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGenerateDummyData;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemReload;
-        private WorkItemGrid workItemGrid1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHowToUse;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemVersion;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTaskList;
@@ -435,6 +428,7 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUnpushedCommit;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUncommittedChange;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
