@@ -18,10 +18,10 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
         private List<TaskListItem> _listItems;
-        private ViewData _viewData;
+        private readonly ViewData _viewData;
         private ContextMenuHandler _contextMenuHandler;
         public TaskListOption Option = new TaskListOption();
-        private WorkItemEditService _editService;
+        private readonly WorkItemEditService _editService;
 
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = ColDefinition.InitialSortCol;
@@ -32,7 +32,8 @@ namespace ProjectsTM.UI.TaskList
         private const int MaxSortableDistance = 20;
         public WorkItemEditService EditService => _editService;
 
-        public TaskListGrid()
+
+        public TaskListGrid(ViewData viewData)
         {
             InitializeComponent();
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
@@ -44,6 +45,12 @@ namespace ProjectsTM.UI.TaskList
             this.KeyDown += TaskListGrid_KeyDown;
             this.Resize += TaskListGrid_Resize;
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
+
+            this._editService = new WorkItemEditService(viewData);
+            if (_viewData != null) DetatchEvents();
+            this._viewData = viewData;
+            AttachEvents();
+            InitializeGrid();
         }
 
         internal int GetErrorCount()
@@ -273,15 +280,6 @@ namespace ProjectsTM.UI.TaskList
         internal int GetDayCount()
         {
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
-        }
-
-        internal void Initialize(ViewData viewData)
-        {
-            this._editService = new WorkItemEditService(viewData);
-            if (_viewData != null) DetatchEvents();
-            this._viewData = viewData;
-            AttachEvents();
-            InitializeGrid();
         }
 
         public void UpdateView()
