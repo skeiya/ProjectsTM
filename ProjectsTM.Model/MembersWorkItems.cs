@@ -14,7 +14,7 @@ namespace ProjectsTM.Model
 
         public bool HasWorkItem(Period period)
         {
-            if (period == null) return Count != 0;
+            if (!period.IsValid) return Count != 0;
             Debug.Assert((period.From != null) && (period.To != null));
             foreach (var w in _items)
             {

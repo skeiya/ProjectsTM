@@ -19,6 +19,8 @@ namespace ProjectsTM.Service
         private readonly Func<Point, ClientPoint> _global2Client;
         private Cursor _originalCursor;
 
+        public event EventHandler<WorkItem> HoveringTextChanged;
+        public event EventHandler HoveringTextHide;
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
@@ -52,7 +54,8 @@ namespace ProjectsTM.Service
         private WorkItem GetCusorWorkItem()
         {
             RawPoint cur = _grid.Global2Raw(Cursor.Position);
-            return _viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y));
+            if (_viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y), out var workItem)) return workItem;
+            return null;
         }
 
         public void MouseDown(MouseEventArgs e)
@@ -75,8 +78,7 @@ namespace ProjectsTM.Service
                 }
             }
 
-            var wi = _grid.PickWorkItemFromPoint(curOnRaw);
-            if (wi == null)
+            if (!_grid.PickWorkItemFromPoint(curOnRaw, out var wi))
             {
                 _viewData.Selected = null;
                 return;
