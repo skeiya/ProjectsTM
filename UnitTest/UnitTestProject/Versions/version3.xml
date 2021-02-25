@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Callender>
+    <Days>
+      <CallenderDay>
+        <Date>2021/01/01</Date>
+      </CallenderDay>
+    </Days>
+  </Callender>
+  <Members>
+    <Member>
+      <MemberElement>a/b/c</MemberElement>
+    </Member>
+  </Members>
+  <WorkItems>
+    <WorkItem>
+      <Name>x</Name>
+      <Period>
+        <From>
+          <Date>2021/01/01</Date>
+        </From>
+        <To>
+          <Date>2021/01/01</Date>
+        </To>
+      </Period>
+      <AssignedMember>
+        <MemberElement>a/b/c</MemberElement>
+      </AssignedMember>
+      <Description />
+      <ProjectElement>y</ProjectElement>
+      <TagsElement />
+      <State>Active</State>
+    </WorkItem>
+  </WorkItems>
+  <ColorConditions />
+  <MileStones />
+  <Version>3</Version>
+</AppData>

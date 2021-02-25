@@ -97,11 +97,11 @@ namespace ProjectsTM.UI.Main
                 _patternHistory.CopyFrom(setting.PatternHistory);
                 if (_fileIOService.TryOpenFile(setting.FilePath, out var appData))
                 {
-                    OpenAppData(appData);
+                    SetAppData(appData);
                 }
                 else
                 {
-                    OpenAppData(AppData.Dummy);
+                    SetAppData(AppData.Dummy);
                 }
                 _filterComboBoxService.Text = setting.FilterName;
                 _me = Member.Parse(setting.UserName);
@@ -158,7 +158,7 @@ namespace ProjectsTM.UI.Main
         {
             var fileName = FileDragService.Drop(e);
             if (!_fileIOService.TryOpenFile(fileName, out var appData)) return;
-            OpenAppData(appData);
+            SetAppData(appData);
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -188,7 +188,7 @@ namespace ProjectsTM.UI.Main
                 dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 if (!_fileIOService.TryOpen(dlg.FileName, out var appData)) return;
-                OpenAppData(appData);
+                SetAppData(appData);
             }
         }
 
@@ -276,10 +276,10 @@ namespace ProjectsTM.UI.Main
         private void Reload()
         {
             if (!_fileIOService.TryReOpen(out var appData)) return;
-            OpenAppData(appData);
+            SetAppData(appData);
         }
 
-        private void OpenAppData(AppData appData)
+        private void SetAppData(AppData appData)
         {
             _viewData.SetAppData(appData);
         }
