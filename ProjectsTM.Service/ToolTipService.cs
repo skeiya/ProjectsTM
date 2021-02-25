@@ -152,7 +152,12 @@ namespace ProjectsTM.Service
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
 
             var editor = await _editorFindService.Find(wi).ConfigureAwait(true);
-            if (!wi.Equals(_getCusorWorkItem())) return;
+            if (disposedValue) return;
+            if (!wi.Equals(_getCusorWorkItem()))
+            {
+                Hide();
+                return;
+            }
             s = GetDisplayString(wi, callender, editor);
             if (!s.Equals(_toolTip.GetToolTip(_parentControl))) _toolTip.SetToolTip(_parentControl, s);
         }
