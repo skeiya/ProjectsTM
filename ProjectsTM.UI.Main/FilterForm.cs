@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace ProjectsTM.UI.Main
 {
@@ -176,8 +176,7 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 using (var reader = StreamFactory.CreateReader(dlg.FileName))
                 {
-                    var s = new XmlSerializer(typeof(Filter));
-                    _filter = (Filter)s.Deserialize(reader);
+                    _filter = Filter.FromXml(XElement.Load(reader));
                     UpdateAllField();
                 }
             }
@@ -198,11 +197,8 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new SaveFileDialog())
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                using (var writer = StreamFactory.CreateWriter(dlg.FileName))
-                {
-                    var s = new XmlSerializer(typeof(Filter));
-                    s.Serialize(writer, _filter);
-                }
+                XElement xml = _filter.ToXml();
+                xml.Save(dlg.FileName);
             }
         }
 

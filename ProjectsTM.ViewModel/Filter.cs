@@ -1,6 +1,7 @@
 ﻿using ProjectsTM.Model;
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectsTM.ViewModel
 {
@@ -11,7 +12,7 @@ namespace ProjectsTM.ViewModel
         {
             if (v != null) WorkItem = v;
             if (period != null) Period = period;
-            if (showMembers != null) ShowMembers = showMembers;
+            if (showMembers != null) ShowMembers = showMembers.Clone();
             IsFreeTimeMemberShow = isFreeTimeMemberShow;
             if (MSFilterSearchPattern != null) MSFilterSearchPattern = msFilterSearchPattern;
             IsAllFilter = isAllFilter;
@@ -61,6 +62,56 @@ namespace ProjectsTM.ViewModel
         public override bool Equals(object obj)
         {
             return Equals(obj as Filter);
+        }
+
+        public static Filter FromXml(XElement xml)
+        {
+            var result = new Filter();
+            if (xml.Element("ShowMembers") != null)
+            {
+                foreach (var m in xml.Element("ShowMembers").Elements("Member"))
+                {
+                    result.ShowMembers.Add(Member.FromXml(m));
+                }
+            }
+            if (xml.Element("Period") != null)
+            {
+                result.Period = Period.FromXml(xml.Element("Period"));
+            }
+            if (xml.Element("WorkItem") != null)
+            {
+                result.WorkItem = xml.Element("WorkItem").Value;
+            }
+            if (xml.Element("IsFreeTimeMemberShow") != null)
+            {
+                result.IsFreeTimeMemberShow = bool.Parse(xml.Element("IsFreeTimeMemberShow").Value);
+            }
+            if (xml.Element("MSFilterSearchPattern") != null)
+            {
+                result.MSFilterSearchPattern = xml.Element("MSFilterSearchPattern")?.Value;
+            }
+            if (xml.Element("IsAllFilter") != null)
+            {
+                result.IsAllFilter = bool.Parse(xml.Element("IsAllFilter").Value);
+            }
+            return result;
+        }
+
+        public XElement ToXml()
+        {
+            var xml = new XElement("Filter");
+            var sm = new XElement("ShowMembers");
+            foreach (var m in ShowMembers)
+            {
+                sm.Add(m.ToXml());
+            }
+            xml.Add(sm);
+            xml.Add(Period.ToXml());
+            xml.Add(new XElement("WorkItem", WorkItem));
+            xml.Add(new XElement("IsFreeTimeMemberShow", IsFreeTimeMemberShow));
+            xml.Add(new XElement("MSFilterSearchPattern", MSFilterSearchPattern));
+            xml.Add(new XElement("IsAllFilter", IsAllFilter));
+            return xml;
         }
     }
 }

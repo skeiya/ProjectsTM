@@ -142,16 +142,14 @@ namespace ProjectsTM.Service
         private void DrawCursorPosition(Graphics g, Font font)
         {
             var curOnRaw = _grid.Global2Raw(Cursor.Position);
-            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
-
-            var members = _viewData.FilteredItems.Members;
-            if (curWi == null)
+            if (_grid.PickWorkItemFromPoint(curOnRaw, out var curWi))
             {
-                DrawCursorBackgroundRectangle(g, curOnRaw);
+                var members = _viewData.FilteredItems.Members;
+                DrawCursorWorkItem(font, g, members, curWi);
             }
             else
             {
-                DrawCursorWorkItem(font, g, members, curWi);
+                DrawCursorBackgroundRectangle(g, curOnRaw);
             }
         }
 

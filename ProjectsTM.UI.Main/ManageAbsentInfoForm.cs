@@ -97,5 +97,17 @@ namespace ProjectsTM.UI.Main
             var t = to == AbsentTerm.UnlimitedStr ? AbsentTerm.UnlimitedTo : CallenderDay.Parse(to);
             return new Period(f, t);
         }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
     }
 }

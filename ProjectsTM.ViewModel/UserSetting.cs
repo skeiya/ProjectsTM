@@ -35,7 +35,10 @@ namespace ProjectsTM.ViewModel
             result.FilterName = xml.Element(nameof(FilterName)).Value;
             result.Ratio = float.Parse(xml.Element(nameof(Ratio)).Value);
             result.FontSize = int.Parse(xml.Element(nameof(FontSize)).Value);
-            result.FilePath = xml.Element(nameof(FilePath)).Value;
+            if (xml.Element(nameof(FilePath)) != null)
+            {
+                result.FilePath = xml.Element(nameof(FilePath)).Value;
+            }
             result.Detail = Detail.FromXml(xml);
             result.PatternHistory = PatternHistory.FromXml(xml);
             if (xml.Element(nameof(UserName)) != null)

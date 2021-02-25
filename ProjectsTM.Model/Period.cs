@@ -68,7 +68,7 @@ namespace ProjectsTM.Model
             return false;
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(Period));
             xml.Add(new XElement(nameof(From), From.ToString()));
@@ -76,7 +76,7 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static Period FromXml(XElement w)
+        public static Period FromXml(XElement w)
         {
             var result = new Period();
             var periodElement = w.Element(nameof(Period));

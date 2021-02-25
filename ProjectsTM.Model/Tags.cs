@@ -63,8 +63,12 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static Tags FromXml(XElement w)
+        internal static Tags FromXml(XElement w, int version)
         {
+            if (version < 5)
+            {
+                return Parse(w.Element("TagsElement").Value);
+            }
             return Parse(w.Element(nameof(Tags)).Value);
         }
     }
