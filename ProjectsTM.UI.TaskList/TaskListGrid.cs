@@ -36,19 +36,17 @@ namespace ProjectsTM.UI.TaskList
         public TaskListGrid(ViewData viewData)
         {
             InitializeComponent();
+            this._viewData = viewData;
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
             this.MouseMove += TaskListGrid_MouseMove;
             this.MouseDown += TaskListGrid_MouseDown;
             this.MouseUp += TaskListGrid_MouseUp;
-            this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
             this.Resize += TaskListGrid_Resize;
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
 
             this._editService = new WorkItemEditService(viewData);
-            if (_viewData != null) DetatchEvents();
-            this._viewData = viewData;
             AttachEvents();
             InitializeGrid();
         }
@@ -244,11 +242,6 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void TaskListGrid_Disposed(object sender, EventArgs e)
-        {
-            DetatchEvents();
-        }
-
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
@@ -312,12 +305,6 @@ namespace ProjectsTM.UI.TaskList
         {
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-        }
-
-        private void DetatchEvents()
-        {
-            _viewData.UndoBuffer.Changed -= _undoService_Changed;
-            _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
         private void UpdateLastSelect()
