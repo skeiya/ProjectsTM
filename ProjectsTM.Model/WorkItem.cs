@@ -75,9 +75,16 @@ namespace ProjectsTM.Model
         public static WorkItem FromXml(XElement xml, Member assign, int version)
         {
             var result = new WorkItem();
-            if (xml.Attribute("Name") != null)
+            if (version < 5)
             {
-                result.Name = xml.Attribute("Name").Value;
+                result.Name = xml.Element("Name").Value;
+            }
+            else
+            {
+                if (xml.Attribute("Name") != null)
+                {
+                    result.Name = xml.Attribute("Name").Value;
+                }
             }
             result.Project = Project.FromXml(xml, version);
             result.Period = Period.FromXml(xml);
