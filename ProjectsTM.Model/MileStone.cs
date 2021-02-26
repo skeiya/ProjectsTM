@@ -24,11 +24,6 @@ namespace ProjectsTM.Model
         public string Name { get; set; }
 
         public Project Project { get; set; } = new Project(string.Empty);
-        public string ProjectElement
-        {
-            get { return Project.ToString(); }
-            set { Project = new Project(value); }
-        }
 
         public CallenderDay Day { get; set; }
         public Color Color { get; set; }
