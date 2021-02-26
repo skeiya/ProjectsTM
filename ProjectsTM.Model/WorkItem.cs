@@ -75,15 +75,25 @@ namespace ProjectsTM.Model
         public static WorkItem FromXml(XElement xml, Member assign, int version)
         {
             var result = new WorkItem();
-            if (xml.Attribute("Name") != null)
+            if (version < 5)
             {
-                result.Name = xml.Attribute("Name").Value;
+                result.Name = xml.Element("Name").Value;
+            }
+            else
+            {
+                if (xml.Attribute("Name") != null)
+                {
+                    result.Name = xml.Attribute("Name").Value;
+                }
             }
             result.Project = Project.FromXml(xml, version);
             result.Period = Period.FromXml(xml);
             result.Tags = Tags.FromXml(xml, version);
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
-            result.Description = xml.Element("Description").Value;
+            if (xml.Element("Description") != null)
+            {
+                result.Description = xml.Element("Description").Value;
+            }
             result.AssignedMember = assign;
 
             if (xml is IXmlLineInfo info && info.HasLineInfo())

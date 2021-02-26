@@ -92,28 +92,22 @@ namespace ProjectsTM.UI.Main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var setting = UserSettingUIService.Load();
+            _viewData.FontSize = setting.FontSize;
+            _viewData.Detail = setting.Detail;
+            _patternHistory.CopyFrom(setting.PatternHistory);
+            if (_fileIOService.TryOpenFile(setting.FilePath, out var appData))
+            {
+                SetAppData(appData);
+            }
+            else
+            {
+                SetAppData(AppData.Dummy);
+            }
+            _filterComboBoxService.Text = setting.FilterName;
+            _me = Member.Parse(setting.UserName);
+            _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
             MainFormStateManager.Load(this);
-            try
-            {
-                var setting = UserSettingUIService.Load();
-                _viewData.FontSize = setting.FontSize;
-                _viewData.Detail = setting.Detail;
-                _patternHistory.CopyFrom(setting.PatternHistory);
-                if (_fileIOService.TryOpenFile(setting.FilePath, out var appData))
-                {
-                    SetAppData(appData);
-                }
-                else
-                {
-                    SetAppData(AppData.Dummy);
-                }
-                _filterComboBoxService.Text = setting.FilterName;
-                _me = Member.Parse(setting.UserName);
-                _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
-            }
-            catch
-            {
-            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

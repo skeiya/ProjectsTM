@@ -33,5 +33,14 @@
     </WorkItem>
   </WorkItems>
   <ColorConditions />
-  <MileStones />
+  <MileStones>
+    <MileStone>
+      <Name>ms</Name>
+      <Day>
+        <Date>2021/01/01</Date>
+      </Day>
+      <ColorText>255/255/0</ColorText>
+      <MileStoneFilterName>aaa</MileStoneFilterName>
+    </MileStone>
+  </MileStones>
 </AppData>

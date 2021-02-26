@@ -70,8 +70,30 @@ namespace ProjectsTM.UI.Main
             LockUpdate = true;
             this.RowCount = _viewData.FilteredItems.Days.Count() + this.FixedRowCount;
             this.ColCount = _viewData.FilteredItems.Members.Count() + this.FixedColCount;
-            ApplyDetailSetting();
+
+            var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
+            var g = this.CreateGraphics();
+            var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
+            var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
+            var height = memberHeight;
+            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
+            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2f) + 1;
+            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4f) + 1;
+            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4f) + 1;
+            for (var c = FixedColCount; c < ColCount; c++)
+            {
+                this.ColWidths[c] = width;
+            }
+            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = memberHeight;
+            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = memberHeight;
+            for (var r = FixedRowCount; r < RowCount; r++)
+            {
+                this.RowHeights[r] = height;
+            }
             LockUpdate = false;
+
+            _drawService?.ClearBuffer();
         }
 
         private bool SelectNextWorkItem(bool prev)
@@ -137,30 +159,6 @@ namespace ProjectsTM.UI.Main
                 if (r != null) neighbers.Add(r);
             }
             return neighbers;
-        }
-
-        private void ApplyDetailSetting()
-        {
-            var font = FontCache.GetFont(this.Font.FontFamily, _viewData.FontSize, false);
-            var g = this.CreateGraphics();
-            var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
-            var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
-            var height = memberHeight;
-            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
-            this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2f) + 1;
-            this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4f) + 1;
-            this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4f) + 1;
-            for (var c = FixedColCount; c < ColCount; c++)
-            {
-                this.ColWidths[c] = width;
-            }
-            this.RowHeights[WorkItemGridConstants.CompanyRow.Value] = memberHeight;
-            this.RowHeights[WorkItemGridConstants.LastNameRow.Value] = memberHeight;
-            this.RowHeights[WorkItemGridConstants.FirstNameRow.Value] = memberHeight;
-            for (var r = FixedRowCount; r < RowCount; r++)
-            {
-                this.RowHeights[r] = height;
-            }
         }
 
         private void _undoService_Changed(object sender, IEditedEventArgs e)
