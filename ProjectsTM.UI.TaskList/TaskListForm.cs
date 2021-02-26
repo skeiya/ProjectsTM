@@ -12,8 +12,7 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListForm : Form
     {
         private readonly PatternHistory _history;
-        private string _userName;
-        private string DispUserNameSortSelection => $"あなた({_userName})に割り当てられたタスク";
+        private Member _user;
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
@@ -30,13 +29,7 @@ namespace ProjectsTM.UI.TaskList
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
             this.checkBoxShowMS.Checked = option.IsShowMS;
             this.comboBoxPattern.SelectedIndexChanged += ComboBoxPattern_SelectedIndexChanged;
-            this._userName = user == null ? string.Empty : user.NaturalString;
-        }
-
-        public void UpdateMySetting(Member me)
-        {
-            _userName = me == null ? string.Empty : me.NaturalString;
-            comboBoxPattern.Text = string.Empty;
+            this._user = user;
         }
 
         private void InitializeCombobox(ErrorDisplayType errorDisplayType)
@@ -81,13 +74,24 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            if (IsUserNameSort()) return GetSortPatternFormUserName(_userName);
+            if (IsUserNameSort()) return GetSortPatternFormUserName(_user.ToString());
             return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.ErrorDisplayType);
+        }
+
+        public void UpdateMySetting(Member me)
+        {
+            _user = me;
+            comboBoxPattern.Text = string.Empty;
+        }
+
+        private string GetUserTaskSortSelectionDispText()
+        {
+            return _user == null ? string.Empty : $"あなた({_user})に割り当てられたタスク";
         }
 
         private bool IsUserNameSort()
         {
-            return comboBoxPattern.SelectedIndex == 0 && comboBoxPattern.Text.Equals(DispUserNameSortSelection);
+            return comboBoxPattern.SelectedIndex == 0 && comboBoxPattern.Text.Equals(GetUserTaskSortSelectionDispText());
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
@@ -155,14 +159,14 @@ namespace ProjectsTM.UI.TaskList
         private void ComboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!(IsUserNameSort() || IsUserSettingSet())) return;
-            gridControl1.Option = GetSortPatternFormUserName(_userName);
+            gridControl1.Option = GetSortPatternFormUserName(_user.ToString());
             gridControl1.UpdateView();
         }
 
         private void SetUserNameSortSelect()
         {
             if (!IsUserSettingSet()) return;
-            comboBoxPattern.Items.Add(DispUserNameSortSelection);
+            comboBoxPattern.Items.Add(GetUserTaskSortSelectionDispText());
         }
 
         private TaskListOption GetSortPatternFormUserName(string userName)
@@ -173,7 +177,7 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsUserSettingSet()
         {
-            return !string.IsNullOrEmpty(_userName);
+            return _user != null;
         }
 
         private void buttonUpdate_Click(object sender, System.EventArgs e)
@@ -190,7 +194,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void AppendSelectiontToHistory()
         {
-            if (comboBoxPattern.Text.Equals(DispUserNameSortSelection)) return;
+            if (comboBoxPattern.Text.Equals(GetUserTaskSortSelectionDispText())) return;
             _history.Append(comboBoxPattern.Text);
         }
     }
