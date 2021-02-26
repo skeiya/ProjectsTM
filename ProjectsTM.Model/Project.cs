@@ -39,7 +39,11 @@ namespace ProjectsTM.Model
         {
             if (version < 5)
             {
-                return new Project(w.Element("ProjectElement").Value);
+                if (w.Element("ProjectElement") != null)
+                {
+                    return new Project(w.Element("ProjectElement").Value);
+                }
+                return new Project(string.Empty);
             }
             return new Project(w.Element(nameof(Project)).Value);
         }

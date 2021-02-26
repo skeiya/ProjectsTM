@@ -83,7 +83,10 @@ namespace ProjectsTM.Model
             result.Period = Period.FromXml(xml);
             result.Tags = Tags.FromXml(xml, version);
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
-            result.Description = xml.Element("Description").Value;
+            if (xml.Element("Description") != null)
+            {
+                result.Description = xml.Element("Description").Value;
+            }
             result.AssignedMember = assign;
 
             if (xml is IXmlLineInfo info && info.HasLineInfo())

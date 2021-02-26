@@ -52,11 +52,11 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static CallenderDay FromXml(XElement e)
+        internal static CallenderDay FromXml(XElement xml)
         {
             var result = new CallenderDay
             {
-                Date = e.Value,
+                Date = xml.Value,
             };
             return result;
         }
