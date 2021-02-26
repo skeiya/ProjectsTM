@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
         private readonly Func<bool> _isDragActive;
         private readonly Func<bool> _isDragMoving;
         private readonly Func<DragStartInfo> _dragStartInfo;
-        private readonly ImageBuffer _imageBuffer;
+        private ImageBuffer _imageBuffer;
         private IWorkItemGrid _grid;
 
         public DrawService(IWorkItemGrid grid)
@@ -43,10 +43,15 @@ namespace ProjectsTM.Service
             _isDragActive = isDragActive;
             _isDragMoving = isDragMoving;
             _dragStartInfo = dragStartInfo;
-            _imageBuffer?.Dispose();
-            _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
             this._font = font;
+            ClearBuffer();
+        }
+
+        public void ClearBuffer()
+        {
+            _imageBuffer?.Dispose();
+            _imageBuffer = new ImageBuffer(_grid.FullSize.Width, _grid.FullSize.Height);
         }
 
         public void Draw(Graphics g, bool isAllDraw)
