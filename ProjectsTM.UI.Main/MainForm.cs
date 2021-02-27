@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
-        private readonly EditorFindService _editorFindService = new EditorFindService();
+        private readonly EditorFindService _editorFindService;
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -35,7 +35,7 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
-            _fileIOService.FileSaved += FileIOService_FileSaved;
+            _editorFindService = new EditorFindService(_fileIOService);
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
@@ -45,11 +45,6 @@ namespace ProjectsTM.UI.Main
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { _workItemGrid.MoveToTodayAndMember(_me); SuggestSetting(); };
             this.Load += MainForm_Load;
-        }
-
-        private void FileIOService_FileSaved(object sender, string filePath)
-        {
-            _editorFindService.Load(filePath);
         }
 
         private void SuggestSetting()
@@ -130,7 +125,6 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-            _editorFindService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

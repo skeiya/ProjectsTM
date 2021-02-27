@@ -10,7 +10,13 @@ namespace ProjectsTM.Service
         private readonly Dictionary<WorkItem, string> _foundDictionary = new Dictionary<WorkItem, string>();
         private readonly List<WorkItem> _searchingList = new List<WorkItem>();
 
-        public void Load(string filePath)
+        public EditorFindService(AppDataFileIOService fileIOService)
+        {
+            fileIOService.FileOpened += (s, path) => { Load(path); };
+            fileIOService.FileSaved += (s, path) => { Load(path); };
+        }
+
+        private void Load(string filePath)
         {
             _filePath = filePath;
             _foundDictionary.Clear();
