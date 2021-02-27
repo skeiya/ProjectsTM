@@ -15,7 +15,6 @@ namespace ProjectsTM.UI.Main
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private readonly MainViewData _viewData;
-        private readonly ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private readonly WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
@@ -51,8 +50,7 @@ namespace ProjectsTM.UI.Main
                 () => _workItemDragService.DragStartInfo,
                 this.Font);
 
-            ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this, ContextMenuStrip);
+            ContextMenuStrip = new MainFormContextMenuStrip(_viewData.Core, this);
             _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
 
             AttachEvents();
