@@ -28,14 +28,23 @@ namespace ProjectsTM.UI.Main
             this.toolStripStatusHasUncommittedChange,
             });
             this._viewData = viewData;
-            this._viewData.Detail.RatioChanged += (s, e) => { toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString(); };
+            this._viewData.RatioChanged += (s, e) => { UpdateRatio(); };
 
             this._remoteChangePollingService = remoteChangePollingService;
             this._remoteChangePollingService.CheckedUnpushedChange += (s, e) => { toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty; };
             this._remoteChangePollingService.FoundRemoteChange += (s, e) => { toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty; };
 
             this._viewData.UndoBuffer.Changed += (s, e) => { UpdateDisplayOfSum(e); };
-            this._viewData.AppDataChanged += (s, e) => { UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members)); };
+            this._viewData.AppDataChanged += (s, e) =>
+            { 
+                UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
+                UpdateRatio();
+            };
+        }
+
+        private void UpdateRatio()
+        {
+            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
         }
 
         private void UpdateDisplayOfSum(IEditedEventArgs e)

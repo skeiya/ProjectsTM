@@ -10,6 +10,7 @@ namespace ProjectsTM.ViewModel
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
+        public event EventHandler RatioChanged;
 
         public MainViewData(AppData appData)
         {
@@ -64,12 +65,14 @@ namespace ProjectsTM.ViewModel
             if (FontSize <= 1) return;
             FontSize--;
             Detail.ViewRatio -= 0.1f;
+            RatioChanged?.Invoke(this, null);
         }
 
         public void IncRatio()
         {
             FontSize++;
             Detail.ViewRatio += 0.1f;
+            RatioChanged?.Invoke(this, null);
         }
 
         public Detail Detail { get; set; } = new Detail();
