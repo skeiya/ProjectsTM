@@ -25,8 +25,7 @@ namespace ProjectsTM.UI.Main
             InitializeComponent();
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _editorFindService = new EditorFindService(_fileIOService);
-            _workItemGrid = new WorkItemGrid(_viewData, _editorFindService);
-            
+            _workItemGrid = new WorkItemGrid(_viewData, _editorFindService, _fileIOService);
             panel1.Controls.Add(new MainFormStatusStrip(_viewData, _remoteChangePollingService));
             panel1.Controls.Add(_workItemGrid);
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
@@ -39,7 +38,6 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
-            _workItemGrid.DragDrop += TaskDrawArea_DragDrop;
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };
@@ -128,13 +126,6 @@ namespace ProjectsTM.UI.Main
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _fileIOService.SetDirty();
-        }
-
-        private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
-        {
-            var fileName = FileDragService.Drop(e);
-            if (!_fileIOService.TryOpenFile(fileName, out var appData)) return;
-            SetAppData(appData);
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)

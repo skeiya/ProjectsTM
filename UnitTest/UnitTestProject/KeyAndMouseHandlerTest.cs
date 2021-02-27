@@ -35,7 +35,7 @@ namespace UnitTestProject
             appData.WorkItems.Add(g);
 
             viewData = new MainViewData(appData);
-            grid = new WorkItemGrid(viewData, new EditorFindService(new AppDataFileIOService()));
+            grid = new WorkItemGrid(viewData, new EditorFindService(new AppDataFileIOService()), new AppDataFileIOService());
 
             /* グリッドの列幅・行高
               24 12 12 35 35

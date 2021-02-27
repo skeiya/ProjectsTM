@@ -32,7 +32,7 @@ namespace ProjectsTM.UI.Main
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
         public event EventHandler<float> RatioChanged;
-        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService)
+        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService, AppDataFileIOService fileIOService)
         {
             this.Dock = DockStyle.Fill;
             this._viewData = viewData;
@@ -57,6 +57,13 @@ namespace ProjectsTM.UI.Main
             AttachEvents();
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
+
+            this.DragDrop += (s, e) =>
+            {
+                var fileName = FileDragService.Drop(e);
+                if (!fileIOService.TryOpenFile(fileName, out var appData)) return;
+                _viewData.SetAppData(appData);
+            };
         }
 
         private ClientPoint Global2Client(Point global)
