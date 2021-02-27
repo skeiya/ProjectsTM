@@ -37,7 +37,6 @@ namespace ProjectsTM.UI.Main
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };
@@ -54,11 +53,6 @@ namespace ProjectsTM.UI.Main
                 _viewData.Detail.Me = dlg.Selected;
                 _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
-        }
-
-        private void _remoteChangePollingService_CheckedUnpushedChange(object sender, EventArgs e)
-        {
-            UpdateView();
         }
 
         private void UpdateView()
