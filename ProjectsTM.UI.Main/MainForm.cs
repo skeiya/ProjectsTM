@@ -173,12 +173,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            _workItemGrid.DecRatio();
+            _viewData.DecRatio();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            _workItemGrid.IncRatio();
+            _viewData.IncRatio();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)

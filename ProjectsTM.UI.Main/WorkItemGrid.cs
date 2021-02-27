@@ -31,7 +31,6 @@ namespace ProjectsTM.UI.Main
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public event EventHandler<float> RatioChanged;
         public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService, AppDataFileIOService fileIOService)
         {
             this.Dock = DockStyle.Fill;
@@ -52,7 +51,7 @@ namespace ProjectsTM.UI.Main
                 this.Font);
 
             ContextMenuStrip = new MainFormContextMenuStrip(_viewData.Core, this);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
 
             AttachEvents();
             AllowDrop = true;
@@ -390,18 +389,6 @@ namespace ProjectsTM.UI.Main
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
             _drawService.Draw(e.Graphics, e.IsAllDraw);
-        }
-
-        public void DecRatio()
-        {
-            _viewData.DecRatio();
-            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
-        }
-
-        public void IncRatio()
-        {
-            _viewData.IncRatio();
-            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
