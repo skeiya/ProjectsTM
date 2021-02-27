@@ -363,8 +363,6 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToMeToday()
         {
-            var wi = GetUniqueSelect();
-            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
             MoveToTodayAndMember(_viewData.Detail.Me);
         }
 
