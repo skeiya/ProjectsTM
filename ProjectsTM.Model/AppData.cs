@@ -39,17 +39,29 @@ namespace ProjectsTM.Model
                 appData.Callender.Add(new CallenderDay(2020, 12, 20));
                 appData.Callender.Add(new CallenderDay(2021, 2, 13));
                 var i = new WorkItem(
-                    new Project("PrjA"), "NameA", Tags.Parse(string.Empty),
+                    new Project("PrjA"),
+                    "NameA",
+                    Tags.Parse(string.Empty),
                     new Period(new CallenderDay(2018, 4, 1), new CallenderDay(2018, 5, 2)),
-                    ichiro, TaskState.Active, string.Empty);
+                    ichiro,
+                    TaskState.Active,
+                    string.Empty);
                 var g = new WorkItem(
-                    new Project("PrjB"), "NameB", Tags.Parse(string.Empty),
+                    new Project("PrjB"),
+                    "NameB", 
+                    Tags.Parse(string.Empty),
                     new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2018, 8, 5)),
-                    gozzila, TaskState.Active, string.Empty);
+                    gozzila, 
+                    TaskState.Active, 
+                    string.Empty);
                 var c = new WorkItem(
-                    new Project("PrjC"), "NameC", Tags.Parse(string.Empty),
+                    new Project("PrjC"), 
+                    "NameC",
+                    Tags.Parse(string.Empty),
                     new Period(new CallenderDay(2018, 6, 3), new CallenderDay(2020, 12, 20)),
-                    godchild, TaskState.Active, string.Empty);
+                    godchild, 
+                    TaskState.Active, 
+                    string.Empty);
                 appData.WorkItems.Add(i);
                 appData.WorkItems.Add(g);
                 appData.WorkItems.Add(c);
