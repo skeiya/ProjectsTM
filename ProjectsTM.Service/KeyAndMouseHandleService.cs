@@ -11,7 +11,7 @@ namespace ProjectsTM.Service
 {
     public class KeyAndMouseHandleService : IDisposable
     {
-        private readonly ViewData _viewData;
+        private readonly MainViewData _viewData;
         private readonly IWorkItemGrid _grid;
         private readonly WorkItemDragService _workItemDragService;
         private readonly DrawService _drawService;
@@ -22,7 +22,7 @@ namespace ProjectsTM.Service
         private readonly ToolTipService _toolTipService;
         private bool disposedValue;
 
-        public KeyAndMouseHandleService(ViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService, Func<Point, ClientPoint> global2Client)
+        public KeyAndMouseHandleService(MainViewData viewData, IWorkItemGrid grid, WorkItemDragService workItemDragService, DrawService drawService, WorkItemEditService editService, Control parentControl, EditorFindService editorFindService, Func<Point, ClientPoint> global2Client)
         {
             this._viewData = viewData;
             this._grid = grid;
@@ -30,7 +30,7 @@ namespace ProjectsTM.Service
             this._drawService = drawService;
             this._editService = editService;
             this._global2Client = global2Client;
-            this._toolTipService = new ToolTipService(parentControl, _viewData, editorFindService, GetCusorWorkItem, GetCursorDay, IsDragging, IsMilestoneArea);
+            this._toolTipService = new ToolTipService(parentControl, _viewData.Core, editorFindService, GetCusorWorkItem, GetCursorDay, IsDragging, IsMilestoneArea);
         }
 
         private bool IsMilestoneArea()
@@ -69,7 +69,7 @@ namespace ProjectsTM.Service
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData, location))
+                if (IsWorkItemExpandArea(_viewData.Core, location))
                 {
                     _workItemDragService.StartExpand(GetExpandDirection(_viewData, location), _viewData.Selected, _grid.Y2Day(curOnRaw.Y));
                     return;
@@ -111,7 +111,7 @@ namespace ProjectsTM.Service
             }
         }
 
-        private int GetExpandDirection(ViewData viewData, ClientPoint location)
+        private int GetExpandDirection(MainViewData viewData, ClientPoint location)
         {
             if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
@@ -126,8 +126,8 @@ namespace ProjectsTM.Service
 
         public void MouseMove(ClientPoint location, Control control)
         {
-            _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(location), _viewData);
-            if (IsWorkItemExpandArea(_viewData, location))
+            _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(location), _viewData.Core);
+            if (IsWorkItemExpandArea(_viewData.Core, location))
             {
                 if (control.Cursor != Cursors.SizeNS)
                 {
@@ -227,7 +227,7 @@ namespace ProjectsTM.Service
             }
             if (e.KeyCode == Keys.Escape)
             {
-                _workItemDragService.End(_editService, _viewData, true, null);
+                _workItemDragService.End(_editService, _viewData.Core, true, null);
                 _viewData.Selected = null;
             }
         }
@@ -251,11 +251,11 @@ namespace ProjectsTM.Service
             {
                 if (e.Delta > 0)
                 {
-                    _grid.IncRatio();
+                    _viewData.IncRatio();
                 }
                 else
                 {
-                    _grid.DecRatio();
+                    _viewData.DecRatio();
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace ProjectsTM.Service
         {
             using (new RedrawLock(_drawService, () => _grid.Invalidate()))
             {
-                _workItemDragService.End(_editService, _viewData, false, RangeSelect);
+                _workItemDragService.End(_editService, _viewData.Core, false, RangeSelect);
             }
         }
 

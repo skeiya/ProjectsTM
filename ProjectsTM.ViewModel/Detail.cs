@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using ProjectsTM.Model;
+using System.Xml.Linq;
 
 namespace ProjectsTM.ViewModel
 {
@@ -10,7 +11,8 @@ namespace ProjectsTM.ViewModel
         public int DateWidthCore { get; set; } = 50;
         public int ColWidthCore { get; set; } = 20;
         public float ViewRatio { get; set; } = 1.0f;
-
+        public Member Me = Member.Invalid;
+        public bool HideSuggestionForUserNameSetting = false;
         internal Detail Clone()
         {
             var result = new Detail();
@@ -32,6 +34,8 @@ namespace ProjectsTM.ViewModel
             xml.Add(new XElement(nameof(DateWidthCore)) { Value = DateWidthCore.ToString() });
             xml.Add(new XElement(nameof(ColWidthCore)) { Value = ColWidthCore.ToString() });
             xml.Add(new XElement(nameof(ViewRatio)) { Value = ViewRatio.ToString() });
+            xml.Add(Me.ToXml());
+            xml.Add(new XElement("HideSuggestionForUserNameSetting") { Value = HideSuggestionForUserNameSetting.ToString() });
             return xml;
         }
 
@@ -45,6 +49,14 @@ namespace ProjectsTM.ViewModel
             result.DateWidthCore = int.Parse(xml.Element(nameof(DateWidthCore)).Value);
             result.ColWidthCore = int.Parse(xml.Element(nameof(ColWidthCore)).Value);
             result.ViewRatio = float.Parse(xml.Element(nameof(ViewRatio)).Value);
+            if (xml.Element("Member") != null)
+            {
+                result.Me = Member.FromXml(xml.Element("Member"));
+            }
+            if (xml.Element("HideSuggestionForUserNameSetting") != null)
+            {
+                result.HideSuggestionForUserNameSetting = bool.Parse(xml.Element("HideSuggestionForUserNameSetting").Value);
+            }
             return result;
         }
     }
