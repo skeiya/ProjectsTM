@@ -15,8 +15,6 @@ namespace ProjectsTM.UI.Main
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
         private readonly EditorFindService _editorFindService;
-        private Member _me = null;
-        private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
         private readonly WorkItemGrid _workItemGrid;
@@ -24,6 +22,7 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
+            _editorFindService = new EditorFindService(_fileIOService);
             _workItemGrid = new WorkItemGrid(_viewData, _editorFindService);
             _workItemGrid.Dock = DockStyle.Fill;
             panel1.Controls.Add(_workItemGrid);
@@ -35,7 +34,6 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
-            _editorFindService = new EditorFindService(_fileIOService);
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
@@ -43,19 +41,19 @@ namespace ProjectsTM.UI.Main
             _workItemGrid.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { _workItemGrid.MoveToTodayAndMember(_me); SuggestSetting(); };
+            this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };
             this.Load += MainForm_Load;
         }
 
         private void SuggestSetting()
         {
-            if (_hideSuggestionForUserNameSetting) return;
-            if (_me != null) return;
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
+            if (_viewData.Detail.HideSuggestionForUserNameSetting) return;
+            if (_viewData.Detail.Me != Member.Invalid) return;
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _viewData.Detail.Me, _viewData.Detail.HideSuggestionForUserNameSetting))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                _me = dlg.Selected;
-                _hideSuggestionForUserNameSetting = dlg.HideSetting;
+                _viewData.Detail.Me = dlg.Selected;
+                _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
         }
 
@@ -100,8 +98,6 @@ namespace ProjectsTM.UI.Main
                 SetAppData(AppData.Dummy);
             }
             _filterComboBoxService.Text = setting.FilterName;
-            _me = Member.Parse(setting.UserName);
-            _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
             MainFormStateManager.Load(this);
         }
 
@@ -114,8 +110,6 @@ namespace ProjectsTM.UI.Main
                 FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                UserName = _me == null ? string.Empty : _me.ToSerializeString(),
-                HideSuggestionForUserNameSetting = _hideSuggestionForUserNameSetting,
             };
             UserSettingUIService.Save(setting);
             MainFormStateManager.Save(this);
@@ -301,11 +295,11 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _viewData.Detail.Me, _viewData.Detail.HideSuggestionForUserNameSetting))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                _me = dlg.Selected;
-                _hideSuggestionForUserNameSetting = dlg.HideSetting;
+                _viewData.Detail.Me = dlg.Selected;
+                _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
         }
 

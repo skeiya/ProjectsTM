@@ -361,7 +361,14 @@ namespace ProjectsTM.UI.Main
             MoveToTodayAndMember(m);
         }
 
-        internal void MoveToTodayAndMember(Member m)
+        internal void MoveToMeToday()
+        {
+            var wi = GetUniqueSelect();
+            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
+            MoveToTodayAndMember(_viewData.Detail.Me);
+        }
+
+        private void MoveToTodayAndMember(Member m)
         {
             var today = _viewData.Original.Callender.NearestFromToday;
             MoveVisibleDayAndMember(today, m);
