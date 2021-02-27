@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using System;
 using System.Xml.Linq;
 
 namespace ProjectsTM.ViewModel
@@ -10,7 +11,21 @@ namespace ProjectsTM.ViewModel
         public int RowHeightCore { get; set; } = 10;
         public int DateWidthCore { get; set; } = 50;
         public int ColWidthCore { get; set; } = 20;
-        public float ViewRatio { get; set; } = 1.0f;
+        private float _viewRatio = 1.0f;
+        public event EventHandler RatioChanged;
+        public float ViewRatio
+        {
+            get
+            {
+                return _viewRatio;
+            }
+            set
+            {
+                if (_viewRatio == value) return;
+                _viewRatio = value;
+                RatioChanged?.Invoke(this, null);
+            }
+        }
         public Member Me = Member.Invalid;
         public bool HideSuggestionForUserNameSetting = false;
         internal Detail Clone()

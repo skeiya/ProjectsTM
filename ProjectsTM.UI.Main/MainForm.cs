@@ -10,7 +10,6 @@ namespace ProjectsTM.UI.Main
     {
         private readonly MainViewData _viewData = new MainViewData(new AppData());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
-        private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
@@ -24,9 +23,11 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
+            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _editorFindService = new EditorFindService(_fileIOService);
             _workItemGrid = new WorkItemGrid(_viewData, _editorFindService);
-            _workItemGrid.Dock = DockStyle.Fill;
+            
+            panel1.Controls.Add(new MainFormStatusStrip(_viewData, _remoteChangePollingService));
             panel1.Controls.Add(_workItemGrid);
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
             _taskListManager = new TaskListManager(_viewData.Core, _patternHistory, this);
@@ -36,7 +37,6 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
-            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
             _workItemGrid.DragDrop += TaskDrawArea_DragDrop;
@@ -70,10 +70,6 @@ namespace ProjectsTM.UI.Main
             _taskListManager.UpdateView();
             _workItemGrid.UpdateGridFrame();
             _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty;
-            toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty;
         }
 
         private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
@@ -133,13 +129,6 @@ namespace ProjectsTM.UI.Main
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _fileIOService.SetDirty();
-            UpdateDisplayOfSum(e);
-        }
-
-        private void UpdateDisplayOfSum(IEditedEventArgs e)
-        {
-            var sum = _calculateSumService.Calculate(_viewData.Core, e.UpdatedMembers);
-            toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
         }
 
         private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)

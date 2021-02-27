@@ -34,6 +34,7 @@ namespace ProjectsTM.UI.Main
         public event EventHandler<float> RatioChanged;
         public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService)
         {
+            this.Dock = DockStyle.Fill;
             this._viewData = viewData;
             this.FixedRowCount = WorkItemGridConstants.FixedRows;
             this.FixedColCount = WorkItemGridConstants.FixedCols;

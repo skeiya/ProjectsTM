@@ -56,6 +56,12 @@
     <Compile Include="MainFormContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MainFormStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainFormStatusStrip.Designer.cs">
+      <DependentUpon>MainFormStatusStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="RsExportManager.cs" />
     <Compile Include="TaskListManager.cs" />
     <Compile Include="TrendChartBackgroundWorkForm.cs">
