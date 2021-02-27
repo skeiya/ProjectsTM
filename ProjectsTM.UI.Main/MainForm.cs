@@ -40,7 +40,6 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
             _workItemGrid.DragDrop += TaskDrawArea_DragDrop;
-            _workItemGrid.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
             this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };

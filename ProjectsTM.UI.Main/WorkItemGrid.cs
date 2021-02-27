@@ -182,6 +182,7 @@ namespace ProjectsTM.UI.Main
         private void AttachEvents()
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            this._viewData.RatioChanged += (s, e) => { UpdateGridFrame(); };
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
