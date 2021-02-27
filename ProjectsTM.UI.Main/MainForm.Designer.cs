@@ -10,6 +10,22 @@ namespace ProjectsTM.UI.Main
         private System.ComponentModel.IContainer components = null;
 
         #region Windows フォーム デザイナーで生成されたコード
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                    // _workItemGrid.Dispose();
+                }
+
+                // Dispose stuff here
+                _fileIOService.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
 
         /// <summary>
         /// デザイナー サポートに必要なメソッドです。このメソッドの内容を

@@ -251,7 +251,7 @@ namespace ProjectsTM.Service
             }
             using (var rs = StreamFactory.CreateReader(path))
             {
-               return  Filter.FromXml(XElement.Load(rs));
+               return Filter.FromXml(XElement.Load(rs));
             }
         }
     }

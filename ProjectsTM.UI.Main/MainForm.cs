@@ -17,7 +17,9 @@ namespace ProjectsTM.UI.Main
         private readonly EditorFindService _editorFindService;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
+#pragma warning disable CA2213 // 破棄可能なフィールドは破棄しなければなりません
         private readonly WorkItemGrid _workItemGrid;
+#pragma warning restore CA2213 // 破棄可能なフィールドは破棄しなければなりません
 
         public MainForm()
         {
@@ -314,23 +316,6 @@ namespace ProjectsTM.UI.Main
             {
                 dlg.ShowDialog(this);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                    _workItemGrid.Dispose();
-                }
-
-                // Dispose stuff here
-                _fileIOService.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 }
