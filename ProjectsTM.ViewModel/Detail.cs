@@ -1,5 +1,4 @@
 ﻿using ProjectsTM.Model;
-using System;
 using System.Xml.Linq;
 
 namespace ProjectsTM.ViewModel
