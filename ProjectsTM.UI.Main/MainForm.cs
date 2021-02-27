@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
-        private readonly EditorFindService _lastUpdateDateAndUserNameService = new EditorFindService();
+        private readonly EditorFindService _editorFindService = new EditorFindService();
         private Member _me = null;
         private bool _hideSuggestionForUserNameSetting = false;
         private readonly RemoteChangePollingService _remoteChangePollingService;
@@ -24,7 +24,7 @@ namespace ProjectsTM.UI.Main
         public MainForm()
         {
             InitializeComponent();
-            _workItemGrid = new WorkItemGrid(_viewData, _lastUpdateDateAndUserNameService);
+            _workItemGrid = new WorkItemGrid(_viewData, _editorFindService);
             _workItemGrid.Dock = DockStyle.Fill;
             panel1.Controls.Add(_workItemGrid);
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
@@ -49,7 +49,7 @@ namespace ProjectsTM.UI.Main
 
         private void FileIOService_FileSaved(object sender, string filePath)
         {
-            _lastUpdateDateAndUserNameService.Load(filePath);
+            _editorFindService.Load(filePath);
         }
 
         private void SuggestSetting()
@@ -130,7 +130,7 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-            _lastUpdateDateAndUserNameService.Load(filePath);
+            _editorFindService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
