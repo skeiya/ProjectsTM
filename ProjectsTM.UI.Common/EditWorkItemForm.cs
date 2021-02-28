@@ -154,7 +154,7 @@ namespace ProjectsTM.UI.Common
 
         public bool TryGetWorkItem(out WorkItem result)
         {
-            result = null;
+            result = new WorkItem();
             if (!TryGetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, out var period)) return false;
             if (!TryGetAssignedMember(out var m)) return false;
             result = new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, m, GetState(), GetDescrption());

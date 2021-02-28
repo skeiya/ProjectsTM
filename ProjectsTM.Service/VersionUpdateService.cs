@@ -27,8 +27,8 @@ namespace ProjectsTM.Service
             if (!Directory.Exists(fileServerPath)) return false;
             foreach (var d in Directory.GetDirectories(fileServerPath))
             {
-                var version = ParseVersion(d);
-                if (result == null || result < version) result = version;
+                if (!TryParseVersion(d, out var version)) continue;
+                if (result < version) result = version;
             }
             return true;
         }
@@ -49,12 +49,14 @@ namespace ProjectsTM.Service
             return currentVer < latestVer;
         }
 
-        private static Version ParseVersion(string latestVersion)
+        private static bool TryParseVersion(string latestVersion, out Version result)
         {
-            if (latestVersion == null) return null;
+            result = new Version();
+            if (string.IsNullOrEmpty(latestVersion)) return false;
             var m = Regex.Match(latestVersion, @"v(\d)\.(\d)\.(\d)");
-            if (!m.Success) return null;
-            return new Version(int.Parse(m.Groups[1].Value), int.Parse(m.Groups[2].Value), int.Parse(m.Groups[3].Value));
+            if (!m.Success) return false;
+            result = new Version(int.Parse(m.Groups[1].Value), int.Parse(m.Groups[2].Value), int.Parse(m.Groups[3].Value));
+            return true;
         }
     }
 }
