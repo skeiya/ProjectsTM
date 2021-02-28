@@ -124,7 +124,7 @@ namespace ProjectsTM.UI.Main
 
         private string GetWorkItemFilter()
         {
-            if (string.IsNullOrEmpty(comboBoxPattern.Text)) return null;
+            if (string.IsNullOrEmpty(comboBoxPattern.Text)) return string.Empty;
             return comboBoxPattern.Text;
         }
 

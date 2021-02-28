@@ -8,6 +8,9 @@ namespace FreeGridControl
     {
         private Rectangle _rectangle;
 
+        public static ClientRectangle Empty => _empty;
+        private static readonly ClientRectangle _empty = new ClientRectangle(Rectangle.Empty.X, Rectangle.Empty.Y, Rectangle.Empty.Width, Rectangle.Empty.Height);
+
         public ClientRectangle(int x, int y, int width, int height)
         {
             _rectangle = new Rectangle(x, y, width, height);

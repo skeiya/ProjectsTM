@@ -211,7 +211,7 @@ namespace ProjectsTM.Service
             State = DragState.BeforeExpanding;
         }
 
-        internal void StartMove(SelectedWorkItems selected, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay)
+        internal void StartMove(SelectedWorkItems selected, IEnumerable<ClientRectangle> rects, RawPoint location, CallenderDay draggedDay)
         {
             _backup = selected.Clone();
             _dragStartInfo = new DragStartInfo(location, rects);
@@ -363,7 +363,7 @@ namespace ProjectsTM.Service
             invalidateMembers(_backup.Select(w => w.AssignedMember));
         }
 
-        internal void StartCopy(MainViewData viewData, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
+        internal void StartCopy(MainViewData viewData, IEnumerable<ClientRectangle> rects, RawPoint location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
         {
             StartMove(viewData.Selected, rects, location, draggedDay);
             ToCopyMode(viewData.Original.WorkItems, invalidateMembers);

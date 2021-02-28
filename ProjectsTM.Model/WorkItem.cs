@@ -46,6 +46,11 @@ namespace ProjectsTM.Model
 
         public int LineStart { get; private set; } = -1;
         public int LineEnd { get; private set; } = -1;
+        public static WorkItem Invalid => _invalid;
+
+        public bool IsInvalid => this.Equals(Invalid);
+
+        private static readonly WorkItem _invalid = new WorkItem();
 
         public WorkItem() { }
 

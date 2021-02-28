@@ -54,18 +54,19 @@ namespace ProjectsTM.UI.Main
             return new ColIndex(_grid.FixedColCount);
         }
 
-        internal RowIndex Day2Row(CallenderDay day)
+        internal bool Day2Row(CallenderDay day, out RowIndex result)
         {
-            if (_day2RowCache.TryGetValue(day, out var row)) return row;
+            if (_day2RowCache.TryGetValue(day, out result)) return true;
             foreach (var r in RowIndex.Range(_grid.FixedRowCount, _grid.RowCount - _grid.FixedRowCount))
             {
                 if (_viewData.FilteredItems.Days.ElementAt(r.Value - _grid.FixedRowCount).Equals(day))
                 {
                     _day2RowCache.Add(day, r);
-                    return r;
+                    result = r;
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
         internal Member Col2Member(ColIndex c)

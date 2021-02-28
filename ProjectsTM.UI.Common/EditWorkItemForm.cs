@@ -84,8 +84,7 @@ namespace ProjectsTM.UI.Common
 
         private void buttonRegexEscape_Click(object sender, EventArgs e)
         {
-            var wi = CreateWorkItem(_callender);
-            if (wi == null) return;
+            if (!TryGetWorkItem(out var wi)) return;
             using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
             {
                 dlg.Text = "正規表現エスケープ";
@@ -106,35 +105,24 @@ namespace ProjectsTM.UI.Common
                 MessageBox.Show("担当者が存在しません。", "不正な入力", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
-            return CreateWorkItem(_callender) != null;
+            return TryGetWorkItem(out var _);
         }
 
-        private WorkItem CreateWorkItem(Callender callender)
+        private bool TryGetAssignedMember(out Member result)
         {
-            var p = GetProject();
-            if (p == null) return null;
-            var w = GetWorkItemName();
-            if (w == null) return null;
-            var period = GetPeriod(callender, textBoxFrom.Text, textBoxTo.Text);
-            if (period == null) return null;
-            var m = GetAssignedMember();
-            if (m == null) return null;
-            return new WorkItem(p, w, GetTags(), period, m, GetState(), GetDescrption());
+            result = Member.Parse(comboBoxMember.Text);
+            return result != null;
         }
 
-        private Member GetAssignedMember()
+        private static bool TryGetPeriod(Callender callender, string fromText, string toText, out Period result)
         {
-            return Member.Parse(comboBoxMember.Text);
-        }
-
-        private static Period GetPeriod(Callender callender, string fromText, string toText)
-        {
+            result = Period.Invalid;
             var from = GetDayByDate(fromText);
-            if (!TryGetDayByCount(toText, from, callender, out var to)) return null;
-            if (from == null || to == null) return null;
-            var result = new Period(from, to);
-            if (callender.GetPeriodDayCount(result) == 0) return null;
-            return result;
+            if (!TryGetDayByCount(toText, from, callender, out var to)) return false;
+            if (from == null || to == null) return false;
+            result = new Period(from, to);
+            if (callender.GetPeriodDayCount(result) == 0) return false;
+            return true;
         }
 
         private static CallenderDay GetDayByDate(string text)
@@ -156,7 +144,6 @@ namespace ProjectsTM.UI.Common
 
         private string GetWorkItemName()
         {
-            if (string.IsNullOrEmpty(comboBoxWorkItemName.Text)) return null;
             return comboBoxWorkItemName.Text;
         }
 
@@ -165,10 +152,13 @@ namespace ProjectsTM.UI.Common
             return new Project(comboBoxProject.Text);
         }
 
-        public WorkItem GetWorkItem()
+        public bool TryGetWorkItem(out WorkItem result)
         {
-            var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, GetAssignedMember(), GetState(), GetDescrption());
+            result = new WorkItem();
+            if (!TryGetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, out var period)) return false;
+            if (!TryGetAssignedMember(out var m)) return false;
+            result = new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, m, GetState(), GetDescrption());
+            return true;
         }
 
         private string GetDescrption() { return textBoxDescription.Text; }
@@ -180,8 +170,8 @@ namespace ProjectsTM.UI.Common
 
         private void UpdateEndDay()
         {
-            var period = GetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text);
-            textBoxTo.Text = period == null ? string.Empty : _callender.GetPeriodDayCount(period).ToString();
+            if (!TryGetPeriod(_callender, textBoxFrom.Text, textBoxTo.Text, out var period)) return;
+            textBoxTo.Text = _callender.GetPeriodDayCount(period).ToString();
         }
     }
 }

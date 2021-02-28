@@ -56,6 +56,7 @@
     <Compile Include="EditedEventArgs.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="FilteredItems.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IEditedEventArgs.cs" />
     <Compile Include="ImageBuffer.cs" />
     <Compile Include="IWorkItemGrid.cs" />

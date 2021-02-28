@@ -15,12 +15,12 @@ namespace ProjectsTM.ViewModel
         CallenderDay Row2Day(RowIndex r);
         RowIndex Y2Row(int y);
 
-        Rectangle? GetMemberDrawRect(Member m);
+        bool TryGetMemberDrawRect(Member m, out Rectangle result);
         RawRectangle GetRectRaw(ColIndex col, RowIndex r, int rowCount);
         ClientRectangle GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea);
-        RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
-        ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members);
-        IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members);
+        RawRectangle GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
+        ClientRectangle GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members);
+        IEnumerable<ClientRectangle> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);
 
 
@@ -33,7 +33,7 @@ namespace ProjectsTM.ViewModel
 
         RawPoint Global2Raw(Point global);
 
-        ClientRectangle? GetRangeSelectBound();
+        ClientRectangle GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
         void Invalidate();

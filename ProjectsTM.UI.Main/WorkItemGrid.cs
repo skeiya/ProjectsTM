@@ -176,12 +176,14 @@ namespace ProjectsTM.UI.Main
             return Member2Col(m, _viewData.FilteredItems.Members);
         }
 
-        public Rectangle? GetMemberDrawRect(Member m)
+        public bool TryGetMemberDrawRect(Member m, out Rectangle result)
         {
+            result = Rectangle.Empty;
             var col = Member2Col(m, _viewData.FilteredItems.Members);
             var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
-            if (rect.IsEmpty) return null;
-            return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            if (rect.IsEmpty) return false;
+            result = new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            return true;
         }
 
         private void AttachEvents()
@@ -223,24 +225,28 @@ namespace ProjectsTM.UI.Main
             _keyAndMouseHandleService.MouseUp();
         }
 
-        public ClientRectangle? GetRangeSelectBound()
+        public ClientRectangle GetRangeSelectBound()
         {
-            if (_workItemDragService.State != DragState.RangeSelect) return null;
+            if (_workItemDragService.State != DragState.RangeSelect) return FreeGridControl.ClientRectangle.Empty;
             var p1 = this.PointToClient(Cursor.Position);
             var p2 = Raw2Client(_workItemDragService.DragStartInfo.Location);
             return Point2Rect.GetRectangle(p1, p2);
         }
 
-        internal WorkItem GetUniqueSelect()
+        internal bool TryGetUniqueSelect(out WorkItem result)
         {
-            if (_viewData.Selected.Count() != 1) return null;
-            return _viewData.Selected.Unique;
+            if (_viewData.Selected.Count() == 1)
+            {
+                result = _viewData.Selected.Unique;
+                return true;
+            }
+            result = WorkItem.Invalid;
+            return false;
         }
 
         internal void Divide()
         {
-            var selected = GetUniqueSelect();
-            if (selected == null) return;
+            if (!TryGetUniqueSelect(out var selected)) return;
             var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
             using (var dlg = new DivideWorkItemForm(count))
             {
@@ -265,7 +271,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new EditWorkItemForm(proto, _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var wi = dlg.GetWorkItem();
+                if (!dlg.TryGetWorkItem(out var wi)) return;
                 _editService.Add(wi);
                 _viewData.UndoBuffer.Push();
             }
@@ -273,12 +279,11 @@ namespace ProjectsTM.UI.Main
 
         public void EditSelectedWorkItem()
         {
-            var wi = GetUniqueSelect();
-            if (wi == null) return;
+            if (!TryGetUniqueSelect(out var wi)) return;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem();
+                if (!dlg.TryGetWorkItem(out var newWi)) return;
                 _editService.Replace(wi, newWi);
                 _viewData.Selected.Set(new WorkItems(newWi));
             }
@@ -322,12 +327,9 @@ namespace ProjectsTM.UI.Main
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            var wi = GetUniqueSelect();
-            if (wi != null)
-            {
-                var rowRange = GetRowRange(wi);
-                MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.FilteredItems.Members));
-            }
+            if (!TryGetUniqueSelect(out var wi)) return;
+            var rowRange = GetRowRange(wi);
+            MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.FilteredItems.Members));
             this.Invalidate();
         }
 
@@ -362,8 +364,8 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToToday()
         {
-            var wi = GetUniqueSelect();
-            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
+            TryGetUniqueSelect(out var wi);
+            var m = wi.IsInvalid ? X2Member(FixedWidth) : wi.AssignedMember;
             MoveToTodayAndMember(m);
         }
 
@@ -380,9 +382,7 @@ namespace ProjectsTM.UI.Main
 
         private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
-            if (day == null || m == null) return;
-            var row = Day2Row(day);
-            if (row == null) return;
+            if (!Day2Row(day, out var row)) return;
             MoveVisibleRowCol(row, Member2Col(m, _viewData.FilteredItems.Members));
         }
 
@@ -391,23 +391,23 @@ namespace ProjectsTM.UI.Main
             _drawService.Draw(e.Graphics, e.IsAllDraw);
         }
 
-        public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
+        public RawRectangle GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.Row == null) return null;
+            if (rowRange.Row == null) return RawRectangle.Empty;
             return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count);
         }
 
-        public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
+        public ClientRectangle GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.Row == null) return null;
+            if (rowRange.Row == null) return FreeGridControl.ClientRectangle.Empty;
             return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
         }
 
-        public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members)
+        public IEnumerable<ClientRectangle> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members)
         {
-            var rects = new List<ClientRectangle?>();
+            var rects = new List<ClientRectangle>();
             foreach (var wi in wis)
             {
                 rects.Add(GetWorkItemDrawRectClient(wi, members));
@@ -429,26 +429,16 @@ namespace ProjectsTM.UI.Main
                 if (!_viewData.FilteredItems.Days.Contains(d)) continue;
                 if (row == null)
                 {
-                    row = Day2Row(d);
+                    Day2Row(d, out row);
                 }
                 count++;
             }
             return new RowRange(row, count);
         }
 
-        internal void Redo()
+        private bool Day2Row(CallenderDay day, out RowIndex result)
         {
-            _viewData.UndoBuffer.Redo(_viewData.Core);
-        }
-
-        internal void Undo()
-        {
-            _viewData.UndoBuffer.Undo(_viewData.Core);
-        }
-
-        private RowIndex Day2Row(CallenderDay day)
-        {
-            return _rowColResolver.Day2Row(day);
+            return _rowColResolver.Day2Row(day, out result);
         }
 
         public bool IsSelected(Member m)
