@@ -260,7 +260,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
-            _taskListManager.Show();
+            _taskListManager.Show(_viewData.Detail.Me);
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
@@ -276,6 +276,7 @@ namespace ProjectsTM.UI.Main
                 _viewData.Detail.Me = dlg.Selected;
                 _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
+            _taskListManager.UpdateMySetting(_viewData.Detail.Me);
         }
 
         private void ToolStripMenuItemTrendChart_Click(object sender, EventArgs e)
