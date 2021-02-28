@@ -181,7 +181,7 @@ namespace ProjectsTM.UI.Main
         {
             var col = Member2Col(m, _viewData.FilteredItems.Members);
             var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
-            if (!rect.HasValue) return null;
+            if (rect.IsEmpty) return null;
             return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
         }
 

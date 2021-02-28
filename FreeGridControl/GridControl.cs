@@ -235,22 +235,20 @@ namespace FreeGridControl
             OnDrawNormalArea?.Invoke(this, new DrawNormalAreaEventArgs(graphics, isAllDraw));
         }
 
-        public RawRectangle? GetRectRaw(ColIndex col, RowIndex r, int rowCount)
+        public RawRectangle GetRectRaw(ColIndex col, RowIndex r, int rowCount)
         {
             var top = _cache.GetTop(r);
             var left = _cache.GetLeft(col);
             var width = _cache.GetLeft(col.Offset(1)) - left;
             var height = _cache.GetTop(r.Offset(rowCount)) - top;
-            var result = new RawRectangle(left, top, width, height);
-            if (result.IsEmpty) return null;
-            return result;
+            return new RawRectangle(left, top, width, height);
         }
 
         public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea)
         {
             var raw = GetRectRaw(col, r, rowCount);
-            if (!raw.HasValue) return null;
-            var location = Raw2Client(raw.Value.Location);
+            if (raw.IsEmpty) return null;
+            var location = Raw2Client(raw.Location);
             var result = new ClientRectangle(location.X, location.Y, raw.Value.Width, raw.Value.Height);
             result.Intersect(visibleArea);
             if (result.IsEmpty) return null;
