@@ -262,7 +262,7 @@ namespace ProjectsTM.UI.TaskList
             using (var dlg = new EditWorkItemForm(item.WorkItem.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem();
+                if (!dlg.TryGetWorkItem(out var newWi)) return;
                 _editService.Replace(item.WorkItem, newWi);
                 _viewData.Selected.Set(new WorkItems(newWi));
             }

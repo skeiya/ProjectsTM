@@ -271,7 +271,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new EditWorkItemForm(proto, _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var wi = dlg.GetWorkItem();
+                if (!dlg.TryGetWorkItem(out var wi)) return;
                 _editService.Add(wi);
                 _viewData.UndoBuffer.Push();
             }
@@ -283,7 +283,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var newWi = dlg.GetWorkItem();
+                if (!dlg.TryGetWorkItem(out var newWi)) return;
                 _editService.Replace(wi, newWi);
                 _viewData.Selected.Set(new WorkItems(newWi));
             }
