@@ -400,10 +400,10 @@ namespace ProjectsTM.UI.Main
             return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count);
         }
 
-        public ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
+        public ClientRectangle GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.Row == null) return null;
+            if (rowRange.Row == null) return FreeGridControl.ClientRectangle.Empty;
             return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
         }
 
