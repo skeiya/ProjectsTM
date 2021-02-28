@@ -7,8 +7,7 @@ namespace ProjectsTM.Service
         public static string Drop(DragEventArgs e)
         {
             string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (fileName.Length == 0) return null;
-            if (string.IsNullOrEmpty(fileName[0])) return null;
+            if (fileName == null || fileName.Length == 0) return string.Empty;
             return fileName[0];
         }
 
