@@ -97,7 +97,6 @@ namespace ProjectsTM.UI.Main
                 this.RowHeights[r] = height;
             }
             LockUpdate = false;
-            _rowColResolver.ClearCache();
             _drawService?.ClearBuffer();
         }
 
@@ -190,6 +189,7 @@ namespace ProjectsTM.UI.Main
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
             this._viewData.RatioChanged += (s, e) => { UpdateGridFrame(); };
             this._viewData.AppDataChanged += (s, e) => { _rowColResolver.ClearCache(); };
+            this._viewData.FilterChanged += (s, e) => { _rowColResolver.ClearCache(); };
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
