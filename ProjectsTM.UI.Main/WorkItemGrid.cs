@@ -382,9 +382,7 @@ namespace ProjectsTM.UI.Main
 
         private void MoveVisibleDayAndMember(CallenderDay day, Member m)
         {
-            if (day == null || m == null) return;
-            var row = Day2Row(day);
-            if (row == null) return;
+            if (!Day2Row(day, out var row)) return;
             MoveVisibleRowCol(row, Member2Col(m, _viewData.FilteredItems.Members));
         }
 
@@ -431,7 +429,7 @@ namespace ProjectsTM.UI.Main
                 if (!_viewData.FilteredItems.Days.Contains(d)) continue;
                 if (row == null)
                 {
-                    row = Day2Row(d);
+                    Day2Row(d, out row);
                 }
                 count++;
             }
@@ -448,9 +446,9 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Undo(_viewData.Core);
         }
 
-        private RowIndex Day2Row(CallenderDay day)
+        private bool Day2Row(CallenderDay day, out RowIndex result)
         {
-            return _rowColResolver.Day2Row(day);
+            return _rowColResolver.Day2Row(day, out result);
         }
 
         public bool IsSelected(Member m)
