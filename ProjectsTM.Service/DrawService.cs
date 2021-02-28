@@ -228,8 +228,8 @@ namespace ProjectsTM.Service
         private void DrawWorkItemRaw(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
         {
             var res = _grid.GetWorkItemDrawRectRaw(wi, members);
-            if (!res.HasValue) return;
-            DrawWorkItemCore(wi, edge, font, g, res.Value.Value);
+            if (res.IsEmpty) return;
+            DrawWorkItemCore(wi, edge, font, g, res.Value);
         }
 
         private void DrawWorkItemClient(WorkItem wi, Pen edge, Font font, Graphics g, IEnumerable<Member> members)

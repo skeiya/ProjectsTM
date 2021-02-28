@@ -393,10 +393,10 @@ namespace ProjectsTM.UI.Main
             _drawService.Draw(e.Graphics, e.IsAllDraw);
         }
 
-        public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
+        public RawRectangle GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)
         {
             var rowRange = GetRowRange(wi);
-            if (rowRange.Row == null) return null;
+            if (rowRange.Row == null) return RawRectangle.Empty;
             return GetRectRaw(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count);
         }
 

@@ -18,7 +18,7 @@ namespace ProjectsTM.ViewModel
         bool TryGetMemberDrawRect(Member m, out Rectangle result);
         RawRectangle GetRectRaw(ColIndex col, RowIndex r, int rowCount);
         ClientRectangle GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea);
-        RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
+        RawRectangle GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members);
         ClientRectangle? GetWorkItemDrawRectClient(WorkItem wi, IEnumerable<Member> members);
         IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members);
         IEnumerable<Member> GetNeighbers(IEnumerable<Member> members);

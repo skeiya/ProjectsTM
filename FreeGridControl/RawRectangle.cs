@@ -13,6 +13,9 @@ namespace FreeGridControl
             _rectangle = new Rectangle(x, y, width, height);
         }
 
+        public static RawRectangle Empty => _empty;
+        private static readonly RawRectangle _empty = new RawRectangle(Rectangle.Empty.X, Rectangle.Empty.Y, Rectangle.Empty.Width, Rectangle.Empty.Height);
+
         public int X => _rectangle.X;
 
         public bool IsEmpty => _rectangle.IsEmpty;
