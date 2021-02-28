@@ -56,7 +56,7 @@ namespace UnitTestProject
             workItems.Add(w);
 
             var xml = workItems.ToXml();
-            var actual = WorkItems.FromXml(xml);
+            var actual = WorkItems.FromXml(xml, AppData.DataVersion);
             Assert.AreEqual(workItems, actual);
         }
 
@@ -78,7 +78,7 @@ namespace UnitTestProject
             milestones.Add(new MileStone("a", new Project("b"), new CallenderDay(1, 2, 3), System.Drawing.Color.Gray, new MileStoneFilter("c"), TaskState.Background));
             milestones.Add(new MileStone("d", new Project("e"), new CallenderDay(11, 12, 13), System.Drawing.Color.Green, new MileStoneFilter("g"), TaskState.Done));
             var xml = milestones.ToXml();
-            var actual = MileStones.FromXml(xml);
+            var actual = MileStones.FromXml(xml, AppData.DataVersion);
             Assert.AreEqual(milestones, actual);
         }
     }

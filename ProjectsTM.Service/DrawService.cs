@@ -12,7 +12,7 @@ namespace ProjectsTM.Service
 {
     public class DrawService : IDisposable
     {
-        private MainViewData _viewData;
+        private readonly MainViewData _viewData;
 
         private bool _redrawLock = false;
         internal void Lock(bool redrawLock)
@@ -20,17 +20,18 @@ namespace ProjectsTM.Service
             _redrawLock = redrawLock;
         }
 
-        private Func<bool> _isDragActive;
-        private Func<bool> _isDragMoving;
-        private Func<DragStartInfo> _dragStartInfo;
+        private readonly Func<bool> _isDragActive;
+        private readonly Func<bool> _isDragMoving;
+        private readonly Func<DragStartInfo> _dragStartInfo;
         private ImageBuffer _imageBuffer;
         private IWorkItemGrid _grid;
 
-        public DrawService()
+        public DrawService(IWorkItemGrid grid)
         {
+            _grid = grid;
         }
 
-        public void Initialize(
+        public DrawService(
             MainViewData viewData,
             IWorkItemGrid grid,
             Func<bool> isDragActive,
@@ -42,10 +43,15 @@ namespace ProjectsTM.Service
             _isDragActive = isDragActive;
             _isDragMoving = isDragMoving;
             _dragStartInfo = dragStartInfo;
-            _imageBuffer?.Dispose();
-            _imageBuffer = new ImageBuffer(grid.FullSize.Width, grid.FullSize.Height);
             this._grid = grid;
             this._font = font;
+            ClearBuffer();
+        }
+
+        public void ClearBuffer()
+        {
+            _imageBuffer?.Dispose();
+            _imageBuffer = new ImageBuffer(_grid.FullSize.Width, _grid.FullSize.Height);
         }
 
         public void Draw(Graphics g, bool isAllDraw)
@@ -141,16 +147,14 @@ namespace ProjectsTM.Service
         private void DrawCursorPosition(Graphics g, Font font)
         {
             var curOnRaw = _grid.Global2Raw(Cursor.Position);
-            var curWi = _grid.PickWorkItemFromPoint(curOnRaw);
-
-            var members = _viewData.FilteredItems.Members;
-            if (curWi == null)
+            if (_grid.PickWorkItemFromPoint(curOnRaw, out var curWi))
             {
-                DrawCursorBackgroundRectangle(g, curOnRaw);
+                var members = _viewData.FilteredItems.Members;
+                DrawCursorWorkItem(font, g, members, curWi);
             }
             else
             {
-                DrawCursorWorkItem(font, g, members, curWi);
+                DrawCursorBackgroundRectangle(g, curOnRaw);
             }
         }
 

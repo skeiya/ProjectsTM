@@ -10,6 +10,22 @@ namespace ProjectsTM.UI.Main
         private System.ComponentModel.IContainer components = null;
 
         #region Windows フォーム デザイナーで生成されたコード
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                    // _workItemGrid.Dispose();
+                }
+
+                // Dispose stuff here
+                _fileIOService.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
 
         /// <summary>
         /// デザイナー サポートに必要なメソッドです。このメソッドの内容を
@@ -49,14 +65,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemHowToUse = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemVersion = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelSum = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelViewRatio = new System.Windows.Forms.ToolStripStatusLabel();
-            this.workItemGrid1 = new ProjectsTM.UI.Main.WorkItemGrid();
-            this.toolStripStatusHasUnpushedCommit = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusHasUncommittedChange = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -322,66 +331,11 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemVersion.Text = "バージョン情報(&A)...";
             this.ToolStripMenuItemVersion.Click += new System.EventHandler(this.ToolStripMenuItemVersion_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelSum,
-            this.toolStripStatusLabelViewRatio,
-            this.toolStripStatusHasUnpushedCommit,
-            this.toolStripStatusHasUncommittedChange});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 322);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(537, 22);
-            this.statusStrip1.TabIndex = 11;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabelSum
-            // 
-            this.toolStripStatusLabelSum.Name = "toolStripStatusLabelSum";
-            this.toolStripStatusLabelSum.Size = new System.Drawing.Size(103, 17);
-            this.toolStripStatusLabelSum.Text = "SUM:0人日(0人月)";
-            // 
-            // toolStripStatusLabelViewRatio
-            // 
-            this.toolStripStatusLabelViewRatio.Name = "toolStripStatusLabelViewRatio";
-            this.toolStripStatusLabelViewRatio.Size = new System.Drawing.Size(43, 17);
-            this.toolStripStatusLabelViewRatio.Text = "拡大率";
-            // 
-            // toolStripStatusHasUnpushedCommit
-            // 
-            this.toolStripStatusHasUnpushedCommit.Name = "toolStripStatusHasUnpushedCommit";
-            this.toolStripStatusHasUnpushedCommit.Size = new System.Drawing.Size(85, 17);
-            this.toolStripStatusHasUnpushedCommit.Text = "未プッシュコミット";
-            // 
-            // workItemGrid1
-            // 
-            this.workItemGrid1.AllowDrop = true;
-            this.workItemGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.workItemGrid1.FixedColCount = 0;
-            this.workItemGrid1.FixedRowCount = 0;
-            this.workItemGrid1.HOffset = 0;
-            this.workItemGrid1.Location = new System.Drawing.Point(0, 25);
-            this.workItemGrid1.LockUpdate = true;
-            this.workItemGrid1.Name = "workItemGrid1";
-            this.workItemGrid1.Size = new System.Drawing.Size(537, 297);
-            this.workItemGrid1.TabIndex = 12;
-            this.workItemGrid1.VOffset = 0;
-            // 
-            // toolStripStatusHasUncommittedChange
-            // 
-            this.toolStripStatusHasUncommittedChange.Name = "toolStripStatusHasUncommittedChange";
-            this.toolStripStatusHasUncommittedChange.Size = new System.Drawing.Size(84, 17);
-            this.toolStripStatusHasUncommittedChange.Text = "未コミットの編集";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 344);
-            this.Controls.Add(this.workItemGrid1);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -390,8 +344,6 @@ namespace ProjectsTM.UI.Main
             this.Text = "ProjectsTM";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,7 +356,6 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem 編集ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemPrint;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddWorkItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSave;
         private System.Windows.Forms.ToolStripMenuItem 表示ToolStripMenuItem;
@@ -419,22 +370,17 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemUndo;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRedo;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxFilter;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSum;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMileStone;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDivide;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGenerateDummyData;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelViewRatio;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemReload;
-        private WorkItemGrid workItemGrid1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHowToUse;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemVersion;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTaskList;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUnpushedCommit;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusHasUncommittedChange;
     }
 }
 

@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
     public class Member : IComparable<Member>
     {
-        [XmlIgnore]
         public string FirstName { get; private set; } = string.Empty;
-        [XmlIgnore]
         public string LastName { get; private set; } = string.Empty;
-        [XmlIgnore]
         public string Company { get; private set; } = string.Empty;
 
-        [XmlElement]
         public string MemberElement
         {
             get { return ToSerializeString(); }
@@ -44,14 +39,14 @@ namespace ProjectsTM.Model
             Company = company;
         }
 
-        internal XElement ToXml()
+        public XElement ToXml()
         {
             var xml = new XElement(nameof(Member));
             xml.Value = ToSerializeString();
             return xml;
         }
 
-        internal static Member FromXml(XElement m)
+        public static Member FromXml(XElement m)
         {
             var result = new Member();
             result.MemberElement = m.Value;
@@ -104,7 +99,6 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
             var target = obj as Member;
             if (target == null) return false;
             if (!FirstName.Equals(target.FirstName)) return false;

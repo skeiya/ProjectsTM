@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace ProjectsTM.Service
 {
@@ -251,9 +251,7 @@ namespace ProjectsTM.Service
             }
             using (var rs = StreamFactory.CreateReader(path))
             {
-                var x = new XmlSerializer(typeof(Filter));
-                Filter filter = (Filter)x.Deserialize(rs);
-                return filter;
+               return Filter.FromXml(XElement.Load(rs));
             }
         }
     }

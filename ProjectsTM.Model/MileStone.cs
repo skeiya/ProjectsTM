@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
@@ -24,20 +23,11 @@ namespace ProjectsTM.Model
 
         public string Name { get; set; }
 
-        [XmlIgnore]
         public Project Project { get; set; } = new Project(string.Empty);
-        [XmlElement]
-        public string ProjectElement
-        {
-            get { return Project.ToString(); }
-            set { Project = new Project(value); }
-        }
 
         public CallenderDay Day { get; set; }
-        [XmlIgnore]
         public Color Color { get; set; }
 
-        [XmlElement]
         public string ColorText
         {
             get { return ColorSerializer.Serialize(Color); }
@@ -56,24 +46,23 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static MileStone FromXml(XElement m)
+        internal static MileStone FromXml(XElement m, int version)
         {
-            var result = new MileStone
+            var result = new MileStone();
+            result.Name = version < 5 ? m.Element("Name").Value : m.Attribute("Name").Value;
+            result.Project = Project.FromXml(m, version);
+            result.Day = CallenderDay.FromXml(version < 5 ? m.Element("Day").Element("Date") : m.Element("Date"));
+            result.ColorText = m.Element(version < 5 ? "ColorText" : "Color").Value;
+            result.MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value);
+            if (m.Element(nameof(State)) != null)
             {
-                Name = m.Attribute("Name").Value,
-                Project = Project.FromXml(m),
-                Day = CallenderDay.FromXml(m.Element("Date")),
-                ColorText = m.Element("Color").Value,
-                MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value),
-                State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value),
-            };
+                result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value);
+            }
             return result;
         }
 
-        [XmlIgnore]
         public MileStoneFilter MileStoneFilter { get; set; } = new MileStoneFilter("ALL");
 
-        [XmlElement]
         public string MileStoneFilterName
         {
             get { return MileStoneFilter.Name; }

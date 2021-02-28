@@ -11,7 +11,7 @@ namespace ProjectsTM.UI.Main
         {
             get
             {
-                if (comboBox1.SelectedIndex <= 0) return null;
+                if (comboBox1.SelectedIndex <= 0) return Member.Invalid;
                 return _members.ToArray().ElementAt(comboBox1.SelectedIndex - 1);
             }
         }

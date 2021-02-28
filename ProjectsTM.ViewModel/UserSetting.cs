@@ -35,11 +35,20 @@ namespace ProjectsTM.ViewModel
             result.FilterName = xml.Element(nameof(FilterName)).Value;
             result.Ratio = float.Parse(xml.Element(nameof(Ratio)).Value);
             result.FontSize = int.Parse(xml.Element(nameof(FontSize)).Value);
-            result.FilePath = xml.Element(nameof(FilePath)).Value;
+            if (xml.Element(nameof(FilePath)) != null)
+            {
+                result.FilePath = xml.Element(nameof(FilePath)).Value;
+            }
             result.Detail = Detail.FromXml(xml);
             result.PatternHistory = PatternHistory.FromXml(xml);
-            result.UserName = xml.Element(nameof(UserName)).Value;
-            result.HideSuggestionForUserNameSetting = bool.Parse(xml.Element(nameof(HideSuggestionForUserNameSetting)).Value);
+            if (xml.Element(nameof(UserName)) != null)
+            {
+                result.UserName = xml.Element(nameof(UserName)).Value;
+            }
+            if (xml.Element(nameof(HideSuggestionForUserNameSetting)) != null)
+            {
+                result.HideSuggestionForUserNameSetting = bool.Parse(xml.Element(nameof(HideSuggestionForUserNameSetting)).Value);
+            }
             return result;
         }
     }

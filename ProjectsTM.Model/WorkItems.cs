@@ -47,16 +47,25 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public static WorkItems FromXml(XElement xml)
+        public static WorkItems FromXml(XElement xml, int ver)
         {
             var result = new WorkItems();
+            if (ver < 5)
+            {
+                foreach (var w in xml.Elements("WorkItem"))
+                {
+                    var assign = Member.Parse(w.Element("AssignedMember").Element("MemberElement").Value);
+                    result.Add(WorkItem.FromXml(w, assign, ver));
+                }
+                return result;
+            }
             foreach (var m in xml.Elements("WorkItemsOfEachMember"))
             {
                 var assign = Member.Parse(m.Attribute("Name").Value);
                 foreach (var w in m.Element(nameof(MembersWorkItems))
                     .Elements(nameof(WorkItem)))
                 {
-                    result.Add(WorkItem.FromXml(w, assign));
+                    result.Add(WorkItem.FromXml(w, assign, ver));
                 }
             }
             return result;

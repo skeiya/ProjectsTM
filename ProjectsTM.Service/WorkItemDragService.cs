@@ -366,7 +366,7 @@ namespace ProjectsTM.Service
             invalidateMembers(_backup.Select(w => w.AssignedMember));
         }
 
-        internal void StartCopy(ViewData viewData, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
+        internal void StartCopy(MainViewData viewData, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay, Action<IEnumerable<Member>> invalidateMembers)
         {
             StartMove(viewData.Selected, rects, location, draggedDay);
             ToCopyMode(viewData.Original.WorkItems, invalidateMembers);

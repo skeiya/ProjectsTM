@@ -1,4 +1,5 @@
-﻿using ProjectsTM.ViewModel;
+﻿using ProjectsTM.Service;
+using ProjectsTM.ViewModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,11 +13,11 @@ namespace ProjectsTM.UI.Main
             viewData.Selected = null;
             try
             {
-                using (var grid = new WorkItemGrid())
+                using (var fileIOService = new AppDataFileIOService())
+                using (var grid = new WorkItemGrid(viewData, null, fileIOService))
                 {
                     var size = new Size(orgGrid.GridWidth, orgGrid.GridHeight);
                     grid.Size = size;
-                    grid.Initialize(viewData, null);
                     using (var bmp = new Bitmap(size.Width, size.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
                     {
                         var g = Graphics.FromImage(bmp);

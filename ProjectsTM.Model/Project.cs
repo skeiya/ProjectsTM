@@ -35,8 +35,16 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static Project FromXml(XElement w)
+        internal static Project FromXml(XElement w, int version)
         {
+            if (version < 5)
+            {
+                if (w.Element("ProjectElement") != null)
+                {
+                    return new Project(w.Element("ProjectElement").Value);
+                }
+                return new Project(string.Empty);
+            }
             return new Project(w.Element(nameof(Project)).Value);
         }
     }

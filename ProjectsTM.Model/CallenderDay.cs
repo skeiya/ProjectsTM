@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
     public class CallenderDay : IComparable<CallenderDay>
     {
 
-        [XmlIgnore]
         public int Year { get; private set; }
-        [XmlIgnore]
         public int Month { get; private set; }
-        [XmlIgnore]
         public int Day { get; private set; }
 
-        [XmlElement]
         public string Date
         {
             get { return ToString(); }
@@ -57,11 +52,11 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        internal static CallenderDay FromXml(XElement e)
+        internal static CallenderDay FromXml(XElement xml)
         {
             var result = new CallenderDay
             {
-                Date = e.Value,
+                Date = xml.Value,
             };
             return result;
         }

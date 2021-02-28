@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ProjectsTM.Model
 {
     public class WorkItem : IComparable<WorkItem>
     {
-        [XmlIgnore]
         public Project Project { get; set; }
-        [XmlIgnore]
         public Tags Tags { get; set; }
         public string Name { get; set; }
         public Period Period { get; set; }
         public Member AssignedMember { get; set; }
         public string Description { get; set; } = string.Empty;
 
-        [XmlElement]
         public string ProjectElement
         {
             get { return Project.ToString(); }
             set { Project = new Project(value); }
         }
 
-        [XmlElement]
         public string TagsElement
         {
             get { return Tags.ToString(); }
@@ -77,15 +72,28 @@ namespace ProjectsTM.Model
             return xml;
         }
 
-        public static WorkItem FromXml(XElement xml, Member assign)
+        public static WorkItem FromXml(XElement xml, Member assign, int version)
         {
             var result = new WorkItem();
-            result.Name = xml.Attribute("Name").Value;
-            result.Project = Project.FromXml(xml);
+            if (version < 5)
+            {
+                result.Name = xml.Element("Name").Value;
+            }
+            else
+            {
+                if (xml.Attribute("Name") != null)
+                {
+                    result.Name = xml.Attribute("Name").Value;
+                }
+            }
+            result.Project = Project.FromXml(xml, version);
             result.Period = Period.FromXml(xml);
-            result.Tags = Tags.FromXml(xml);
+            result.Tags = Tags.FromXml(xml, version);
             result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
-            result.Description = xml.Element("Description").Value;
+            if (xml.Element("Description") != null)
+            {
+                result.Description = xml.Element("Description").Value;
+            }
             result.AssignedMember = assign;
 
             if (xml is IXmlLineInfo info && info.HasLineInfo())
@@ -166,7 +174,7 @@ namespace ProjectsTM.Model
             using (var n = new XmlNodeReader(doc))
             {
                 var xml = XElement.Load(n);
-                return WorkItem.FromXml(xml, assign);
+                return WorkItem.FromXml(xml, assign, AppData.DataVersion);
             }
         }
 

@@ -7,6 +7,9 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+
+
+        #region Windows Form Designer generated code
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -16,11 +19,10 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                _gridControl.Dispose();
             }
             base.Dispose(disposing);
         }
-
-        #region Windows Form Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -28,7 +30,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gridControl1 = new ProjectsTM.UI.TaskList.TaskListGrid();
             this.comboBoxPattern = new System.Windows.Forms.ComboBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.labelSum = new System.Windows.Forms.Label();
@@ -38,22 +39,8 @@
             this.textBoxAndCondition = new System.Windows.Forms.TextBox();
             this.buttonEazyRegex = new System.Windows.Forms.Button();
             this.comboBoxErrorDisplay = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // gridControl1
-            // 
-            this.gridControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridControl1.FixedColCount = 0;
-            this.gridControl1.FixedRowCount = 0;
-            this.gridControl1.HOffset = 0;
-            this.gridControl1.Location = new System.Drawing.Point(8, 39);
-            this.gridControl1.LockUpdate = true;
-            this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(730, 240);
-            this.gridControl1.TabIndex = 4;
-            this.gridControl1.VOffset = 0;
             // 
             // comboBoxPattern
             // 
@@ -151,14 +138,24 @@
             this.comboBoxErrorDisplay.Size = new System.Drawing.Size(93, 20);
             this.comboBoxErrorDisplay.TabIndex = 9;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Location = new System.Drawing.Point(8, 39);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(730, 240);
+            this.panel1.TabIndex = 10;
+            // 
             // TaskListForm
             // 
             this.AcceptButton = this.buttonUpdate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 307);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.comboBoxErrorDisplay);
-            this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.buttonEazyRegex);
             this.Controls.Add(this.textBoxAndCondition);
             this.Controls.Add(this.label1);
@@ -184,7 +181,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxAndCondition;
         private System.Windows.Forms.Button buttonEazyRegex;
-        private TaskListGrid gridControl1;
         private System.Windows.Forms.ComboBox comboBoxErrorDisplay;
+        private System.Windows.Forms.Panel panel1;
     }
 }

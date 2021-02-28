@@ -18,10 +18,10 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListGrid : FreeGridControl.GridControl
     {
         private List<TaskListItem> _listItems;
-        private ViewData _viewData;
+        private readonly ViewData _viewData;
         private ContextMenuHandler _contextMenuHandler;
         public TaskListOption Option = new TaskListOption();
-        private WorkItemEditService _editService;
+        private readonly WorkItemEditService _editService;
 
         public event EventHandler ListUpdated;
         private ColIndex _sortCol = ColDefinition.InitialSortCol;
@@ -32,18 +32,23 @@ namespace ProjectsTM.UI.TaskList
         private const int MaxSortableDistance = 20;
         public WorkItemEditService EditService => _editService;
 
-        public TaskListGrid()
+
+        public TaskListGrid(ViewData viewData)
         {
             InitializeComponent();
+            this._viewData = viewData;
             this.OnDrawNormalArea += TaskListGrid_OnDrawNormalArea;
             this.MouseDoubleClick += TaskListGrid_MouseDoubleClick;
             this.MouseMove += TaskListGrid_MouseMove;
             this.MouseDown += TaskListGrid_MouseDown;
             this.MouseUp += TaskListGrid_MouseUp;
-            this.Disposed += TaskListGrid_Disposed;
             this.KeyDown += TaskListGrid_KeyDown;
             this.Resize += TaskListGrid_Resize;
             _widthAdjuster = new WidthAdjuster(GetAdjustCol);
+
+            this._editService = new WorkItemEditService(viewData);
+            AttachEvents();
+            InitializeGrid();
         }
 
         internal int GetErrorCount()
@@ -237,11 +242,6 @@ namespace ProjectsTM.UI.TaskList
             }
         }
 
-        private void TaskListGrid_Disposed(object sender, EventArgs e)
-        {
-            DetatchEvents();
-        }
-
         private void TaskListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var r = Y2Row(Client2Raw(ClientPoint.Create(e)).Y);
@@ -275,15 +275,6 @@ namespace ProjectsTM.UI.TaskList
             return _listItems.Where(l => !l.IsMilestone).Sum(l => _viewData.Original.Callender.GetPeriodDayCount(l.WorkItem.Period));
         }
 
-        internal void Initialize(ViewData viewData)
-        {
-            this._editService = new WorkItemEditService(viewData);
-            if (_viewData != null) DetatchEvents();
-            this._viewData = viewData;
-            AttachEvents();
-            InitializeGrid();
-        }
-
         public void UpdateView()
         {
             LockUpdate = true;
@@ -298,8 +289,7 @@ namespace ProjectsTM.UI.TaskList
         {
             LockUpdate = true;
             ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler = new ContextMenuHandler(_viewData, this);
-            _contextMenuHandler.Initialize(ContextMenuStrip);
+            _contextMenuHandler = new ContextMenuHandler(_viewData, this, ContextMenuStrip);
 
             UpdateListItem();
             ColCount = ColDefinition.Count;
@@ -315,12 +305,6 @@ namespace ProjectsTM.UI.TaskList
         {
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
-        }
-
-        private void DetatchEvents()
-        {
-            _viewData.UndoBuffer.Changed -= _undoService_Changed;
-            _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
         private void UpdateLastSelect()

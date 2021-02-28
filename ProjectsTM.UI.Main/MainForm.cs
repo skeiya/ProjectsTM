@@ -10,19 +10,24 @@ namespace ProjectsTM.UI.Main
     {
         private readonly MainViewData _viewData = new MainViewData(new AppData());
         private readonly AppDataFileIOService _fileIOService = new AppDataFileIOService();
-        private readonly CalculateSumService _calculateSumService = new CalculateSumService();
         private readonly FilterComboBoxService _filterComboBoxService;
         private readonly TaskListManager _taskListManager;
         private readonly PatternHistory _patternHistory = new PatternHistory();
-        private readonly EditorFindService _lastUpdateDateAndUserNameService = new EditorFindService();
-        private Member _me = null;
-        private bool _hideSuggestionForUserNameSetting = false;
+        private readonly EditorFindService _editorFindService;
         private readonly RemoteChangePollingService _remoteChangePollingService;
         private readonly FileWatchManager _fileWatchManager;
+#pragma warning disable CA2213 // 破棄可能なフィールドは破棄しなければなりません
+        private readonly WorkItemGrid _workItemGrid;
+#pragma warning restore CA2213 // 破棄可能なフィールドは破棄しなければなりません
 
         public MainForm()
         {
             InitializeComponent();
+            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
+            _editorFindService = new EditorFindService(_fileIOService);
+            _workItemGrid = new WorkItemGrid(_viewData, _editorFindService, _fileIOService);
+            this.Controls.Add(_workItemGrid);
+            this.Controls.Add(new MainFormStatusStrip(_viewData, _remoteChangePollingService));
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
             _taskListManager = new TaskListManager(_viewData.Core, _patternHistory, this);
             _fileWatchManager = new FileWatchManager(this, Reload);
@@ -31,50 +36,31 @@ namespace ProjectsTM.UI.Main
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _fileIOService.FileWatchChanged += (s, e) => _fileWatchManager.ConfirmReload();
             _fileIOService.FileOpened += FileIOService_FileOpened;
-            _fileIOService.FileSaved += FileIOService_FileSaved;
-            _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
-            _remoteChangePollingService.CheckedUnpushedChange += _remoteChangePollingService_CheckedUnpushedChange;
-            workItemGrid1.DragDrop += TaskDrawArea_DragDrop;
-            workItemGrid1.RatioChanged += (s, e) => UpdateView();
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { workItemGrid1.MoveToTodayAndMember(_me); SuggestSetting(); };
+            this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };
             this.Load += MainForm_Load;
-        }
-
-        private void FileIOService_FileSaved(object sender, string filePath)
-        {
-            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void SuggestSetting()
         {
-            if (_hideSuggestionForUserNameSetting) return;
-            if (_me != null) return;
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
+            if (_viewData.Detail.HideSuggestionForUserNameSetting) return;
+            if (_viewData.Detail.Me != Member.Invalid) return;
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _viewData.Detail.Me, _viewData.Detail.HideSuggestionForUserNameSetting))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                _me = dlg.Selected;
-                _hideSuggestionForUserNameSetting = dlg.HideSetting;
+                _viewData.Detail.Me = dlg.Selected;
+                _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
-        }
-
-        private void _remoteChangePollingService_CheckedUnpushedChange(object sender, EventArgs e)
-        {
-            UpdateView();
         }
 
         private void UpdateView()
         {
             _viewData.Selected = new WorkItems();
             _taskListManager.UpdateView();
-            workItemGrid1.Initialize(_viewData, _lastUpdateDateAndUserNameService);
+            _workItemGrid.UpdateGridFrame();
             _filterComboBoxService.UpdateAppDataPart();
-            UpdateDisplayOfSum(new EditedEventArgs(_viewData.Original.Members));
-            toolStripStatusLabelViewRatio.Text = "拡大率:" + _viewData.Detail.ViewRatio.ToString();
-            toolStripStatusHasUnpushedCommit.Text = (_remoteChangePollingService?.HasUnpushedCommit ?? false) ? " ***未プッシュのコミットがあります***" : string.Empty;
-            toolStripStatusHasUncommittedChange.Text = (_remoteChangePollingService?.HasUncommitedChange ?? false) ? " ***コミットされていない変更があります***" : string.Empty;
         }
 
         private void _remoteChangePollingService_FoundRemoteChange(object sender, bool isRemoteBranchAppDataNew)
@@ -88,21 +74,20 @@ namespace ProjectsTM.UI.Main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var setting = UserSettingUIService.Load();
+            _viewData.FontSize = setting.FontSize;
+            _viewData.Detail = setting.Detail;
+            _patternHistory.CopyFrom(setting.PatternHistory);
+            if (_fileIOService.TryOpenFile(setting.FilePath, out var appData))
+            {
+                SetAppData(appData);
+            }
+            else
+            {
+                SetAppData(AppData.Dummy);
+            }
+            _filterComboBoxService.Text = setting.FilterName;
             MainFormStateManager.Load(this);
-            try
-            {
-                var setting = UserSettingUIService.Load();
-                _viewData.FontSize = setting.FontSize;
-                _viewData.Detail = setting.Detail;
-                _patternHistory.CopyFrom(setting.PatternHistory);
-                OpenAppData(string.IsNullOrEmpty(setting.FilePath) ? AppData.Dummy : _fileIOService.OpenFile(setting.FilePath));
-                _filterComboBoxService.Text = setting.FilterName;
-                _me = Member.Parse(setting.UserName);
-                _hideSuggestionForUserNameSetting = setting.HideSuggestionForUserNameSetting;
-            }
-            catch
-            {
-            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -114,8 +99,6 @@ namespace ProjectsTM.UI.Main
                 FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,
-                UserName = _me == null ? string.Empty : _me.ToSerializeString(),
-                HideSuggestionForUserNameSetting = _hideSuggestionForUserNameSetting,
             };
             UserSettingUIService.Save(setting);
             MainFormStateManager.Save(this);
@@ -125,7 +108,6 @@ namespace ProjectsTM.UI.Main
         {
             _filterComboBoxService.UpdateFilePart(filePath);
             _patternHistory.Load(FilePathService.GetPatternHistoryPath(filePath));
-            _lastUpdateDateAndUserNameService.Load(filePath);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -138,19 +120,6 @@ namespace ProjectsTM.UI.Main
         private void _undoService_Changed(object sender, IEditedEventArgs e)
         {
             _fileIOService.SetDirty();
-            UpdateDisplayOfSum(e);
-        }
-
-        private void UpdateDisplayOfSum(IEditedEventArgs e)
-        {
-            var sum = _calculateSumService.Calculate(_viewData.Core, e.UpdatedMembers);
-            toolStripStatusLabelSum.Text = string.Format("SUM:{0}人日({1:0.0}人月)", sum, sum / 20f);
-        }
-
-        private void TaskDrawArea_DragDrop(object sender, DragEventArgs e)
-        {
-            var fileName = FileDragService.Drop(e);
-            OpenAppData(_fileIOService.OpenFile(fileName));
         }
 
         private void ToolStripMenuItemExportRS_Click(object sender, EventArgs e)
@@ -160,12 +129,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemOutputImage_Click(object sender, EventArgs e)
         {
-            ImageOutputer.Save(_viewData, workItemGrid1);
+            ImageOutputer.Save(_viewData, _workItemGrid);
         }
 
         private void ToolStripMenuItemAddWorkItem_Click(object sender, EventArgs e)
         {
-            workItemGrid1.AddNewWorkItem(null);
+            _workItemGrid.AddNewWorkItem(null);
         }
 
         private void ToolStripMenuItemSave_Click(object sender, EventArgs e)
@@ -179,7 +148,8 @@ namespace ProjectsTM.UI.Main
             {
                 dlg.Filter = "日程表ﾃﾞｰﾀ (*.xml)|*.xml|All files (*.*)|*.*";
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                OpenAppData(_fileIOService.Open(dlg.FileName));
+                if (!_fileIOService.TryOpen(dlg.FileName, out var appData)) return;
+                SetAppData(appData);
             }
         }
 
@@ -203,12 +173,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemSmallRatio_Click(object sender, EventArgs e)
         {
-            workItemGrid1.DecRatio();
+            _viewData.DecRatio();
         }
 
         private void ToolStripMenuItemLargeRatio_Click(object sender, EventArgs e)
         {
-            workItemGrid1.IncRatio();
+            _viewData.IncRatio();
         }
 
         private void ToolStripMenuItemManageMember_Click(object sender, EventArgs e)
@@ -227,12 +197,12 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemUndo_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Undo();
+            _workItemGrid.Undo();
         }
 
         private void ToolStripMenuItemRedo_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Redo();
+            _workItemGrid.Redo();
         }
 
         private void ToolStripMenuItemMileStone_Click(object sender, EventArgs e)
@@ -242,12 +212,12 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 _viewData.Original.MileStones = dlg.MileStones;
             }
-            workItemGrid1.Refresh();
+            _workItemGrid.Refresh();
         }
 
         private void ToolStripMenuItemDivide_Click(object sender, EventArgs e)
         {
-            workItemGrid1.Divide();
+            _workItemGrid.Divide();
         }
 
         private void ToolStripMenuItemGenerateDummyData_Click(object sender, EventArgs e)
@@ -266,10 +236,11 @@ namespace ProjectsTM.UI.Main
 
         private void Reload()
         {
-            OpenAppData(_fileIOService.ReOpen());
+            if (!_fileIOService.TryReOpen(out var appData)) return;
+            SetAppData(appData);
         }
 
-        private void OpenAppData(AppData appData)
+        private void SetAppData(AppData appData)
         {
             _viewData.SetAppData(appData);
         }
@@ -289,7 +260,7 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemTaskList_Click(object sender, EventArgs e)
         {
-            _taskListManager.Show(_me);
+            _taskListManager.Show(_viewData.Detail.Me);
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
@@ -299,13 +270,13 @@ namespace ProjectsTM.UI.Main
 
         private void ToolStripMenuItemMySetting_Click(object sender, EventArgs e)
         {
-            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _me, _hideSuggestionForUserNameSetting))
+            using (var dlg = new ManageMySettingForm(_viewData.Original.Members, _viewData.Detail.Me, _viewData.Detail.HideSuggestionForUserNameSetting))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                _me = dlg.Selected;
-                _hideSuggestionForUserNameSetting = dlg.HideSetting;
+                _viewData.Detail.Me = dlg.Selected;
+                _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
             }
-            _taskListManager.UpdateMySetting(_me);
+            _taskListManager.UpdateMySetting(_viewData.Detail.Me);
         }
 
         private void ToolStripMenuItemTrendChart_Click(object sender, EventArgs e)
@@ -319,22 +290,6 @@ namespace ProjectsTM.UI.Main
             {
                 dlg.ShowDialog(this);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-
-                // Dispose stuff here
-                _fileIOService.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 }

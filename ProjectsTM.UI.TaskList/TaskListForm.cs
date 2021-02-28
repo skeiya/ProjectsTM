@@ -12,17 +12,19 @@ namespace ProjectsTM.UI.TaskList
     public partial class TaskListForm : Form
     {
         private readonly PatternHistory _history;
+        private readonly TaskListGrid _gridControl;
         private Member _user;
 
         public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
             InitializeComponent();
-
+            _gridControl = new TaskListGrid(viewData);
+            _gridControl.Dock = DockStyle.Fill;
+            panel1.Controls.Add(_gridControl);
             InitializeCombobox(option.ErrorDisplayType);
             this._history = patternHistory;
-            gridControl1.ListUpdated += GridControl1_ListUpdated;
-            gridControl1.Option = option;
-            gridControl1.Initialize(viewData);
+            _gridControl.ListUpdated += GridControl1_ListUpdated;
+            _gridControl.Option = option;
             this.Load += TaskListForm_Load;
             this.FormClosed += TaskListForm_FormClosed;
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
@@ -44,7 +46,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void ComboBoxErrorDisplay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            gridControl1.Option.ErrorDisplayType = (ErrorDisplayType)comboBoxErrorDisplay.SelectedIndex;
+            _gridControl.Option.ErrorDisplayType = (ErrorDisplayType)comboBoxErrorDisplay.SelectedIndex;
             UpdateList();
         }
 
@@ -75,7 +77,7 @@ namespace ProjectsTM.UI.TaskList
         private TaskListOption GetOption()
         {
             if (IsUserNameSort()) return GetSortPatternFormUserName(_user.ToString());
-            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, gridControl1.Option.ErrorDisplayType);
+            return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, _gridControl.Option.ErrorDisplayType);
         }
 
         public void UpdateMySetting(Member me)
@@ -86,7 +88,7 @@ namespace ProjectsTM.UI.TaskList
 
         private string GetUserTaskSortSelectionDispText()
         {
-            return _user == null ? string.Empty : $"あなた({_user})に割り当てられたタスク";
+            return _user == Member.Invalid ? string.Empty : $"あなた({_user})に割り当てられたタスク";
         }
 
         private bool IsUserNameSort()
@@ -98,10 +100,10 @@ namespace ProjectsTM.UI.TaskList
         {
             this.Size = FormSizeRestoreService.LoadFormSize("TaskListFormSize");
             var colWidths = FormSizeRestoreService.LoadColWidths("TaskListColWidths");
-            for (var idx = 0; idx < this.gridControl1.ColWidths.Count; idx++)
+            for (var idx = 0; idx < this._gridControl.ColWidths.Count; idx++)
             {
                 if (colWidths == null || colWidths.Count() <= idx) break;
-                this.gridControl1.ColWidths[idx] = colWidths[idx];
+                this._gridControl.ColWidths[idx] = colWidths[idx];
             }
         }
 
@@ -118,12 +120,12 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateErrorCount()
         {
-            labelErrorCount.Text = "エラー数：" + gridControl1.GetErrorCount().ToString();
+            labelErrorCount.Text = "エラー数：" + _gridControl.GetErrorCount().ToString();
         }
 
         private void UpdateLabelSum()
         {
-            var dayCount = gridControl1.GetDayCount();
+            var dayCount = _gridControl.GetDayCount();
             var monthCount = (dayCount / 20f);
             labelSum.Text = string.Format("{0}day {1:0.0}人月 ", dayCount, monthCount);
         }
@@ -136,7 +138,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void SaveColWidths()
         {
-            FormSizeRestoreService.SaveColWidths(this.gridControl1.ColWidths.ToIntArray(), "TaskListColWidths");
+            FormSizeRestoreService.SaveColWidths(this._gridControl.ColWidths.ToIntArray(), "TaskListColWidths");
         }
 
         private void SaveFormSize()
@@ -146,7 +148,7 @@ namespace ProjectsTM.UI.TaskList
 
         public void UpdateView()
         {
-            gridControl1.UpdateView();
+            _gridControl.UpdateView();
         }
 
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
@@ -159,8 +161,8 @@ namespace ProjectsTM.UI.TaskList
         private void ComboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!(IsUserNameSort() || IsUserSettingSet())) return;
-            gridControl1.Option = GetSortPatternFormUserName(_user.ToString());
-            gridControl1.UpdateView();
+            _gridControl.Option = GetSortPatternFormUserName(_user.ToString());
+            _gridControl.UpdateView();
         }
 
         private void SetUserNameSortSelect()
@@ -172,7 +174,7 @@ namespace ProjectsTM.UI.TaskList
         private TaskListOption GetSortPatternFormUserName(string userName)
         {
             userName = Regex.Escape(userName);
-            return new TaskListOption(userName, false, string.Empty, gridControl1.Option.ErrorDisplayType);
+            return new TaskListOption(userName, false, string.Empty, _gridControl.Option.ErrorDisplayType);
         }
 
         private bool IsUserSettingSet()
@@ -188,8 +190,8 @@ namespace ProjectsTM.UI.TaskList
         private void UpdateList()
         {
             AppendSelectiontToHistory();
-            gridControl1.Option = GetOption();
-            gridControl1.UpdateView();
+            _gridControl.Option = GetOption();
+            _gridControl.UpdateView();
         }
 
         private void AppendSelectiontToHistory()

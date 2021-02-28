@@ -59,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeTest.cs" />
     <Compile Include="KeyAndMouseHandlerTest.cs" />
+    <Compile Include="FileVersionTest.cs" />
+    <Compile Include="UnitTestFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -100,6 +102,29 @@
       <Project>{8E66A8DA-C23E-4D86-A83F-AB8C2574E129}</Project>
       <Name>ProjectsTM.ViewModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="filterSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version4.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Versions\version0.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
