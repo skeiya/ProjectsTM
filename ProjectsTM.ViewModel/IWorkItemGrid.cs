@@ -33,7 +33,7 @@ namespace ProjectsTM.ViewModel
 
         RawPoint Global2Raw(Point global);
 
-        ClientRectangle? GetRangeSelectBound();
+        ClientRectangle GetRangeSelectBound();
         bool IsSelected(Member m);
         bool IsSelected(CallenderDay d);
         void Invalidate();

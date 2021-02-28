@@ -112,12 +112,12 @@ namespace ProjectsTM.Service
         private void DrawRangeSelectBound(Graphics g)
         {
             var rect = _grid.GetRangeSelectBound();
-            if (!rect.HasValue) return;
+            if (rect.IsEmpty) return;
             using (var pen = new Pen(Color.Red, 2))
             {
                 pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                 pen.DashOffset += 10;
-                g.DrawRectangle(pen, rect.Value.Value);
+                g.DrawRectangle(pen, rect.Value);
             }
         }
 

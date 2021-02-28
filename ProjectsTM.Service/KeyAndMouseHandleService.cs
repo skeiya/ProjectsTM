@@ -268,7 +268,7 @@ namespace ProjectsTM.Service
         void RangeSelect()
         {
             var range = _grid.GetRangeSelectBound();
-            if (!range.HasValue) return;
+            if (range.IsEmpty) return;
             var members = _viewData.FilteredItems.Members;
             var selected = new WorkItems();
             foreach (var c in _grid.VisibleRowColRange.Cols)
@@ -278,7 +278,7 @@ namespace ProjectsTM.Service
                 {
                     var rect = _grid.GetWorkItemDrawRectClient(w, members);
                     if (!rect.HasValue) continue;
-                    if (range.Value.Contains(rect.Value)) selected.Add(w);
+                    if (range.Contains(rect.Value)) selected.Add(w);
                 }
             }
             _viewData.Selected.Set(selected);

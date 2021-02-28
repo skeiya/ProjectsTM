@@ -225,9 +225,9 @@ namespace ProjectsTM.UI.Main
             _keyAndMouseHandleService.MouseUp();
         }
 
-        public ClientRectangle? GetRangeSelectBound()
+        public ClientRectangle GetRangeSelectBound()
         {
-            if (_workItemDragService.State != DragState.RangeSelect) return null;
+            if (_workItemDragService.State != DragState.RangeSelect) return FreeGridControl.ClientRectangle.Empty;
             var p1 = this.PointToClient(Cursor.Position);
             var p2 = Raw2Client(_workItemDragService.DragStartInfo.Location);
             return Point2Rect.GetRectangle(p1, p2);
