@@ -231,16 +231,20 @@ namespace ProjectsTM.UI.Main
             return Point2Rect.GetRectangle(p1, p2);
         }
 
-        internal WorkItem GetUniqueSelect()
+        internal bool TryGetUniqueSelect(out WorkItem result)
         {
-            if (_viewData.Selected.Count() != 1) return null;
-            return _viewData.Selected.Unique;
+            if (_viewData.Selected.Count() == 1)
+            {
+                result = _viewData.Selected.Unique;
+                return true;
+            }
+            result = WorkItem.Invalid;
+            return false;
         }
 
         internal void Divide()
         {
-            var selected = GetUniqueSelect();
-            if (selected == null) return;
+            if (!TryGetUniqueSelect(out var selected)) return;
             var count = _viewData.Original.Callender.GetPeriodDayCount(selected.Period);
             using (var dlg = new DivideWorkItemForm(count))
             {
@@ -273,8 +277,7 @@ namespace ProjectsTM.UI.Main
 
         public void EditSelectedWorkItem()
         {
-            var wi = GetUniqueSelect();
-            if (wi == null) return;
+            if (!TryGetUniqueSelect(out var wi)) return;
             using (var dlg = new EditWorkItemForm(wi.Clone(), _viewData.Original.WorkItems, _viewData.Original.Callender, _viewData.FilteredItems.Members))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
@@ -322,12 +325,9 @@ namespace ProjectsTM.UI.Main
         private void _viewData_SelectedWorkItemChanged(object sender, SelectedWorkItemChangedArg e)
         {
             _drawService.InvalidateMembers(e.UpdatedMembers);
-            var wi = GetUniqueSelect();
-            if (wi != null)
-            {
-                var rowRange = GetRowRange(wi);
-                MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.FilteredItems.Members));
-            }
+            if (!TryGetUniqueSelect(out var wi)) return;
+            var rowRange = GetRowRange(wi);
+            MoveVisibleRowColRange(rowRange.Row, rowRange.Count, Member2Col(wi.AssignedMember, _viewData.FilteredItems.Members));
             this.Invalidate();
         }
 
@@ -362,8 +362,8 @@ namespace ProjectsTM.UI.Main
 
         internal void MoveToToday()
         {
-            var wi = GetUniqueSelect();
-            var m = wi != null ? wi.AssignedMember : X2Member(FixedWidth);
+            TryGetUniqueSelect(out var wi);
+            var m = wi.IsInvalid ? X2Member(FixedWidth) : wi.AssignedMember;
             MoveToTodayAndMember(m);
         }
 
