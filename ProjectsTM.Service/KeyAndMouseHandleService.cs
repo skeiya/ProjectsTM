@@ -180,7 +180,7 @@ namespace ProjectsTM.Service
             if (_grid.IsFixedArea(locaion)) return;
             RawPoint curOnRaw = _grid.Client2Raw(locaion);
 
-            if (_viewData.Selected.IsEmpty())
+            if (!_viewData.Selected.IsEmpty())
             {
                 _grid.EditSelectedWorkItem();
                 return;
