@@ -407,9 +407,9 @@ namespace ProjectsTM.UI.Main
             return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
         }
 
-        public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members)
+        public IEnumerable<ClientRectangle> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members)
         {
-            var rects = new List<ClientRectangle?>();
+            var rects = new List<ClientRectangle>();
             foreach (var wi in wis)
             {
                 rects.Add(GetWorkItemDrawRectClient(wi, members));

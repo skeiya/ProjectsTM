@@ -335,13 +335,13 @@ namespace ProjectsTM.Service
             }
         }
 
-        private void DrawTemporaryWorkItem(WorkItem wi, ClientRectangle? rect, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
+        private void DrawTemporaryWorkItem(WorkItem wi, ClientRectangle rect, Pen edge, Font font, Graphics g, IEnumerable<Member> members)
         {
             var res = _grid.GetWorkItemDrawRectClient(wi, members);
             if (res.IsEmpty) return;
             g.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), res.Value);
 
-            if (rect == null) return;
+            if (rect.IsEmpty) return;
             var moveX = _grid.Global2Raw(Cursor.Position).X - _dragStartInfo().Location.X;
             var moveY = _grid.Global2Raw(Cursor.Position).Y - _dragStartInfo().Location.Y;
             var tempRect = new Rectangle(rect.Value.X + moveX, rect.Value.Y + moveY, res.Value.Width, res.Value.Height);
@@ -354,7 +354,7 @@ namespace ProjectsTM.Service
             {
                 if (_isDragMoving() && !WorkItemDragService.IsCurLocationOnHitArea(_grid, _grid.Global2Raw(Cursor.Position)))
                 {
-                    DrawTemporaryWorkItem(_viewData.Selected.ElementAt(i), _dragStartInfo().Rects?.ElementAt(i), Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
+                    DrawTemporaryWorkItem(_viewData.Selected.ElementAt(i), _dragStartInfo().Rects.ElementAt(i), Pens.LightGreen, font, g, _viewData.FilteredItems.Members);
                 }
                 else
                 {
