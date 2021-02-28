@@ -33,6 +33,30 @@ namespace ProjectsTM.Service
             return result;
         }
 
+        public static bool IsUserErrorExist(Member me, ViewData viewData)
+        {
+            CallenderDay soon = null;
+            for (int i = 5; i >= 0; i--)
+            {
+                soon = viewData.Original.Callender.ApplyOffset(viewData.Original.Callender.NearestFromToday, i);
+                if (soon != null) break;
+            }
+            foreach (var wi in viewData.FilteredItems.WorkItems)
+            {
+                if (wi.AssignedMember != me) continue;
+
+                if (IsNotEndError(wi))
+                {
+                    return true;
+                }
+                if (IsTooBigError(wi, soon, viewData.Original.Callender))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private static bool IsNotEndError(WorkItem wi)
         {
             if (wi.State == TaskState.Done) return false;

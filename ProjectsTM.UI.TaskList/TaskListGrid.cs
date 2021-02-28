@@ -447,7 +447,7 @@ namespace ProjectsTM.UI.TaskList
 
         private bool IsMatchPattern(string target)
         {
-            if (!string.IsNullOrEmpty(Option.Pattern) && !Regex.IsMatch(target, Option.Pattern)) return false;
+            if (!string.IsNullOrEmpty(Option.Pattern) && !Regex.IsMatch(target, Regex.Escape(Option.Pattern))) return false;
             if (!string.IsNullOrEmpty(Option.AndPattern) && !Regex.IsMatch(target, Option.AndPattern)) return false;
             return true;
         }

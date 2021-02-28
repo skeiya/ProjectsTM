@@ -44,6 +44,17 @@ namespace ProjectsTM.UI.Main
             ShowCore(option);
         }
 
+        internal void ShowUsersError(Member me)
+        {
+            var option = new TaskListOption()
+            {
+                Pattern = me.ToString(),
+                ErrorDisplayType = ErrorDisplayType.ErrorOnly,
+                IsShowMS = false,
+            };
+            ShowCore(option);
+        }
+
         private void ShowCore(TaskListOption option)
         {
             var f = new TaskListForm(_viewData, _patternHistory, option);
