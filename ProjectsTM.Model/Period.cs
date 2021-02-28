@@ -17,6 +17,8 @@ namespace ProjectsTM.Model
 
         public CallenderDay From { get; set; }
         public CallenderDay To { get; set; }
+        public static Period Invalid => _invalid;
+        private static readonly Period _invalid = new Period();
 
         public bool Contains(CallenderDay day)
         {
@@ -30,12 +32,13 @@ namespace ProjectsTM.Model
             return Contains(period.From) && Contains(period.To);
         }
 
-        public Period ApplyOffset(int offset, Callender callender)
+        public bool TryApplyOffset(int offset, Callender callender,out Period result)
         {
-            var from = callender.ApplyOffset(From, offset);
-            var to = callender.ApplyOffset(To, offset);
-            if (from == null || to == null) return null;
-            return new Period(from, to);
+            result = Period.Invalid;
+            if (!callender.TryApplyOffset(From, offset, out var from)) return false;
+            if (!callender.TryApplyOffset(To, offset, out var to)) return false;
+            result = new Period(from, to);
+            return true;
         }
 
         public Period Clone()

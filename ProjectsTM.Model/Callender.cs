@@ -66,16 +66,24 @@ namespace ProjectsTM.Model
             return toIndex - fromIndex;
         }
 
-        public CallenderDay ApplyOffset(CallenderDay from, int offset)
+        public bool TryApplyOffset(CallenderDay from, int offset, out CallenderDay result)
         {
-            if (offset == 0) return from;
+            result = from;
+            if (offset == 0)
+            {
+                return true;
+            }
             if (offset > 0)
             {
                 bool found = false;
                 foreach (var c in _days)
                 {
                     if (c.Equals(from)) found = true;
-                    if (offset == 0) return c;
+                    if (offset == 0)
+                    {
+                        result = c;
+                        return true;
+                    }
                     if (found) offset--;
                 }
             }
@@ -85,11 +93,15 @@ namespace ProjectsTM.Model
                 foreach (var c in _days.AsEnumerable().Reverse())
                 {
                     if (c.Equals(from)) found = true;
-                    if (offset == 0) return c;
+                    if (offset == 0)
+                    {
+                        result = c;
+                        return true;
+                    }
                     if (found) offset++;
                 }
             }
-            return null;
+            return false;
         }
 
         public int GetDaysOfGetsudo(int year, int month)

@@ -43,6 +43,9 @@ namespace ProjectsTM.Model
             }
         }
 
+        public static CallenderDay Invalid => _invalid;
+        private static readonly CallenderDay _invalid = new CallenderDay();
+
         internal XElement ToXml()
         {
             var xml = new XElement("Date")

@@ -84,7 +84,7 @@ namespace ProjectsTM.Service
             foreach (var w in result)
             {
                 if (null == GetNewMember(grid, w.AssignedMember, mOffset)) return;
-                if (null == GetNewPeriod(w.Period, pOffset, callender)) return;
+                if (!TryGetNewPeriod(w.Period, pOffset, callender, out var _)) return;
             }
             foreach (var w in result)
             {
@@ -93,8 +93,7 @@ namespace ProjectsTM.Service
                 {
                     w.AssignedMember = member;
                 }
-                var period = GetNewPeriod(w.Period, pOffset, callender);
-                if (period != null)
+                if(TryGetNewPeriod(w.Period, pOffset, callender, out var period))
                 {
                     w.Period = period;
                 }
@@ -104,9 +103,9 @@ namespace ProjectsTM.Service
             viewData.Selected.Set(result);
         }
 
-        private static Period GetNewPeriod(Period period, int pOffset, Callender cal)
+        private static bool TryGetNewPeriod(Period period, int pOffset, Callender cal, out Period result)
         {
-            return period.ApplyOffset(pOffset, cal);
+            return period.TryApplyOffset(pOffset, cal, out result);
         }
 
         private int GetPeriodOffset(IWorkItemGrid grid, RawPoint curLocation)
@@ -152,14 +151,13 @@ namespace ProjectsTM.Service
             foreach (var w in result)
             {
                 var manipDay = isExpandingFrom ? w.Period.From : w.Period.To;
-                var newDay = callender.ApplyOffset(manipDay, offset);
-                if (null == newDay) return;
+                if (!callender.TryApplyOffset(manipDay, offset, out var newDay)) return;
                 if (IsUpsideDown(callender, isExpandingFrom ? w.Period.To : w.Period.From, newDay)) return;
             }
             foreach (var w in result)
             {
                 var manipDay = isExpandingFrom ? w.Period.From : w.Period.To;
-                var newDay = callender.ApplyOffset(manipDay, offset);
+                if (!callender.TryApplyOffset(manipDay, offset, out var newDay)) return;
                 manipDay.CopyFrom(newDay);
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
