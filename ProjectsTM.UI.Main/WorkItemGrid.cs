@@ -436,16 +436,6 @@ namespace ProjectsTM.UI.Main
             return new RowRange(row, count);
         }
 
-        internal void Redo()
-        {
-            _viewData.UndoBuffer.Redo(_viewData.Core);
-        }
-
-        internal void Undo()
-        {
-            _viewData.UndoBuffer.Undo(_viewData.Core);
-        }
-
         private bool Day2Row(CallenderDay day, out RowIndex result)
         {
             return _rowColResolver.Day2Row(day, out result);
