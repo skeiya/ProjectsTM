@@ -103,13 +103,13 @@ namespace ProjectsTM.UI.Main
 
         private bool SelectNextWorkItem(bool prev)
         {
-            if (_viewData.Selected == null)
+            if (_viewData.Selected.IsEmpty())
             {
                 var all = _viewData.FilteredItems.WorkItems.ToList();
                 all.Sort();
                 if (prev) all.Reverse();
 
-                _viewData.Selected = new WorkItems(all.FirstOrDefault());
+                _viewData.Selected.Set(new WorkItems(all.FirstOrDefault()));
                 return true;
             }
             if (_viewData.Selected.Count() == 1)
@@ -122,7 +122,7 @@ namespace ProjectsTM.UI.Main
                 WorkItem next = all.Skip(find + 1).FirstOrDefault();
                 if (next == null) return false;
 
-                _viewData.Selected = new WorkItems(next);
+                _viewData.Selected.Set(new WorkItems(next));
                 return true;
             }
             return false;
@@ -232,7 +232,6 @@ namespace ProjectsTM.UI.Main
 
         internal WorkItem GetUniqueSelect()
         {
-            if (_viewData.Selected == null) return null;
             if (_viewData.Selected.Count() != 1) return null;
             return _viewData.Selected.Unique;
         }
@@ -280,7 +279,7 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
                 _editService.Replace(wi, newWi);
-                _viewData.Selected = new WorkItems(newWi);
+                _viewData.Selected.Set(new WorkItems(newWi));
             }
         }
         public void CopyWorkItem()
@@ -405,7 +404,7 @@ namespace ProjectsTM.UI.Main
             return GetRectClient(Member2Col(wi.AssignedMember, members), rowRange.Row, rowRange.Count, GetVisibleRect(false, false));
         }
 
-        public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(WorkItems wis, IEnumerable<Member> members)
+        public IEnumerable<ClientRectangle?> GetWorkItemDrawRectClient(IEnumerable<WorkItem> wis, IEnumerable<Member> members)
         {
             var rects = new List<ClientRectangle?>();
             foreach (var wi in wis)
@@ -453,14 +452,12 @@ namespace ProjectsTM.UI.Main
 
         public bool IsSelected(Member m)
         {
-            if (_viewData.Selected == null) return false;
-            return _viewData.Selected.Any(w => w.AssignedMember.Equals(m));
+            return _viewData.Selected.ContainsMember(m);
         }
 
         public bool IsSelected(CallenderDay d)
         {
-            if (_viewData.Selected == null) return false;
-            return _viewData.Selected.Any(w => w.Period.Contains(d));
+            return _viewData.Selected.ContainsDay(d);
         }
 
         public bool PickWorkItemFromPoint(RawPoint location, out WorkItem result)

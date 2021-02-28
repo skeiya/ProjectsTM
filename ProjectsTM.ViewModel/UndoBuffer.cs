@@ -24,7 +24,7 @@ namespace ProjectsTM.ViewModel
             if (_undoStack.Count == 0) return;
             var p = _undoStack.Pop();
             _redoStack.Push(p);
-            viewData.Selected = new WorkItems();
+            var selected = new List<WorkItem>();
             foreach (var a in p)
             {
                 var w = WorkItem.Deserialize(a.WorkItemText, a.Member);
@@ -35,9 +35,10 @@ namespace ProjectsTM.ViewModel
                 else if (a.Action == EditActionType.Delete)
                 {
                     viewData.Original.WorkItems.Add(w);
-                    viewData.Selected.Add(w);
+                    selected.Add(w);
                 }
             }
+            viewData.Selected.Set(selected);
             Changed(this, new EditedEventArgs(p.Members));
         }
 
@@ -46,20 +47,21 @@ namespace ProjectsTM.ViewModel
             if (_redoStack.Count == 0) return;
             var r = _redoStack.Pop();
             _undoStack.Push(r);
-            viewData.Selected = new WorkItems();
+            var selected = new List<WorkItem>();
             foreach (var a in r)
             {
                 var w = WorkItem.Deserialize(a.WorkItemText, a.Member);
                 if (a.Action == EditActionType.Add)
                 {
                     viewData.Original.WorkItems.Add(w);
-                    viewData.Selected.Add(w);
+                    selected.Add(w);
                 }
                 else if (a.Action == EditActionType.Delete)
                 {
                     viewData.Original.WorkItems.Remove(w);
                 }
             }
+            viewData.Selected.Set(selected);
             Changed(this, new EditedEventArgs(r.Members));
         }
 
@@ -70,7 +72,7 @@ namespace ProjectsTM.ViewModel
             _atomicAction.Clear();
         }
 
-        public void Delete(WorkItems wis)
+        public void Delete(IEnumerable<WorkItem> wis)
         {
             foreach (var w in wis) Delete(w);
         }
@@ -80,7 +82,7 @@ namespace ProjectsTM.ViewModel
             _atomicAction.Add(new EditAction(EditActionType.Delete, w.Serialize(), w.AssignedMember));
         }
 
-        public void Add(WorkItems wis)
+        public void Add(IEnumerable<WorkItem> wis)
         {
             foreach (var w in wis) Add(w);
         }

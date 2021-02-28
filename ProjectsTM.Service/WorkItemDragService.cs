@@ -14,7 +14,7 @@ namespace ProjectsTM.Service
 
     public class WorkItemDragService
     {
-        private WorkItems _backup;
+        private SelectedWorkItems _backup;
         private DragStartInfo _dragStartInfo;
         private CallenderDay _draggedDay = null;
         private int _expandDirection = 0;
@@ -101,7 +101,7 @@ namespace ProjectsTM.Service
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
             viewData.Original.WorkItems.Add(result);
-            viewData.Selected = result;
+            viewData.Selected.Set(result);
         }
 
         private static Period GetNewPeriod(Period period, int pOffset, Callender cal)
@@ -164,7 +164,7 @@ namespace ProjectsTM.Service
             }
             viewData.Original.WorkItems.Remove(viewData.Selected);
             viewData.Original.WorkItems.Add(result);
-            viewData.Selected = result;
+            viewData.Selected.Set(result);
         }
 
         private int GetOffset(Callender callender, CallenderDay curDay, CallenderDay draggedDay)
@@ -205,7 +205,7 @@ namespace ProjectsTM.Service
             return (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
         }
 
-        internal void StartExpand(int direction, WorkItems selected, CallenderDay callenderDay)
+        internal void StartExpand(int direction, SelectedWorkItems selected, CallenderDay callenderDay)
         {
             _backup = selected.Clone();
             _expandDirection = direction;
@@ -213,7 +213,7 @@ namespace ProjectsTM.Service
             State = DragState.BeforeExpanding;
         }
 
-        internal void StartMove(WorkItems selected, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay)
+        internal void StartMove(SelectedWorkItems selected, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay)
         {
             if (selected == null) return;
             _backup = selected.Clone();
@@ -277,7 +277,7 @@ namespace ProjectsTM.Service
             State = DragState.None;
         }
 
-        private void ApplyEdit(WorkItemEditService editService, ViewData viewData, WorkItems edit)
+        private void ApplyEdit(WorkItemEditService editService, ViewData viewData, IEnumerable<WorkItem> edit)
         {
             switch (State)
             {
@@ -292,7 +292,7 @@ namespace ProjectsTM.Service
                     Debug.Assert(false);
                     break;
             }
-            viewData.Selected = edit;
+            viewData.Selected.Set(edit);
         }
 
         private void ClearEdit(ViewData viewData)
@@ -309,7 +309,7 @@ namespace ProjectsTM.Service
             viewData.Original.WorkItems.Add(_backup);
         }
 
-        private static WorkItems BackupEdit(ViewData viewData)
+        private static SelectedWorkItems BackupEdit(ViewData viewData)
         {
             return viewData.Selected.Clone();
         }

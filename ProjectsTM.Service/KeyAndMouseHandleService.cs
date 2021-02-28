@@ -78,12 +78,13 @@ namespace ProjectsTM.Service
 
             if (!_grid.PickWorkItemFromPoint(curOnRaw, out var wi))
             {
-                _viewData.Selected = null;
+                _viewData.Selected.Clear();
                 return;
             }
-            if (_viewData.Selected == null)
+
+            if (_viewData.Selected.IsEmpty())
             {
-                _viewData.Selected = new WorkItems(wi);
+                _viewData.Selected.Set(new WorkItems(wi));
                 _workItemDragService.StartMove(_viewData.Selected, _grid.GetWorkItemDrawRectClient(_viewData.Selected, _viewData.Original.Members), curOnRaw, _grid.Y2Day(curOnRaw.Y));
             }
             else
@@ -104,7 +105,7 @@ namespace ProjectsTM.Service
                 {
                     if (!_viewData.Selected.Contains(wi))
                     {
-                        _viewData.Selected = new WorkItems(wi);
+                        _viewData.Selected.Set(new WorkItems(wi));
                     }
                     _workItemDragService.StartMove(_viewData.Selected, _grid.GetWorkItemDrawRectClient(_viewData.Selected, _viewData.Original.Members), curOnRaw, _grid.Y2Day(curOnRaw.Y));
                 }
@@ -113,7 +114,6 @@ namespace ProjectsTM.Service
 
         private int GetExpandDirection(MainViewData viewData, ClientPoint location)
         {
-            if (viewData.Selected == null) return 0;
             foreach (var w in viewData.Selected)
             {
                 var bounds = _grid.GetWorkItemDrawRectClient(w, viewData.FilteredItems.Members);
@@ -147,13 +147,11 @@ namespace ProjectsTM.Service
 
         private bool IsWorkItemExpandArea(ViewData viewData, ClientPoint location)
         {
-            if (viewData.Selected == null) return false;
             return null != PickExpandingWorkItem(location);
         }
 
         public WorkItem PickExpandingWorkItem(ClientPoint location)
         {
-            if (_viewData.Selected == null) return null;
             foreach (var w in _viewData.Selected)
             {
                 var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.FilteredItems.Members);
@@ -182,7 +180,7 @@ namespace ProjectsTM.Service
             if (_grid.IsFixedArea(locaion)) return;
             RawPoint curOnRaw = _grid.Client2Raw(locaion);
 
-            if (_viewData.Selected != null)
+            if (_viewData.Selected.IsEmpty())
             {
                 _grid.EditSelectedWorkItem();
                 return;
@@ -228,7 +226,7 @@ namespace ProjectsTM.Service
             if (e.KeyCode == Keys.Escape)
             {
                 _workItemDragService.End(_editService, _viewData.Core, true, null);
-                _viewData.Selected = null;
+                _viewData.Selected.Clear();
             }
         }
 
@@ -236,7 +234,6 @@ namespace ProjectsTM.Service
         {
             if (e.KeyCode == Keys.Delete)
             {
-                if (_viewData.Selected == null) return;
                 _editService.Delete();
             }
             if (e.KeyCode == Keys.ControlKey)
@@ -284,7 +281,7 @@ namespace ProjectsTM.Service
                     if (range.Value.Contains(rect.Value)) selected.Add(w);
                 }
             }
-            _viewData.Selected = selected;
+            _viewData.Selected.Set(selected);
         }
 
         protected virtual void Dispose(bool disposing)

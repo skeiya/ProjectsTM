@@ -176,7 +176,7 @@ namespace ProjectsTM.Service
 
         private void ToolStripComboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _viewData.Selected = null;
+            _viewData.Selected.Clear();
             var idx = _toolStripComboBoxFilter.SelectedIndex;
             if (idx == 0)
             {

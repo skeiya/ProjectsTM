@@ -14,7 +14,7 @@ namespace ProjectsTM.Service
             this._viewData = viewData;
         }
 
-        public void Add(WorkItems wis)
+        public void Add(IEnumerable<WorkItem> wis)
         {
             if (wis == null) return;
             var items = _viewData.Original.WorkItems;
@@ -57,7 +57,7 @@ namespace ProjectsTM.Service
         {
             _viewData.Original.WorkItems.Remove(_viewData.Selected);
             _viewData.UndoBuffer.Delete(_viewData.Selected);
-            _viewData.Selected = new WorkItems();
+            _viewData.Selected.Clear();
             _viewData.UndoBuffer.Push();
         }
 
@@ -70,7 +70,7 @@ namespace ProjectsTM.Service
             d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, divided);
 
             var workItems = _viewData.Original.WorkItems;
-            _viewData.Selected = null;
+            _viewData.Selected.Clear();
             workItems.Remove(selected);
             workItems.Add(d1);
             workItems.Add(d2);
@@ -81,7 +81,7 @@ namespace ProjectsTM.Service
             _viewData.UndoBuffer.Push();
         }
 
-        public void Replace(WorkItems before, WorkItems after)
+        public void Replace(IEnumerable<WorkItem> before, IEnumerable<WorkItem> after)
         {
             _viewData.Original.WorkItems.Remove(before);
             _viewData.Original.WorkItems.Add(after);
@@ -100,14 +100,14 @@ namespace ProjectsTM.Service
             _viewData.UndoBuffer.Push();
         }
 
-        public void ChangeState(WorkItems selected, TaskState state)
+        public void ChangeState(SelectedWorkItems selected, TaskState state)
         {
             var newWis = selected.Clone();
 
             foreach (var w in newWis) w.State = state;
 
             var workItems = _viewData.Original.WorkItems;
-            _viewData.Selected = null;
+            _viewData.Selected.Clear();
             workItems.Remove(selected);
             workItems.Add(newWis);
 
@@ -116,14 +116,14 @@ namespace ProjectsTM.Service
             _viewData.UndoBuffer.Push();
         }
 
-        public void SelectAfterward(WorkItems starts)
+        public void SelectAfterward(IEnumerable<WorkItem> starts)
         {
             var newSetected = new WorkItems();
             foreach (var s in starts)
             {
                 newSetected.Add(GetSameMemberAfterItems(s));
             }
-            _viewData.Selected = newSetected;
+            _viewData.Selected.Set(newSetected);
         }
 
         private WorkItems GetSameMemberAfterItems(WorkItem s)
@@ -173,7 +173,6 @@ namespace ProjectsTM.Service
 
         public void AlignSelected()
         {
-            if (_viewData.Selected == null) return;
             var before = _viewData.Selected.Clone().OrderBy(w => w.Period.From);
             var after = new WorkItems();
             var isFirst = true;
@@ -196,10 +195,10 @@ namespace ProjectsTM.Service
                 after.Add(newWorkItem);
             }
             Replace(_viewData.Selected, after);
-            _viewData.Selected = after;
+            _viewData.Selected.Set(after);
         }
 
-        private static bool HasSameMember(WorkItems starts)
+        private static bool HasSameMember(IEnumerable<WorkItem> starts)
         {
             var members = new List<Member>();
             foreach (var s in starts)
@@ -222,7 +221,6 @@ namespace ProjectsTM.Service
 
         public void DivideCore(bool makeHalf)
         {
-            if (_viewData.Selected == null) return;
             var add = new WorkItems();
             var divided = new WorkItems();
             var callender = _viewData.Original.Callender;
@@ -248,7 +246,7 @@ namespace ProjectsTM.Service
             var workItems = _viewData.Original.WorkItems;
             workItems.Remove(divided);
             workItems.Add(add);
-            _viewData.Selected = add;
+            _viewData.Selected.Set(add);
 
             _viewData.UndoBuffer.Delete(divided);
             _viewData.UndoBuffer.Add(add);
@@ -257,7 +255,6 @@ namespace ProjectsTM.Service
 
         internal void ShiftDays(int shift)
         {
-            if (_viewData.Selected == null) return;
             if (_viewData.Selected.Count() != 1) return;
 
             var before = _viewData.Selected.Unique;
@@ -267,12 +264,11 @@ namespace ProjectsTM.Service
             if (after.Period == null) return;
 
             Replace(before, after);
-            _viewData.Selected = new WorkItems(after);
+            _viewData.Selected.Set(new WorkItems(after));
         }
 
         internal void ExpandDays(int shift)
         {
-            if (_viewData.Selected == null) return;
             if (_viewData.Selected.Count() != 1) return;
 
             var before = _viewData.Selected.Unique;
@@ -285,7 +281,7 @@ namespace ProjectsTM.Service
             after.Period.To = newTo;
 
             Replace(before, after);
-            _viewData.Selected = new WorkItems(after);
+            _viewData.Selected.Set(new WorkItems(after));
         }
     }
 }

@@ -9,8 +9,8 @@ namespace ProjectsTM.UI.Main
     {
         public static void Save(MainViewData viewData, WorkItemGrid orgGrid)
         {
-            var selected = viewData.Selected;
-            viewData.Selected = null;
+            var backup = viewData.Selected.Clone();
+            viewData.Selected.Clear();
             try
             {
                 using (var fileIOService = new AppDataFileIOService())
@@ -33,7 +33,7 @@ namespace ProjectsTM.UI.Main
             }
             finally
             {
-                viewData.Selected = selected;
+                viewData.Selected.Set(backup);
             }
         }
     }
