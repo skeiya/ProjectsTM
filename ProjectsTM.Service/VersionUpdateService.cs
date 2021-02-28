@@ -23,7 +23,7 @@ namespace ProjectsTM.Service
         {
             result = new Version();
             var fileServerPath = GetFileServerPath(dir);
-            if (fileServerPath == null) return false;
+            if (string.IsNullOrEmpty(fileServerPath)) return false;
             if (!Directory.Exists(fileServerPath)) return false;
             foreach (var d in Directory.GetDirectories(fileServerPath))
             {
@@ -36,9 +36,9 @@ namespace ProjectsTM.Service
         private static string GetFileServerPath(string dir)
         {
             var definedText = Path.Combine(dir, "UpdaterPlace.txt");
-            if (!File.Exists(definedText)) return null;
+            if (!File.Exists(definedText)) return string.Empty;
             var lines = File.ReadAllLines(definedText);
-            if (lines.Length < 1) return null;
+            if (lines.Length < 1) return string.Empty;
             return lines[0];
         }
 
