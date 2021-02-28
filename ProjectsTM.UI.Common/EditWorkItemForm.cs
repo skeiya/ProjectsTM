@@ -84,8 +84,7 @@ namespace ProjectsTM.UI.Common
 
         private void buttonRegexEscape_Click(object sender, EventArgs e)
         {
-            var wi = CreateWorkItem(_callender);
-            if (wi == null) return;
+            if (!TryGetWorkItem(out var wi)) return;
             using (var dlg = new EditMemberForm(Regex.Escape(wi.ToString())))
             {
                 dlg.Text = "正規表現エスケープ";
@@ -106,14 +105,7 @@ namespace ProjectsTM.UI.Common
                 MessageBox.Show("担当者が存在しません。", "不正な入力", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
-            return CreateWorkItem(_callender) != null;
-        }
-
-        private WorkItem CreateWorkItem(Callender callender)
-        {
-            if (!TryGetPeriod(callender, textBoxFrom.Text, textBoxTo.Text, out var period)) return null;
-            if (!TryGetAssignedMember(out var m)) return null;
-            return new WorkItem(GetProject(), GetWorkItemName(), GetTags(), period, m, GetState(), GetDescrption());
+            return TryGetWorkItem(out var _);
         }
 
         private bool TryGetAssignedMember(out Member result)
