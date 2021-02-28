@@ -176,12 +176,14 @@ namespace ProjectsTM.UI.Main
             return Member2Col(m, _viewData.FilteredItems.Members);
         }
 
-        public Rectangle? GetMemberDrawRect(Member m)
+        public bool TryGetMemberDrawRect(Member m, out Rectangle result)
         {
+            result = Rectangle.Empty;
             var col = Member2Col(m, _viewData.FilteredItems.Members);
             var rect = GetRectRaw(col, VisibleNormalTopRow, 1);
-            if (rect.IsEmpty) return null;
-            return new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            if (rect.IsEmpty) return false;
+            result = new Rectangle(rect.Value.X, FixedHeight, ColWidths[col.Value], GridHeight);
+            return true;
         }
 
         private void AttachEvents()

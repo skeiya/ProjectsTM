@@ -51,11 +51,9 @@ namespace ProjectsTM.ViewModel
             //該当メンバの列を少し広めにクリアFill
             foreach (var m in members)
             {
-                var rect = grid.GetMemberDrawRect(m);
-                if (!rect.HasValue) continue;
-                var newRect = rect.Value;
-                newRect.Inflate(1, 1);
-                _bitmapGraphics.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), newRect);
+                if (!grid.TryGetMemberDrawRect(m, out var rect)) continue;
+                rect.Inflate(1, 1);
+                _bitmapGraphics.FillRectangle(BrushCache.GetBrush(Control.DefaultBackColor), rect);
             }
             foreach (var m in grid.GetNeighbers(members))
             {
