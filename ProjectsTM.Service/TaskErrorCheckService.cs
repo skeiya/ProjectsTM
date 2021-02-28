@@ -13,8 +13,7 @@ namespace ProjectsTM.Service
             CallenderDay soon = null;
             for (int i = 5; i >= 0; i--)
             {
-                soon = viewData.Original.Callender.ApplyOffset(viewData.Original.Callender.NearestFromToday, i);
-                if (soon != null) break;
+                if (!viewData.Original.Callender.TryApplyOffset(viewData.Original.Callender.NearestFromToday, i, out soon)) break;
             }
             foreach (var wi in viewData.FilteredItems.WorkItems)
             {

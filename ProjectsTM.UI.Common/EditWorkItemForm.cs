@@ -130,7 +130,7 @@ namespace ProjectsTM.UI.Common
         private static Period GetPeriod(Callender callender, string fromText, string toText)
         {
             var from = GetDayByDate(fromText);
-            var to = GetDayByCount(toText, from, callender);
+            if (!TryGetDayByCount(toText, from, callender, out var to)) return null;
             if (from == null || to == null) return null;
             var result = new Period(from, to);
             if (callender.GetPeriodDayCount(result) == 0) return null;
@@ -142,10 +142,11 @@ namespace ProjectsTM.UI.Common
             return CallenderDay.Parse(text);
         }
 
-        private static CallenderDay GetDayByCount(string countText, CallenderDay from, Callender callender)
+        private static bool TryGetDayByCount(string countText, CallenderDay from, Callender callender, out CallenderDay result)
         {
-            if (!int.TryParse(countText, out int dayCount)) return null;
-            return callender.ApplyOffset(from, dayCount - 1);
+            result = CallenderDay.Invalid;
+            if (!int.TryParse(countText, out int dayCount)) return false;
+            return callender.TryApplyOffset(from, dayCount - 1, out result);
         }
 
         private Tags GetTags()

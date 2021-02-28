@@ -49,7 +49,7 @@ namespace ProjectsTM.Service
             return FormWindowState.Normal;
         }
 
-        public static int[] LoadColWidths(string form)
+        public static IEnumerable<int> LoadColWidths(string form)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace ProjectsTM.Service
             }
             catch
             {
-                return null;
+                return new List<int>();
             }
         }
 

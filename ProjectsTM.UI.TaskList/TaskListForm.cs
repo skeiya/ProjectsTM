@@ -102,8 +102,8 @@ namespace ProjectsTM.UI.TaskList
             var colWidths = FormSizeRestoreService.LoadColWidths("TaskListColWidths");
             for (var idx = 0; idx < this._gridControl.ColWidths.Count; idx++)
             {
-                if (colWidths == null || colWidths.Count() <= idx) break;
-                this._gridControl.ColWidths[idx] = colWidths[idx];
+                if (colWidths.Count() <= idx) break;
+                this._gridControl.ColWidths[idx] = colWidths.ElementAt(idx);
             }
         }
 

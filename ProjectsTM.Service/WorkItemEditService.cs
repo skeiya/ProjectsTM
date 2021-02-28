@@ -35,9 +35,8 @@ namespace ProjectsTM.Service
 
             var copyItem = orgItem.Clone();
             var offset = _viewData.Original.Callender.GetOffset(copyItem.Period.From, newFrom);
-            copyItem.Period = copyItem.Period.ApplyOffset(offset, _viewData.Original.Callender);
-            if (copyItem.Period == null) return;
-
+            if (!copyItem.Period.TryApplyOffset(offset, _viewData.Original.Callender, out var newPeriod)) return;
+            copyItem.Period = newPeriod;
             copyItem.AssignedMember = newMember;
 
             Add(copyItem);
@@ -66,8 +65,10 @@ namespace ProjectsTM.Service
             var d1 = selected.Clone();
             var d2 = selected.Clone();
 
-            d1.Period.To = _viewData.Original.Callender.ApplyOffset(d1.Period.To, -remain);
-            d2.Period.From = _viewData.Original.Callender.ApplyOffset(d2.Period.From, divided);
+            if (!_viewData.Original.Callender.TryApplyOffset(d1.Period.To, -remain, out var to)) return;
+            if (!_viewData.Original.Callender.TryApplyOffset(d2.Period.From, divided, out var from)) return;
+            d1.Period.To = to;
+            d2.Period.From = from;
 
             var workItems = _viewData.Original.WorkItems;
             _viewData.Selected.Clear();
@@ -155,14 +156,11 @@ namespace ProjectsTM.Service
                 {
                     if (w.Equals(s)) continue;
                     before.Add(w.Clone());
-                    var nextFrom = cal.ApplyOffset(lastTo, 1);
+                    if (!cal.TryApplyOffset(lastTo, 1, out var nextFrom)) return false;
                     var offset = cal.GetOffset(w.Period.From, nextFrom);
                     var a = w.Clone();
-                    a.Period = w.Period.ApplyOffset(offset, cal);
-                    if (a.Period == null)
-                    {
-                        return false;
-                    }
+                    if (!w.Period.TryApplyOffset(offset, cal, out var period)) return false;
+                    a.Period = period;
                     lastTo = a.Period.To;
                     after.Add(a);
                 }
@@ -187,10 +185,11 @@ namespace ProjectsTM.Service
                     after.Add(w);
                     continue;
                 }
-                var nextFrom = cal.ApplyOffset(lastTo, 1);
+                if (!cal.TryApplyOffset(lastTo, 1, out var nextFrom)) return;
                 var offset = cal.GetOffset(w.Period.From, nextFrom);
                 var newWorkItem = w.Clone();
-                newWorkItem.Period = w.Period.ApplyOffset(offset, cal);
+                if (!w.Period.TryApplyOffset(offset, cal, out var period)) return;
+                newWorkItem.Period = period;
                 lastTo = newWorkItem.Period.To;
                 after.Add(newWorkItem);
             }
@@ -231,12 +230,14 @@ namespace ProjectsTM.Service
                 if (offset < 1) continue;
 
                 var w1 = w.Clone();
-                w1.Period.To = callender.ApplyOffset(w.Period.From, offset / 2);
+                if (!callender.TryApplyOffset(w.Period.From, offset / 2, out var p1)) return;
+                w1.Period.To = p1;
                 add.Add(w1);
                 if (!makeHalf)
                 {
                     var w2 = w.Clone();
-                    w2.Period.From = callender.ApplyOffset(w.Period.From, +offset / 2 + 1);
+                    if (!callender.TryApplyOffset(w.Period.From, +offset / 2 + 1, out var p2)) return;
+                    w2.Period.From = p2;
                     add.Add(w2);
                 }
                 divided.Add(w);
@@ -259,9 +260,8 @@ namespace ProjectsTM.Service
 
             var before = _viewData.Selected.Unique;
             var after = before.Clone();
-            after.Period = after.Period.ApplyOffset(shift, _viewData.Original.Callender);
-
-            if (after.Period == null) return;
+            if (after.Period.TryApplyOffset(shift, _viewData.Original.Callender, out var period)) return;
+            after.Period = period;
 
             Replace(before, after);
             _viewData.Selected.Set(new WorkItems(after));
@@ -274,8 +274,7 @@ namespace ProjectsTM.Service
             var before = _viewData.Selected.Unique;
             var after = before.Clone();
 
-            var newTo = _viewData.Original.Callender.ApplyOffset(after.Period.To, shift);
-            if (newTo == null) return;
+            if (!_viewData.Original.Callender.TryApplyOffset(after.Period.To, shift, out var newTo)) return;
             if (newTo < after.Period.From) return;
 
             after.Period.To = newTo;
