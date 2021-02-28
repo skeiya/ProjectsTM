@@ -60,7 +60,8 @@ namespace ProjectsTM.UI.Main
             var me = _viewData.Detail.Me;
             if (TaskErrorCheckService.IsUserErrorExist(me, _viewData.Core))
             {
-                if (!(MessageBox.Show($"{me}さんエラーになっている項目があります。確認しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)) return;
+                if (!(MessageBox.Show($"{me}さん{Environment.NewLine}エラーになっている項目があります。確認して下さい。{Environment.NewLine}エラー扱いが適切でない場合は管理者に問い合わせの上," +
+                    $"{Environment.NewLine}状態をBackGroundに変更してください。", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)) return;
                 _taskListManager.ShowUsersError(me);
             }
         }
