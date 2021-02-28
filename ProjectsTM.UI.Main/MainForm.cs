@@ -66,7 +66,7 @@ namespace ProjectsTM.UI.Main
 
         private void SuggestSolveErorr()
         {
-            if (TaskErrorCheckService.IsUserErrorExist(_me, new ViewData(_viewData.Original)))
+            if (TaskErrorCheckService.IsUserErrorExist(_me, _viewData.Core))
             {
                 if (!(MessageBox.Show($"{_me}さんエラーになっている項目があります。確認しますか？", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)) return;
                 _taskListManager.ShowUsersError(_me);
