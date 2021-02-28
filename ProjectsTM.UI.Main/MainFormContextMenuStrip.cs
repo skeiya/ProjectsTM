@@ -5,30 +5,26 @@ using System.Windows.Forms;
 
 namespace ProjectsTM.UI.Main
 {
-    internal class ContextMenuHandler
+    class MainFormContextMenuStrip : ContextMenuStrip
     {
         private readonly ViewData _viewData;
         private readonly WorkItemGrid _grid;
-
-        public ContextMenuHandler(ViewData viewData, WorkItemGrid grid, ContextMenuStrip contextMenuStrip)
+        internal MainFormContextMenuStrip(ViewData viewData, WorkItemGrid grid)
         {
+            _viewData = viewData;
+            _grid = grid;
             if (viewData is null) throw new ArgumentNullException(nameof(viewData));
             if (grid is null) throw new ArgumentNullException(nameof(grid));
 
-            _viewData = viewData;
-            _grid = grid;
-
-            if (contextMenuStrip is null) throw new ArgumentNullException(nameof(contextMenuStrip));
-
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("編集(&E)...", null, EditMenu_Click, Keys.Control | Keys.E));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("コピー(&C)", null, CopyMenu_Click, Keys.Control | Keys.C));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("貼り付け(&P)", null, PasteMenu_Click, Keys.Control | Keys.V));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("削除(&D)", null, DeleteMenu_Click, Keys.Delete));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("分割(&I)...", null, DivideMenu_Click, Keys.Control | Keys.I));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("今日にジャンプ(&T)", null, JumpTodayMenu_Click, Keys.Control | Keys.T));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
+            this.Items.Add(new ToolStripMenuItem("編集(&E)...", null, EditMenu_Click, Keys.Control | Keys.E));
+            this.Items.Add(new ToolStripMenuItem("コピー(&C)", null, CopyMenu_Click, Keys.Control | Keys.C));
+            this.Items.Add(new ToolStripMenuItem("貼り付け(&P)", null, PasteMenu_Click, Keys.Control | Keys.V));
+            this.Items.Add(new ToolStripMenuItem("削除(&D)", null, DeleteMenu_Click, Keys.Delete));
+            this.Items.Add(new ToolStripMenuItem("分割(&I)...", null, DivideMenu_Click, Keys.Control | Keys.I));
+            this.Items.Add(new ToolStripMenuItem("今日にジャンプ(&T)", null, JumpTodayMenu_Click, Keys.Control | Keys.T));
+            this.Items.Add(new ToolStripMenuItem("→状態；Done", null, DoneMenu_Click, Keys.Control | Keys.D));
             var manageItem = new ToolStripMenuItem("管理用(&M)");
-            contextMenuStrip.Items.Add(manageItem);
+            this.Items.Add(manageItem);
             manageItem.DropDownItems.Add(new ToolStripMenuItem("&2分割", null, DivideInto2PartsMenu_Click, Keys.Control | Keys.D2));
             manageItem.DropDownItems.Add(new ToolStripMenuItem("半分に縮小(&H)", null, MakeHalfMenu_Click, Keys.Control | Keys.H));
             manageItem.DropDownItems.Add("以降を選択").Click += SelectAfterwardMenu_Click;
@@ -36,7 +32,6 @@ namespace ProjectsTM.UI.Main
             manageItem.DropDownItems.Add("選択中の作業項目を隙間なく並べる").Click += AlignSelectedMenu_Click;
             manageItem.DropDownItems.Add("→状態：Background").Click += BackgroundMenu_Click;
         }
-
         private void PasteMenu_Click(object sender, EventArgs e)
         {
             _grid.PasteWorkItem();
@@ -56,7 +51,6 @@ namespace ProjectsTM.UI.Main
         {
             _grid.EditSelectedWorkItem();
         }
-
 
         private void DeleteMenu_Click(object sender, EventArgs e)
         {

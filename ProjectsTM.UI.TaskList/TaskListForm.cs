@@ -4,6 +4,7 @@ using ProjectsTM.UI.Common;
 using ProjectsTM.ViewModel;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ProjectsTM.UI.TaskList
@@ -12,8 +13,9 @@ namespace ProjectsTM.UI.TaskList
     {
         private readonly PatternHistory _history;
         private readonly TaskListGrid _gridControl;
+        private Member _user;
 
-        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option)
+        public TaskListForm(ViewData viewData, PatternHistory patternHistory, TaskListOption option, Member user)
         {
             InitializeComponent();
             _gridControl = new TaskListGrid(viewData);
@@ -28,6 +30,8 @@ namespace ProjectsTM.UI.TaskList
             this.checkBoxShowMS.CheckedChanged += CheckBoxShowMS_CheckedChanged;
             this.buttonEazyRegex.Click += buttonEazyRegex_Click;
             this.checkBoxShowMS.Checked = option.IsShowMS;
+            this.comboBoxPattern.SelectedIndexChanged += ComboBoxPattern_SelectedIndexChanged;
+            this._user = user;
         }
 
         private void InitializeCombobox(ErrorDisplayType errorDisplayType, TaskListOption option)
@@ -74,7 +78,24 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
+            if (IsUserNameSort()) return GetSortPatternFormUserName(_user.ToString());
             return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, _gridControl.Option.ErrorDisplayType);
+        }
+
+        public void UpdateMySetting(Member me)
+        {
+            _user = me;
+            comboBoxPattern.Text = string.Empty;
+        }
+
+        private string GetUserTaskSortSelectionDispText()
+        {
+            return _user == Member.Invalid ? string.Empty : $"あなた({_user})に割り当てられたタスク";
+        }
+
+        private bool IsUserNameSort()
+        {
+            return comboBoxPattern.SelectedIndex == 0 && comboBoxPattern.Text.Equals(GetUserTaskSortSelectionDispText());
         }
 
         private void TaskListForm_Load(object sender, EventArgs e)
@@ -135,8 +156,34 @@ namespace ProjectsTM.UI.TaskList
         private void comboBoxPattern_DropDown(object sender, System.EventArgs e)
         {
             comboBoxPattern.Items.Clear();
+            SetUserNameSortSelect();
             comboBoxPattern.Items.AddRange(_history.Items.ToArray());
         }
+
+        private void ComboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!(IsUserNameSort() || IsUserSettingSet())) return;
+            _gridControl.Option = GetSortPatternFormUserName(_user.ToString());
+            _gridControl.UpdateView();
+        }
+
+        private void SetUserNameSortSelect()
+        {
+            if (!IsUserSettingSet()) return;
+            comboBoxPattern.Items.Add(GetUserTaskSortSelectionDispText());
+        }
+
+        private TaskListOption GetSortPatternFormUserName(string userName)
+        {
+            userName = Regex.Escape(userName);
+            return new TaskListOption(userName, false, string.Empty, _gridControl.Option.ErrorDisplayType);
+        }
+
+        private bool IsUserSettingSet()
+        {
+            return _user != null;
+        }
+
         private void buttonUpdate_Click(object sender, System.EventArgs e)
         {
             UpdateList();
@@ -144,23 +191,15 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateList()
         {
-            _history.Append(comboBoxPattern.Text);
+            AppendSelectiontToHistory();
             _gridControl.Option = GetOption();
             _gridControl.UpdateView();
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        private void AppendSelectiontToHistory()
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-                _gridControl.Dispose();
-            }
-            base.Dispose(disposing);
+            if (comboBoxPattern.Text.Equals(GetUserTaskSortSelectionDispText())) return;
+            _history.Append(comboBoxPattern.Text);
         }
     }
 }
