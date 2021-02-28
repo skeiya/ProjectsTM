@@ -31,7 +31,6 @@ namespace ProjectsTM.UI.TaskList
         private void ChangeState(TaskState state)
         {
             var selected = _viewData.Selected;
-            if (selected == null) return;
             _grid.EditService.ChangeState(selected, state);
         }
     }

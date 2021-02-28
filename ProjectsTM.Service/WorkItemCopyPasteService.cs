@@ -11,7 +11,6 @@ namespace ProjectsTM.Service
 
         public void CopyWorkItem(SelectedWorkItems selected)
         {
-            if (selected == null) return;
             if (selected.Count() != 1) return;
             _copiedWorkItem = selected.Unique.Clone();
         }

@@ -215,7 +215,6 @@ namespace ProjectsTM.Service
 
         internal void StartMove(SelectedWorkItems selected, IEnumerable<ClientRectangle?> rects, RawPoint location, CallenderDay draggedDay)
         {
-            if (selected == null) return;
             _backup = selected.Clone();
             _dragStartInfo = new DragStartInfo(location, rects);
             _draggedDay = draggedDay;
