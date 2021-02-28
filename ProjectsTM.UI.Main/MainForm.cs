@@ -26,8 +26,8 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService = new RemoteChangePollingService(_fileIOService);
             _editorFindService = new EditorFindService(_fileIOService);
             _workItemGrid = new WorkItemGrid(_viewData, _editorFindService, _fileIOService);
-            this.Controls.Add(_workItemGrid);
-            this.Controls.Add(new MainFormStatusStrip(_viewData, _remoteChangePollingService));
+            this.toolStripContainer1.ContentPanel.Controls.Add(_workItemGrid);
+            this.toolStripContainer1.BottomToolStripPanel.Controls.Add(new MainFormStatusStrip(_viewData, _remoteChangePollingService));
             _filterComboBoxService = new FilterComboBoxService(_viewData.Core, toolStripComboBoxFilter);
             _taskListManager = new TaskListManager(_viewData.Core, _patternHistory, this);
             _fileWatchManager = new FileWatchManager(this, Reload);

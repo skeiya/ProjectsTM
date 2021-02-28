@@ -65,7 +65,9 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemHowToUse = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemVersion = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.menuStrip1.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -331,11 +333,25 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemVersion.Text = "バージョン情報(&A)...";
             this.ToolStripMenuItemVersion.Click += new System.EventHandler(this.ToolStripMenuItemVersion_Click);
             // 
+            // toolStripContainer1
+            // 
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(537, 294);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 25);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.Size = new System.Drawing.Size(537, 319);
+            this.toolStripContainer1.TabIndex = 11;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 344);
+            this.Controls.Add(this.toolStripContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -344,6 +360,8 @@ namespace ProjectsTM.UI.Main
             this.Text = "ProjectsTM";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,6 +399,7 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
     }
 }
 
