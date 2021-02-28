@@ -32,6 +32,12 @@ namespace ProjectsTM.Service
             return result;
         }
 
+        public static bool IsUserErrorExist(Member me, ViewData viewData)
+        {
+            var audit = GetAuditList(viewData);
+            return audit.Any(wi => wi.Key.AssignedMember == me);
+        }
+
         private static bool IsNotEndError(WorkItem wi)
         {
             if (wi.State == TaskState.Done) return false;

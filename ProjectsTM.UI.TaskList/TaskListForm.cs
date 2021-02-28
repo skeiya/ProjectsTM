@@ -21,7 +21,7 @@ namespace ProjectsTM.UI.TaskList
             _gridControl = new TaskListGrid(viewData);
             _gridControl.Dock = DockStyle.Fill;
             panel1.Controls.Add(_gridControl);
-            InitializeCombobox(option.ErrorDisplayType);
+            InitializeCombobox(option.ErrorDisplayType, option);
             this._history = patternHistory;
             _gridControl.ListUpdated += GridControl1_ListUpdated;
             _gridControl.Option = option;
@@ -34,8 +34,10 @@ namespace ProjectsTM.UI.TaskList
             this._user = user;
         }
 
-        private void InitializeCombobox(ErrorDisplayType errorDisplayType)
+        private void InitializeCombobox(ErrorDisplayType errorDisplayType, TaskListOption option)
         {
+            comboBoxPattern.Text = option.Pattern;
+
             foreach (ErrorDisplayType d in Enum.GetValues(typeof(ErrorDisplayType)))
             {
                 comboBoxErrorDisplay.Items.Add(GetString(d));

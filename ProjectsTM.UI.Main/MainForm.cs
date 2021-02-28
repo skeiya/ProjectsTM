@@ -39,7 +39,7 @@ namespace ProjectsTM.UI.Main
             _remoteChangePollingService.FoundRemoteChange += _remoteChangePollingService_FoundRemoteChange;
             this.FormClosed += MainForm_FormClosed;
             this.FormClosing += MainForm_FormClosing;
-            this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); };
+            this.Shown += (s, e) => { _workItemGrid.MoveToMeToday(); SuggestSetting(); SuggestSolveErorr(); };
             this.Load += MainForm_Load;
         }
 
@@ -52,6 +52,17 @@ namespace ProjectsTM.UI.Main
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
                 _viewData.Detail.Me = dlg.Selected;
                 _viewData.Detail.HideSuggestionForUserNameSetting = dlg.HideSetting;
+            }
+        }
+
+        private void SuggestSolveErorr()
+        {
+            var me = _viewData.Detail.Me;
+            if (TaskErrorCheckService.IsUserErrorExist(me, _viewData.Core))
+            {
+                if (!(MessageBox.Show($"{me}さん{Environment.NewLine}エラーになっている項目があります。確認して下さい。{Environment.NewLine}エラー扱いが適切でない場合は管理者に問い合わせの上," +
+                    $"{Environment.NewLine}状態をBackGroundに変更してください。", "要確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)) return;
+                _taskListManager.ShowUsersError(me);
             }
         }
 
