@@ -24,7 +24,7 @@ namespace ProjectsTM.Service
         private readonly Func<bool> _isDragMoving;
         private readonly Func<DragStartInfo> _dragStartInfo;
         private ImageBuffer _imageBuffer;
-        private IWorkItemGrid _grid;
+        private readonly IWorkItemGrid _grid;
 
         public DrawService(IWorkItemGrid grid)
         {
@@ -121,14 +121,6 @@ namespace ProjectsTM.Service
             }
         }
 
-        private bool SelectedIsSame(WorkItem wi)
-        {
-            if (_viewData.Selected == null) return false;
-            if (_viewData.Selected.Count() != 1) return false;
-            if (_viewData.Selected.Unique.Equals(wi)) return false;
-            return _viewData.Selected.Unique.Name == wi.Name;
-        }
-
         private void DrawEdgeWorkItems(Font font, Graphics g, bool isAllDraw)
         {
             var range = _grid.VisibleRowColRange;
@@ -212,7 +204,7 @@ namespace ProjectsTM.Service
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                 {
-                    if (_viewData.Selected != null && _viewData.Selected.Contains(wi)) continue;
+                    if (_viewData.Selected.Contains(wi)) continue;
                     if (_imageBuffer.IsValid(wi)) continue;
                     _imageBuffer.Validate(wi);
                     DrawWorkItemRaw(wi, Pens.Black, font, g, members);
@@ -337,7 +329,8 @@ namespace ProjectsTM.Service
                 var m = _grid.Col2Member(c);
                 foreach (var wi in GetVisibleWorkItems(m, range.TopRow, range.RowCount))
                 {
-                    if (SelectedIsSame(wi)) DrawWorkItemClient(wi, Pens.LightGreen, font, g, members);
+                    if (!_viewData.Selected.IsSameName(wi)) continue;
+                    DrawWorkItemClient(wi, Pens.LightGreen, font, g, members);
                 }
             }
         }
@@ -357,7 +350,6 @@ namespace ProjectsTM.Service
 
         private void DrawSelectedWorkItemBound(Graphics g, Font font)
         {
-            if (_viewData.Selected == null) return;
             for (int i = 0; i < _viewData.Selected.Count(); i++)
             {
                 if (_isDragMoving() && !WorkItemDragService.IsCurLocationOnHitArea(_grid, _grid.Global2Raw(Cursor.Position)))
@@ -482,7 +474,7 @@ namespace ProjectsTM.Service
 
         #region IDisposable Support
         private bool disposedValue = false; // 重複する呼び出しを検出するには
-        private Font _font;
+        private readonly Font _font;
 
         protected virtual void Dispose(bool disposing)
         {

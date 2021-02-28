@@ -21,6 +21,11 @@ namespace ProjectsTM.Model
 
         private readonly SortedDictionary<Member, MembersWorkItems> _items = new SortedDictionary<Member, MembersWorkItems>();
 
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
         public IEnumerable<MembersWorkItems> EachMembers => _items.Values;
 
         public WorkItem Unique
@@ -71,7 +76,7 @@ namespace ProjectsTM.Model
             return result;
         }
 
-        public void Add(WorkItems wis)
+        public void Add(IEnumerable<WorkItem> wis)
         {
             foreach (var wi in wis) Add(wi);
         }
@@ -116,7 +121,7 @@ namespace ProjectsTM.Model
             return _items.SequenceEqual(target._items);
         }
 
-        public void Remove(WorkItems selected)
+        public void Remove(IEnumerable<WorkItem> selected)
         {
             foreach (var wi in selected) Remove(wi);
         }

@@ -57,7 +57,7 @@ namespace ProjectsTM.UI.Main
 
         private void UpdateView()
         {
-            _viewData.Selected = new WorkItems();
+            _viewData.Selected.Clear();
             _taskListManager.UpdateView();
             _workItemGrid.UpdateGridFrame();
             _filterComboBoxService.UpdateAppDataPart();

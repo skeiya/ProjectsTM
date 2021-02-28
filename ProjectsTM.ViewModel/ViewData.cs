@@ -28,7 +28,6 @@ namespace ProjectsTM.ViewModel
             UpdateFilter();
             UpdateFilteredItems();
             UpdateShowMembers();
-            Selected = null;
             AppDataChanged?.Invoke(this, null);
         }
 
@@ -45,31 +44,18 @@ namespace ProjectsTM.ViewModel
 
         private AppData _appData;
         public UndoBuffer UndoBuffer { get; private set; } = new UndoBuffer();
-        private WorkItems _selected;
 
         public event EventHandler FilterChanged;
         public event EventHandler<SelectedWorkItemChangedArg> SelectedWorkItemChanged;
         public event EventHandler AppDataChanged;
 
 
-        public WorkItems Selected
-        {
-            get { return _selected; }
-            set
-            {
-                var org = _selected;
-                _selected = value;
-                if (_selected != org)
-                {
-                    var arg = new SelectedWorkItemChangedArg(org, _selected);
-                    SelectedWorkItemChanged?.Invoke(this, arg);
-                }
-            }
-        }
+        public readonly SelectedWorkItems Selected = new SelectedWorkItems();
 
         public ViewData(AppData appData)
         {
             SetAppData(appData);
+            Selected.Changed += (s, e) => { SelectedWorkItemChanged?.Invoke(s, e); };
         }
 
         public void SetFilter(Filter filter)

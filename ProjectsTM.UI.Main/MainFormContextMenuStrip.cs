@@ -75,7 +75,6 @@ namespace ProjectsTM.UI.Main
         private void SelectAfterwardMenu_Click(object sender, EventArgs e)
         {
             var selected = _viewData.Selected;
-            if (selected == null) return;
             _grid.EditService.SelectAfterward(selected);
         }
 
@@ -87,7 +86,6 @@ namespace ProjectsTM.UI.Main
         private void ChangeState(TaskState state)
         {
             var selected = _viewData.Selected;
-            if (selected == null) return;
             _grid.EditService.ChangeState(selected, state);
         }
 

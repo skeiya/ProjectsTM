@@ -24,17 +24,7 @@ namespace ProjectsTM.ViewModel
 
         public UndoBuffer UndoBuffer => _viewData.UndoBuffer;
 
-        public WorkItems Selected
-        {
-            get
-            {
-                return _viewData.Selected;
-            }
-            set
-            {
-                _viewData.Selected = value;
-            }
-        }
+        public SelectedWorkItems Selected => _viewData.Selected;
 
         public FilteredItems FilteredItems => _viewData.FilteredItems;
 

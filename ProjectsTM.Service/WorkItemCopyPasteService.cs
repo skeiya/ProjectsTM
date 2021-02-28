@@ -1,4 +1,5 @@
 ﻿using ProjectsTM.Model;
+using ProjectsTM.ViewModel;
 using System.Linq;
 
 namespace ProjectsTM.Service
@@ -7,9 +8,8 @@ namespace ProjectsTM.Service
     {
         private WorkItem _copiedWorkItem;
 
-        public void CopyWorkItem(WorkItems selected)
+        public void CopyWorkItem(SelectedWorkItems selected)
         {
-            if (selected == null) return;
             if (selected.Count() != 1) return;
             _copiedWorkItem = selected.Unique.Clone();
         }

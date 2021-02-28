@@ -154,7 +154,6 @@ namespace ProjectsTM.UI.TaskList
 
         private void CopyToClipboard()
         {
-            if (_viewData.Selected == null) return;
             var workItems = _viewData.Selected;
             StringBuilder copyData = new StringBuilder(string.Empty);
             foreach (var w in workItems) { SetStrOneLine(copyData, w); }
@@ -163,7 +162,6 @@ namespace ProjectsTM.UI.TaskList
 
         private void MoveSelect(int offset)
         {
-            if (_viewData.Selected == null) return;
             if (_viewData.Selected.Count() != 1) return;
             var idx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
             var oneStep = offset / Math.Abs(offset);
@@ -174,7 +172,7 @@ namespace ProjectsTM.UI.TaskList
                 if (_listItems.ElementAt(idx).IsMilestone) continue;
                 offset -= oneStep;
                 if (offset != 0) continue;
-                _viewData.Selected = new WorkItems(_listItems.ElementAt(idx).WorkItem);
+                _viewData.Selected.Set(new WorkItems(_listItems.ElementAt(idx).WorkItem));
             }
         }
 
@@ -203,7 +201,7 @@ namespace ProjectsTM.UI.TaskList
                 if (l.IsMilestone) continue;
                 selects.Add(l.WorkItem);
             }
-            _viewData.Selected = selects;
+            _viewData.Selected.Set(selects);
         }
         private void SelectAll()
         {
@@ -266,7 +264,7 @@ namespace ProjectsTM.UI.TaskList
                 if (dlg.ShowDialog() != DialogResult.OK) return;
                 var newWi = dlg.GetWorkItem();
                 _editService.Replace(item.WorkItem, newWi);
-                _viewData.Selected = new WorkItems(newWi);
+                _viewData.Selected.Set(new WorkItems(newWi));
             }
         }
 
@@ -309,8 +307,7 @@ namespace ProjectsTM.UI.TaskList
 
         private void UpdateLastSelect()
         {
-            if (_viewData.Selected == null ||
-                !_viewData.Selected.Any()) { _lastSelect = null; return; }
+            if (!_viewData.Selected.Any()) { _lastSelect = null; return; }
 
             if (_viewData.Selected.Count() == 1)
             {
@@ -328,7 +325,6 @@ namespace ProjectsTM.UI.TaskList
 
         private void MoveSelectedVisible()
         {
-            if (_viewData.Selected == null) return;
             if (_viewData.Selected.Count() != 1) return;
             var listIdx = _listItems.FindIndex(l => l.WorkItem.Equals(_viewData.Selected.Unique));
             if (listIdx == -1) return;
@@ -498,7 +494,7 @@ namespace ProjectsTM.UI.TaskList
                 g.DrawString(text, this.Font, Brushes.Black, rect.Value, format);
 
             }
-            if (_viewData.Selected != null && _viewData.Selected.Contains(item.WorkItem))
+            if (_viewData.Selected.Contains(item.WorkItem))
             {
                 var res = GetRectClient(VisibleNormalLeftCol, r, 1, visibleArea);
                 if (!res.HasValue) return;

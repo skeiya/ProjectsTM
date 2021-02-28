@@ -6,13 +6,13 @@ namespace ProjectsTM.ViewModel
 {
     public class SelectedWorkItemChangedArg
     {
-        private readonly WorkItems org;
-        private readonly WorkItems selected;
+        private readonly IEnumerable<WorkItem> _before;
+        private readonly IEnumerable<WorkItem> _after;
 
-        public SelectedWorkItemChangedArg(WorkItems org, WorkItems selected)
+        public SelectedWorkItemChangedArg(IEnumerable<WorkItem> before, IEnumerable<WorkItem> after)
         {
-            this.org = org;
-            this.selected = selected;
+            this._before = before;
+            this._after = after;
         }
 
         public IEnumerable<Member> UpdatedMembers
@@ -20,8 +20,8 @@ namespace ProjectsTM.ViewModel
             get
             {
                 var result = new List<Member>();
-                if (org != null) result.AddRange(org.Select(w => w.AssignedMember));
-                if (selected != null) result.AddRange(selected.Select(w => w.AssignedMember));
+                if (_before != null) result.AddRange(_before.Select(w => w.AssignedMember));
+                if (_after != null) result.AddRange(_after.Select(w => w.AssignedMember));
                 return result.Distinct();
             }
         }
