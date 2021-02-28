@@ -485,19 +485,19 @@ namespace ProjectsTM.UI.TaskList
             foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
             {
                 var res = GetRectClient(c, r, 1, visibleArea);
-                if (!res.HasValue) continue;
-                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value.Value);
-                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value.Value));
+                if (res.IsEmpty) continue;
+                g.FillRectangle(BrushCache.GetBrush(item.Color), res.Value);
+                g.DrawRectangle(Pens.Black, Rectangle.Round(res.Value));
                 var text = ColDefinition.GetText(item, c, _viewData);
                 var rect = res.Value;
                 rect.Y += 1;
-                g.DrawString(text, this.Font, Brushes.Black, rect.Value, format);
+                g.DrawString(text, this.Font, Brushes.Black, rect, format);
 
             }
             if (_viewData.Selected.Contains(item.WorkItem))
             {
                 var res = GetRectClient(VisibleNormalLeftCol, r, 1, visibleArea);
-                if (!res.HasValue) return;
+                if (res.IsEmpty) return;
                 var rect = new Rectangle(0, res.Value.Top, GridWidth, res.Value.Height);
                 g.DrawRectangle(PenCache.GetPen(Color.DarkBlue, 3), rect);
             }
@@ -512,13 +512,13 @@ namespace ProjectsTM.UI.TaskList
                 foreach (var c in ColIndex.Range(VisibleNormalLeftCol.Value, VisibleNormalColCount))
                 {
                     var res = GetRectClient(c, new RowIndex(0), 1, visibleArea);
-                    if (!res.HasValue) return;
-                    g.FillRectangle(Brushes.Gray, res.Value.Value);
-                    g.DrawRectangle(Pens.Black, res.Value.Value);
+                    if (res.IsEmpty) return;
+                    g.FillRectangle(Brushes.Gray, res.Value);
+                    g.DrawRectangle(Pens.Black, res.Value);
                     var rect = res.Value;
                     rect.Y += 1;
-                    g.DrawString(ColDefinition.GetTitle(c), this.Font, Brushes.Black, rect.Value);
-                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect.Value, format);
+                    g.DrawString(ColDefinition.GetTitle(c), this.Font, Brushes.Black, rect);
+                    if (c.Equals(_sortCol)) g.DrawString(_isReverse ? "▼" : "▲", this.Font, Brushes.Black, rect, format);
                 }
             }
         }

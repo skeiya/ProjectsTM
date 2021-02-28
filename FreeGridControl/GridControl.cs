@@ -244,14 +244,12 @@ namespace FreeGridControl
             return new RawRectangle(left, top, width, height);
         }
 
-        public ClientRectangle? GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea)
+        public ClientRectangle GetRectClient(ColIndex col, RowIndex r, int rowCount, ClientRectangle visibleArea)
         {
             var raw = GetRectRaw(col, r, rowCount);
-            if (raw.IsEmpty) return null;
             var location = Raw2Client(raw.Location);
             var result = new ClientRectangle(location.X, location.Y, raw.Value.Width, raw.Value.Height);
             result.Intersect(visibleArea);
-            if (result.IsEmpty) return null;
             return result;
         }
 
