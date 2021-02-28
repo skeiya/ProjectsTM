@@ -42,8 +42,6 @@ namespace ProjectsTM.ViewModel
 #pragma warning restore CA1021 // out パラメーターを使用しません
         bool IsFixedArea(ClientPoint location);
         RawPoint Client2Raw(ClientPoint location);
-        void IncRatio();
-        void DecRatio();
         void EditSelectedWorkItem();
         void AddNewWorkItem(WorkItem proto);
     }

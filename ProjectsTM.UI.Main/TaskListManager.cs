@@ -29,9 +29,17 @@ namespace ProjectsTM.UI.Main
             }
         }
 
-        internal void Show()
+        internal void UpdateMySetting(Member me)
         {
-            ShowCore(new TaskListOption());
+            taskListForms.ForEach(f =>
+            {
+                f.UpdateMySetting(me);
+            });
+        }
+
+        internal void Show(Member me)
+        {
+            ShowCore(new TaskListOption(), me);
         }
 
         internal void ShowOverlapCheck()
@@ -41,7 +49,7 @@ namespace ProjectsTM.UI.Main
                 ErrorDisplayType = ErrorDisplayType.OverlapOnly,
                 IsShowMS = false,
             };
-            ShowCore(option);
+            ShowCore(option, null);
         }
 
         internal void ShowUsersError(Member me)
@@ -52,12 +60,12 @@ namespace ProjectsTM.UI.Main
                 ErrorDisplayType = ErrorDisplayType.ErrorOnly,
                 IsShowMS = false,
             };
-            ShowCore(option);
+            ShowCore(option, me);
         }
 
-        private void ShowCore(TaskListOption option)
+        private void ShowCore(TaskListOption option, Member me)
         {
-            var f = new TaskListForm(_viewData, _patternHistory, option);
+            var f = new TaskListForm(_viewData, _patternHistory, option, me);
             f.FormClosed += taskListForm_FormClosed;
             f.Show(_parent);
             taskListForms.Add(f);

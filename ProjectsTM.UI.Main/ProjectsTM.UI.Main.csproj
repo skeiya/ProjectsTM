@@ -51,7 +51,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileWatchManager.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ImageOutputer.cs" />
+    <Compile Include="MainFormContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainFormStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainFormStatusStrip.Designer.cs">
+      <DependentUpon>MainFormStatusStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="RsExportManager.cs" />
     <Compile Include="TaskListManager.cs" />
     <Compile Include="TrendChartBackgroundWorkForm.cs">
@@ -72,7 +82,6 @@
     <Compile Include="ColorManagementForm.Designer.cs">
       <DependentUpon>ColorManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ContextMenuHandler.cs" />
     <Compile Include="DevideWorkItemForm.cs">
       <SubType>Form</SubType>
     </Compile>

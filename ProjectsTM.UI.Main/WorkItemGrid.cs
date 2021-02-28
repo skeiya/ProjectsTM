@@ -15,7 +15,6 @@ namespace ProjectsTM.UI.Main
     public class WorkItemGrid : FreeGridControl.GridControl, IWorkItemGrid
     {
         private readonly MainViewData _viewData;
-        private readonly ContextMenuHandler _contextMenuHandler;
         private readonly WorkItemDragService _workItemDragService = new WorkItemDragService();
         private readonly WorkItemEditService _editService;
         private readonly WorkItemCopyPasteService _workItemCopyPasteService = new WorkItemCopyPasteService();
@@ -32,9 +31,9 @@ namespace ProjectsTM.UI.Main
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public event EventHandler<float> RatioChanged;
-        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService)
+        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService, AppDataFileIOService fileIOService)
         {
+            this.Dock = DockStyle.Fill;
             this._viewData = viewData;
             this.FixedRowCount = WorkItemGridConstants.FixedRows;
             this.FixedColCount = WorkItemGridConstants.FixedCols;
@@ -51,13 +50,19 @@ namespace ProjectsTM.UI.Main
                 () => _workItemDragService.DragStartInfo,
                 this.Font);
 
-            ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler = new ContextMenuHandler(_viewData.Core, this, ContextMenuStrip);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData.Core, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
+            ContextMenuStrip = new MainFormContextMenuStrip(_viewData.Core, this);
+            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
 
             AttachEvents();
             AllowDrop = true;
             DragEnter += (s, e) => FileDragService.DragEnter(e);
+
+            this.DragDrop += (s, e) =>
+            {
+                var fileName = FileDragService.Drop(e);
+                if (!fileIOService.TryOpenFile(fileName, out var appData)) return;
+                _viewData.SetAppData(appData);
+            };
         }
 
         private ClientPoint Global2Client(Point global)
@@ -183,6 +188,7 @@ namespace ProjectsTM.UI.Main
         private void AttachEvents()
         {
             this._viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+            this._viewData.RatioChanged += (s, e) => { UpdateGridFrame(); };
             this.OnDrawNormalArea += WorkItemGrid_OnDrawNormalArea;
             this.MouseDown += WorkItemGrid_MouseDown;
             this.MouseUp += WorkItemGrid_MouseUp;
@@ -361,7 +367,12 @@ namespace ProjectsTM.UI.Main
             MoveToTodayAndMember(m);
         }
 
-        internal void MoveToTodayAndMember(Member m)
+        internal void MoveToMeToday()
+        {
+            MoveToTodayAndMember(_viewData.Detail.Me);
+        }
+
+        private void MoveToTodayAndMember(Member m)
         {
             var today = _viewData.Original.Callender.NearestFromToday;
             MoveVisibleDayAndMember(today, m);
@@ -378,18 +389,6 @@ namespace ProjectsTM.UI.Main
         private void WorkItemGrid_OnDrawNormalArea(object sender, DrawNormalAreaEventArgs e)
         {
             _drawService.Draw(e.Graphics, e.IsAllDraw);
-        }
-
-        public void DecRatio()
-        {
-            _viewData.DecRatio();
-            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
-        }
-
-        public void IncRatio()
-        {
-            _viewData.IncRatio();
-            RatioChanged?.Invoke(this, _viewData.Detail.ViewRatio);
         }
 
         public RawRectangle? GetWorkItemDrawRectRaw(WorkItem wi, IEnumerable<Member> members)

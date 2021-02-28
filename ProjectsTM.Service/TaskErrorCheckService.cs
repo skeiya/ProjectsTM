@@ -33,7 +33,7 @@ namespace ProjectsTM.Service
             return result;
         }
 
-        public static bool IsUserErrorExist(Member me, ViewData viewData)
+        public static bool IsUserErrorExist(MainViewData viewData)
         {
             CallenderDay soon = null;
             for (int i = 5; i >= 0; i--)
@@ -43,7 +43,7 @@ namespace ProjectsTM.Service
             }
             foreach (var wi in viewData.FilteredItems.WorkItems)
             {
-                if (wi.AssignedMember != me) continue;
+                if (wi.AssignedMember != viewData.Detail.Me) continue;
 
                 if (IsNotEndError(wi))
                 {
