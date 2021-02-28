@@ -11,8 +11,7 @@ namespace ProjectsTM.Service
     {
         public static bool UpdateByFileServer(string dir)
         {
-            var latestVersion = GetLatestVersionByFileServer(dir);
-            if (latestVersion == null) return false;
+            if (!TryGetAppLatestVersion(dir, out var latestVersion)) return false;
             if (!IsOldCurrentVersion(latestVersion)) return false;
             if (MessageBox.Show("ツールの最新版がリリースされています。配布先を開きますか？", "日程表ツール", MessageBoxButtons.YesNo) != DialogResult.Yes) return false;
             Process.Start(GetFileServerPath(dir));
@@ -20,18 +19,18 @@ namespace ProjectsTM.Service
             return true;
         }
 
-        private static Version GetLatestVersionByFileServer(string dir)
+        private static bool TryGetAppLatestVersion(string dir, out Version result)
         {
-            Version result = null;
+            result = new Version();
             var fileServerPath = GetFileServerPath(dir);
-            if (fileServerPath == null) return null;
-            if (!Directory.Exists(fileServerPath)) return null;
+            if (fileServerPath == null) return false;
+            if (!Directory.Exists(fileServerPath)) return false;
             foreach (var d in Directory.GetDirectories(fileServerPath))
             {
                 var version = ParseVersion(d);
                 if (result == null || result < version) result = version;
             }
-            return result;
+            return true;
         }
 
         private static string GetFileServerPath(string dir)
