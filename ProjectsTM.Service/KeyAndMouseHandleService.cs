@@ -69,7 +69,7 @@ namespace ProjectsTM.Service
 
             if (e.Button == MouseButtons.Left)
             {
-                if (IsWorkItemExpandArea(_viewData.Core, location))
+                if (IsWorkItemExpandArea(location))
                 {
                     _workItemDragService.StartExpand(GetExpandDirection(_viewData, location), _viewData.Selected, _grid.Y2Day(curOnRaw.Y));
                     return;
@@ -127,7 +127,7 @@ namespace ProjectsTM.Service
         public void MouseMove(ClientPoint location, Control control)
         {
             _workItemDragService.UpdateDraggingItem(_grid, _grid.Client2Raw(location), _viewData.Core);
-            if (IsWorkItemExpandArea(_viewData.Core, location))
+            if (IsWorkItemExpandArea(location))
             {
                 if (control.Cursor != Cursors.SizeNS)
                 {
@@ -145,7 +145,7 @@ namespace ProjectsTM.Service
         }
 
 
-        private bool IsWorkItemExpandArea(ViewData viewData, ClientPoint location)
+        private bool IsWorkItemExpandArea(ClientPoint location)
         {
             return null != PickExpandingWorkItem(location);
         }

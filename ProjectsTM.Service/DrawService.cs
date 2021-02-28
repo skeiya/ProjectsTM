@@ -102,7 +102,7 @@ namespace ProjectsTM.Service
                     {
                         var d = _grid.Row2Day(r);
                         if (!a.Period.Contains(d)) continue;
-                        var rect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false)).Value.Value;
+                        var rect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false)).Value;
                         g.FillRectangle(Brushes.LightGray, rect);
                     }
                 }
@@ -156,8 +156,8 @@ namespace ProjectsTM.Service
             var r = _grid.Y2Row(curOnRaw.Y);
             if (!_grid.VisibleRowColRange.Contains(r, c)) return;
             var reternRect = _grid.GetRectClient(c, r, 1, _grid.GetVisibleRect(false, false));
-            if (!reternRect.HasValue) return;
-            var rect = reternRect.Value.Value;
+            if (reternRect.IsEmpty) return;
+            var rect = reternRect.Value;
             var pen = PenCache.GetPen(Color.LightGray, 3f);
             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
             g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
@@ -308,7 +308,7 @@ namespace ProjectsTM.Service
                 {
                     if (DoesFilterSuppressMileStoneDraw(m)) continue;
                     var rect = _grid.GetRectClient(range.LeftCol, r, 1, visibleArea);
-                    if (!rect.HasValue) continue;
+                    if (rect.IsEmpty) continue;
                     using (var brush = new SolidBrush(m.Color))
                     {
                         var y = m.Name.Equals("Today") ? rect.Value.Top : rect.Value.Bottom;
@@ -400,29 +400,29 @@ namespace ProjectsTM.Service
                 if (year != d.Year)
                 {
                     var rectYear = _grid.GetRectClient(WorkItemGridConstants.YearCol, r, 1, visibleArea);
-                    if (rectYear.HasValue)
+                    if (!rectYear.IsEmpty)
                     {
                         month = 0;
                         day = 0;
-                        year = DrawYear(font, g, d, rectYear.Value, rowHeight);
+                        year = DrawYear(font, g, d, rectYear, rowHeight);
                     }
                 }
                 if (month != d.Month)
                 {
                     var rectMonth = _grid.GetRectClient(WorkItemGridConstants.MonthCol, r, 1, visibleArea);
-                    if (rectMonth.HasValue)
+                    if (!rectMonth.IsEmpty)
                     {
                         day = 0;
-                        month = DrawMonth(font, g, d, rectMonth.Value, rowHeight);
+                        month = DrawMonth(font, g, d, rectMonth, rowHeight);
                     }
                 }
                 if (day != d.Day)
                 {
                     var rectDay = _grid.GetRectClient(WorkItemGridConstants.DayCol, r, 1, visibleArea);
-                    if (rectDay.HasValue)
+                    if (!rectDay.IsEmpty)
                     {
                         day = d.Day;
-                        g.DrawString(day.ToString(), font, Brushes.Black, rectDay.Value.Value);
+                        g.DrawString(day.ToString(), font, Brushes.Black, rectDay.Value);
                     }
                 }
             }
@@ -466,9 +466,9 @@ namespace ProjectsTM.Service
                     var rect = new RectangleF(rectCompany.Value.Left, rectCompany.Value.Top, rectCompany.Value.Width, rectCompany.Value.Height + rectLastName.Value.Height + rectFirstName.Value.Height);
                     g.FillRectangle(BrushCache.GetBrush(Color.LightSkyBlue), rect);
                 }
-                g.DrawString(m.Company, font, Brushes.Black, rectCompany.Value.Value);
-                g.DrawString(m.LastName, font, Brushes.Black, rectLastName.Value.Value);
-                g.DrawString(m.FirstName, font, Brushes.Black, rectFirstName.Value.Value);
+                g.DrawString(m.Company, font, Brushes.Black, rectCompany.Value);
+                g.DrawString(m.LastName, font, Brushes.Black, rectLastName.Value);
+                g.DrawString(m.FirstName, font, Brushes.Black, rectFirstName.Value);
             }
         }
 
