@@ -126,15 +126,14 @@ namespace ProjectsTM.Model
 
         public override bool Equals(object obj)
         {
-            var target = obj as WorkItem;
-            if (target == null) return false;
-            if (!Project.Equals(target.Project)) return false;
-            if (!Tags.Equals(target.Tags)) return false;
-            if (!Name.Equals(target.Name)) return false;
-            if (!Period.Equals(target.Period)) return false;
-            if (!State.Equals(target.State)) return false;
-            if (!Description.Equals(target.Description)) return false;
-            return AssignedMember.Equals(target.AssignedMember);
+            return obj is WorkItem item &&
+                   EqualityComparer<Project>.Default.Equals(Project, item.Project) &&
+                   EqualityComparer<Tags>.Default.Equals(Tags, item.Tags) &&
+                   Name == item.Name &&
+                   EqualityComparer<Period>.Default.Equals(Period, item.Period) &&
+                   EqualityComparer<Member>.Default.Equals(AssignedMember, item.AssignedMember) &&
+                   Description == item.Description &&
+                   State == item.State;
         }
 
         public override int GetHashCode()
