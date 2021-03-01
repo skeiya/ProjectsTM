@@ -19,7 +19,6 @@ namespace ProjectsTM.UI.TaskList
     {
         private List<TaskListItem> _listItems;
         private readonly ViewData _viewData;
-        private ContextMenuHandler _contextMenuHandler;
         public TaskListOption Option = new TaskListOption();
         private readonly WorkItemEditService _editService;
 
@@ -286,8 +285,7 @@ namespace ProjectsTM.UI.TaskList
         private void InitializeGrid()
         {
             LockUpdate = true;
-            ContextMenuStrip = new ContextMenuStrip();
-            _contextMenuHandler = new ContextMenuHandler(_viewData, this, ContextMenuStrip);
+            ContextMenuStrip = new TaskListContextMenuStrip(_viewData, this);
 
             UpdateListItem();
             ColCount = ColDefinition.Count;

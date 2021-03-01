@@ -54,7 +54,9 @@
     <Compile Include="ColSpecification.cs" />
     <Compile Include="ErrorDisplayType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ContextMenuHandler.cs" />
+    <Compile Include="TaskListContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TaskListForm.cs">
       <SubType>Form</SubType>
     </Compile>
