@@ -3,6 +3,7 @@ using ProjectsTM.Logic;
 using ProjectsTM.Model;
 using ProjectsTM.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -147,19 +148,18 @@ namespace ProjectsTM.Service
 
         private bool IsWorkItemExpandArea(ClientPoint location)
         {
-            return null != PickExpandingWorkItem(location);
+            return PickExpandingWorkItem(location).Any();
         }
 
-        public WorkItem PickExpandingWorkItem(ClientPoint location)
+        public IEnumerable<WorkItem> PickExpandingWorkItem(ClientPoint location)
         {
             foreach (var w in _viewData.Selected)
             {
                 var bounds = _grid.GetWorkItemDrawRectClient(w, _viewData.FilteredItems.Members);
                 if (bounds.IsEmpty) continue;
-                if (IsTopBar(bounds, location)) return w;
-                if (IsBottomBar(bounds, location)) return w;
+                if (IsTopBar(bounds, location)) yield return w;
+                if (IsBottomBar(bounds, location)) yield return w;
             }
-            return null;
         }
 
         internal static bool IsTopBar(ClientRectangle workItemBounds, ClientPoint point)
