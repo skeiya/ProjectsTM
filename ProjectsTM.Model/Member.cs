@@ -27,9 +27,6 @@ namespace ProjectsTM.Model
             return Member.Parse(ToSerializeString());
         }
 
-        /// <summary>
-        /// XMLシリアライズ用
-        /// </summary>
         public Member() { }
 
         public Member(string lastName, string firstName, string company)

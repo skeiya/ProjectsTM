@@ -22,10 +22,7 @@ namespace ProjectsTM.Model
             }
         }
 
-        /// <summary>
-        /// XMLシリアライズ用
-        /// </summary>
-        public CallenderDay() { }
+        private CallenderDay() { }
 
         public CallenderDay(int year, int month, int day)
         {

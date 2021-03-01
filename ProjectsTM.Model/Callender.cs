@@ -23,12 +23,6 @@ namespace ProjectsTM.Model
             }
         }
 
-        public void Delete(CallenderDay d)
-        {
-            _days.Remove(d);
-            _nearestDayCache.Clear();
-        }
-
         public XElement ToXml()
         {
             var xml = new XElement(nameof(Callender));
@@ -167,11 +161,6 @@ namespace ProjectsTM.Model
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _days.GetEnumerator();
-        }
-
-        public void Sort()
-        {
-            _days.Sort();
         }
     }
 }

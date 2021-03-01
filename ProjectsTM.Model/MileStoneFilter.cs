@@ -6,8 +6,6 @@ namespace ProjectsTM.Model
     {
         public string Name { get; set; } = "ALL";
 
-        public MileStoneFilter() { }
-
         public MileStoneFilter(string name)
         {
             Name = name;
