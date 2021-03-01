@@ -32,7 +32,7 @@ namespace ProjectsTM.Model
             return Contains(period.From) && Contains(period.To);
         }
 
-        public bool TryApplyOffset(int offset, Callender callender,out Period result)
+        public bool TryApplyOffset(int offset, Callender callender, out Period result)
         {
             result = Period.Invalid;
             if (!callender.TryApplyOffset(From, offset, out var from)) return false;
@@ -83,8 +83,11 @@ namespace ProjectsTM.Model
         {
             var result = new Period();
             var periodElement = w.Element(nameof(Period));
-            result.From = CallenderDay.Parse(periodElement.Element(nameof(From)).Value);
-            result.To = CallenderDay.Parse(periodElement.Element(nameof(To)).Value);
+            if (periodElement != null)
+            {
+                result.From = CallenderDay.Parse(periodElement.Element(nameof(From)).Value);
+                result.To = CallenderDay.Parse(periodElement.Element(nameof(To)).Value);
+            }
             return result;
         }
     }

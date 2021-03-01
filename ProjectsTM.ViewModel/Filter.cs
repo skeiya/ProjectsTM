@@ -74,10 +74,7 @@ namespace ProjectsTM.ViewModel
                     result.ShowMembers.Add(Member.FromXml(m));
                 }
             }
-            if (xml.Element("Period") != null)
-            {
-                result.Period = Period.FromXml(xml.Element("Period"));
-            }
+            result.Period = Period.FromXml(xml);
             if (xml.Element("WorkItem") != null)
             {
                 result.WorkItem = xml.Element("WorkItem").Value;
