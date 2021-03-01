@@ -54,7 +54,7 @@ namespace ProjectsTM.Service
         {
             RawPoint cur = _grid.Global2Raw(Cursor.Position);
             if (_viewData.FilteredItems.PickWorkItem(_grid.X2Member(cur.X), _grid.Y2Day(cur.Y), out var workItem)) return workItem;
-            return null;
+            return WorkItem.Invalid;
         }
 
         public void MouseDown(MouseEventArgs e)
