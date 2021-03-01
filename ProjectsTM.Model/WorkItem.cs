@@ -15,18 +15,6 @@ namespace ProjectsTM.Model
         public Member AssignedMember { get; set; }
         public string Description { get; set; } = string.Empty;
 
-        public string ProjectElement
-        {
-            get { return Project.ToString(); }
-            set { Project = new Project(value); }
-        }
-
-        public string TagsElement
-        {
-            get { return Tags.ToString(); }
-            set { Tags = Tags.Parse(value); }
-        }
-
         private TaskState _state = TaskState.Active;
         public TaskState State
         {

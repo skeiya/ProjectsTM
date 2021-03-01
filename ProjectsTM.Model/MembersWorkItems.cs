@@ -8,8 +8,6 @@ namespace ProjectsTM.Model
     public class MembersWorkItems : IEnumerable<WorkItem>
     {
         private readonly List<WorkItem> _items = new List<WorkItem>();
-        private readonly int _sumCache = 0;
-        public int Sum => _sumCache;
         public int Count => _items.Count;
 
         public bool HasWorkItem(Period period)

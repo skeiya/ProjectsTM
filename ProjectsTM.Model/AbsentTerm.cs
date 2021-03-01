@@ -4,9 +4,6 @@ namespace ProjectsTM.Model
 {
     public class AbsentTerm
     {
-        // XMLシリアライズ用
-        public AbsentTerm() { }
-
         public Member Member { get; set; }
         public Period Period { get; set; }
 

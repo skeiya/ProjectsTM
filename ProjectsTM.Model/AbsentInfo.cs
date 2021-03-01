@@ -17,7 +17,6 @@ namespace ProjectsTM.Model
             return value;
         }
 
-        // XMLシリアライズ用
         public void Add(AbsentTerm a)
         {
             if (!_items.ContainsKey(a.Member))

@@ -139,19 +139,6 @@ namespace ProjectsTM.Model
             return -566117206 + EqualityComparer<SortedDictionary<Member, MembersWorkItems>>.Default.GetHashCode(_items);
         }
 
-        public WorkItems Clone()
-        {
-            var result = new WorkItems();
-            foreach (var ws in this._items)
-            {
-                foreach (var w in ws.Value)
-                {
-                    result.Add(w.Clone());
-                }
-            }
-            return result;
-        }
-
         public void SortByPeriodStartDate()
         {
             foreach (var workItems in this.EachMembers)

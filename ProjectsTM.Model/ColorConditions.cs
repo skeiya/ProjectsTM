@@ -97,15 +97,6 @@ namespace ProjectsTM.Model
             _list[index + 1] = cond;
         }
 
-        public void Apply(ColorConditions colorConditions)
-        {
-            _list.Clear();
-            foreach (var c in colorConditions)
-            {
-                _list.Add(c);
-            }
-        }
-
         public ColorConditions Clone()
         {
             var result = new ColorConditions();

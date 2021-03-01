@@ -7,8 +7,6 @@ namespace ProjectsTM.Model
     {
         private readonly List<MileStoneFilter> _mileStoneFilters = new List<MileStoneFilter>();
 
-        public int Count => _mileStoneFilters.Count;
-
         public IEnumerator<MileStoneFilter> GetEnumerator()
         {
             return _mileStoneFilters.GetEnumerator();
@@ -40,13 +38,6 @@ namespace ProjectsTM.Model
             return true;
         }
 
-        public MileStoneFilters Clone()
-        {
-            var result = new MileStoneFilters();
-            foreach (var msf in _mileStoneFilters) result.Add(msf.Clone());
-            return result;
-        }
-
         public void Add(MileStoneFilter msf)
         {
             if (this.Contains(msf)) return;
@@ -56,11 +47,6 @@ namespace ProjectsTM.Model
         public bool Contains(MileStoneFilter msf)
         {
             return _mileStoneFilters.Contains(msf);
-        }
-
-        public void Clear()
-        {
-            _mileStoneFilters.Clear();
         }
     }
 }

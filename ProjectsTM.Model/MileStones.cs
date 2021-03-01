@@ -65,11 +65,6 @@ namespace ProjectsTM.Model
             _list.Sort();
         }
 
-        public bool IsEmpty()
-        {
-            return _list.Count == 0;
-        }
-
         public MileStoneFilters GetMileStoneFilters()
         {
             var result = new MileStoneFilters();
@@ -79,23 +74,6 @@ namespace ProjectsTM.Model
                 result.Add(mileStone.MileStoneFilter);
             }
             return result;
-        }
-
-        public MileStoneFilters GeMatchedMileStoneFilters(string searchPattern)
-        {
-            var result = new MileStoneFilters();
-            if (string.IsNullOrEmpty(searchPattern)) return result;
-            try
-            {
-                foreach (var ms in this._list)
-                {
-                    if (!ms.IsMatchFilter(searchPattern)) continue;
-                    if (result.Contains(ms.MileStoneFilter)) continue;
-                    result.Add(ms.MileStoneFilter);
-                }
-                return result;
-            }
-            catch { return new MileStoneFilters(); }
         }
 
         public override bool Equals(object obj)
