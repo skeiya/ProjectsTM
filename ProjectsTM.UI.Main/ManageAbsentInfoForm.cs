@@ -50,8 +50,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new EditAbsentTermForm(_member, before, _callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var after = dlg.EditAbsentTerm;
-                if (after == null) return;
+                if(!dlg.TryGetAbsentTerm(out var after)) return;
                 _absentTerms.Replace(before, after);
             }
             UpdateList();
@@ -67,8 +66,7 @@ namespace ProjectsTM.UI.Main
             using (var dlg = new EditAbsentTermForm(_member, null, _callender))
             {
                 if (dlg.ShowDialog() != DialogResult.OK) return;
-                var after = dlg.EditAbsentTerm;
-                if (after == null) return;
+                if (!dlg.TryGetAbsentTerm(out var after)) return;
                 _absentTerms.Add(after);
             }
             UpdateList();
