@@ -94,9 +94,9 @@ namespace ProjectsTM.Model
             result.Project = Project.FromXml(xml, version);
             result.Period = Period.FromXml(xml);
             result.Tags = Tags.FromXml(xml, version);
-            result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
-            if (xml.Element("Description") != null)
+            if (5 <= version)
             {
+                result.State = (TaskState)Enum.Parse(typeof(TaskState), xml.Element("State").Value);
                 result.Description = xml.Element("Description").Value;
             }
             result.AssignedMember = assign;

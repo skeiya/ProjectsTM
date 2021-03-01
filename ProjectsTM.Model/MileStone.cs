@@ -53,9 +53,9 @@ namespace ProjectsTM.Model
             result.Project = Project.FromXml(m, version);
             result.Day = CallenderDay.FromXml(version < 5 ? m.Element("Day").Element("Date") : m.Element("Date"));
             result.ColorText = m.Element(version < 5 ? "ColorText" : "Color").Value;
-            result.MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value);
-            if (m.Element(nameof(State)) != null)
+            if (5 <= version)
             {
+                result.MileStoneFilter = new MileStoneFilter(m.Element(nameof(MileStoneFilterName)).Value);
                 result.State = (TaskState)Enum.Parse(typeof(TaskState), m.Element(nameof(State)).Value);
             }
             return result;

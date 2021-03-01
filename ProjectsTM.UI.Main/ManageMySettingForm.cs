@@ -29,7 +29,7 @@ namespace ProjectsTM.UI.Main
 
         private void ComboBox1_SelectedValueChanged(object sender, System.EventArgs e)
         {
-            checkBox1.Enabled = Selected == null;
+            checkBox1.Enabled = Member.Invalid.Equals(Selected);
         }
 
         private void InitCombo(Member me)
