@@ -6,12 +6,7 @@ namespace ProjectsTM.Model
 {
     public class AppData
     {
-        public static int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
-        public static int Version
-        {
-            get { return DataVersion; }
-            set { }
-        }
+        public static readonly int DataVersion = 5; // 互換性のなくなる変更をしたときにこの数字を増やす
 
         public static AppData Dummy
         {
@@ -83,7 +78,7 @@ namespace ProjectsTM.Model
         public XElement ToXml()
         {
             var xml = new XElement(nameof(AppData));
-            xml.Add(new XElement(nameof(Version), Version));
+            xml.Add(new XElement("Version", DataVersion));
             xml.Add(Callender.ToXml());
             xml.Add(Members.ToXml());
             xml.Add(WorkItems.ToXml());
