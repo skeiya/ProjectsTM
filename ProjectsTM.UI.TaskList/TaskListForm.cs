@@ -78,7 +78,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetOption()
         {
-            if (IsUserNameSort()) return GetSortPatternFormUserName(_user.ToString());
+            if (IsUserNameSort()) return GetUserNamePatternOption();
             return new TaskListOption(comboBoxPattern.Text, checkBoxShowMS.Checked, textBoxAndCondition.Text, _gridControl.Option.ErrorDisplayType);
         }
 
@@ -163,7 +163,7 @@ namespace ProjectsTM.UI.TaskList
         private void ComboBoxPattern_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!(IsUserNameSort() || IsUserSettingSet())) return;
-            _gridControl.Option = GetSortPatternFormUserName(_user.ToString());
+            _gridControl.Option = GetUserNamePatternOption();
             _gridControl.UpdateView();
         }
 
@@ -173,10 +173,9 @@ namespace ProjectsTM.UI.TaskList
             comboBoxPattern.Items.Add(GetUserTaskSortSelectionDispText());
         }
 
-        private TaskListOption GetSortPatternFormUserName(string userName)
+        private TaskListOption GetUserNamePatternOption()
         {
-            userName = Regex.Escape(userName);
-            return new TaskListOption(userName, false, string.Empty, _gridControl.Option.ErrorDisplayType);
+            return new TaskListOption(_user.ToString(), false, string.Empty, _gridControl.Option.ErrorDisplayType);
         }
 
         private bool IsUserSettingSet()
