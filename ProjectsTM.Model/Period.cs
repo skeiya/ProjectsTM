@@ -83,7 +83,7 @@ namespace ProjectsTM.Model
         {
             var result = new Period();
             var periodElement = w.Element(nameof(Period));
-            if (periodElement != null)
+            if (periodElement != null && periodElement.Element(nameof(From)) != null)
             {
                 result.From = CallenderDay.Parse(periodElement.Element(nameof(From)).Value);
                 result.To = CallenderDay.Parse(periodElement.Element(nameof(To)).Value);

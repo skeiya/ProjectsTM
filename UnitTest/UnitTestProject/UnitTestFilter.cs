@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectsTM.ViewModel;
+using System.IO;
 using System.Xml.Linq;
 
 namespace UnitTestProject
@@ -10,8 +11,11 @@ namespace UnitTestProject
         [TestMethod]
         public void TestFilterLoad()
         {
-            var filter = Filter.FromXml(XElement.Load("filterSample.xml"));
-            Assert.IsTrue(filter.ShowMembers.Count == 2);
+            foreach (var file in Directory.GetFiles("Filters"))
+            {
+                var filter = Filter.FromXml(XElement.Load(file));
+                Assert.IsTrue(filter.ShowMembers.Count == 2);
+            }
         }
     }
 }
