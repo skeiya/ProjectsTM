@@ -1,112 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{451BC99B-E4B8-44C8-9828-F916F98F5CC7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
     <RootNamespace>ProjectsTM.UI.Common</RootNamespace>
     <AssemblyName>ProjectsTM.UI.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EazyRegexForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EazyRegexForm.Designer.cs">
-      <DependentUpon>EazyRegexForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditMemberForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditMemberForm.Designer.cs">
-      <DependentUpon>EditMemberForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditMileStoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditMileStoneForm.Designer.cs">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditAbsentTermForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditAbsentTermForm.Designer.cs">
-      <DependentUpon>EditAbsentTermForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditWorkItemForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditWorkItemForm.Designer.cs">
-      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EazyRegexForm.resx">
-      <DependentUpon>EazyRegexForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditMemberForm.resx">
-      <DependentUpon>EditMemberForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditMileStoneForm.resx">
-      <DependentUpon>EditMileStoneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditAbsentTermForm.resx">
-      <DependentUpon>EditAbsentTermForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditWorkItemForm.resx">
-      <DependentUpon>EditWorkItemForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ProjectsTM.Model\ProjectsTM.Model.csproj">
-      <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
-      <Name>ProjectsTM.Model</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\ProjectsTM.Model\ProjectsTM.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
@@ -125,5 +30,4 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

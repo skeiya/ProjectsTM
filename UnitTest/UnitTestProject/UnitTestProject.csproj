@@ -1,124 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2A259937-FEFE-4702-8E7E-C27C943E2ECC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
     <RootNamespace>UnitTestProject</RootNamespace>
     <AssemblyName>UnitTestProject</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializeTest.cs" />
-    <Compile Include="KeyAndMouseHandlerTest.cs" />
-    <Compile Include="FileVersionTest.cs" />
-    <Compile Include="UnitTestFilter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\FreeGridControl\FreeGridControl.csproj">
-      <Project>{ba48dcdd-d652-409a-b204-de163c403e12}</Project>
-      <Name>FreeGridControl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.exe\ProjectsTM.exe.csproj">
-      <Project>{217d0cf7-f594-43c1-a3e1-40fb70ee643b}</Project>
-      <Name>ProjectsTM.exe</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.Logic\ProjectsTM.Logic.csproj">
-      <Project>{f086cca0-3428-4bf9-9c59-2f51f24563a3}</Project>
-      <Name>ProjectsTM.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.Model\ProjectsTM.Model.csproj">
-      <Project>{ed87e6cf-b3e1-4671-a8fb-83bb9d1ed4bc}</Project>
-      <Name>ProjectsTM.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.Service\ProjectsTM.Service.csproj">
-      <Project>{e76f7b1a-25a3-423d-98fe-c2f8c466764e}</Project>
-      <Name>ProjectsTM.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj">
-      <Project>{451bc99b-e4b8-44c8-9828-f916f98f5cc7}</Project>
-      <Name>ProjectsTM.UI.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.UI.Main\ProjectsTM.UI.Main.csproj">
-      <Project>{799e1ac1-909e-4a12-85c3-46fa01c548d4}</Project>
-      <Name>ProjectsTM.UI.Main</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj">
-      <Project>{d9c038e1-45db-433c-9260-4d7cbc93f347}</Project>
-      <Name>ProjectsTM.UI.TaskList</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj">
-      <Project>{8E66A8DA-C23E-4D86-A83F-AB8C2574E129}</Project>
-      <Name>ProjectsTM.ViewModel</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Filters\filterSample1.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Filters\filterSample0.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version1.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version3.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version4.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version5.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Versions\version0.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>2.1.1</Version>
@@ -127,6 +17,15 @@
       <Version>2.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\FreeGridControl\FreeGridControl.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.exe\ProjectsTM.exe.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.Logic\ProjectsTM.Logic.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.Model\ProjectsTM.Model.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.Service\ProjectsTM.Service.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.UI.Common\ProjectsTM.UI.Common.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.UI.Main\ProjectsTM.UI.Main.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.UI.TaskList\ProjectsTM.UI.TaskList.csproj" />
+    <ProjectReference Include="..\..\ProjectsTM.ViewModel\ProjectsTM.ViewModel.csproj" />
+  </ItemGroup>
 </Project>
