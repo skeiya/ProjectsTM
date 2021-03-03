@@ -16,7 +16,10 @@ namespace FreeGridControl
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            using (var form = new Form1())
+            {
+                Application.Run(form);
+            }
         }
     }
 }
