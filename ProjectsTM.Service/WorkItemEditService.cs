@@ -108,13 +108,14 @@ namespace ProjectsTM.Service
             foreach (var w in newWis) w.State = state;
 
             var workItems = _viewData.Original.WorkItems;
-            _viewData.Selected.Clear();
             workItems.Remove(selected);
             workItems.Add(newWis);
 
             _viewData.UndoBuffer.Delete(selected);
             _viewData.UndoBuffer.Add(newWis);
             _viewData.UndoBuffer.Push();
+
+            _viewData.Selected.Clear();
         }
 
         public void SelectAfterward(IEnumerable<WorkItem> starts)

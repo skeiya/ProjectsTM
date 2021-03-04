@@ -175,7 +175,7 @@ namespace ProjectsTM.UI.TaskList
 
         private TaskListOption GetUserNamePatternOption()
         {
-            return new TaskListOption(_user.ToString(), false, string.Empty, _gridControl.Option.ErrorDisplayType);
+            return new TaskListOption(Regex.Escape(_user.ToString()), false, string.Empty, _gridControl.Option.ErrorDisplayType);
         }
 
         private bool IsUserSettingSet()
