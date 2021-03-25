@@ -47,6 +47,7 @@ namespace ProjectsTM.UI.TaskList
 
             this._editService = new WorkItemEditService(viewData);
             AttachEvents();
+            this.Disposed += DetachEvents;
             InitializeGrid();
         }
 
@@ -301,6 +302,12 @@ namespace ProjectsTM.UI.TaskList
         {
             _viewData.UndoBuffer.Changed += _undoService_Changed;
             _viewData.SelectedWorkItemChanged += _viewData_SelectedWorkItemChanged;
+        }
+
+        private void DetachEvents(object sender, EventArgs e)
+        {
+            _viewData.UndoBuffer.Changed -= _undoService_Changed;
+            _viewData.SelectedWorkItemChanged -= _viewData_SelectedWorkItemChanged;
         }
 
         private void UpdateLastSelect()
