@@ -310,7 +310,7 @@ namespace ProjectsTM.UI.Main
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
-            if (IsFixedArea(client)) return null;
+            if (IsFixedArea(client)) return CallenderDay.Invalid;
 
             var rawPoint = Client2Raw(client);
             return Y2Day(rawPoint.Y);
@@ -320,7 +320,7 @@ namespace ProjectsTM.UI.Main
         {
             var point = PointToClient(Cursor.Position);
             var client = new ClientPoint(point);
-            if (IsFixedArea(client)) return null;
+            if (IsFixedArea(client)) return Member.Invalid;
 
             var rawPoint = Client2Raw(client);
             return X2Member(rawPoint.X);
@@ -343,7 +343,7 @@ namespace ProjectsTM.UI.Main
 
         public CallenderDay Y2Day(int y)
         {
-            if (GridHeight < y) return null;
+            if (GridHeight < y) return CallenderDay.Invalid;
             var r = Y2Row(y);
             return Row2Day(r);
         }
