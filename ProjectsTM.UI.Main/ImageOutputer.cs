@@ -14,7 +14,7 @@ namespace ProjectsTM.UI.Main
             try
             {
                 using (var fileIOService = new AppDataFileIOService())
-                using (var grid = new WorkItemGrid(viewData, null, fileIOService))
+                using (var grid = new WorkItemGrid(viewData, null, fileIOService, true))
                 {
                     var size = new Size(orgGrid.GridWidth, orgGrid.GridHeight);
                     grid.Size = size;

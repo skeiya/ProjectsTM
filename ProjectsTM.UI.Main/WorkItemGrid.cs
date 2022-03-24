@@ -31,7 +31,7 @@ namespace ProjectsTM.UI.Main
 
         public Point ScrollOffset => new Point(HOffset, VOffset);
 
-        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService, AppDataFileIOService fileIOService)
+        public WorkItemGrid(MainViewData viewData, EditorFindService editorFindService, AppDataFileIOService fileIOService, bool isPrint)
         {
             this.Dock = DockStyle.Fill;
             this._viewData = viewData;
@@ -51,7 +51,10 @@ namespace ProjectsTM.UI.Main
                 this.Font);
 
             ContextMenuStrip = new MainFormContextMenuStrip(_viewData.Core, this);
-            _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
+            if (!isPrint)
+            {
+                _keyAndMouseHandleService = new KeyAndMouseHandleService(_viewData, this, _workItemDragService, _drawService, _editService, this, editorFindService, Global2Client);
+            }
 
             AttachEvents();
             AllowDrop = true;
