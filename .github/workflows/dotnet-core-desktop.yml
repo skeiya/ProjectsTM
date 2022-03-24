@@ -63,3 +63,4 @@ jobs:
       with:
           name: installer
           path: Output\Setup.exe
+
