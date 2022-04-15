@@ -56,6 +56,8 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemColor = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLargeRatio = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSmallRatio = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemWidenWidth = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemNarrowWidth = new System.Windows.Forms.ToolStripMenuItem();
             this.管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemManageMember = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemMileStone = new System.Windows.Forms.ToolStripMenuItem();
@@ -214,7 +216,9 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemFilter,
             this.ToolStripMenuItemColor,
             this.ToolStripMenuItemLargeRatio,
-            this.ToolStripMenuItemSmallRatio});
+            this.ToolStripMenuItemSmallRatio,
+            this.ToolStripMenuItemWidenWidth,
+            this.ToolStripMenuItemNarrowWidth});
             this.表示ToolStripMenuItem.Name = "表示ToolStripMenuItem";
             this.表示ToolStripMenuItem.Size = new System.Drawing.Size(58, 23);
             this.表示ToolStripMenuItem.Text = "表示(&V)";
@@ -223,7 +227,7 @@ namespace ProjectsTM.UI.Main
             // 
             this.ToolStripMenuItemFilter.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_filter_24;
             this.ToolStripMenuItemFilter.Name = "ToolStripMenuItemFilter";
-            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemFilter.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItemFilter.Text = "フィルター(&F)";
             this.ToolStripMenuItemFilter.Click += new System.EventHandler(this.ToolStripMenuItemFilter_Click);
             // 
@@ -231,7 +235,7 @@ namespace ProjectsTM.UI.Main
             // 
             this.ToolStripMenuItemColor.Image = global::ProjectsTM.UI.Main.Properties.Resources.icons8_swatch_48;
             this.ToolStripMenuItemColor.Name = "ToolStripMenuItemColor";
-            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemColor.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItemColor.Text = "色(&C)";
             this.ToolStripMenuItemColor.Click += new System.EventHandler(this.ToolStripMenuItemColor_Click);
             // 
@@ -240,7 +244,7 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemLargeRatio.Name = "ToolStripMenuItemLargeRatio";
             this.ToolStripMenuItemLargeRatio.ShortcutKeyDisplayString = "Ctrl++";
             this.ToolStripMenuItemLargeRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemLargeRatio.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItemLargeRatio.Text = "倍率(→大)";
             // 
             // ToolStripMenuItemSmallRatio
@@ -248,8 +252,26 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemSmallRatio.Name = "ToolStripMenuItemSmallRatio";
             this.ToolStripMenuItemSmallRatio.ShortcutKeyDisplayString = "Ctrl+ー";
             this.ToolStripMenuItemSmallRatio.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(171, 22);
+            this.ToolStripMenuItemSmallRatio.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItemSmallRatio.Text = "倍率(→小)";
+            // 
+            // ToolStripMenuItemWidenWidth
+            // 
+            this.ToolStripMenuItemWidenWidth.Name = "ToolStripMenuItemWidenWidth";
+            this.ToolStripMenuItemWidenWidth.ShortcutKeyDisplayString = "Ctrl+Alt++";
+            this.ToolStripMenuItemWidenWidth.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.Oemplus)));
+            this.ToolStripMenuItemWidenWidth.Size = new System.Drawing.Size(189, 22);
+            this.ToolStripMenuItemWidenWidth.Text = "幅を広げる";
+            // 
+            // ToolStripMenuItemNarrowWidth
+            // 
+            this.ToolStripMenuItemNarrowWidth.Name = "ToolStripMenuItemNarrowWidth";
+            this.ToolStripMenuItemNarrowWidth.ShortcutKeyDisplayString = "Ctrl+Alt+-";
+            this.ToolStripMenuItemNarrowWidth.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.OemMinus)));
+            this.ToolStripMenuItemNarrowWidth.Size = new System.Drawing.Size(189, 22);
+            this.ToolStripMenuItemNarrowWidth.Text = "幅を狭める";
             // 
             // 管理ToolStripMenuItem
             // 
@@ -385,6 +407,8 @@ namespace ProjectsTM.UI.Main
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemMySetting;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemTrendChart;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemWidenWidth;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemNarrowWidth;
     }
 }
 

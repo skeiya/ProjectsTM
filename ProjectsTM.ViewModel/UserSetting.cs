@@ -9,6 +9,7 @@ namespace ProjectsTM.ViewModel
         public string FilterName { get; set; }
         public float Ratio { get; set; }
         public int FontSize { get; set; }
+        public int ItemWidth { get; set; }
         public string FilePath { get; set; } = string.Empty;
         public Detail Detail { get; set; } = new Detail();
         public PatternHistory PatternHistory { get; set; } = new PatternHistory();
@@ -21,6 +22,7 @@ namespace ProjectsTM.ViewModel
             xml.Add(new XElement(nameof(FilterName)) { Value = FilterName.ToString() });
             xml.Add(new XElement(nameof(Ratio)) { Value = Ratio.ToString() });
             xml.Add(new XElement(nameof(FontSize)) { Value = FontSize.ToString() });
+            xml.Add(new XElement(nameof(ItemWidth)) { Value = ItemWidth.ToString() });
             xml.Add(new XElement(nameof(FilePath)) { Value = FilePath.ToString() });
             xml.Add(Detail.ToXml());
             xml.Add(PatternHistory.ToXml());
@@ -35,6 +37,10 @@ namespace ProjectsTM.ViewModel
             result.FilterName = xml.Element(nameof(FilterName)).Value;
             result.Ratio = float.Parse(xml.Element(nameof(Ratio)).Value);
             result.FontSize = int.Parse(xml.Element(nameof(FontSize)).Value);
+            if (xml.Element(nameof(ItemWidth)) != null)
+            {
+                result.ItemWidth = int.Parse(xml.Element(nameof(ItemWidth)).Value);
+            }
             if (xml.Element(nameof(FilePath)) != null)
             {
                 result.FilePath = xml.Element(nameof(FilePath)).Value;
