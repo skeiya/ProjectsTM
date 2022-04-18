@@ -6,5 +6,6 @@ namespace ProjectsTM.Logic
     {
         public static bool IsControlDown => (Control.ModifierKeys & Keys.Control) == Keys.Control;
         public static bool IsShiftDown => (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
+        public static bool IsAltDown => (Control.ModifierKeys & Keys.Alt) == Keys.Alt;
     }
 }

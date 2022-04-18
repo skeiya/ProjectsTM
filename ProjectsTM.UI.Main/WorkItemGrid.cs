@@ -84,7 +84,8 @@ namespace ProjectsTM.UI.Main
             var calWidth = (int)Math.Ceiling(g.MeasureString("2000A12A31", font).Width);
             var memberHeight = (int)Math.Ceiling(g.MeasureString("NAME", font).Height);
             var height = memberHeight;
-            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString("ABCDEF", font).Width) + 1);
+            string widthStr = new string('A', _viewData.ItemWidth);
+            var width = (int)(Math.Ceiling(this.CreateGraphics().MeasureString(widthStr, font).Width) + 1);
             this.ColWidths[WorkItemGridConstants.YearCol.Value] = (int)(calWidth / 2f) + 1;
             this.ColWidths[WorkItemGridConstants.MonthCol.Value] = (int)(calWidth / 4f) + 1;
             this.ColWidths[WorkItemGridConstants.DayCol.Value] = (int)(calWidth / 4f) + 1;

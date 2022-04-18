@@ -48,6 +48,7 @@ namespace ProjectsTM.ViewModel
         }
 
         public int FontSize { get; set; } = 6;
+        public int ItemWidth { get; set; } = 6;
 
         public void DecRatio()
         {
@@ -62,6 +63,20 @@ namespace ProjectsTM.ViewModel
         {
             FontSize++;
             Detail.ViewRatio += 0.1f;
+            RatioChanged?.Invoke(this, null);
+        
+        }
+
+        public void DecWidth()
+        {
+            if (ItemWidth <= 1) return;
+            ItemWidth--;
+            RatioChanged?.Invoke(this, null);
+        }
+
+        public void IncWidth()
+        {
+            ItemWidth++;
             RatioChanged?.Invoke(this, null);
         }
 

@@ -56,6 +56,8 @@ namespace ProjectsTM.UI.Main
             this.ToolStripMenuItemAddWorkItem.Click += (s, e) => _workItemGrid.AddNewWorkItem(null);
             this.ToolStripMenuItemSaveAsOtherName.Click += (s, e) => _fileIOService.SaveOtherName(_viewData.Original, _taskListManager.ShowOverlapCheck);
             this.ToolStripMenuItemDivide.Click += (s, e) => _workItemGrid.Divide();
+            this.ToolStripMenuItemNarrowWidth.Click += (s, e) => _viewData.DecWidth();
+            this.ToolStripMenuItemWidenWidth.Click += (s, e) => _viewData.IncWidth();
         }
 
         private void SuggestSetting()
@@ -105,6 +107,10 @@ namespace ProjectsTM.UI.Main
         {
             var setting = UserSettingUIService.Load();
             _viewData.FontSize = setting.FontSize;
+            if (setting.ItemWidth != 0)
+            {
+                _viewData.ItemWidth = setting.ItemWidth;
+            }
             _viewData.Detail = setting.Detail;
             _patternHistory.CopyFrom(setting.PatternHistory);
             if (_fileIOService.TryOpenFile(setting.FilePath, out var appData))
@@ -125,6 +131,7 @@ namespace ProjectsTM.UI.Main
             {
                 FilterName = _filterComboBoxService.Text,
                 FontSize = _viewData.FontSize,
+                ItemWidth = _viewData.ItemWidth,
                 FilePath = _fileIOService.FilePath,
                 Detail = _viewData.Detail,
                 PatternHistory = _patternHistory,

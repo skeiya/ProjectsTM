@@ -244,7 +244,18 @@ namespace ProjectsTM.Service
 
         public void MouseWheel(MouseEventArgs e)
         {
-            if (KeyState.IsControlDown)
+            if (KeyState.IsControlDown && KeyState.IsAltDown)
+            {
+                if (e.Delta > 0)
+                {
+                    _viewData.IncWidth();
+                }
+                else
+                {
+                    _viewData.DecWidth();
+                }
+            }
+            else if(KeyState.IsControlDown)
             {
                 if (e.Delta > 0)
                 {
